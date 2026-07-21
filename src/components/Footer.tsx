@@ -58,7 +58,7 @@ export function Footer() {
           <div>
             <h4 className="label-orca">On-chain</h4>
             <ul className="mt-4 space-y-2 text-sm">
-              <li className="flex flex-wrap items-center gap-x-3 gap-y-1">
+              <li>
                 <a
                   href={explorerUrl()}
                   target="_blank"
@@ -67,6 +67,8 @@ export function Footer() {
                 >
                   Explorer ↗
                 </a>
+              </li>
+              <li>
                 <a
                   href={solscanUrl()}
                   target="_blank"
@@ -84,7 +86,7 @@ export function Footer() {
                     rel="noopener noreferrer"
                     className="text-[#9ca3af] hover:text-[#00E5FF]"
                   >
-                    Jupiter
+                    Jupiter ↗
                   </a>
                 ) : (
                   <Link to="/trade" className="text-[#9ca3af] hover:text-[#00E5FF]">
