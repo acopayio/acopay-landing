@@ -15,7 +15,7 @@ export function Footer() {
               ACOPAY
             </Link>
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-[#9ca3af]">
-              Official Solana payment utility. Verify the mint only on acopay.net.
+              Solana payment utility. Contract and token details on this site.
             </p>
           </div>
           <div>
@@ -106,16 +106,14 @@ export function Footer() {
               {TOKEN.email}
             </a>
             <p className="mt-3 text-xs leading-relaxed text-[#6b7280]">
-              Official domain: acopay.net
-              <br />
-              No OTC. DYOR.
+              Official site: acopay.net
             </p>
           </div>
         </div>
 
         <div className="mt-12 flex flex-col gap-2 border-t border-white/[0.06] pt-8 text-xs text-[#6b7280] sm:flex-row sm:justify-between">
           <span>© {TOKEN.founded} ACOPAY · https://acopay.net</span>
-          <span>Not financial advice. Always verify the mint on this site.</span>
+          <span>Not financial advice.</span>
         </div>
       </div>
     </footer>

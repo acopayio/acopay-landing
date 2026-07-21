@@ -6,24 +6,18 @@ const FACTS = [
   { label: "Network", value: TOKEN.network },
   { label: "Standard", value: TOKEN.tokenStandard },
   { label: "Decimals", value: String(TOKEN.decimals) },
-  { label: "Total supply", value: `${TOKEN.totalSupply} ACOPAY` },
-  { label: "Transfer fee", value: `${TOKEN.transferFee} (${TOKEN.transferFeeNote})` },
+  { label: "Supply", value: `${TOKEN.totalSupply} ACOPAY` },
+  { label: "Transfer fee", value: TOKEN.transferFee },
   { label: "Freeze authority", value: TOKEN.freezeAuthority },
   { label: "Mint authority", value: TOKEN.mintAuthority },
-  { label: "Planned DEX pair", value: `${TOKEN.dex.pair} on ${TOKEN.dex.platform}` },
-  { label: "Official website", value: TOKEN.website },
+  { label: "DEX pair", value: `${TOKEN.dex.pair} · ${TOKEN.dex.status}` },
 ];
 
-const CHECKLIST = [
-  { done: true, text: "Official domain live: acopay.net (HTTPS)" },
-  { done: true, text: "Public token parameters published on this site" },
-  { done: true, text: "Freeze authority policy: Revoked (cannot freeze user wallets)" },
-  { done: true, text: "No OTC sales — DEX-only trading policy stated clearly" },
-  { done: true, text: "Deploy Token-2022 mint on Solana Mainnet + Metaplex metadata" },
-  { done: true, text: "Publish mint address on Contract page" },
-  { done: false, text: "Create Raydium ACOPAY/USDT pool" },
-  { done: false, text: "Enable Buy after pool is live (Jupiter / Raydium)" },
-  { done: false, text: "Submit Jupiter Standard verification (free) after pool is live" },
+const NEXT = [
+  { done: true, text: "Token live on Solana Mainnet" },
+  { done: true, text: "Metadata + contract published" },
+  { done: false, text: "Raydium ACOPAY/USDT pool" },
+  { done: false, text: "Jupiter token list submission" },
 ];
 
 export function LaunchStatus() {
@@ -32,13 +26,11 @@ export function LaunchStatus() {
   return (
     <section className="border-t border-white/[0.06] bg-[#090b0e]/50 py-12 md:py-16">
       <div className="page-wrap">
-        <p className="label-orca">Transparency</p>
-        <h2 className="mt-2 text-2xl font-bold text-white sm:text-3xl">
-          {live ? "Mainnet status" : "Mainnet readiness — facts only"}
-        </h2>
+        <p className="label-orca">Token</p>
+        <h2 className="mt-2 text-2xl font-bold text-white sm:text-3xl">Parameters</h2>
         <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[#9ca3af]">
-          Written for users and reviewers. We do not display borrowed Raydium protocol TVL as ACOPAY
-          liquidity. Unchecked items are not done yet.
+          On-chain facts for ACOPAY. Raydium TVL elsewhere on this site is market reference, not our
+          pool until ACOPAY/USDT is live.
         </p>
 
         <div className="mt-8 grid gap-4 lg:grid-cols-2">
@@ -52,26 +44,16 @@ export function LaunchStatus() {
               </thead>
               <tbody>
                 <tr className="bg-[#00E5FF]/[0.04]">
-                  <td className="font-medium text-[#9ca3af]">Mint address</td>
+                  <td className="font-medium text-[#9ca3af]">Contract</td>
                   <td className="font-semibold text-white">
                     {live ? (
                       <code className="break-all font-mono text-xs text-[#00E5FF] sm:text-sm">
                         {TOKEN.mintAddress}
                       </code>
                     ) : (
-                      <span className="text-[#00E5FF]">Not published yet</span>
+                      <span className="text-[#9ca3af]">Pending</span>
                     )}
                   </td>
-                </tr>
-                <tr>
-                  <td className="font-medium text-[#9ca3af]">Trading</td>
-                  <td className="font-semibold text-white">
-                    {live ? "On-chain via Jupiter / Raydium" : "Disabled until mint + pool"}
-                  </td>
-                </tr>
-                <tr>
-                  <td className="font-medium text-[#9ca3af]">Pool status</td>
-                  <td className="font-semibold text-white">{TOKEN.dex.status}</td>
                 </tr>
                 {FACTS.map((f) => (
                   <tr key={f.label}>
@@ -94,46 +76,34 @@ export function LaunchStatus() {
             </table>
           </div>
 
-          <div className="space-y-4">
-            <div className="orca-card p-6">
-              <p className="label-orca">Checklist</p>
-              <ul className="mt-4 space-y-3">
-                {CHECKLIST.map((item) => (
-                  <li key={item.text} className="flex gap-3 text-sm text-[#9ca3af]">
-                    <span
-                      className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px] font-bold ${
-                        item.done
-                          ? "bg-[#00E5FF]/20 text-[#00E5FF]"
-                          : "bg-white/[0.06] text-[#6b7280]"
-                      }`}
-                    >
-                      {item.done ? "✓" : "·"}
-                    </span>
-                    <span className={item.done ? "text-slate-300" : ""}>{item.text}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="orca-card p-6">
-              <p className="text-sm font-semibold text-white">Safety commitments</p>
-              <ul className="mt-3 space-y-2 text-sm leading-relaxed text-[#9ca3af]">
-                <li>No OTC / no “send USDT to a private wallet for ACOPAY”.</li>
-                <li>Freeze authority revoked — user wallets cannot be frozen by the project.</li>
-                <li>Mint address published only on acopay.net before any listing claim.</li>
-                <li>Peer-to-peer ACOPAY transfers are for payments; DEX volume comes only from pool swaps.</li>
-              </ul>
-              <div className="mt-4 flex flex-wrap gap-2">
-                <Link to="/contract" className="btn-orca-secondary !py-2 !text-xs">
-                  Contract
-                </Link>
-                <Link to="/trade" className="btn-orca-ghost !py-2 !text-xs">
-                  How to buy
-                </Link>
-                <Link to="/pools" className="btn-orca-ghost !py-2 !text-xs">
-                  Market reference
-                </Link>
-              </div>
+          <div className="orca-card p-6">
+            <p className="label-orca">Roadmap</p>
+            <ul className="mt-4 space-y-3">
+              {NEXT.map((item) => (
+                <li key={item.text} className="flex gap-3 text-sm text-[#9ca3af]">
+                  <span
+                    className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px] font-bold ${
+                      item.done
+                        ? "bg-[#00E5FF]/20 text-[#00E5FF]"
+                        : "bg-white/[0.06] text-[#6b7280]"
+                    }`}
+                  >
+                    {item.done ? "✓" : "·"}
+                  </span>
+                  <span className={item.done ? "text-slate-300" : ""}>{item.text}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-6 flex flex-wrap gap-2">
+              <Link to="/contract" className="btn-orca-secondary !py-2 !text-xs">
+                Contract
+              </Link>
+              <Link to="/trade" className="btn-orca-ghost !py-2 !text-xs">
+                How to buy
+              </Link>
+              <Link to="/pools" className="btn-orca-ghost !py-2 !text-xs">
+                Pools
+              </Link>
             </div>
           </div>
         </div>

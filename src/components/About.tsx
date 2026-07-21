@@ -2,16 +2,16 @@
 
 const FEATURES = [
   {
-    title: "Payment utility",
-    desc: "Designed for wallet-to-wallet transfers on Solana — settle payments, move value, keep fees on-chain and visible.",
+    title: "Payments",
+    desc: "Built for wallet-to-wallet settlement on Solana — send value with a clear on-chain fee.",
   },
   {
-    title: "Transparent fees",
-    desc: "0.01% Token-2022 transfer fee (1 bps). Sender pays SOL for network gas. No hidden off-chain charges from this site.",
+    title: "Transparent fee",
+    desc: "0.01% Token-2022 transfer fee (1 bps). Sender pays SOL for network gas.",
   },
   {
-    title: "Verifiable source",
-    desc: "Logo, parameters, and mint (when live) are published on acopay.net — the only official website.",
+    title: "Published on-chain",
+    desc: "Name, logo, supply, and contract address are on acopay.net and Solana explorers.",
   },
 ];
 
@@ -22,8 +22,7 @@ export function About() {
         <p className="label-orca">About</p>
         <h2 className="mt-2 text-3xl font-bold text-white sm:text-4xl">What is ACOPAY?</h2>
         <p className="mt-4 max-w-2xl text-lg leading-relaxed text-[#9ca3af]">
-          ACOPAY is a payment utility token on Solana Mainnet. Use it for peer-to-peer transfers —
-          pay a counterpart, settle a bill, or move funds with a clear on-chain fee model.{" "}
+          ACOPAY is a payment utility on Solana. Use it to pay, settle, or move funds between wallets.{" "}
           <span className="font-semibold text-[#00E5FF]">Pay your way.</span>
         </p>
 
@@ -40,7 +39,6 @@ export function About() {
         </div>
 
         <p className="mt-8 text-sm text-[#6b7280]">
-          Fees & safety →{" "}
           <Link to="/faq" className="font-medium text-[#00E5FF] hover:underline">
             FAQ
           </Link>

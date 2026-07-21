@@ -99,8 +99,8 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
               </h2>
               <p className="mt-2 text-sm leading-relaxed text-[#9ca3af]">
                 {isMintLive()
-                  ? "Live Raydium stats. ACOPAY/USDT is listed when our pool is live."
-                  : "These figures are Raydium Solana market totals — not ACOPAY. ACOPAY has no pool yet."}
+                  ? "Raydium market stats. ACOPAY/USDT appears here once our pool is created."
+                  : "Raydium market totals for reference — not ACOPAY liquidity."}
               </p>
               <p className="mt-2 text-xs text-[#6b7280]">
                 {summary?.source ?? "—"} · {liveCount} pools · Updated {updated}
@@ -126,46 +126,45 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
                 accent
               />
               <StatCard
-                label="Sample fees"
+                label="Fees 24H"
                 value={loading && !summary ? "…" : fmtUsd(summary?.fees24h ?? 0)}
               />
             </div>
           </div>
 
           {!isMintLive() && (
-            <div className="mt-6 rounded-2xl border border-[#00E5FF]/25 bg-[#00E5FF]/[0.06] px-4 py-3 text-sm text-[#9ca3af]">
-              <span className="font-semibold text-[#00E5FF]">ACOPAY is not listed yet.</span> The
-              yellow ACOPAY/USDT row is a placeholder. Top pools below are other Solana pairs from
-              Raydium API (real data, not ours).
+            <div className="mt-6 rounded-2xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-sm text-[#9ca3af]">
+              ACOPAY/USDT row is a placeholder until the pool exists. Other rows are live Raydium
+              pairs for market context.
             </div>
           )}
 
           {variant === "home" && (
             <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
               <Promo
-                title="Official mint"
-                desc="Verify the contract only on acopay.net."
-                cta="Contract →"
+                title="Contract"
+                desc="Token address and on-chain parameters."
+                cta="Open →"
                 to="/contract"
               />
               {isMintLive() && jupiterSwapUrl() ? (
                 <Promo
-                  title="Swap on Jupiter"
-                  desc="Best route across Solana DEXs."
-                  cta="Jupiter →"
+                  title="Jupiter"
+                  desc="Swap routes across Solana DEXs."
+                  cta="Open →"
                   href={jupiterSwapUrl()!}
                 />
               ) : (
                 <Promo
-                  title="Swap on Jupiter"
-                  desc="Opens after mint and pool are live."
+                  title="Jupiter"
+                  desc="Available after the ACOPAY/USDT pool is live."
                   cta="How to buy →"
                   to="/trade"
                 />
               )}
               <Promo
-                title="Raydium liquidity"
-                desc="Market pools and ACOPAY/USDT at launch."
+                title="Raydium"
+                desc="Liquidity pools and ACOPAY/USDT when created."
                 cta="Pools →"
                 to="/pools"
               />

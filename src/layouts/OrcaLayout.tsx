@@ -98,7 +98,7 @@ export function OrcaLayout() {
           <div className="page-wrap flex h-14 items-center justify-between gap-4">
             <div className="flex min-w-0 flex-1 items-center gap-2 rounded-xl border border-white/[0.06] bg-[#13161a] px-3 py-2 text-sm text-[#6b7280]">
               <SearchIcon />
-              <span className="truncate">Official Solana payment token · verify mint here</span>
+              <span className="truncate">ACOPAY · Solana payment token</span>
             </div>
             <div className="flex shrink-0 items-center gap-3">
               <a

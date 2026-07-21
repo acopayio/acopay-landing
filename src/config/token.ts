@@ -10,7 +10,7 @@ export const TOKEN = {
   symbol: "ACOPAY",
   tagline: "Pay your way",
   description:
-    "ACOPAY is a Solana Mainnet payment utility token (Token-2022) for transparent wallet-to-wallet transfers. Official source: acopay.net only.",
+    "ACOPAY is a Solana payment utility token (Token-2022) for wallet-to-wallet transfers.",
   status: "live" as "pending_launch" | "live",
   mintAddress: "6Pcq8xnkVYxR42FEehXrucvaMB1fZYuqoR8B9FGSAS8F",
   network: "Solana Mainnet",

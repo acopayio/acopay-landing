@@ -17,10 +17,9 @@ const ROWS = [
 ] as const;
 
 const VERIFY_STEPS = [
-  "Open only https://acopay.net (HTTPS).",
-  "Copy the mint from this Contract page when it is published.",
-  "Paste into Solana Explorer or Solscan — confirm name, logo, supply, and Token-2022.",
-  "Trade only via Jupiter or Raydium using that mint. Never send USDT to a private wallet for tokens.",
+  "Copy the contract address from this page.",
+  "Paste into Solscan or Solana Explorer and confirm name, logo, and supply.",
+  "When trading, use Jupiter or Raydium with that same address.",
 ];
 
 export function Contract() {
@@ -32,10 +31,9 @@ export function Contract() {
     <section id="contract" className="section-pad">
       <div className="page-wrap">
         <p className="label-orca">Contract</p>
-        <h2 className="mt-2 text-3xl font-bold text-white sm:text-4xl">Official on-chain details</h2>
+        <h2 className="mt-2 text-3xl font-bold text-white sm:text-4xl">Contract</h2>
         <p className="mt-3 max-w-xl text-[#9ca3af]">
-          Source of truth for reviewers and users. Parameters below match the Mainnet token design.
-          The mint address appears here immediately after deployment.
+          On-chain parameters for ACOPAY on Solana Mainnet.
         </p>
 
         <div className="mt-8 grid gap-4 lg:grid-cols-[1.4fr_1fr]">
@@ -100,9 +98,7 @@ export function Contract() {
                   </a>
                 </>
               ) : (
-                <span className="text-xs text-[#6b7280]">
-                  Explorer links unlock when the mint is published.
-                </span>
+                <span className="text-xs text-[#6b7280]">Explorer links appear when the address is set.</span>
               )}
               <Link to="/trade" className="btn-orca-secondary !py-2 !text-xs">
                 How to buy →
@@ -111,8 +107,8 @@ export function Contract() {
           </div>
 
           <div className="orca-card h-fit p-6">
-            <p className="label-orca">For users & reviewers</p>
-            <h3 className="mt-2 text-lg font-bold text-white">How to verify</h3>
+            <p className="label-orca">Check</p>
+            <h3 className="mt-2 text-lg font-bold text-white">Confirm the address</h3>
             <ol className="mt-5 space-y-4">
               {VERIFY_STEPS.map((step, i) => (
                 <li key={step} className="flex gap-3 text-sm leading-relaxed text-[#9ca3af]">
