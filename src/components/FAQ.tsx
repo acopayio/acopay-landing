@@ -1,39 +1,45 @@
+import { TOKEN } from "../config/token";
+
 const FAQS = [
   {
     q: "What is ACOPAY?",
-    a: "A payment utility token on Solana Mainnet for fast wallet-to-wallet transfers. Tagline: Pay your way.",
+    a: "A Solana Mainnet payment utility token (Token-2022) for wallet-to-wallet transfers. Tagline: Pay your way. Official site: acopay.net.",
   },
   {
-    q: "What is the official website?",
-    a: "acopay.net only. Always verify the mint address on this site before buying or receiving tokens.",
+    q: "What is the only official website?",
+    a: "https://acopay.net — always verify the mint on this domain before buying or receiving tokens. Ignore lookalike sites and unsolicited DMs.",
   },
   {
     q: "How do I verify the contract?",
-    a: "Open Contract on acopay.net, copy the mint, and paste it into Solana Explorer or Solscan. Confirm name, logo, and supply match. Do not trust lookalike sites.",
+    a: "Open Contract on acopay.net, copy the mint when published, and paste it into Solana Explorer or Solscan. Confirm name, logo, supply, Token-2022, and freeze revoked.",
   },
   {
     q: "How do I buy ACOPAY?",
-    a: "After mainnet launch, swap USDT → ACOPAY on Jupiter or Raydium with your wallet. There is no OTC sale — never send USDT to a private wallet expecting tokens. Until launch, Buy stays disabled.",
+    a: "After mainnet mint and the ACOPAY/USDT pool are live, swap USDT → ACOPAY on Jupiter or Raydium with your own wallet. There is no OTC sale. Until then, Buy stays disabled.",
   },
   {
-    q: "Can I send ACOPAY wallet-to-wallet?",
-    a: "Yes. Once the token exists, peer-to-peer transfers for payments are fine. That is separate from DEX volume, which only comes from swaps through a liquidity pool.",
+    q: "Can I send ACOPAY peer-to-peer?",
+    a: "Yes, once the token exists. P2P transfers are for payments. DEX volume and organic trading metrics only come from swaps through a liquidity pool.",
   },
   {
-    q: "Which network and standard?",
-    a: "Solana Mainnet. Token-2022 SPL, 9 decimals, supply 100,000,000 ACOPAY.",
+    q: "Which network and supply?",
+    a: `Solana Mainnet. ${TOKEN.tokenStandard}, ${TOKEN.decimals} decimals, total supply ${TOKEN.totalSupply} ACOPAY.`,
   },
   {
-    q: "What are the transfer fees?",
-    a: "On-chain Token-2022 fee is 0.01% (1 basis point), paid by the sender. Minimum transfer 0.1 ACOPAY. First time a wallet receives ACOPAY, 1 ACOPAY may be charged as an account-open fee (via ACOPAY apps). SOL gas is paid by the sending wallet.",
+    q: "What are the fees?",
+    a: "On-chain transfer fee is 0.01% (1 basis point), paid by the sender. Minimum transfer rules and first-account open fees may apply in ACOPAY apps. SOL gas is paid by the sending wallet.",
   },
   {
     q: "Can my wallet be frozen?",
-    a: "No. Freeze authority is revoked.",
+    a: "No. Freeze authority is revoked by design.",
   },
   {
-    q: "Is ACOPAY Jupiter Verified yet?",
-    a: "Verification is submitted after mainnet mint, metadata, and the ACOPAY/USDT pool are live. Until then, always use the mint published on acopay.net.",
+    q: "Is ACOPAY Jupiter Verified?",
+    a: "Verification is submitted after the mainnet mint, metadata, and Raydium pool are live (Jupiter Standard is free). Until then, use only the mint published on acopay.net — we do not claim verified status before approval.",
+  },
+  {
+    q: "How can I contact the project?",
+    a: `Email ${TOKEN.email}. Do not send funds to addresses received only via chat or social DMs.`,
   },
 ];
 
@@ -44,7 +50,7 @@ export function FAQ() {
         <p className="label-orca">FAQ</p>
         <h2 className="mt-2 text-3xl font-bold text-white sm:text-4xl">Common questions</h2>
         <p className="mt-3 max-w-xl text-[#8b9cb8]">
-          Short answers. For the mint address, use the Contract page.
+          Straight answers for users and listing reviewers. Mint details live on the Contract page.
         </p>
 
         <div className="mt-10 space-y-2">

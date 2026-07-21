@@ -1,28 +1,29 @@
 import { Link } from "react-router-dom";
 import { TOKEN, isMintLive } from "../config/token";
 
-/** Only facts that are true today — no borrowed Raydium TVL, no fake ACOPAY liquidity. */
 const FACTS = [
-  { label: "Name", value: TOKEN.name },
-  { label: "Symbol", value: TOKEN.symbol },
+  { label: "Name / Symbol", value: `${TOKEN.name} / ${TOKEN.symbol}` },
   { label: "Network", value: TOKEN.network },
   { label: "Standard", value: TOKEN.tokenStandard },
   { label: "Decimals", value: String(TOKEN.decimals) },
-  { label: "Planned supply", value: TOKEN.totalSupply },
-  { label: "Transfer fee", value: `${TOKEN.transferFee} on-chain` },
+  { label: "Total supply", value: `${TOKEN.totalSupply} ACOPAY` },
+  { label: "Transfer fee", value: `${TOKEN.transferFee} (${TOKEN.transferFeeNote})` },
   { label: "Freeze authority", value: TOKEN.freezeAuthority },
   { label: "Mint authority", value: TOKEN.mintAuthority },
-  { label: "Planned pair", value: TOKEN.dex.pair },
-  { label: "DEX", value: TOKEN.dex.platform },
-  { label: "Official site", value: "acopay.net" },
+  { label: "Planned DEX pair", value: `${TOKEN.dex.pair} on ${TOKEN.dex.platform}` },
+  { label: "Official website", value: TOKEN.website },
 ];
 
 const CHECKLIST = [
-  { done: true, text: "Brand, docs, and official domain (acopay.net)" },
-  { done: true, text: "Token parameters published (supply, fee, freeze revoked)" },
-  { done: false, text: "Mainnet mint + Metaplex metadata" },
-  { done: false, text: "Raydium ACOPAY/USDT pool" },
-  { done: false, text: "Buy via Jupiter / Raydium (on-chain only)" },
+  { done: true, text: "Official domain live: acopay.net (HTTPS)" },
+  { done: true, text: "Public token parameters published on this site" },
+  { done: true, text: "Freeze authority policy: Revoked (cannot freeze user wallets)" },
+  { done: true, text: "No OTC sales — DEX-only trading policy stated clearly" },
+  { done: false, text: "Deploy Token-2022 mint on Solana Mainnet + Metaplex metadata" },
+  { done: false, text: "Publish mint address on Contract page" },
+  { done: false, text: "Create Raydium ACOPAY/USDT pool" },
+  { done: false, text: "Enable Buy → Jupiter / Raydium deep links" },
+  { done: false, text: "Submit Jupiter Standard verification (free) after pool is live" },
 ];
 
 export function LaunchStatus() {
@@ -31,14 +32,13 @@ export function LaunchStatus() {
   return (
     <section className="border-t border-white/[0.06] bg-[#080d18]/50 py-12 md:py-16">
       <div className="mx-auto max-w-6xl px-5">
-        <p className="label-orca">Status</p>
+        <p className="label-orca">Transparency</p>
         <h2 className="mt-2 text-2xl font-bold text-white sm:text-3xl">
-          {live ? "ACOPAY is live on Mainnet" : "Pre-launch — real facts only"}
+          {live ? "Mainnet status" : "Mainnet readiness — facts only"}
         </h2>
         <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[#8b9cb8]">
-          {live
-            ? "Mint address is published on this site. Verify it before any transfer or swap."
-            : "ACOPAY is not trading yet. We do not show borrowed market TVL or fake liquidity. Below is what is already decided and public."}
+          Written for users and reviewers. We do not display borrowed Raydium protocol TVL as ACOPAY
+          liquidity. Unchecked items are not done yet.
         </p>
 
         <div className="mt-8 grid gap-4 lg:grid-cols-2">
@@ -46,7 +46,7 @@ export function LaunchStatus() {
             <table className="w-full">
               <thead>
                 <tr className="bg-[#131b33]/80">
-                  <th>Fact</th>
+                  <th>Field</th>
                   <th>Value</th>
                 </tr>
               </thead>
@@ -66,11 +66,11 @@ export function LaunchStatus() {
                 <tr>
                   <td className="font-medium text-[#8b9cb8]">Trading</td>
                   <td className="font-semibold text-white">
-                    {live ? "Open on Jupiter / Raydium" : "Not available — Buy disabled"}
+                    {live ? "On-chain via Jupiter / Raydium" : "Disabled until mint + pool"}
                   </td>
                 </tr>
                 <tr>
-                  <td className="font-medium text-[#8b9cb8]">ACOPAY/USDT pool</td>
+                  <td className="font-medium text-[#8b9cb8]">Pool status</td>
                   <td className="font-semibold text-white">{TOKEN.dex.status}</td>
                 </tr>
                 {FACTS.map((f) => (
@@ -96,7 +96,7 @@ export function LaunchStatus() {
 
           <div className="space-y-4">
             <div className="orca-card p-6">
-              <p className="label-orca">Roadmap (honest)</p>
+              <p className="label-orca">Checklist</p>
               <ul className="mt-4 space-y-3">
                 {CHECKLIST.map((item) => (
                   <li key={item.text} className="flex gap-3 text-sm text-[#8b9cb8]">
@@ -116,10 +116,13 @@ export function LaunchStatus() {
             </div>
 
             <div className="orca-card p-6">
-              <p className="text-sm leading-relaxed text-[#8b9cb8]">
-                <span className="font-semibold text-white">No OTC.</span> Do not send USDT to any
-                private wallet for ACOPAY. When live, buy only via on-chain Jupiter or Raydium.
-              </p>
+              <p className="text-sm font-semibold text-white">Safety commitments</p>
+              <ul className="mt-3 space-y-2 text-sm leading-relaxed text-[#8b9cb8]">
+                <li>No OTC / no “send USDT to a private wallet for ACOPAY”.</li>
+                <li>Freeze authority revoked — user wallets cannot be frozen by the project.</li>
+                <li>Mint address published only on acopay.net before any listing claim.</li>
+                <li>Peer-to-peer ACOPAY transfers are for payments; DEX volume comes only from pool swaps.</li>
+              </ul>
               <div className="mt-4 flex flex-wrap gap-2">
                 <Link to="/contract" className="btn-orca-secondary !py-2 !text-xs">
                   Contract
@@ -128,13 +131,9 @@ export function LaunchStatus() {
                   How to buy
                 </Link>
                 <Link to="/pools" className="btn-orca-ghost !py-2 !text-xs">
-                  Raydium markets →
+                  Market reference
                 </Link>
               </div>
-              <p className="mt-3 text-xs text-[#5c6b85]">
-                Pools page shows live Solana Raydium markets for reference — those numbers are not
-                ACOPAY liquidity.
-              </p>
             </div>
           </div>
         </div>

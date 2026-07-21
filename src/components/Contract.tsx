@@ -9,16 +9,18 @@ const ROWS = [
   ["Decimals", String(TOKEN.decimals)],
   ["Total supply", `${TOKEN.totalSupply} ACOPAY`],
   ["Token standard", TOKEN.tokenStandard],
-  ["Transfer fee", TOKEN.transferFee],
+  ["Transfer fee", `${TOKEN.transferFee} — ${TOKEN.transferFeeNote}`],
   ["Freeze authority", TOKEN.freezeAuthority],
   ["Mint authority", TOKEN.mintAuthority],
+  ["Official website", TOKEN.website],
+  ["Contact", TOKEN.email],
 ] as const;
 
 const VERIFY_STEPS = [
-  "Open only https://acopay.net in your browser.",
-  "Copy the mint address from this Contract page.",
-  "Paste it into Solana Explorer or Solscan and confirm name, logo, and supply.",
-  "When trading, use Jupiter or Raydium — never send USDT to a private wallet for tokens.",
+  "Open only https://acopay.net (HTTPS).",
+  "Copy the mint from this Contract page when it is published.",
+  "Paste into Solana Explorer or Solscan — confirm name, logo, supply, and Token-2022.",
+  "Trade only via Jupiter or Raydium using that mint. Never send USDT to a private wallet for tokens.",
 ];
 
 export function Contract() {
@@ -32,8 +34,8 @@ export function Contract() {
         <p className="label-orca">Contract</p>
         <h2 className="mt-2 text-3xl font-bold text-white sm:text-4xl">Official on-chain details</h2>
         <p className="mt-3 max-w-xl text-[#8b9cb8]">
-          This is the source of truth for ACOPAY. Always verify the mint here before buying or
-          receiving tokens.
+          Source of truth for reviewers and users. Parameters below match the Mainnet token design.
+          The mint address appears here immediately after deployment.
         </p>
 
         <div className="mt-8 grid gap-4 lg:grid-cols-[1.4fr_1fr]">
@@ -72,29 +74,36 @@ export function Contract() {
                 ))}
               </tbody>
             </table>
-            {TOKEN.mintAuthority === "Active" && (
-              <p className="border-t border-white/[0.06] px-5 py-3 text-xs leading-relaxed text-[#8b9cb8]">
-                Mint authority is active — additional supply can be minted until authority is
-                revoked. Freeze authority is revoked (user wallets cannot be frozen).
-              </p>
-            )}
+            <p className="border-t border-white/[0.06] px-5 py-3 text-xs leading-relaxed text-[#8b9cb8]">
+              Freeze authority is <span className="text-slate-300">revoked</span> (cannot freeze
+              holders). Mint authority is <span className="text-slate-300">active</span> until the
+              project optionally revokes it later — supply can still change while mint is active.
+            </p>
             <div className="flex flex-wrap gap-2 border-t border-white/[0.06] px-5 py-4">
-              <a
-                href={explorerUrl()}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-orca-ghost"
-              >
-                Solana Explorer ↗
-              </a>
-              <a
-                href={solscanUrl()}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-orca-ghost"
-              >
-                Solscan ↗
-              </a>
+              {live ? (
+                <>
+                  <a
+                    href={explorerUrl()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-orca-ghost"
+                  >
+                    Solana Explorer ↗
+                  </a>
+                  <a
+                    href={solscanUrl()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-orca-ghost"
+                  >
+                    Solscan ↗
+                  </a>
+                </>
+              ) : (
+                <span className="text-xs text-[#5c6b85]">
+                  Explorer links unlock when the mint is published.
+                </span>
+              )}
               <Link to="/trade" className="btn-orca-secondary !py-2 !text-xs">
                 How to buy →
               </Link>
@@ -102,8 +111,8 @@ export function Contract() {
           </div>
 
           <div className="orca-card h-fit p-6">
-            <p className="label-orca">How to verify</p>
-            <h3 className="mt-2 text-lg font-bold text-white">Before you transact</h3>
+            <p className="label-orca">For users & reviewers</p>
+            <h3 className="mt-2 text-lg font-bold text-white">How to verify</h3>
             <ol className="mt-5 space-y-4">
               {VERIFY_STEPS.map((step, i) => (
                 <li key={step} className="flex gap-3 text-sm leading-relaxed text-[#8b9cb8]">

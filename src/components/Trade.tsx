@@ -4,20 +4,20 @@ import { BuyButton } from "./BuyButton";
 
 const STEPS = [
   {
-    title: "Get a Solana wallet",
-    desc: "Use Phantom, Solflare, or another Solana wallet. Keep a little SOL for network fees.",
+    title: "Use a Solana wallet",
+    desc: "Phantom, Solflare, or another Solana wallet. Keep SOL for network fees.",
   },
   {
     title: "Confirm Mainnet",
-    desc: "Your wallet must be on Solana Mainnet — not Devnet or Testnet.",
+    desc: "Wallet must be on Solana Mainnet — not Devnet or Testnet.",
   },
   {
-    title: "Verify the mint",
-    desc: "Copy the official mint from acopay.net/contract and match it on Explorer or Solscan.",
+    title: "Verify the official mint",
+    desc: "Copy the mint from acopay.net/contract and match it on Explorer or Solscan before any swap.",
   },
   {
-    title: "Swap on a DEX",
-    desc: "When live, swap USDT → ACOPAY on Jupiter or Raydium. Never send USDT to a private wallet expecting tokens.",
+    title: "Swap on Jupiter or Raydium",
+    desc: "When live, swap USDT → ACOPAY on-chain. Never send USDT to a private wallet expecting ACOPAY.",
   },
 ];
 
@@ -33,17 +33,17 @@ export function Trade() {
         <h2 className="mt-2 text-3xl font-bold text-white sm:text-4xl">How to buy ACOPAY</h2>
         <p className="mt-3 max-w-xl text-[#8b9cb8]">
           {live
-            ? "Swap with your Solana wallet on Jupiter or Raydium. Verify the mint on acopay.net first."
-            : "Trading opens after mainnet launch and the ACOPAY/USDT pool. Until then, Buy stays disabled."}
+            ? "Swap with your wallet on Jupiter or Raydium. Always verify the mint on acopay.net first."
+            : "Buy opens after Mainnet mint and the ACOPAY/USDT Raydium pool. Until then, buttons stay disabled — no OTC."}
         </p>
 
         {!live && (
           <div className="orca-card mt-6 flex items-start gap-3 !rounded-2xl px-4 py-3.5">
             <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-[#f7c025]" />
             <p className="text-sm leading-relaxed text-[#8b9cb8]">
-              <span className="font-semibold text-white">No OTC sales.</span> After launch, buy only
-              via on-chain DEX pools. Peer-to-peer ACOPAY transfers for payments are fine once the
-              token exists.
+              <span className="font-semibold text-white">No OTC / no private sales.</span> Anyone
+              asking you to send USDT to a wallet for ACOPAY is not official. Wait for mint + pool,
+              then use Jupiter or Raydium only.
             </p>
           </div>
         )}
@@ -68,13 +68,13 @@ export function Trade() {
               Open Jupiter ↗
             </a>
           ) : (
-            <BuyButton label="Open Jupiter ↗" pendingLabel="Jupiter — Coming soon" />
+            <BuyButton label="Open Jupiter ↗" pendingLabel="Jupiter — Pending mainnet" />
           )}
-          <Link to="/pools" className="btn-orca-secondary">
-            View pools
+          <Link to="/contract" className="btn-orca-secondary">
+            Official mint
           </Link>
-          <Link to="/contract" className="btn-orca-ghost">
-            Verify mint
+          <Link to="/pools" className="btn-orca-ghost">
+            Pools
           </Link>
           {live && ray ? (
             <a href={ray} target="_blank" rel="noopener noreferrer" className="btn-orca-ghost">
@@ -82,7 +82,7 @@ export function Trade() {
             </a>
           ) : (
             <button type="button" disabled className="btn-orca-ghost" title="Opens after mainnet">
-              Raydium — Coming soon
+              Raydium — Pending mainnet
             </button>
           )}
         </div>

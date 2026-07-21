@@ -33,14 +33,18 @@ Custom domain: `acopay.net` (CNAME in `public/CNAME`)
 
 ## After mainnet launch
 
-Edit `src/config/token.ts`:
+1. Deploy mint + metadata on Solana Mainnet.
+2. Edit `src/config/token.ts`:
 
 ```ts
 status: "live",
 mintAddress: "YOUR_MAINNET_MINT",
 ```
 
-Then rebuild and redeploy.
+3. Sync `public/token.json` → `"mint": "YOUR_MAINNET_MINT"`.
+4. `git push` — Cloudflare Pages rebuilds automatically.
+5. Create Raydium ACOPAY/USDT pool, then submit Jupiter Standard at https://verified.jup.ag/tokens
+
 
 ## Folder
 

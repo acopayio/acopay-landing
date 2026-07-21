@@ -2,16 +2,16 @@ import { Link } from "react-router-dom";
 
 const FEATURES = [
   {
-    title: "Built for payments",
-    desc: "Send ACOPAY wallet-to-wallet on Solana — simple, fast, practical.",
+    title: "Payment utility",
+    desc: "Designed for wallet-to-wallet transfers on Solana — settle payments, move value, keep fees on-chain and visible.",
   },
   {
-    title: "Clear on-chain fees",
-    desc: "0.01% transfer fee on-chain. Sender pays SOL gas. No hidden off-chain charges.",
+    title: "Transparent fees",
+    desc: "0.01% Token-2022 transfer fee (1 bps). Sender pays SOL for network gas. No hidden off-chain charges from this site.",
   },
   {
-    title: "Official & verifiable",
-    desc: "Mint, metadata, and docs live on acopay.net — the only official source.",
+    title: "Verifiable source",
+    desc: "Logo, parameters, and mint (when live) are published on acopay.net — the only official website.",
   },
 ];
 
@@ -22,8 +22,8 @@ export function About() {
         <p className="label-orca">About</p>
         <h2 className="mt-2 text-3xl font-bold text-white sm:text-4xl">What is ACOPAY?</h2>
         <p className="mt-4 max-w-2xl text-lg leading-relaxed text-[#8b9cb8]">
-          ACOPAY is a payment utility token on Solana Mainnet for peer-to-peer transfers — pay a
-          friend, settle a bill, or move value across the ecosystem.{" "}
+          ACOPAY is a payment utility token on Solana Mainnet. Use it for peer-to-peer transfers —
+          pay a counterpart, settle a bill, or move funds with a clear on-chain fee model.{" "}
           <span className="font-semibold text-[#2ed3b7]">Pay your way.</span>
         </p>
 
@@ -40,13 +40,17 @@ export function About() {
         </div>
 
         <p className="mt-8 text-sm text-[#5c6b85]">
-          Fee details and account rules →{" "}
+          Fees & safety →{" "}
           <Link to="/faq" className="font-medium text-[#2ed3b7] hover:underline">
             FAQ
           </Link>
           {" · "}
           <Link to="/contract" className="font-medium text-[#2ed3b7] hover:underline">
             Contract
+          </Link>
+          {" · "}
+          <Link to="/token" className="font-medium text-[#2ed3b7] hover:underline">
+            Token
           </Link>
         </p>
       </div>

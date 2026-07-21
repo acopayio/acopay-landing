@@ -10,6 +10,7 @@ const METRICS = [
   { label: "Mint authority", value: TOKEN.mintAuthority },
   { label: "Token standard", value: TOKEN.tokenStandard },
   { label: "Network", value: TOKEN.network },
+  { label: "Planned pair", value: TOKEN.dex.pair },
 ];
 
 export function Tokenomics() {
@@ -19,14 +20,15 @@ export function Tokenomics() {
         <p className="label-orca">Token</p>
         <h2 className="mt-2 text-3xl font-bold text-white sm:text-4xl">Token overview</h2>
         <p className="mt-3 max-w-xl text-[#8b9cb8]">
-          Simple parameters. Transparent on-chain. Designed for payments — not speculation hype.
+          Mainnet design parameters. Built for payments with transparent on-chain rules — not
+          speculation marketing.
         </p>
 
         <div className="mt-8 grid gap-3 sm:grid-cols-3">
           <div className="orca-card p-5">
             <p className="text-xs font-semibold uppercase tracking-wider text-[#5c6b85]">Supply</p>
             <p className="mt-2 text-2xl font-bold text-[#f7c025]">{TOKEN.totalSupply}</p>
-            <p className="mt-1 text-xs text-[#8b9cb8]">ACOPAY · 9 decimals</p>
+            <p className="mt-1 text-xs text-[#8b9cb8]">ACOPAY · {TOKEN.decimals} decimals</p>
           </div>
           <div className="orca-card p-5">
             <p className="text-xs font-semibold uppercase tracking-wider text-[#5c6b85]">Fee</p>
@@ -62,12 +64,11 @@ export function Tokenomics() {
         </div>
 
         <p className="mt-6 text-sm text-[#5c6b85]">
-          Mint authority is currently <span className="text-slate-300">active</span> (supply can
-          still change until revoked). See{" "}
+          Mint authority remains active until revoked on-chain. See{" "}
           <Link to="/contract" className="text-[#2ed3b7] hover:underline">
             Contract
           </Link>{" "}
-          for the official mint.
+          for the official mint when published.
         </p>
       </div>
     </section>

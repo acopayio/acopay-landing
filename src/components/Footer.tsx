@@ -3,6 +3,7 @@ import { TOKEN, explorerUrl, isMintLive, jupiterSwapUrl, solscanUrl } from "../c
 
 export function Footer() {
   const jup = jupiterSwapUrl();
+  const live = isMintLive();
 
   return (
     <footer className="border-t border-white/[0.06] bg-[#080d18]/80 py-14">
@@ -14,7 +15,7 @@ export function Footer() {
               ACOPAY
             </Link>
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-[#8b9cb8]">
-              Pay your way on Solana. Official payment token — verify the mint only on acopay.net.
+              Official Solana payment utility. Verify the mint only on acopay.net.
             </p>
           </div>
           <div>
@@ -51,27 +52,35 @@ export function Footer() {
             <h4 className="label-orca">On-chain</h4>
             <ul className="mt-4 space-y-2 text-sm">
               <li>
-                <a
-                  href={explorerUrl()}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[#8b9cb8] hover:text-[#2ed3b7]"
-                >
-                  Solana Explorer
-                </a>
+                {live ? (
+                  <a
+                    href={explorerUrl()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#8b9cb8] hover:text-[#2ed3b7]"
+                  >
+                    Solana Explorer
+                  </a>
+                ) : (
+                  <span className="text-[#5c6b85]">Explorer (after mint)</span>
+                )}
               </li>
               <li>
-                <a
-                  href={solscanUrl()}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[#8b9cb8] hover:text-[#2ed3b7]"
-                >
-                  Solscan
-                </a>
+                {live ? (
+                  <a
+                    href={solscanUrl()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#8b9cb8] hover:text-[#2ed3b7]"
+                  >
+                    Solscan
+                  </a>
+                ) : (
+                  <span className="text-[#5c6b85]">Solscan (after mint)</span>
+                )}
               </li>
               <li>
-                {isMintLive() && jup ? (
+                {live && jup ? (
                   <a
                     href={jup}
                     target="_blank"
@@ -82,7 +91,7 @@ export function Footer() {
                   </a>
                 ) : (
                   <Link to="/trade" className="text-[#8b9cb8] hover:text-[#2ed3b7]">
-                    Trade (soon)
+                    Trade guide
                   </Link>
                 )}
               </li>
@@ -98,13 +107,15 @@ export function Footer() {
             </a>
             <p className="mt-3 text-xs leading-relaxed text-[#5c6b85]">
               Official domain: acopay.net
+              <br />
+              No OTC. DYOR.
             </p>
           </div>
         </div>
 
         <div className="mt-12 flex flex-col gap-2 border-t border-white/[0.06] pt-8 text-xs text-[#5c6b85] sm:flex-row sm:justify-between">
-          <span>© {TOKEN.founded} ACOPAY · acopay.net</span>
-          <span>Not financial advice. DYOR.</span>
+          <span>© {TOKEN.founded} ACOPAY · https://acopay.net</span>
+          <span>Not financial advice. Always verify the mint on this site.</span>
         </div>
       </div>
     </footer>

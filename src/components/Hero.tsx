@@ -13,7 +13,7 @@ const STATS = [
 const TRUST = [
   { label: "Official site", value: "acopay.net" },
   { label: "Freeze", value: "Revoked" },
-  { label: "Pair", value: "ACOPAY / USDT" },
+  { label: "Planned pair", value: "ACOPAY / USDT" },
 ];
 
 export function Hero() {
@@ -24,33 +24,46 @@ export function Hero() {
   return (
     <section className="relative overflow-hidden pb-12 pt-10 md:pb-16 md:pt-14">
       <div className="relative mx-auto max-w-6xl px-5">
-        {!live && (
-          <div className="orca-card mb-8 flex items-start gap-3 !rounded-2xl px-4 py-3.5">
-            <span className="mt-0.5 h-2 w-2 shrink-0 rounded-full bg-[#f7c025]" />
-            <p className="text-sm leading-relaxed text-[#8b9cb8]">
-              <span className="font-semibold text-white">Pre-launch.</span> No mint address and no
-              trading yet. Buy is disabled. Everything below is real product fact — not borrowed
-              market numbers.
-            </p>
-          </div>
-        )}
+        <div
+          className={`orca-card mb-8 flex items-start gap-3 !rounded-2xl px-4 py-3.5 ${
+            live ? "border-[#2ed3b7]/30" : ""
+          }`}
+        >
+          <span
+            className={`mt-0.5 h-2 w-2 shrink-0 rounded-full ${live ? "bg-[#2ed3b7]" : "bg-[#f7c025]"}`}
+          />
+          <p className="text-sm leading-relaxed text-[#8b9cb8]">
+            {live ? (
+              <>
+                <span className="font-semibold text-white">Mainnet mint is live.</span> Always
+                verify the address on this page before swapping or receiving ACOPAY. No OTC —
+                buy only via Jupiter or Raydium.
+              </>
+            ) : (
+              <>
+                <span className="font-semibold text-white">Pre-launch — preparing Mainnet.</span>{" "}
+                The official mint will be published on <span className="text-slate-300">acopay.net</span>{" "}
+                first. Trading and Buy stay disabled until then. No OTC sales.
+              </>
+            )}
+          </p>
+        </div>
 
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
           <div>
-            <p className="label-orca">Solana Mainnet · Payment token</p>
+            <p className="label-orca">Official · Solana Mainnet · Payment utility</p>
             <h1 className="mt-3 text-5xl font-bold leading-[1.05] tracking-tight text-white sm:text-6xl lg:text-[4.25rem]">
               {TOKEN.name}
             </h1>
             <p className="mt-2 text-2xl font-semibold text-[#2ed3b7] sm:text-3xl">{TOKEN.tagline}</p>
             <p className="mt-5 max-w-md text-base leading-relaxed text-[#8b9cb8] sm:text-lg">
-              Official payment utility on Solana. Fast wallet-to-wallet transfers with a clear
-              on-chain fee. Verify the mint only on acopay.net.
+              {TOKEN.description}
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
               <BuyButton />
               <Link to="/contract" className="btn-orca-secondary">
-                Verify contract
+                Official contract
               </Link>
               {live ? (
                 <a
@@ -98,7 +111,7 @@ export function Hero() {
               <div className="orca-card relative flex h-[280px] w-[280px] items-center justify-center !rounded-[2rem] sm:h-[320px] sm:w-[320px]">
                 <img
                   src="/assets/logo.png"
-                  alt="ACOPAY"
+                  alt="ACOPAY official logo"
                   className="h-[200px] w-[200px] drop-shadow-[0_20px_40px_rgba(0,0,0,0.4)] sm:h-[220px] sm:w-[220px]"
                 />
               </div>
@@ -110,16 +123,18 @@ export function Hero() {
           <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
             <p className="label-orca !normal-case !tracking-wide">Official mint address</p>
             <div className="flex gap-3 text-xs font-medium">
-              <a
-                href={solscanUrl()}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[#2ed3b7] hover:underline"
-              >
-                Solscan ↗
-              </a>
+              {live && (
+                <a
+                  href={solscanUrl()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#2ed3b7] hover:underline"
+                >
+                  Solscan ↗
+                </a>
+              )}
               <Link to="/contract" className="text-[#8b9cb8] hover:text-white">
-                Full details →
+                Contract details →
               </Link>
             </div>
           </div>
@@ -137,8 +152,8 @@ export function Hero() {
             </button>
           </div>
           <p className="mt-3 text-xs leading-relaxed text-[#8b9cb8]">
-            Only trust the mint published on <span className="text-slate-300">acopay.net</span>.
-            Ignore lookalike sites and private-wallet “presale” offers.
+            Trust only the mint published on <span className="text-slate-300">https://acopay.net</span>.
+            Ignore lookalike domains, DMs, and private-wallet “presale” or OTC offers.
           </p>
         </div>
       </div>
