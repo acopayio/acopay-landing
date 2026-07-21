@@ -44,6 +44,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link to="/roadmap" className="text-[#9ca3af] hover:text-[#00E5FF]">
+                  Roadmap
+                </Link>
+              </li>
+              <li>
                 <Link to="/faq" className="text-[#9ca3af] hover:text-[#00E5FF]">
                   FAQ
                 </Link>

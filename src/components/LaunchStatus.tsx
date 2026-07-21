@@ -16,8 +16,8 @@ const FACTS = [
 const NEXT = [
   { done: true, text: "Token live on Solana Mainnet" },
   { done: true, text: "Metadata + contract published" },
-  { done: false, text: "Raydium ACOPAY/USDT pool" },
-  { done: false, text: "Jupiter token list submission" },
+  { done: false, text: "Open ACOPAY/USDT pool on Raydium" },
+  { done: false, text: "ACOPAY payment on web" },
 ];
 
 export function LaunchStatus() {
@@ -77,7 +77,7 @@ export function LaunchStatus() {
           </div>
 
           <div className="orca-card p-6">
-            <p className="label-orca">Roadmap</p>
+            <p className="label-orca">Next</p>
             <ul className="mt-4 space-y-3">
               {NEXT.map((item) => (
                 <li key={item.text} className="flex gap-3 text-sm text-[#9ca3af]">
