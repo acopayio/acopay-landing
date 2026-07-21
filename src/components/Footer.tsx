@@ -108,9 +108,8 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-2 border-t border-white/[0.06] pt-8 text-xs text-[#6b7280] sm:flex-row sm:justify-between">
-          <span>© {TOKEN.founded} ACOPAY · https://acopay.net</span>
-          <span>Not financial advice.</span>
+        <div className="mt-12 border-t border-white/[0.06] pt-8 text-xs text-[#6b7280]">
+          <span>© {TOKEN.founded} ACOPAY</span>
         </div>
       </div>
     </footer>
