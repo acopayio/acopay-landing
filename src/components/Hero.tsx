@@ -22,7 +22,7 @@ export function Hero() {
               className="mt-2 flex w-full justify-between text-[0.95rem] font-semibold leading-none text-[#00E5FF] sm:text-[1.2rem] md:text-[1.45rem]"
               aria-label={TOKEN.tagline}
             >
-              {Array.from("Pay your way").map((ch, i) => (
+              {Array.from(TOKEN.tagline).map((ch, i) => (
                 <span key={i} className={ch === " " ? "select-none opacity-0" : undefined}>
                   {ch === " " ? "·" : ch}
                 </span>

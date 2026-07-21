@@ -30,8 +30,7 @@ export function Contract() {
   return (
     <section id="contract" className="section-pad">
       <div className="page-wrap">
-        <p className="label-orca">Contract</p>
-        <h2 className="mt-2 text-3xl font-bold text-white sm:text-4xl">Contract</h2>
+        <h2 className="text-3xl font-bold text-white sm:text-4xl">Contract</h2>
         <p className="mt-3 max-w-xl text-[#9ca3af]">
           On-chain parameters for ACOPAY on Solana Mainnet.
         </p>

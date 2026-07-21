@@ -33,19 +33,7 @@ export function OrcaLayout() {
       <aside className="sticky top-0 z-40 hidden h-[100dvh] w-[220px] shrink-0 flex-col overflow-x-hidden border-r border-white/[0.06] bg-[#090b0e] lg:flex">
         <Link to="/" className="flex items-center gap-2.5 px-4 py-5">
           <img src="/assets/logo.png" alt="" className="h-9 w-9 shrink-0 rounded-full ring-2 ring-[#00E5FF]/35" />
-          <div className="w-fit min-w-0">
-            <div className="text-base font-bold tracking-tight text-white">ACOPAY</div>
-            <p
-              className="mt-1 flex w-full justify-between text-[8px] font-semibold leading-none text-[#00E5FF]"
-              aria-label="Pay your way"
-            >
-              {Array.from("Pay your way").map((ch, i) => (
-                <span key={i} className={ch === " " ? "select-none opacity-0" : undefined}>
-                  {ch === " " ? "·" : ch}
-                </span>
-              ))}
-            </p>
-          </div>
+          <span className="text-base font-bold tracking-tight text-white">ACOPAY</span>
         </Link>
 
         <nav className="flex-1 space-y-6 overflow-y-auto px-3 pb-4">
@@ -101,21 +89,18 @@ export function OrcaLayout() {
           </div>
         </header>
 
-        {/* Desktop top strip — same page-wrap as content */}
+        {/* Desktop top bar — actions only */}
         <header className="sticky top-0 z-30 hidden border-b border-white/[0.06] bg-[#0c1017]/90 backdrop-blur-xl lg:block">
-          <div className="page-wrap flex h-14 items-center justify-between gap-4">
-            <p className="min-w-0 truncate text-sm text-[#9ca3af]">Pay your way</p>
-            <div className="flex shrink-0 items-center gap-3">
-              <a
-                href="https://solscan.io/token/6Pcq8xnkVYxR42FEehXrucvaMB1fZYuqoR8B9FGSAS8F"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-xl border border-white/10 px-3 py-1.5 text-xs font-medium text-[#9ca3af] transition hover:border-[#00E5FF]/30 hover:text-white"
-              >
-                Solscan ↗
-              </a>
-              <BuyButton className="btn-orca-primary !rounded-xl !px-4 !py-2" />
-            </div>
+          <div className="page-wrap flex h-14 items-center justify-end gap-3">
+            <a
+              href="https://solscan.io/token/6Pcq8xnkVYxR42FEehXrucvaMB1fZYuqoR8B9FGSAS8F"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-xl border border-white/10 px-3 py-1.5 text-xs font-medium text-[#9ca3af] transition hover:border-[#00E5FF]/30 hover:text-white"
+            >
+              Solscan ↗
+            </a>
+            <BuyButton className="btn-orca-primary !rounded-xl !px-4 !py-2" />
           </div>
         </header>
 

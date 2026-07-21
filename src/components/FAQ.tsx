@@ -3,7 +3,7 @@
 const FAQS = [
   {
     q: "What is ACOPAY?",
-    a: "A Solana payment utility token (Token-2022) for wallet-to-wallet transfers. Tagline: Pay your way.",
+    a: "A Solana payment utility token (Token-2022) for wallet-to-wallet transfers.",
   },
   {
     q: "Where is the contract address?",
@@ -43,9 +43,7 @@ export function FAQ() {
   return (
     <section id="faq" className="section-pad">
       <div className="page-wrap">
-        <p className="label-orca">FAQ</p>
-        <h2 className="mt-2 text-3xl font-bold text-white sm:text-4xl">FAQ</h2>
-        <p className="mt-3 max-w-xl text-[#9ca3af]">Common questions.</p>
+        <h2 className="text-3xl font-bold text-white sm:text-4xl">FAQ</h2>
 
         <div className="mt-10 space-y-2">
           {FAQS.map((item, i) => (

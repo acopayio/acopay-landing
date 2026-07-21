@@ -11,7 +11,7 @@ const FEATURES = [
   },
   {
     title: "Published on-chain",
-    desc: "Name, logo, supply, and contract address are on acopay.net and Solana explorers.",
+    desc: "Name, logo, supply, and contract address are published on-chain and on Solana explorers.",
   },
 ];
 
@@ -22,8 +22,7 @@ export function About() {
         <p className="label-orca">About</p>
         <h2 className="mt-2 text-3xl font-bold text-white sm:text-4xl">What is ACOPAY?</h2>
         <p className="mt-4 max-w-2xl text-lg leading-relaxed text-[#9ca3af]">
-          ACOPAY is a payment utility on Solana. Use it to pay, settle, or move funds between wallets.{" "}
-          <span className="font-semibold text-[#00E5FF]">Pay your way.</span>
+          ACOPAY is a payment utility on Solana. Use it to pay, settle, or move funds between wallets.
         </p>
 
         <div className="mt-12 grid gap-4 md:grid-cols-3">

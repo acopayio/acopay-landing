@@ -1,7 +1,7 @@
 ﻿import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { POOL_FILTERS, type PoolFilterId } from "../../config/pools";
-import { TOKEN, isPoolLive, jupiterSwapUrl } from "../../config/token";
+import { TOKEN, isPoolLive } from "../../config/token";
 import { useLivePools } from "../../hooks/useLivePools";
 import type { PoolRow } from "../../types/pool";
 import { HOME_POOL_ROWS, fmtPct, fmtUsd } from "../../types/pool";
@@ -135,38 +135,6 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
           {!isPoolLive() && (
             <div className="mt-6 rounded-2xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-sm text-[#9ca3af]">
               ACOPAY/USDT is pending. Other rows are live Raydium pairs.
-            </div>
-          )}
-
-          {variant === "home" && (
-            <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
-              <Promo
-                title="Contract"
-                desc="Token address and on-chain parameters."
-                cta="Open →"
-                to="/contract"
-              />
-              {isPoolLive() && jupiterSwapUrl() ? (
-                <Promo
-                  title="Jupiter"
-                  desc="Swap routes across Solana DEXs."
-                  cta="Open →"
-                  href={jupiterSwapUrl()!}
-                />
-              ) : (
-                <Promo
-                  title="Jupiter"
-                  desc="Available after the ACOPAY/USDT pool is live."
-                  cta="How to buy →"
-                  to="/trade"
-                />
-              )}
-              <Promo
-                title="Raydium"
-                desc="Liquidity pools and ACOPAY/USDT when created."
-                cta="Pools →"
-                to="/pools"
-              />
             </div>
           )}
 
@@ -432,35 +400,3 @@ function StatCard({
   );
 }
 
-function Promo({
-  title,
-  desc,
-  cta,
-  to,
-  href,
-}: {
-  title: string;
-  desc: string;
-  cta: string;
-  to?: string;
-  href?: string;
-}) {
-  const className =
-    "block rounded-2xl border border-white/[0.06] bg-[#0c1017]/50 p-5 transition hover:border-[#00E5FF]/25 hover:bg-[#0c1017]/80";
-  if (to) {
-    return (
-      <Link to={to} className={className}>
-        <h3 className="font-bold text-white">{title}</h3>
-        <p className="mt-2 text-sm text-[#9ca3af]">{desc}</p>
-        <span className="mt-3 inline-block text-sm font-semibold text-[#00E5FF]">{cta}</span>
-      </Link>
-    );
-  }
-  return (
-    <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
-      <h3 className="font-bold text-white">{title}</h3>
-      <p className="mt-2 text-sm text-[#9ca3af]">{desc}</p>
-      <span className="mt-3 inline-block text-sm font-semibold text-[#00E5FF]">{cta}</span>
-    </a>
-  );
-}
