@@ -3,7 +3,6 @@ import { TOKEN, explorerUrl, jupiterSwapUrl, solscanUrl } from "../config/token"
 
 const PRODUCT_LINKS = [
   { to: "/token", label: "Token" },
-  { to: "/pools", label: "Pools" },
   { to: "/trade", label: "Trade" },
   { to: "/contract", label: "Contract" },
   { to: "/roadmap", label: "Roadmap" },

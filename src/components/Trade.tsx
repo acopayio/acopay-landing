@@ -26,7 +26,8 @@ export function Trade() {
         <p className="label-orca">Trade</p>
         <h2 className="mt-2 text-3xl font-bold text-white sm:text-4xl">How to buy</h2>
         <p className="mt-3 max-w-xl text-[#9ca3af]">
-          Swap USDT for ACOPAY on Jupiter or Raydium. The ACOPAY/USDT pool is live on Raydium.
+          ACOPAY is for peer payments. If you need to buy with USDT, swap on Jupiter or Raydium —
+          liquidity stays modest by design.
         </p>
 
         <ol className="mt-10 space-y-3">
@@ -56,9 +57,6 @@ export function Trade() {
           )}
           <Link to="/contract" className="btn-orca-ghost">
             Contract
-          </Link>
-          <Link to="/pools" className="btn-orca-ghost">
-            Pools
           </Link>
         </div>
       </div>

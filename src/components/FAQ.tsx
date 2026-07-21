@@ -15,7 +15,7 @@ const FAQS = [
   },
   {
     q: "Can I transfer ACOPAY peer-to-peer?",
-    a: "Yes. Send ACOPAY between wallets for payments. Market price comes from the Raydium ACOPAY/USDT pool.",
+    a: "Yes. That is the main use case — send ACOPAY between wallets for payments and settlement.",
   },
   {
     q: "Network and supply?",
@@ -30,12 +30,12 @@ const FAQS = [
     a: "No. Freeze authority is revoked — wallets cannot be frozen.",
   },
   {
-    q: "Where is the liquidity pool?",
-    a: `Raydium CPMM pair ${TOKEN.dex.pair}. Swap on Jupiter or Raydium.`,
+    q: "Is there a DEX pool?",
+    a: `A small Raydium ${TOKEN.dex.pair} pool exists for optional swaps. ACOPAY is payment-first — we do not target high TVL.`,
   },
   {
     q: "Jupiter verification?",
-    a: "Jupiter verification will be submitted next. Until then, use the contract address on this site.",
+    a: "Not a priority while ACOPAY is used for peer payments. Always verify the mint on this site.",
   },
   {
     q: "Contact?",

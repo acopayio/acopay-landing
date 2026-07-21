@@ -5,7 +5,6 @@ import { Footer } from "../components/Footer";
 const TRADE_NAV = [
   { to: "/", label: "Home", end: true, icon: HomeIcon },
   { to: "/trade", label: "Trade", end: false, icon: SwapIcon },
-  { to: "/pools", label: "Pools", end: false, icon: PoolsIcon },
 ];
 
 const INFO_NAV = [
@@ -18,9 +17,9 @@ const INFO_NAV = [
 const MOBILE_NAV = [
   { to: "/", label: "Home", end: true, icon: HomeIcon },
   { to: "/trade", label: "Trade", end: false, icon: SwapIcon },
-  { to: "/pools", label: "Pools", end: false, icon: PoolsIcon },
   { to: "/contract", label: "Contract", end: false, icon: ContractIcon },
   { to: "/token", label: "Token", end: false, icon: TokenIcon },
+  { to: "/faq", label: "FAQ", end: false, icon: FaqIcon },
 ];
 
 function linkClass(isActive: boolean) {
@@ -108,15 +107,6 @@ function SwapIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
       <path d="M7 7h11l-3-3M17 17H6l3 3" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-function PoolsIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
-      <ellipse cx="12" cy="6" rx="8" ry="3" />
-      <path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6" />
     </svg>
   );
 }
