@@ -1,8 +1,7 @@
-# Never SPA-fallback hashed assets — missing CSS/JS must 404 (not HTML 200).
-# Otherwise browsers apply index.html as stylesheet → blank/unstyled page.
+# Missing CSS/JS must 404 — do not return index.html as stylesheet.
 /assets/*.css   /404.html   404
 /assets/*.js    /404.html   404
 /assets/*.map   /404.html   404
 
-# Client-side routes (React Router)
+# React Router SPA fallback
 /*    /index.html   200
