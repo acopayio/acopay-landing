@@ -45,7 +45,7 @@ export function FAQ() {
       <div className="page-wrap">
         <p className="label-orca">FAQ</p>
         <h2 className="mt-2 text-3xl font-bold text-white sm:text-4xl">FAQ</h2>
-        <p className="mt-3 max-w-xl text-[#9ca3af]">Product and contract facts.</p>
+        <p className="mt-3 max-w-xl text-[#9ca3af]">Common questions.</p>
 
         <div className="mt-10 space-y-2">
           {FAQS.map((item, i) => (

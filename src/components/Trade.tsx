@@ -13,7 +13,7 @@ const STEPS = [
   },
   {
     title: "Swap USDT → ACOPAY",
-    desc: "Use Jupiter or Raydium when the ACOPAY/USDT pool is live. Your wallet signs the swap.",
+    desc: "Use Jupiter or Raydium when the ACOPAY/USDT pool is live.",
   },
 ];
 
@@ -30,7 +30,7 @@ export function Trade() {
         <p className="mt-3 max-w-xl text-[#9ca3af]">
           {pool
             ? "Swap USDT for ACOPAY on Jupiter or Raydium with your wallet."
-            : "Buy opens after the Raydium ACOPAY/USDT pool is live. Until then, check the Contract page for the token address."}
+            : "Available when the ACOPAY/USDT pool is live. See Contract for the token address."}
         </p>
 
         <ol className="mt-10 space-y-3">

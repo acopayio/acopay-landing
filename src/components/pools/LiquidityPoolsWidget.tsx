@@ -1,7 +1,7 @@
 ﻿import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { POOL_FILTERS, type PoolFilterId } from "../../config/pools";
-import { TOKEN, isMintLive, isPoolLive, jupiterSwapUrl } from "../../config/token";
+import { TOKEN, isPoolLive, jupiterSwapUrl } from "../../config/token";
 import { useLivePools } from "../../hooks/useLivePools";
 import type { PoolRow } from "../../types/pool";
 import { HOME_POOL_ROWS, fmtPct, fmtUsd } from "../../types/pool";
@@ -93,14 +93,14 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
         <div className="orca-card p-4 sm:p-6">
           <div className="space-y-5">
             <div>
-              <p className="label-orca">Solana · Raydium reference</p>
+              <p className="label-orca">Raydium</p>
               <h2 className="mt-2 text-2xl font-bold text-white sm:text-3xl">
-                {variant === "home" ? "Live Market Pools" : "Liquidity Pools"}
+                {variant === "home" ? "Markets" : "Pools"}
               </h2>
               <p className="mt-2 text-sm leading-relaxed text-[#9ca3af]">
-                {isMintLive()
-                  ? "Raydium market stats. ACOPAY/USDT appears here once our pool is created."
-                  : "Raydium market totals for reference — not ACOPAY liquidity."}
+                {isPoolLive()
+                  ? "ACOPAY/USDT and other Raydium pools."
+                  : "Raydium market data. ACOPAY/USDT lists here after our pool is created."}
               </p>
               <p className="mt-2 text-xs text-[#6b7280]">
                 {summary?.source ?? "—"} · {liveCount} pools · Updated {updated}
@@ -132,10 +132,9 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
             </div>
           </div>
 
-          {!isMintLive() && (
+          {!isPoolLive() && (
             <div className="mt-6 rounded-2xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-sm text-[#9ca3af]">
-              ACOPAY/USDT row is a placeholder until the pool exists. Other rows are live Raydium
-              pairs for market context.
+              ACOPAY/USDT is pending. Other rows are live Raydium pairs.
             </div>
           )}
 
@@ -394,9 +393,9 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
                 href={TOKEN.links.raydium}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-orca-secondary w-full !border-[#00E5FF]/40 !text-[#00E5FF] sm:w-auto"
+                className="btn-orca-secondary w-full sm:w-auto"
               >
-                + Create Pool on Raydium
+                Raydium ↗
               </a>
             </div>
           )}

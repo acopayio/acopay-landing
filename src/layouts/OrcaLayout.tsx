@@ -85,7 +85,6 @@ export function OrcaLayout() {
 
         <div className="border-t border-white/[0.06] p-3">
           <BuyButton className="btn-orca-primary w-full !rounded-xl !px-3" label="Buy" />
-          <p className="mt-2 text-center text-[11px] text-[#6b7280]">acopay.net</p>
         </div>
       </aside>
 
@@ -105,10 +104,7 @@ export function OrcaLayout() {
         {/* Desktop top strip — same page-wrap as content */}
         <header className="sticky top-0 z-30 hidden border-b border-white/[0.06] bg-[#0c1017]/90 backdrop-blur-xl lg:block">
           <div className="page-wrap flex h-14 items-center justify-between gap-4">
-            <div className="flex min-w-0 flex-1 items-center gap-2 rounded-xl border border-white/[0.06] bg-[#13161a] px-3 py-2 text-sm text-[#6b7280]">
-              <SearchIcon />
-              <span className="truncate">ACOPAY · Solana payment token</span>
-            </div>
+            <p className="min-w-0 truncate text-sm text-[#9ca3af]">Pay your way</p>
             <div className="flex shrink-0 items-center gap-3">
               <a
                 href="https://solscan.io/token/6Pcq8xnkVYxR42FEehXrucvaMB1fZYuqoR8B9FGSAS8F"
@@ -198,15 +194,6 @@ function FaqIcon() {
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
       <circle cx="12" cy="12" r="9" />
       <path d="M9.5 9.5a2.5 2.5 0 0 1 4.7 1c0 1.5-2.2 2-2.2 3.5M12 17h.01" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function SearchIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-      <circle cx="11" cy="11" r="7" />
-      <path d="m20 20-3.5-3.5" strokeLinecap="round" />
     </svg>
   );
 }

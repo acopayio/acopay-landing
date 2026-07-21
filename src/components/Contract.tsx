@@ -12,7 +12,7 @@ const ROWS = [
   ["Transfer fee", `${TOKEN.transferFee} — ${TOKEN.transferFeeNote}`],
   ["Freeze authority", TOKEN.freezeAuthority],
   ["Mint authority", TOKEN.mintAuthority],
-  ["Official website", TOKEN.website],
+  ["Website", TOKEN.website],
   ["Contact", TOKEN.email],
 ] as const;
 

@@ -19,7 +19,7 @@ export const TOKEN = {
   totalSupplyRaw: 200_000_000,
   tokenStandard: "Token-2022",
   transferFee: "0.01%",
-  transferFeeNote: "1 basis point on-chain (Token-2022 transfer fee extension)",
+  transferFeeNote: "1 bps on-chain",
   freezeAuthority: "Revoked",
   mintAuthority: "Active",
   website: "https://acopay.net",
