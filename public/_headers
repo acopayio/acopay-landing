@@ -25,7 +25,11 @@
   X-Content-Type-Options: nosniff
 
 /assets/logo-solid.png
-  Cache-Control: public, max-age=86400
+  Cache-Control: public, max-age=3600
+  X-Content-Type-Options: nosniff
+
+/assets/logo-token.png
+  Cache-Control: public, max-age=3600
   X-Content-Type-Options: nosniff
 
 /assets/favicon.png
