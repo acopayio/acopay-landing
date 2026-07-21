@@ -1,12 +1,8 @@
-# Canonical: www -> apex (one site only — avoids split cache / broken CSS)
+# www → apex (also handled in functions/_middleware.ts)
 https://www.acopay.net/*   https://acopay.net/:splat   301
 http://www.acopay.net/*    https://acopay.net/:splat   301
 http://acopay.net/*        https://acopay.net/:splat   301
 
-# Missing CSS/JS must 404 — do not return index.html as stylesheet
-/assets/*.css   /404.html   404
-/assets/*.js    /404.html   404
-/assets/*.map   /404.html   404
-
-# React Router SPA fallback
+# SPA routes are handled by functions/_middleware.ts when Functions are enabled.
+# Keep a static fallback for deploys without Functions:
 /*    /index.html   200
