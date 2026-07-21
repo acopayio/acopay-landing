@@ -88,30 +88,34 @@ export function OrcaLayout() {
       {/* Main column */}
       <div className="flex min-w-0 flex-1 flex-col pb-[4.25rem] lg:pb-0">
         {/* Mobile / tablet top bar */}
-        <header className="sticky top-0 z-50 flex h-14 items-center justify-between gap-3 border-b border-white/[0.06] bg-[#0c1017]/95 px-4 backdrop-blur-xl lg:hidden">
-          <Link to="/" className="flex items-center gap-2">
-            <img src="/assets/logo.png" alt="" className="h-8 w-8 rounded-full ring-1 ring-[#c7f284]/40" />
-            <span className="font-bold tracking-tight text-white">ACOPAY</span>
-          </Link>
-          <BuyButton className="btn-orca-primary !min-h-9 !rounded-lg !px-3 !py-1.5 !text-xs" label="Buy" />
+        <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-[#0c1017]/95 backdrop-blur-xl lg:hidden">
+          <div className="page-wrap flex h-14 items-center justify-between gap-3">
+            <Link to="/" className="flex min-w-0 items-center gap-2">
+              <img src="/assets/logo.png" alt="" className="h-8 w-8 rounded-full ring-1 ring-[#c7f284]/40" />
+              <span className="truncate font-bold tracking-tight text-white">ACOPAY</span>
+            </Link>
+            <BuyButton className="btn-orca-primary !min-h-9 !rounded-lg !px-3 !py-1.5 !text-xs" label="Buy" />
+          </div>
         </header>
 
-        {/* Desktop top strip */}
-        <header className="sticky top-0 z-30 hidden h-14 items-center justify-between gap-4 border-b border-white/[0.06] bg-[#0c1017]/90 px-6 backdrop-blur-xl lg:flex">
-          <div className="flex max-w-md flex-1 items-center gap-2 rounded-xl border border-white/[0.06] bg-[#13161a] px-3 py-2 text-sm text-[#6b7280]">
-            <SearchIcon />
-            <span>Official Solana payment token · verify mint on this site</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <a
-              href="https://solscan.io/token/6Pcq8xnkVYxR42FEehXrucvaMB1fZYuqoR8B9FGSAS8F"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-xl border border-white/10 px-3 py-1.5 text-xs font-medium text-[#9ca3af] transition hover:border-[#c7f284]/30 hover:text-white"
-            >
-              Solscan ↗
-            </a>
-            <BuyButton className="btn-orca-primary !rounded-xl !px-4 !py-2" />
+        {/* Desktop top strip — same page-wrap as content */}
+        <header className="sticky top-0 z-30 hidden border-b border-white/[0.06] bg-[#0c1017]/90 backdrop-blur-xl lg:block">
+          <div className="page-wrap flex h-14 items-center justify-between gap-4">
+            <div className="flex min-w-0 flex-1 items-center gap-2 rounded-xl border border-white/[0.06] bg-[#13161a] px-3 py-2 text-sm text-[#6b7280]">
+              <SearchIcon />
+              <span className="truncate">Official Solana payment token · verify mint here</span>
+            </div>
+            <div className="flex shrink-0 items-center gap-3">
+              <a
+                href="https://solscan.io/token/6Pcq8xnkVYxR42FEehXrucvaMB1fZYuqoR8B9FGSAS8F"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-xl border border-white/10 px-3 py-1.5 text-xs font-medium text-[#9ca3af] transition hover:border-[#c7f284]/30 hover:text-white"
+              >
+                Solscan ↗
+              </a>
+              <BuyButton className="btn-orca-primary !rounded-xl !px-4 !py-2" />
+            </div>
           </div>
         </header>
 

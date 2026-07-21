@@ -31,7 +31,7 @@ export function LaunchStatus() {
 
   return (
     <section className="border-t border-white/[0.06] bg-[#090b0e]/50 py-12 md:py-16">
-      <div className="mx-auto max-w-6xl px-5">
+      <div className="page-wrap">
         <p className="label-orca">Transparency</p>
         <h2 className="mt-2 text-2xl font-bold text-white sm:text-3xl">
           {live ? "Mainnet status" : "Mainnet readiness — facts only"}

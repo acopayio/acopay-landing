@@ -30,7 +30,7 @@ export function Contract() {
 
   return (
     <section id="contract" className="section-pad">
-      <div className="mx-auto max-w-6xl px-5">
+      <div className="page-wrap">
         <p className="label-orca">Contract</p>
         <h2 className="mt-2 text-3xl font-bold text-white sm:text-4xl">Official on-chain details</h2>
         <p className="mt-3 max-w-xl text-[#9ca3af]">

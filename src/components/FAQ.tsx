@@ -46,7 +46,7 @@ const FAQS = [
 export function FAQ() {
   return (
     <section id="faq" className="section-pad">
-      <div className="mx-auto max-w-6xl px-5">
+      <div className="page-wrap">
         <p className="label-orca">FAQ</p>
         <h2 className="mt-2 text-3xl font-bold text-white sm:text-4xl">Common questions</h2>
         <p className="mt-3 max-w-xl text-[#9ca3af]">

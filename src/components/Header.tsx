@@ -26,7 +26,7 @@ export function Header() {
           : "bg-transparent"
       }`}
     >
-      <div className="mx-auto flex h-[72px] max-w-6xl items-center justify-between px-5">
+      <div className="page-wrap flex h-[72px] items-center justify-between">
         <a href="#" className="flex items-center gap-3 font-bold text-white">
           <img src="/assets/logo.png" alt="ACOPAY" className="h-10 w-10 rounded-2xl ring-2 ring-[#c7f284]/20" />
           <span className="text-lg tracking-tight">ACOPAY</span>

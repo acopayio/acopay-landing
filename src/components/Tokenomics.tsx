@@ -16,7 +16,7 @@ const METRICS = [
 export function Tokenomics() {
   return (
     <section id="tokenomics" className="section-pad">
-      <div className="mx-auto max-w-6xl px-5">
+      <div className="page-wrap">
         <p className="label-orca">Token</p>
         <h2 className="mt-2 text-3xl font-bold text-white sm:text-4xl">Token overview</h2>
         <p className="mt-3 max-w-xl text-[#9ca3af]">

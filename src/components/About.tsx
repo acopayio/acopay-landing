@@ -18,7 +18,7 @@ const FEATURES = [
 export function About() {
   return (
     <section id="about" className="section-pad border-t border-white/[0.05]">
-      <div className="mx-auto max-w-6xl px-5">
+      <div className="page-wrap">
         <p className="label-orca">About</p>
         <h2 className="mt-2 text-3xl font-bold text-white sm:text-4xl">What is ACOPAY?</h2>
         <p className="mt-4 max-w-2xl text-lg leading-relaxed text-[#9ca3af]">

@@ -5,7 +5,7 @@ export function FAQPage() {
     <>
       <FAQ />
       <section className="pb-20">
-        <div className="mx-auto max-w-6xl px-5">
+        <div className="page-wrap">
           <div className="orca-card p-8 text-center sm:p-12">
             <h2 className="text-2xl font-bold text-white">Get in touch</h2>
             <p className="mt-2 text-[#9ca3af]">Partnerships, listings, and inquiries.</p>

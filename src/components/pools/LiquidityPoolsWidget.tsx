@@ -88,16 +88,16 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
     : "—";
 
   return (
-    <section className={variant === "home" ? "border-t border-white/[0.06] bg-[#090b0e]/50 py-10" : ""}>
-      <div className={`mx-auto max-w-[1400px] px-4 sm:px-6 ${variant === "full" ? "pb-24 pt-8" : ""}`}>
-        <div className="orca-card !rounded-[1.75rem] p-6 sm:p-8">
-          <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+    <section className={variant === "home" ? "border-t border-white/[0.06] bg-[#090b0e]/50 py-8 md:py-10" : ""}>
+      <div className={`page-wrap ${variant === "full" ? "pb-20 pt-6 md:pb-24 md:pt-8" : ""}`}>
+        <div className="orca-card p-4 sm:p-6">
+          <div className="space-y-5">
             <div>
               <p className="label-orca">Solana · Raydium reference</p>
-              <h2 className="mt-2 text-2xl font-bold text-white sm:text-4xl">
+              <h2 className="mt-2 text-2xl font-bold text-white sm:text-3xl">
                 {variant === "home" ? "Live Market Pools" : "Liquidity Pools"}
               </h2>
-              <p className="mt-2 max-w-xl text-sm text-[#9ca3af]">
+              <p className="mt-2 text-sm leading-relaxed text-[#9ca3af]">
                 {isMintLive()
                   ? "Live Raydium stats. ACOPAY/USDT is listed when our pool is live."
                   : "These figures are Raydium Solana market totals — not ACOPAY. ACOPAY has no pool yet."}
@@ -115,7 +115,7 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
               </p>
             </div>
 
-            <div className="grid grid-cols-3 gap-3 sm:gap-4">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
               <StatCard
                 label="Raydium TVL"
                 value={loading && !summary ? "…" : fmtUsd(summary?.tvl ?? 0)}
@@ -141,7 +141,7 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
           )}
 
           {variant === "home" && (
-            <div className="mt-8 grid gap-3 md:grid-cols-3">
+            <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
               <Promo
                 title="Official mint"
                 desc="Verify the contract only on acopay.net."
@@ -172,14 +172,14 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
             </div>
           )}
 
-          <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="mt-6 space-y-3">
             <div className="flex flex-wrap gap-1 rounded-2xl border border-white/[0.06] bg-[#0c1017]/50 p-1">
               {POOL_FILTERS.map((f) => (
                 <button
                   key={f.id}
                   type="button"
                   onClick={() => setFilter(f.id)}
-                  className={`rounded-xl px-3 py-2 text-sm font-medium transition sm:px-4 ${
+                  className={`rounded-xl px-3 py-2 text-sm font-medium transition ${
                     filter === f.id
                       ? "bg-[#c7f284]/15 text-[#c7f284] ring-1 ring-[#c7f284]/30"
                       : "text-[#9ca3af] hover:bg-white/[0.04] hover:text-white"
@@ -194,7 +194,7 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
               placeholder="Search tokens..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full rounded-2xl border border-white/[0.08] bg-[#0c1017] py-2.5 pl-4 pr-4 text-sm text-white placeholder:text-[#6b7280] focus:border-[#c7f284]/40 focus:outline-none sm:max-w-xs"
+              className="w-full rounded-2xl border border-white/[0.08] bg-[#0c1017] py-2.5 px-4 text-sm text-white placeholder:text-[#6b7280] focus:border-[#c7f284]/40 focus:outline-none"
             />
           </div>
 
@@ -216,8 +216,8 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
             </div>
           )}
 
-          <div className="orca-table-wrap mt-6 overflow-x-auto rounded-2xl border border-white/[0.07] bg-[#0c1017]/60">
-            <table className="orca-pools-table w-full min-w-[1000px]">
+          <div className="orca-table-wrap mt-6 hidden overflow-x-auto rounded-2xl border border-white/[0.07] bg-[#0c1017]/60 md:block">
+            <table className="orca-pools-table w-full min-w-[900px]">
               <thead>
                 <tr className="border-b border-white/[0.06] text-left text-[11px] font-semibold uppercase tracking-wider text-[#9ca3af]">
                   <th className="px-5 py-4">Pool</th>
@@ -326,13 +326,76 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
             </table>
           </div>
 
+          {/* Mobile: stacked cards — same rail width, no horizontal scroll */}
+          <div className="mt-6 space-y-3 md:hidden">
+            {loading && pools.length === 0
+              ? Array.from({ length: 4 }).map((_, i) => (
+                  <div key={i} className="h-24 animate-pulse rounded-2xl bg-white/[0.04]" />
+                ))
+              : filtered.length === 0
+                ? (
+                    <p className="py-8 text-center text-sm text-[#9ca3af]">No pools match your filters.</p>
+                  )
+                : filtered.map((row) => (
+                    <div
+                      key={row.id}
+                      className={`rounded-2xl border border-white/[0.06] bg-[#0c1017]/70 p-4 ${
+                        row.isAcopay ? "border-[#c7f284]/25 bg-[#c7f284]/[0.05]" : ""
+                      }`}
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="flex min-w-0 items-center gap-3">
+                          <PoolIcon row={row} />
+                          <div className="min-w-0">
+                            <div className="truncate font-semibold text-white">{row.pair}</div>
+                            <div className="mt-0.5 text-xs text-[#9ca3af]">
+                              {row.feeTier} · {row.platform}
+                              {row.isAcopay && (
+                                <span className="ml-1 text-[#c7f284]">{row.status}</span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        <a
+                          href={row.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={
+                            row.isAcopay
+                              ? "btn-orca-secondary !px-3 !py-1.5 !text-xs opacity-70"
+                              : "btn-orca-primary !px-3 !py-1.5 !text-xs"
+                          }
+                        >
+                          {row.isAcopay ? "Soon" : "Trade"}
+                        </a>
+                      </div>
+                      {!row.isAcopay && (
+                        <div className="mt-3 grid grid-cols-3 gap-2 text-center text-xs">
+                          <div>
+                            <div className="text-[#6b7280]">Vol 24H</div>
+                            <div className="mt-0.5 font-semibold text-white">{fmtUsd(row.volume24h)}</div>
+                          </div>
+                          <div>
+                            <div className="text-[#6b7280]">TVL</div>
+                            <div className="mt-0.5 font-semibold text-white">{fmtUsd(row.tvl)}</div>
+                          </div>
+                          <div>
+                            <div className="text-[#6b7280]">Fees</div>
+                            <div className="mt-0.5 font-semibold text-white">{fmtUsd(row.fees24h)}</div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+          </div>
+
           {variant === "full" && (
-            <div className="mt-6 flex justify-end">
+            <div className="mt-6 flex justify-stretch sm:justify-end">
               <a
                 href={TOKEN.links.raydium}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-orca-secondary !border-[#c7f284]/40 !text-[#c7f284]"
+                className="btn-orca-secondary w-full !border-[#c7f284]/40 !text-[#c7f284] sm:w-auto"
               >
                 + Create Pool on Raydium
               </a>
@@ -341,8 +404,8 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
         </div>
 
         {variant === "home" && (
-          <div className="mt-6 text-center">
-            <Link to="/pools" className="btn-orca-secondary">
+          <div className="mt-6 flex justify-center">
+            <Link to="/pools" className="btn-orca-secondary w-full sm:w-auto">
               View all pools →
             </Link>
           </div>
@@ -362,7 +425,7 @@ function StatCard({
   accent?: boolean;
 }) {
   return (
-    <div className="rounded-2xl border border-white/[0.06] bg-[#0c1017]/70 px-4 py-3 text-center sm:px-5 sm:py-4 sm:text-left">
+    <div className="rounded-2xl border border-white/[0.06] bg-[#0c1017]/70 px-4 py-3 sm:px-5 sm:py-4">
       <div className="text-[10px] font-semibold uppercase tracking-wider text-[#6b7280]">{label}</div>
       <div className={`mt-1 text-lg font-bold sm:text-xl ${accent ? "text-[#c7f284]" : "text-white"}`}>
         {value}
