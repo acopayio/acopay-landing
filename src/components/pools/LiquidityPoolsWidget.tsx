@@ -1,7 +1,7 @@
 ﻿import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { POOL_FILTERS, type PoolFilterId } from "../../config/pools";
-import { TOKEN, isPoolLive } from "../../config/token";
+import { TOKEN } from "../../config/token";
 import { useLivePools } from "../../hooks/useLivePools";
 import type { PoolRow } from "../../types/pool";
 import { HOME_POOL_ROWS, fmtPct, fmtUsd } from "../../types/pool";
