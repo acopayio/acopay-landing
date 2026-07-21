@@ -29,7 +29,7 @@ export const TOKEN = {
     pair: "ACOPAY / USDT",
     quoteMint: USDT_MINT,
     /** Raydium CPMM pool id (AMM ID). */
-    poolId: "BwKQMhYMqdBhxke3HEMJ9MMf9ud5sdbbU6VcEQLfZLj",
+    poolId: "BwKQMhYMqd8hxke3HiEMJ9MMf9ud5sdbbU6VcEQLfZLj",
     status: "Live",
     poolLive: true as boolean,
   },

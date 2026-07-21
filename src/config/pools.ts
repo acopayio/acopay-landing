@@ -11,7 +11,7 @@ export const POOLS = [
     fees24h: "—",
     yield: "—",
     trend: "flat" as const,
-    href: "https://raydium.io/liquidity/increase/?mode=add&pool_id=BwKQMhYMqdBhxke3HEMJ9MMf9ud5sdbbU6VcEQLfZLj",
+    href: "https://raydium.io/liquidity/increase/?mode=add&pool_id=BwKQMhYMqd8hxke3HiEMJ9MMf9ud5sdbbU6VcEQLfZLj",
   },
   {
     id: "usdt-acopay-jupiter",

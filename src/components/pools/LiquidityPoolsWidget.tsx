@@ -33,7 +33,9 @@ function PoolIcon({ row }: { row: PoolRow }) {
   if (row.isAcopay) {
     return (
       <div className="flex -space-x-2">
-        <img src="/assets/logo.png" alt="" className="h-9 w-9 object-contain ring-2 ring-[#191c22]" />
+        <span className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-[#0c1017] ring-2 ring-[#191c22]">
+          <img src="/assets/logo.png" alt="" className="h-7 w-7 object-contain" />
+        </span>
         <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#0c1017] text-[9px] font-bold text-[#9ca3af] ring-2 ring-[#191c22]">
           USD
         </span>
@@ -45,7 +47,7 @@ function PoolIcon({ row }: { row: PoolRow }) {
       <img
         src={row.imageUrl}
         alt=""
-        className="h-9 w-9 rounded-full ring-2 ring-[#191c22] object-cover"
+        className="h-9 w-9 rounded-full object-cover ring-2 ring-[#191c22]"
         loading="lazy"
       />
     );
@@ -98,9 +100,7 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
                 {variant === "home" ? "Markets" : "Pools"}
               </h2>
               <p className="mt-2 text-sm leading-relaxed text-[#9ca3af]">
-                {isPoolLive()
-                  ? "ACOPAY/USDT is live on Raydium. Other rows are Raydium market reference."
-                  : "Raydium market data."}
+                ACOPAY/USDT is live on Raydium. Other rows are Raydium market reference.
               </p>
               <p className="mt-2 text-xs text-[#6b7280]">
                 {summary?.source ?? "—"} · {liveCount} pools · Updated {updated}
@@ -131,12 +131,6 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
               />
             </div>
           </div>
-
-          {!isPoolLive() && (
-            <div className="mt-6 rounded-2xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-sm text-[#9ca3af]">
-              ACOPAY/USDT pool status updates from site config.
-            </div>
-          )}
 
           <div className="mt-6 space-y-3">
             <div className="flex flex-wrap gap-1 rounded-2xl border border-white/[0.06] bg-[#0c1017]/50 p-1">
@@ -237,10 +231,10 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
                             <div className="flex flex-wrap items-center gap-1.5 text-xs text-[#9ca3af]">
                               <span className="text-[#00E5FF]">◆</span>
                               {row.feeTier} · {row.platform}
-                              {!row.isAcopay && row.priceUsd !== undefined && (
+                              {row.priceUsd !== undefined && row.priceUsd > 0 && (
                                 <span className="text-[#00E5FF]">{fmtPrice(row.priceUsd)}</span>
                               )}
-                              {row.isAcopay && (
+                              {row.isAcopay && row.status && (
                                 <span className="rounded-full bg-[#00E5FF]/20 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-[#00E5FF]">
                                   {row.status}
                                 </span>
@@ -253,36 +247,24 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
                         <Sparkline trend={row.trend} />
                       </td>
                       <td className="px-5 py-4">
-                        <div className="font-semibold text-white">
-                          {row.isAcopay ? "—" : `${row.yieldPct.toFixed(2)}%`}
-                        </div>
+                        <div className="font-semibold text-white">{`${row.yieldPct.toFixed(2)}%`}</div>
                         <div
                           className={`text-xs ${row.change24h >= 0 ? "text-[#00E5FF]" : "text-red-400"}`}
                         >
-                          {row.isAcopay ? "—" : `${fmtPct(row.change24h)} vol`}
+                          {`${fmtPct(row.change24h)} vol`}
                         </div>
                       </td>
-                      <td className="px-5 py-4 font-medium text-white">
-                        {row.isAcopay ? "—" : fmtUsd(row.volume24h)}
-                      </td>
-                      <td className="px-5 py-4 font-medium text-white">
-                        {row.isAcopay ? "—" : fmtUsd(row.tvl)}
-                      </td>
-                      <td className="px-5 py-4 font-medium text-white">
-                        {row.isAcopay ? "—" : fmtUsd(row.fees24h)}
-                      </td>
+                      <td className="px-5 py-4 font-medium text-white">{fmtUsd(row.volume24h)}</td>
+                      <td className="px-5 py-4 font-medium text-white">{fmtUsd(row.tvl)}</td>
+                      <td className="px-5 py-4 font-medium text-white">{fmtUsd(row.fees24h)}</td>
                       <td className="px-5 py-4 text-right">
                         <a
                           href={row.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className={
-                            row.isAcopay
-                              ? "btn-orca-secondary !inline-flex !px-4 !py-2 !text-xs opacity-70"
-                              : "btn-orca-primary !inline-flex !px-4 !py-2 !text-xs"
-                          }
+                          className="btn-orca-primary !inline-flex !px-4 !py-2 !text-xs"
                         >
-                          {row.isAcopay ? "Soon" : "Trade ↗"}
+                          Trade ↗
                         </a>
                       </td>
                     </tr>
@@ -326,17 +308,12 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
                           href={row.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className={
-                            row.isAcopay
-                              ? "btn-orca-secondary !px-3 !py-1.5 !text-xs opacity-70"
-                              : "btn-orca-primary !px-3 !py-1.5 !text-xs"
-                          }
+                          className="btn-orca-primary !px-3 !py-1.5 !text-xs"
                         >
-                          {row.isAcopay ? "Soon" : "Trade"}
+                          Trade
                         </a>
                       </div>
-                      {!row.isAcopay && (
-                        <div className="mt-3 grid grid-cols-3 gap-2 text-center text-xs">
+                      <div className="mt-3 grid grid-cols-3 gap-2 text-center text-xs">
                           <div>
                             <div className="text-[#6b7280]">Vol 24H</div>
                             <div className="mt-0.5 font-semibold text-white">{fmtUsd(row.volume24h)}</div>
@@ -350,7 +327,11 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
                             <div className="mt-0.5 font-semibold text-white">{fmtUsd(row.fees24h)}</div>
                           </div>
                         </div>
-                      )}
+                        {row.priceUsd !== undefined && row.priceUsd > 0 && (
+                          <div className="mt-2 text-center text-xs text-[#00E5FF]">
+                            {fmtPrice(row.priceUsd)}
+                          </div>
+                        )}
                     </div>
                   ))}
           </div>

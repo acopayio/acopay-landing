@@ -31,7 +31,7 @@ const FAQS = [
   },
   {
     q: "Where is the liquidity pool?",
-    a: `Raydium CPMM pair ${TOKEN.dex.pair}. Pool ID: ${TOKEN.dex.poolId}.`,
+    a: `Raydium CPMM pair ${TOKEN.dex.pair}. Swap on Jupiter or Raydium.`,
   },
   {
     q: "Jupiter verification?",
