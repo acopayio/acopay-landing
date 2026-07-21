@@ -88,7 +88,7 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
     : "—";
 
   return (
-    <section className={variant === "home" ? "border-t border-white/[0.06] bg-[#090b0e]/50 py-8 md:py-10" : ""}>
+    <section className={variant === "home" ? "border-t border-white/[0.06] bg-[#090b0e]/50 py-5 md:py-6" : ""}>
       <div className={`page-wrap ${variant === "full" ? "pb-20 pt-6 md:pb-24 md:pt-8" : ""}`}>
         <div className="orca-card p-4 sm:p-6">
           <div className="space-y-5">
