@@ -197,3 +197,4 @@ function FaqIcon() {
     </svg>
   );
 }
+

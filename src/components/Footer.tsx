@@ -105,7 +105,6 @@ export function Footer() {
             >
               {TOKEN.email}
             </a>
-            <p className="mt-3 text-xs leading-relaxed text-[#6b7280]">acopay.net</p>
           </div>
         </div>
 
