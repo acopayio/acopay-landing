@@ -47,7 +47,7 @@ export function Contract() {
               </thead>
               <tbody>
                 <tr className="bg-[#00E5FF]/[0.04]">
-                  <td className="font-medium text-[#9ca3af]">Mint address</td>
+                  <td className="font-medium text-[#9ca3af]">Contract address</td>
                   <td>
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
                       <code className="break-all font-mono text-xs text-[#00E5FF] sm:text-sm">
