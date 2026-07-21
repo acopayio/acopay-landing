@@ -227,16 +227,28 @@ body {
   flex-shrink: 0;
   width: 100%;
   max-width: 11rem;
-  aspect-ratio: 120 / 88;
-  border-radius: 0.75rem;
-  background: radial-gradient(ellipse at 30% 20%, rgba(0, 229, 255, 0.1), transparent 55%), #090b0e;
-  border: 1px solid rgba(0, 229, 255, 0.12);
-  padding: 0.35rem;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 0.85rem;
+  background: #090b0e;
+  border: 1px solid rgba(0, 229, 255, 0.14);
+}
+
+.roadmap-art img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.roadmap-art-3d {
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
 }
 
 @media (min-width: 640px) {
   .roadmap-art {
-    width: 9.5rem;
+    width: 8.75rem;
+    max-width: 8.75rem;
   }
 }
 
