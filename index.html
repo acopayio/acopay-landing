@@ -1,38 +1,66 @@
 <!doctype html>
-<html lang="en" translate="no" class="notranslate">
+<html lang="en-US" translate="no" class="notranslate">
   <head>
     <meta charset="UTF-8" />
     <meta name="google" content="notranslate" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ACOPAY</title>
+    <title>ACOPAY — Pay your way | Solana Payment Utility</title>
     <meta
       name="description"
-      content="ACOPAY — Solana payment utility (Token-2022). Trade ACOPAY/USDT on Raydium and Jupiter."
+      content="ACOPAY is a Solana payment utility token (Token-2022). Pay your way — wallet-to-wallet transfers with a 0.01% on-chain fee. Trade ACOPAY/USDT on Raydium and Jupiter."
     />
     <meta
       name="keywords"
-      content="ACOPAY, Solana, Token-2022, payment token, acopay.net"
+      content="ACOPAY, Pay your way, Solana, Token-2022, payment token, Solana payment utility, ACOPAY USDT, Raydium, Jupiter, crypto payments, wallet to wallet, SPL token, acopay.net"
     />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow" />
     <meta name="author" content="ACOPAY" />
+    <meta name="application-name" content="ACOPAY" />
+    <meta name="apple-mobile-web-app-title" content="ACOPAY" />
+    <meta name="theme-color" content="#0c1017" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta name="language" content="en-US" />
+    <meta name="geo.region" content="US" />
+    <meta name="geo.placename" content="United States" />
+    <meta name="rating" content="general" />
     <link rel="canonical" href="https://acopay.net/" />
+    <link rel="alternate" hreflang="en" href="https://acopay.net/" />
+    <link rel="alternate" hreflang="en-US" href="https://acopay.net/" />
+    <link rel="alternate" hreflang="x-default" href="https://acopay.net/" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://acopay.net/" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:site_name" content="ACOPAY" />
-    <meta property="og:title" content="ACOPAY" />
+    <meta property="og:url" content="https://acopay.net/" />
+    <meta property="og:title" content="ACOPAY — Pay your way | Solana Payment Utility" />
     <meta
       property="og:description"
-      content="Solana payment utility. ACOPAY/USDT live on Raydium. Pay your way."
+      content="ACOPAY is a Solana payment utility token (Token-2022). Pay your way. Trade ACOPAY/USDT on Raydium and Jupiter."
     />
     <meta property="og:image" content="https://acopay.net/assets/og-image.png" />
+    <meta property="og:image:secure_url" content="https://acopay.net/assets/og-image.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="ACOPAY — Pay your way. Solana payment utility token." />
+    <meta property="article:tag" content="#ACOPAY #PayYourWay #Solana #Token2022 #CryptoPayments #Raydium #Jupiter #Web3" />
+
+    <!-- Twitter / X -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="ACOPAY" />
+    <meta name="twitter:title" content="ACOPAY — Pay your way | Solana Payment Utility" />
     <meta
       name="twitter:description"
-      content="Solana payment utility. ACOPAY/USDT live on Raydium. Pay your way."
+      content="Solana payment utility (Token-2022). Trade ACOPAY/USDT on Raydium and Jupiter. Pay your way."
     />
     <meta name="twitter:image" content="https://acopay.net/assets/og-image.png" />
-    <meta name="theme-color" content="#0c1017" />
+    <meta name="twitter:image:alt" content="ACOPAY — Pay your way. Solana payment utility token." />
+    <meta name="twitter:url" content="https://acopay.net/" />
+
     <!-- One canonical host: avoid www vs apex split browser cache -->
     <script>
       if (location.hostname === "www.acopay.net") {
@@ -41,7 +69,6 @@
         );
       }
     </script>
-    <!-- Critical fallback: if main CSS fails mid-deploy, avoid white/purple unstyled flash -->
     <style>
       html,
       body {
@@ -69,14 +96,78 @@
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "ACOPAY",
-        "alternateName": "ACOPAY Token",
-        "url": "https://acopay.net/",
-        "logo": "https://acopay.net/assets/logo.png",
-        "email": "contact@acopay.net",
-        "description": "ACOPAY is a Solana payment utility token (Token-2022). ACOPAY/USDT is live on Raydium. Pay your way.",
-        "sameAs": ["https://acopay.net/"]
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://acopay.net/#organization",
+            "name": "ACOPAY",
+            "alternateName": ["ACOPAY Token", "Pay your way"],
+            "url": "https://acopay.net/",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://acopay.net/assets/logo.png",
+              "width": 512,
+              "height": 512
+            },
+            "image": "https://acopay.net/assets/og-image.png",
+            "email": "contact@acopay.net",
+            "description": "ACOPAY is a Solana payment utility token (Token-2022). Pay your way.",
+            "slogan": "Pay your way",
+            "areaServed": {
+              "@type": "Country",
+              "name": "United States"
+            },
+            "knowsLanguage": "en-US",
+            "sameAs": ["https://acopay.net/"]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://acopay.net/#website",
+            "url": "https://acopay.net/",
+            "name": "ACOPAY",
+            "description": "Official ACOPAY website — Solana payment utility. Pay your way.",
+            "publisher": { "@id": "https://acopay.net/#organization" },
+            "inLanguage": "en-US",
+            "potentialAction": {
+              "@type": "ReadAction",
+              "target": "https://acopay.net/"
+            }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://acopay.net/#webpage",
+            "url": "https://acopay.net/",
+            "name": "ACOPAY — Pay your way | Solana Payment Utility",
+            "isPartOf": { "@id": "https://acopay.net/#website" },
+            "about": { "@id": "https://acopay.net/#organization" },
+            "description": "ACOPAY is a Solana payment utility token (Token-2022). Trade ACOPAY/USDT on Raydium and Jupiter. Pay your way.",
+            "inLanguage": "en-US",
+            "primaryImageOfPage": {
+              "@type": "ImageObject",
+              "url": "https://acopay.net/assets/og-image.png",
+              "width": 1200,
+              "height": 630
+            }
+          },
+          {
+            "@type": "Product",
+            "@id": "https://acopay.net/#token",
+            "name": "ACOPAY",
+            "description": "Solana Token-2022 payment utility token for wallet-to-wallet transfers. Pay your way.",
+            "brand": { "@id": "https://acopay.net/#organization" },
+            "category": "Cryptocurrency",
+            "url": "https://acopay.net/",
+            "image": "https://acopay.net/assets/logo.png",
+            "sku": "6Pcq8xnkVYxR42FEehXrucvaMB1fZYuqoR8B9FGSAS8F",
+            "offers": {
+              "@type": "Offer",
+              "url": "https://jup.ag/swap/Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB-6Pcq8xnkVYxR42FEehXrucvaMB1fZYuqoR8B9FGSAS8F",
+              "availability": "https://schema.org/InStock",
+              "priceCurrency": "USD",
+              "seller": { "@id": "https://acopay.net/#organization" }
+            }
+          }
+        ]
       }
     </script>
   </head>

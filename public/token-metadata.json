@@ -9,11 +9,13 @@
     { "trait_type": "Token Standard", "value": "Token-2022" },
     { "trait_type": "Transfer Fee", "value": "0.01% (1 bps)" },
     { "trait_type": "Decimals", "value": "9" },
-    { "trait_type": "Total Supply", "value": "100000000" },
+    { "trait_type": "Total Supply", "value": "200000000" },
+    { "trait_type": "DEX Pair", "value": "ACOPAY/USDT Raydium" },
     { "trait_type": "Freeze Authority", "value": "Revoked" },
     { "trait_type": "Mint Authority", "value": "Active" },
     { "trait_type": "Tagline", "value": "Pay your way" },
     { "trait_type": "Website", "value": "https://acopay.net" },
-    { "trait_type": "Contact", "value": "contact@acopay.net" }
+    { "trait_type": "Contact", "value": "contact@acopay.net" },
+    { "trait_type": "Hashtags", "value": "#ACOPAY #PayYourWay #Solana #Token2022" }
   ]
 }

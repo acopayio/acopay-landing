@@ -62,7 +62,7 @@ export function OrcaLayout() {
         <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-[#0c1017]/95 backdrop-blur-xl lg:hidden">
           <div className="page-wrap flex h-14 items-center justify-between gap-3">
             <Link to="/" className="flex min-w-0 items-center gap-2">
-              <img src="/assets/logo.png" alt="" className="h-8 w-8 rounded-full ring-1 ring-[#00E5FF]/40" />
+              <img src="/assets/logo.png" alt="" className="h-8 w-8 object-contain" />
               <span className="truncate font-bold tracking-tight text-white">ACOPAY</span>
             </Link>
             <BuyButton className="btn-orca-primary !min-h-9 !rounded-lg !px-3 !py-1.5 !text-xs" label="Buy" />

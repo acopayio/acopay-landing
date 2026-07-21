@@ -1,11 +1,14 @@
 User-agent: *
 Allow: /
 
-# Official ACOPAY token site
 Host: https://acopay.net
 Sitemap: https://acopay.net/sitemap.xml
 
-# Public metadata for wallets & indexers
-Allow: /token-metadata.json
+# Public assets & token metadata for crawlers / wallets
 Allow: /assets/
+Allow: /token-metadata.json
+Allow: /token.json
+Allow: /data/
 Allow: /site.webmanifest
+Allow: /robots.txt
+Allow: /sitemap.xml

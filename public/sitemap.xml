@@ -4,39 +4,88 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://acopay.net/</loc>
-    <lastmod>2026-07-01</lastmod>
-    <changefreq>weekly</changefreq>
+    <lastmod>2026-07-21</lastmod>
+    <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://acopay.net/"/>
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://acopay.net/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://acopay.net/"/>
     <image:image>
       <image:loc>https://acopay.net/assets/og-image.png</image:loc>
-      <image:title>ACOPAY — Pay your way on Solana</image:title>
-      <image:caption>Official ACOPAY Solana payment token</image:caption>
+      <image:title>ACOPAY — Pay your way</image:title>
+      <image:caption>Official ACOPAY Solana payment utility token</image:caption>
     </image:image>
   </url>
   <url>
-    <loc>https://acopay.net/token-metadata.json</loc>
-    <lastmod>2026-07-01</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://acopay.net/trade</loc>
+    <lastmod>2026-07-21</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://acopay.net/trade"/>
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://acopay.net/trade"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://acopay.net/trade"/>
+  </url>
+  <url>
+    <loc>https://acopay.net/pools</loc>
+    <lastmod>2026-07-21</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://acopay.net/pools"/>
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://acopay.net/pools"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://acopay.net/pools"/>
+  </url>
+  <url>
+    <loc>https://acopay.net/token</loc>
+    <lastmod>2026-07-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://acopay.net/token"/>
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://acopay.net/token"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://acopay.net/token"/>
+  </url>
+  <url>
+    <loc>https://acopay.net/contract</loc>
+    <lastmod>2026-07-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://acopay.net/contract"/>
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://acopay.net/contract"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://acopay.net/contract"/>
+  </url>
+  <url>
+    <loc>https://acopay.net/roadmap</loc>
+    <lastmod>2026-07-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://acopay.net/roadmap"/>
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://acopay.net/roadmap"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://acopay.net/roadmap"/>
+  </url>
+  <url>
+    <loc>https://acopay.net/faq</loc>
+    <lastmod>2026-07-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://acopay.net/faq"/>
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://acopay.net/faq"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://acopay.net/faq"/>
+  </url>
+  <url>
+    <loc>https://acopay.net/token-metadata.json</loc>
+    <lastmod>2026-07-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://acopay.net/token.json</loc>
-    <lastmod>2026-07-01</lastmod>
+    <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
+    <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://acopay.net/data/token.mainnet.json</loc>
-    <lastmod>2026-07-01</lastmod>
+    <loc>https://acopay.net/assets/og-image.png</loc>
+    <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://acopay.net/site.webmanifest</loc>
-    <lastmod>2026-07-01</lastmod>
-    <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
 </urlset>

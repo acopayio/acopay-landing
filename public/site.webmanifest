@@ -1,0 +1,28 @@
+{
+  "name": "ACOPAY",
+  "short_name": "ACOPAY",
+  "description": "ACOPAY — Pay your way. Solana payment utility token (Token-2022).",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0c1017",
+  "theme_color": "#0c1017",
+  "lang": "en-US",
+  "dir": "ltr",
+  "categories": ["finance", "business"],
+  "icons": [
+    {
+      "src": "/assets/favicon.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/logo-solid.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
