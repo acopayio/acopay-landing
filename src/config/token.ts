@@ -11,13 +11,12 @@ export const TOKEN = {
   tagline: "Pay your way",
   description:
     "ACOPAY is a Solana Mainnet payment utility token (Token-2022) for transparent wallet-to-wallet transfers. Official source: acopay.net only.",
-  status: "pending_launch" as "pending_launch" | "live",
-  /** Fill after mainnet mint is created — leave empty until then. */
-  mintAddress: "",
+  status: "live" as "pending_launch" | "live",
+  mintAddress: "6Pcq8xnkVYxR42FEehXrucvaMB1fZYuqoR8B9FGSAS8F",
   network: "Solana Mainnet",
   decimals: 9,
-  totalSupply: "100,000,000",
-  totalSupplyRaw: 100_000_000,
+  totalSupply: "200,000,000",
+  totalSupplyRaw: 200_000_000,
   tokenStandard: "Token-2022",
   transferFee: "0.01%",
   transferFeeNote: "1 basis point on-chain (Token-2022 transfer fee extension)",

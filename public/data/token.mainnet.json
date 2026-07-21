@@ -1,7 +1,6 @@
 {
   "schema": "acopay-token-v1",
-  "status": "pending_launch",
-  "comment": "After mainnet create-token: set status=live and mintAddress. Run sync-mainnet.bat",
+  "status": "live",
   "network": "mainnet-beta",
   "networkLabel": "Solana Mainnet",
   "rpcUrl": "https://api.mainnet-beta.solana.com",
@@ -9,18 +8,19 @@
   "symbol": "ACOPAY",
   "tagline": "Pay your way",
   "decimals": 9,
-  "totalSupply": "100000000",
-  "totalSupplyDisplay": "100,000,000",
-  "mintAddress": "",
+  "totalSupply": "200000000",
+  "totalSupplyDisplay": "200,000,000",
+  "mintAddress": "6Pcq8xnkVYxR42FEehXrucvaMB1fZYuqoR8B9FGSAS8F",
   "tokenProgramId": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",
   "tokenProgramLabel": "Token-2022 (Token Extensions)",
   "transferFee": {
-    "targetPercent": 0.0099,
     "onChainBasisPoints": 1,
     "onChainPercent": 0.01,
     "maximumFeeAcopay": 1000000,
+    "minTransferAcopay": 0.1,
+    "firstAtaOpenFeeAcopay": 1,
     "paidBy": "sender",
-    "solGasSponsor": "project admin (optional)"
+    "solGasSponsor": "sender (app default)"
   },
   "authorities": {
     "mintAuthority": "active",
@@ -31,7 +31,7 @@
     "jsonUrl": "https://acopay.net/token-metadata.json",
     "logoPng": "https://acopay.net/assets/logo.png",
     "ipfsImage": "https://gateway.pinata.cloud/ipfs/QmbCJ3B2edbJn6TR5akktC2ecg1cTiJpPUxhzYxwMXed53",
-    "ipfsMetadata": "ipfs://QmQCmMtBziA4SkRxr8xuBoyqKNkxdgS1bmbsCcujRKV5UW"
+    "ipfsMetadata": "ipfs://QmYBDsU1YD1WeYF5jovuKPLX3WnzHk9C918kfAHX7gBfmV"
   },
   "dex": {
     "platform": "Raydium",
@@ -44,6 +44,7 @@
     },
     "usdtMintMainnet": "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB"
   },
+  "createTx": "2hiV3c1SfDHMYCNyLYNdp7w7x2UCGx3hoAkH79ywdswGqFVFHjXrcQbC6GqGrmx49iyzymwiJNcSDJ3aMW79V4b8",
   "website": "https://acopay.net",
   "email": "contact@acopay.net",
   "founded": "2026"
