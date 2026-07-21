@@ -29,7 +29,8 @@ Output: `dist/` — upload this folder or connect GitHub to Cloudflare Pages.
 | Root directory | `acopay-landing` (if monorepo) or repo root |
 | Node version | 20+ |
 
-Custom domain: `acopay.net` (CNAME in `public/CNAME`)
+Custom domain: **acopay.net** (canonical).  
+Also attach **www.acopay.net** in Cloudflare Pages → Custom domains, then `_redirects` forces `www` → apex (301). Do not leave www on a different project/deploy.
 
 ## After mainnet launch
 
