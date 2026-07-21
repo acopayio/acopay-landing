@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+﻿import { Link } from "react-router-dom";
 import { TOKEN, isMintLive } from "../config/token";
 
 const FACTS = [
@@ -19,10 +19,10 @@ const CHECKLIST = [
   { done: true, text: "Public token parameters published on this site" },
   { done: true, text: "Freeze authority policy: Revoked (cannot freeze user wallets)" },
   { done: true, text: "No OTC sales — DEX-only trading policy stated clearly" },
-  { done: false, text: "Deploy Token-2022 mint on Solana Mainnet + Metaplex metadata" },
-  { done: false, text: "Publish mint address on Contract page" },
+  { done: true, text: "Deploy Token-2022 mint on Solana Mainnet + Metaplex metadata" },
+  { done: true, text: "Publish mint address on Contract page" },
   { done: false, text: "Create Raydium ACOPAY/USDT pool" },
-  { done: false, text: "Enable Buy → Jupiter / Raydium deep links" },
+  { done: false, text: "Enable Buy after pool is live (Jupiter / Raydium)" },
   { done: false, text: "Submit Jupiter Standard verification (free) after pool is live" },
 ];
 
@@ -30,13 +30,13 @@ export function LaunchStatus() {
   const live = isMintLive();
 
   return (
-    <section className="border-t border-white/[0.06] bg-[#080d18]/50 py-12 md:py-16">
+    <section className="border-t border-white/[0.06] bg-[#090b0e]/50 py-12 md:py-16">
       <div className="mx-auto max-w-6xl px-5">
         <p className="label-orca">Transparency</p>
         <h2 className="mt-2 text-2xl font-bold text-white sm:text-3xl">
           {live ? "Mainnet status" : "Mainnet readiness — facts only"}
         </h2>
-        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[#8b9cb8]">
+        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[#9ca3af]">
           Written for users and reviewers. We do not display borrowed Raydium protocol TVL as ACOPAY
           liquidity. Unchecked items are not done yet.
         </p>
@@ -45,46 +45,46 @@ export function LaunchStatus() {
           <div className="pools-table">
             <table className="w-full">
               <thead>
-                <tr className="bg-[#131b33]/80">
+                <tr className="bg-[#13161a]/80">
                   <th>Field</th>
                   <th>Value</th>
                 </tr>
               </thead>
               <tbody>
-                <tr className="bg-[#2ed3b7]/[0.04]">
-                  <td className="font-medium text-[#8b9cb8]">Mint address</td>
+                <tr className="bg-[#c7f284]/[0.04]">
+                  <td className="font-medium text-[#9ca3af]">Mint address</td>
                   <td className="font-semibold text-white">
                     {live ? (
-                      <code className="break-all font-mono text-xs text-[#2ed3b7] sm:text-sm">
+                      <code className="break-all font-mono text-xs text-[#c7f284] sm:text-sm">
                         {TOKEN.mintAddress}
                       </code>
                     ) : (
-                      <span className="text-[#f7c025]">Not published yet</span>
+                      <span className="text-[#c7f284]">Not published yet</span>
                     )}
                   </td>
                 </tr>
                 <tr>
-                  <td className="font-medium text-[#8b9cb8]">Trading</td>
+                  <td className="font-medium text-[#9ca3af]">Trading</td>
                   <td className="font-semibold text-white">
                     {live ? "On-chain via Jupiter / Raydium" : "Disabled until mint + pool"}
                   </td>
                 </tr>
                 <tr>
-                  <td className="font-medium text-[#8b9cb8]">Pool status</td>
+                  <td className="font-medium text-[#9ca3af]">Pool status</td>
                   <td className="font-semibold text-white">{TOKEN.dex.status}</td>
                 </tr>
                 {FACTS.map((f) => (
                   <tr key={f.label}>
-                    <td className="font-medium text-[#8b9cb8]">{f.label}</td>
+                    <td className="font-medium text-[#9ca3af]">{f.label}</td>
                     <td className="font-semibold text-white">{f.value}</td>
                   </tr>
                 ))}
                 <tr>
-                  <td className="font-medium text-[#8b9cb8]">Contact</td>
+                  <td className="font-medium text-[#9ca3af]">Contact</td>
                   <td>
                     <a
                       href={`mailto:${TOKEN.email}`}
-                      className="font-semibold text-[#2ed3b7] hover:underline"
+                      className="font-semibold text-[#c7f284] hover:underline"
                     >
                       {TOKEN.email}
                     </a>
@@ -99,12 +99,12 @@ export function LaunchStatus() {
               <p className="label-orca">Checklist</p>
               <ul className="mt-4 space-y-3">
                 {CHECKLIST.map((item) => (
-                  <li key={item.text} className="flex gap-3 text-sm text-[#8b9cb8]">
+                  <li key={item.text} className="flex gap-3 text-sm text-[#9ca3af]">
                     <span
                       className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px] font-bold ${
                         item.done
-                          ? "bg-[#2ed3b7]/20 text-[#2ed3b7]"
-                          : "bg-white/[0.06] text-[#5c6b85]"
+                          ? "bg-[#c7f284]/20 text-[#c7f284]"
+                          : "bg-white/[0.06] text-[#6b7280]"
                       }`}
                     >
                       {item.done ? "✓" : "·"}
@@ -117,7 +117,7 @@ export function LaunchStatus() {
 
             <div className="orca-card p-6">
               <p className="text-sm font-semibold text-white">Safety commitments</p>
-              <ul className="mt-3 space-y-2 text-sm leading-relaxed text-[#8b9cb8]">
+              <ul className="mt-3 space-y-2 text-sm leading-relaxed text-[#9ca3af]">
                 <li>No OTC / no “send USDT to a private wallet for ACOPAY”.</li>
                 <li>Freeze authority revoked — user wallets cannot be frozen by the project.</li>
                 <li>Mint address published only on acopay.net before any listing claim.</li>

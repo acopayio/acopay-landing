@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+﻿import { Link } from "react-router-dom";
 import { TOKEN } from "../config/token";
 
 const METRICS = [
@@ -19,33 +19,33 @@ export function Tokenomics() {
       <div className="mx-auto max-w-6xl px-5">
         <p className="label-orca">Token</p>
         <h2 className="mt-2 text-3xl font-bold text-white sm:text-4xl">Token overview</h2>
-        <p className="mt-3 max-w-xl text-[#8b9cb8]">
+        <p className="mt-3 max-w-xl text-[#9ca3af]">
           Mainnet design parameters. Built for payments with transparent on-chain rules — not
           speculation marketing.
         </p>
 
         <div className="mt-8 grid gap-3 sm:grid-cols-3">
           <div className="orca-card p-5">
-            <p className="text-xs font-semibold uppercase tracking-wider text-[#5c6b85]">Supply</p>
-            <p className="mt-2 text-2xl font-bold text-[#f7c025]">{TOKEN.totalSupply}</p>
-            <p className="mt-1 text-xs text-[#8b9cb8]">ACOPAY · {TOKEN.decimals} decimals</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-[#6b7280]">Supply</p>
+            <p className="mt-2 text-2xl font-bold text-[#c7f284]">{TOKEN.totalSupply}</p>
+            <p className="mt-1 text-xs text-[#9ca3af]">ACOPAY · {TOKEN.decimals} decimals</p>
           </div>
           <div className="orca-card p-5">
-            <p className="text-xs font-semibold uppercase tracking-wider text-[#5c6b85]">Fee</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-[#6b7280]">Fee</p>
             <p className="mt-2 text-2xl font-bold text-white">{TOKEN.transferFee}</p>
-            <p className="mt-1 text-xs text-[#8b9cb8]">Token-2022 · paid by sender</p>
+            <p className="mt-1 text-xs text-[#9ca3af]">Token-2022 · paid by sender</p>
           </div>
           <div className="orca-card p-5">
-            <p className="text-xs font-semibold uppercase tracking-wider text-[#5c6b85]">Safety</p>
-            <p className="mt-2 text-2xl font-bold text-[#2ed3b7]">Freeze revoked</p>
-            <p className="mt-1 text-xs text-[#8b9cb8]">Wallets cannot be frozen</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-[#6b7280]">Safety</p>
+            <p className="mt-2 text-2xl font-bold text-[#c7f284]">Freeze revoked</p>
+            <p className="mt-1 text-xs text-[#9ca3af]">Wallets cannot be frozen</p>
           </div>
         </div>
 
         <div className="pools-table mt-10">
           <table className="w-full">
             <thead>
-              <tr className="bg-[#131b33]/80">
+              <tr className="bg-[#13161a]/80">
                 <th>Metric</th>
                 <th>Value</th>
               </tr>
@@ -53,8 +53,8 @@ export function Tokenomics() {
             <tbody>
               {METRICS.map((m) => (
                 <tr key={m.label}>
-                  <td className="font-medium text-[#8b9cb8]">{m.label}</td>
-                  <td className={`font-semibold ${m.accent ? "text-[#f7c025]" : "text-white"}`}>
+                  <td className="font-medium text-[#9ca3af]">{m.label}</td>
+                  <td className={`font-semibold ${m.accent ? "text-[#c7f284]" : "text-white"}`}>
                     {m.value}
                   </td>
                 </tr>
@@ -63,9 +63,9 @@ export function Tokenomics() {
           </table>
         </div>
 
-        <p className="mt-6 text-sm text-[#5c6b85]">
+        <p className="mt-6 text-sm text-[#6b7280]">
           Mint authority remains active until revoked on-chain. See{" "}
-          <Link to="/contract" className="text-[#2ed3b7] hover:underline">
+          <Link to="/contract" className="text-[#c7f284] hover:underline">
             Contract
           </Link>{" "}
           for the official mint when published.

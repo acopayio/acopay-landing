@@ -2,64 +2,203 @@ import { NavLink, Outlet, Link } from "react-router-dom";
 import { BuyButton } from "../components/BuyButton";
 import { Footer } from "../components/Footer";
 
-const NAV = [
-  { to: "/", label: "Home", end: true },
-  { to: "/token", label: "Token" },
-  { to: "/pools", label: "Pools" },
-  { to: "/trade", label: "Trade" },
-  { to: "/contract", label: "Contract" },
-  { to: "/faq", label: "FAQ" },
+const TRADE_NAV = [
+  { to: "/", label: "Home", end: true, icon: HomeIcon },
+  { to: "/trade", label: "Trade", end: false, icon: SwapIcon },
+  { to: "/pools", label: "Pools", end: false, icon: PoolsIcon },
 ];
+
+const INFO_NAV = [
+  { to: "/token", label: "Token", end: false, icon: TokenIcon },
+  { to: "/contract", label: "Contract", end: false, icon: ContractIcon },
+  { to: "/faq", label: "FAQ", end: false, icon: FaqIcon },
+];
+
+const MOBILE_NAV = [
+  { to: "/", label: "Home", end: true, icon: HomeIcon },
+  { to: "/trade", label: "Trade", end: false, icon: SwapIcon },
+  { to: "/pools", label: "Pools", end: false, icon: PoolsIcon },
+  { to: "/contract", label: "Mint", end: false, icon: ContractIcon },
+  { to: "/token", label: "Token", end: false, icon: TokenIcon },
+];
+
+function linkClass(isActive: boolean) {
+  return `jup-sidebar-link ${isActive ? "jup-sidebar-link-active" : ""}`;
+}
 
 export function OrcaLayout() {
   return (
-    <div className="flex min-h-[100dvh] flex-col pb-14 sm:pb-0">
-      <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-[#0b1020]/95 backdrop-blur-xl">
-        <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between gap-3 px-4 sm:px-6">
-          <NavLink to="/" className="flex shrink-0 items-center gap-2.5 font-bold text-white">
-            <img
-              src="/assets/logo.png"
-              alt="ACOPAY"
-              className="h-9 w-9 rounded-xl ring-2 ring-[#f7c025]/30"
-            />
-            <span className="hidden text-lg tracking-tight sm:inline">ACOPAY</span>
-          </NavLink>
+    <div className="jup-shell flex">
+      {/* Desktop sidebar — Jupiter style */}
+      <aside className="sticky top-0 z-40 hidden h-[100dvh] w-[220px] shrink-0 flex-col border-r border-white/[0.06] bg-[#090b0e] lg:flex">
+        <Link to="/" className="flex items-center gap-2.5 px-5 py-5">
+          <img src="/assets/logo.png" alt="" className="h-9 w-9 rounded-full ring-2 ring-[#c7f284]/35" />
+          <div>
+            <div className="text-base font-bold tracking-tight text-white">ACOPAY</div>
+            <div className="text-[11px] font-medium text-[#c7f284]">Pay your way</div>
+          </div>
+        </Link>
 
-          <nav className="flex flex-1 items-center justify-center gap-0.5 overflow-x-auto scrollbar-none">
-            {NAV.map((item) => (
+        <nav className="flex-1 space-y-6 overflow-y-auto px-3 pb-4">
+          <div>
+            <p className="mb-1.5 px-3 text-[10px] font-semibold uppercase tracking-wider text-[#6b7280]">
+              Trade
+            </p>
+            {TRADE_NAV.map((item) => (
               <NavLink
                 key={item.to}
                 to={item.to}
                 end={item.end}
-                className={({ isActive }) =>
-                  `min-h-11 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium transition sm:px-4 ${
-                    isActive
-                      ? "bg-white/[0.08] text-white"
-                      : "text-[#8b9cb8] hover:bg-white/[0.04] hover:text-white"
-                  }`
-                }
+                className={({ isActive }) => linkClass(isActive)}
               >
+                <item.icon />
                 {item.label}
               </NavLink>
             ))}
-          </nav>
+          </div>
+          <div>
+            <p className="mb-1.5 px-3 text-[10px] font-semibold uppercase tracking-wider text-[#6b7280]">
+              Info
+            </p>
+            {INFO_NAV.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                end={item.end}
+                className={({ isActive }) => linkClass(isActive)}
+              >
+                <item.icon />
+                {item.label}
+              </NavLink>
+            ))}
+          </div>
+        </nav>
 
-          <BuyButton className="btn-orca-primary hidden shrink-0 !min-h-11 !px-4 !py-2 sm:inline-flex" />
+        <div className="border-t border-white/[0.06] p-3">
+          <BuyButton className="btn-orca-primary w-full !rounded-xl" label="Buy" />
+          <a
+            href="https://acopay.net"
+            className="mt-2 block text-center text-[11px] text-[#6b7280] hover:text-[#c7f284]"
+          >
+            acopay.net
+          </a>
         </div>
-      </header>
+      </aside>
 
-      <main className="flex-1">
-        <Outlet />
-      </main>
+      {/* Main column */}
+      <div className="flex min-w-0 flex-1 flex-col pb-[4.25rem] lg:pb-0">
+        {/* Mobile / tablet top bar */}
+        <header className="sticky top-0 z-50 flex h-14 items-center justify-between gap-3 border-b border-white/[0.06] bg-[#0c1017]/95 px-4 backdrop-blur-xl lg:hidden">
+          <Link to="/" className="flex items-center gap-2">
+            <img src="/assets/logo.png" alt="" className="h-8 w-8 rounded-full ring-1 ring-[#c7f284]/40" />
+            <span className="font-bold tracking-tight text-white">ACOPAY</span>
+          </Link>
+          <BuyButton className="btn-orca-primary !min-h-9 !rounded-lg !px-3 !py-1.5 !text-xs" label="Buy" />
+        </header>
 
-      <Footer />
+        {/* Desktop top strip */}
+        <header className="sticky top-0 z-30 hidden h-14 items-center justify-between gap-4 border-b border-white/[0.06] bg-[#0c1017]/90 px-6 backdrop-blur-xl lg:flex">
+          <div className="flex max-w-md flex-1 items-center gap-2 rounded-xl border border-white/[0.06] bg-[#13161a] px-3 py-2 text-sm text-[#6b7280]">
+            <SearchIcon />
+            <span>Official Solana payment token · verify mint on this site</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <a
+              href="https://solscan.io/token/6Pcq8xnkVYxR42FEehXrucvaMB1fZYuqoR8B9FGSAS8F"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-xl border border-white/10 px-3 py-1.5 text-xs font-medium text-[#9ca3af] transition hover:border-[#c7f284]/30 hover:text-white"
+            >
+              Solscan ↗
+            </a>
+            <BuyButton className="btn-orca-primary !rounded-xl !px-4 !py-2" />
+          </div>
+        </header>
 
-      <div className="fixed inset-x-0 bottom-0 z-40 flex min-h-14 items-center justify-between gap-3 border-t border-white/[0.06] bg-[#080d18]/95 px-4 py-2 backdrop-blur sm:hidden safe-bottom">
-        <Link to="/contract" className="text-xs font-medium text-[#8b9cb8]">
-          Verify mint
-        </Link>
-        <BuyButton className="btn-orca-primary !min-h-11 !px-4 !py-2 !text-xs" />
+        <main className="flex-1">
+          <Outlet />
+        </main>
+
+        <Footer />
       </div>
+
+      {/* Mobile bottom nav */}
+      <nav className="fixed inset-x-0 bottom-0 z-50 flex border-t border-white/[0.08] bg-[#090b0e]/95 backdrop-blur-xl lg:hidden safe-bottom">
+        {MOBILE_NAV.map((item) => (
+          <NavLink
+            key={item.to}
+            to={item.to}
+            end={item.end}
+            className={({ isActive }) =>
+              `jup-bottom-nav-item ${isActive ? "jup-bottom-nav-item-active" : ""}`
+            }
+          >
+            <item.icon />
+            <span>{item.label}</span>
+          </NavLink>
+        ))}
+      </nav>
     </div>
+  );
+}
+
+function HomeIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+      <path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5Z" />
+    </svg>
+  );
+}
+
+function SwapIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+      <path d="M7 7h11l-3-3M17 17H6l3 3" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function PoolsIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+      <ellipse cx="12" cy="6" rx="8" ry="3" />
+      <path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6" />
+    </svg>
+  );
+}
+
+function TokenIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v10M9 9.5c.8-.8 1.8-1.2 3-1.2s2.3.5 3 1.3M9 14.5c.8.8 1.8 1.2 3 1.2s2.3-.5 3-1.3" />
+    </svg>
+  );
+}
+
+function ContractIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+      <rect x="5" y="3" width="14" height="18" rx="2" />
+      <path d="M9 8h6M9 12h6M9 16h4" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function FaqIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M9.5 9.5a2.5 2.5 0 0 1 4.7 1c0 1.5-2.2 2-2.2 3.5M12 17h.01" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function SearchIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+      <circle cx="11" cy="11" r="7" />
+      <path d="m20 20-3.5-3.5" strokeLinecap="round" />
+    </svg>
   );
 }

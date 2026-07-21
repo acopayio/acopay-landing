@@ -1,4 +1,4 @@
-import { TOKEN } from "../config/token";
+﻿import { TOKEN } from "../config/token";
 
 const FAQS = [
   {
@@ -49,7 +49,7 @@ export function FAQ() {
       <div className="mx-auto max-w-6xl px-5">
         <p className="label-orca">FAQ</p>
         <h2 className="mt-2 text-3xl font-bold text-white sm:text-4xl">Common questions</h2>
-        <p className="mt-3 max-w-xl text-[#8b9cb8]">
+        <p className="mt-3 max-w-xl text-[#9ca3af]">
           Straight answers for users and listing reviewers. Mint details live on the Contract page.
         </p>
 
@@ -57,16 +57,16 @@ export function FAQ() {
           {FAQS.map((item, i) => (
             <details
               key={item.q}
-              className="orca-card group overflow-hidden !rounded-2xl open:ring-1 open:ring-[#2ed3b7]/20"
+              className="orca-card group overflow-hidden !rounded-2xl open:ring-1 open:ring-[#c7f284]/20"
               open={i === 0}
             >
               <summary className="cursor-pointer list-none px-5 py-4 font-semibold text-white [&::-webkit-details-marker]:hidden">
                 <span className="flex items-center justify-between gap-4">
                   {item.q}
-                  <span className="text-[#2ed3b7] transition group-open:rotate-45">+</span>
+                  <span className="text-[#c7f284] transition group-open:rotate-45">+</span>
                 </span>
               </summary>
-              <p className="border-t border-white/[0.06] px-5 py-4 text-sm leading-relaxed text-[#8b9cb8]">
+              <p className="border-t border-white/[0.06] px-5 py-4 text-sm leading-relaxed text-[#9ca3af]">
                 {item.a}
               </p>
             </details>

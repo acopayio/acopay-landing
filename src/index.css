@@ -1,16 +1,26 @@
 @import "tailwindcss";
 
+/* Jupiter-inspired ACOPAY theme — dark + lime accent */
 @theme {
-  --font-sans: "Sora", ui-sans-serif, system-ui, sans-serif;
-  --color-orca-navy: #0b1020;
-  --color-orca-navy-2: #131b33;
-  --color-orca-card: #1a2440;
-  --color-orca-card-hover: #1f2b4d;
-  --color-orca-aqua: #2ed3b7;
-  --color-orca-aqua-dim: #1eb89f;
-  --color-orca-gold: #f7c025;
-  --color-orca-gold-hover: #ffd54f;
-  --color-orca-muted: #8b9cb8;
+  --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --color-jup-bg: #0c1017;
+  --color-jup-bg-2: #090b0e;
+  --color-jup-surface: #13161a;
+  --color-jup-surface-2: #191c22;
+  --color-jup-lime: #c7f284;
+  --color-jup-lime-dim: #a8d66a;
+  --color-jup-muted: #9ca3af;
+  --color-jup-faint: #6b7280;
+  /* Aliases kept so older class names still resolve */
+  --color-orca-navy: #0c1017;
+  --color-orca-navy-2: #13161a;
+  --color-orca-card: #191c22;
+  --color-orca-card-hover: #1e2229;
+  --color-orca-aqua: #c7f284;
+  --color-orca-aqua-dim: #a8d66a;
+  --color-orca-gold: #c7f284;
+  --color-orca-gold-hover: #d4f79a;
+  --color-orca-muted: #9ca3af;
 }
 
 html {
@@ -19,74 +29,67 @@ html {
 
 body {
   font-family: var(--font-sans);
-  @apply bg-[#0b1020] text-slate-100 antialiased;
+  @apply bg-[#0c1017] text-white antialiased;
   background-image:
-    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(46, 211, 183, 0.12), transparent 55%),
-    radial-gradient(ellipse 40% 30% at 100% 20%, rgba(247, 192, 37, 0.06), transparent),
-    radial-gradient(ellipse 50% 40% at 0% 80%, rgba(46, 211, 183, 0.05), transparent);
+    radial-gradient(ellipse 70% 45% at 50% -15%, rgba(199, 242, 132, 0.09), transparent 55%),
+    radial-gradient(ellipse 40% 30% at 100% 0%, rgba(199, 242, 132, 0.04), transparent);
   background-attachment: fixed;
 }
 
 ::selection {
-  @apply bg-[#2ed3b7]/30 text-white;
+  @apply bg-[#c7f284]/35 text-black;
 }
 
-/* Orca-style components */
 .orca-card {
-  @apply rounded-3xl border border-white/[0.07] bg-[#1a2440]/80 backdrop-blur-sm;
+  @apply rounded-2xl border border-white/[0.06] bg-[#191c22]/90 backdrop-blur-sm;
 }
 
 .orca-card-hover {
-  @apply transition hover:border-[#2ed3b7]/25 hover:bg-[#1f2b4d]/90;
+  @apply transition hover:border-[#c7f284]/25 hover:bg-[#1e2229];
 }
 
 .btn-orca-primary {
-  @apply inline-flex items-center justify-center rounded-full bg-[#f7c025] px-6 py-2.5 text-sm font-semibold text-[#0b1020] shadow-[0_4px_24px_rgba(247,192,37,0.25)] transition hover:bg-[#ffd54f] active:scale-[0.98];
+  @apply inline-flex items-center justify-center rounded-xl bg-[#c7f284] px-5 py-2.5 text-sm font-semibold text-[#0c1017] transition hover:bg-[#d4f79a] active:scale-[0.98];
 }
 
 .btn-orca-primary:disabled {
-  @apply cursor-not-allowed opacity-50 shadow-none hover:bg-[#f7c025] active:scale-100;
+  @apply cursor-not-allowed opacity-45 shadow-none hover:bg-[#c7f284] active:scale-100;
 }
 
 .btn-orca-secondary {
-  @apply inline-flex items-center justify-center rounded-full border border-white/15 bg-white/[0.04] px-6 py-2.5 text-sm font-semibold text-white transition hover:border-[#2ed3b7]/40 hover:bg-white/[0.07] active:scale-[0.98];
+  @apply inline-flex items-center justify-center rounded-xl border border-white/12 bg-white/[0.04] px-5 py-2.5 text-sm font-semibold text-white transition hover:border-[#c7f284]/35 hover:bg-white/[0.07] active:scale-[0.98];
 }
 
 .btn-orca-ghost {
-  @apply inline-flex items-center justify-center rounded-full border border-white/10 px-4 py-2 text-sm font-medium text-[#8b9cb8] transition hover:border-white/20 hover:text-white;
+  @apply inline-flex items-center justify-center rounded-xl border border-white/10 px-4 py-2 text-sm font-medium text-[#9ca3af] transition hover:border-white/20 hover:text-white;
 }
 
 .btn-orca-ghost:disabled {
-  @apply cursor-not-allowed opacity-50 hover:border-white/10 hover:text-[#8b9cb8];
+  @apply cursor-not-allowed opacity-45 hover:border-white/10 hover:text-[#9ca3af];
 }
 
 .section-pad {
-  @apply py-20 md:py-24;
+  @apply py-16 md:py-20;
 }
 
 .label-orca {
-  @apply text-xs font-semibold uppercase tracking-[0.14em] text-[#2ed3b7];
+  @apply text-xs font-semibold uppercase tracking-[0.14em] text-[#c7f284];
 }
 
-/* Pools table (orca.so/pools style) */
 .pools-table {
-  @apply w-full overflow-hidden rounded-3xl border border-white/[0.07] bg-[#1a2440]/90;
+  @apply w-full overflow-hidden rounded-2xl border border-white/[0.06] bg-[#191c22]/90;
 }
 
 .pools-table thead th {
-  @apply px-5 py-4 text-left text-xs font-semibold uppercase tracking-wider text-[#8b9cb8];
+  @apply px-5 py-4 text-left text-xs font-semibold uppercase tracking-wider text-[#9ca3af];
 }
 
 .pools-table tbody tr {
-  @apply border-t border-white/[0.06] transition hover:bg-white/[0.03];
+  @apply border-t border-white/[0.05] transition hover:bg-white/[0.03];
 }
 
 .pools-table tbody td {
   @apply px-5 py-4 text-sm;
-}
-
-.orca-pools-table tbody tr:last-child {
-  border-bottom: none;
 }
 
 .scrollbar-none::-webkit-scrollbar {
@@ -99,4 +102,25 @@ body {
 
 .safe-bottom {
   padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+}
+
+/* Jupiter-style shell */
+.jup-shell {
+  @apply min-h-[100dvh] bg-[#0c1017];
+}
+
+.jup-sidebar-link {
+  @apply flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-[#9ca3af] transition hover:bg-white/[0.04] hover:text-white;
+}
+
+.jup-sidebar-link-active {
+  @apply bg-white/[0.07] text-white;
+}
+
+.jup-bottom-nav-item {
+  @apply flex flex-1 flex-col items-center justify-center gap-0.5 py-1.5 text-[10px] font-medium text-[#6b7280] transition;
+}
+
+.jup-bottom-nav-item-active {
+  @apply text-[#c7f284];
 }

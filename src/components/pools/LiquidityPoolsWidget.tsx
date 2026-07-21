@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+﻿import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { POOL_FILTERS, type PoolFilterId } from "../../config/pools";
 import { TOKEN, isMintLive, jupiterSwapUrl } from "../../config/token";
@@ -15,7 +15,7 @@ function fmtPrice(value?: number): string {
 }
 
 function Sparkline({ trend }: { trend: PoolRow["trend"] }) {
-  const color = trend === "up" ? "#2ed3b7" : trend === "down" ? "#f87171" : "#8b9cb8";
+  const color = trend === "up" ? "#c7f284" : trend === "down" ? "#f87171" : "#9ca3af";
   const d =
     trend === "up"
       ? "M0,26 L16,22 L32,16 L48,12 L64,8 L80,4"
@@ -33,8 +33,8 @@ function PoolIcon({ row }: { row: PoolRow }) {
   if (row.isAcopay) {
     return (
       <div className="flex -space-x-2">
-        <img src="/assets/logo.png" alt="" className="h-9 w-9 rounded-full ring-2 ring-[#1a2440]" />
-        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#0b1020] text-[9px] font-bold text-[#8b9cb8] ring-2 ring-[#1a2440]">
+        <img src="/assets/logo.png" alt="" className="h-9 w-9 rounded-full ring-2 ring-[#191c22]" />
+        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#0c1017] text-[9px] font-bold text-[#9ca3af] ring-2 ring-[#191c22]">
           USD
         </span>
       </div>
@@ -45,13 +45,13 @@ function PoolIcon({ row }: { row: PoolRow }) {
       <img
         src={row.imageUrl}
         alt=""
-        className="h-9 w-9 rounded-full ring-2 ring-[#1a2440] object-cover"
+        className="h-9 w-9 rounded-full ring-2 ring-[#191c22] object-cover"
         loading="lazy"
       />
     );
   }
   return (
-    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#0b1020] text-[10px] font-bold text-[#2ed3b7] ring-2 ring-[#1a2440]">
+    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#0c1017] text-[10px] font-bold text-[#c7f284] ring-2 ring-[#191c22]">
       {(row.baseSymbol ?? "?").slice(0, 3)}
     </div>
   );
@@ -88,7 +88,7 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
     : "—";
 
   return (
-    <section className={variant === "home" ? "border-t border-white/[0.06] bg-[#080d18]/50 py-10" : ""}>
+    <section className={variant === "home" ? "border-t border-white/[0.06] bg-[#090b0e]/50 py-10" : ""}>
       <div className={`mx-auto max-w-[1400px] px-4 sm:px-6 ${variant === "full" ? "pb-24 pt-8" : ""}`}>
         <div className="orca-card !rounded-[1.75rem] p-6 sm:p-8">
           <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
@@ -97,18 +97,18 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
               <h2 className="mt-2 text-2xl font-bold text-white sm:text-4xl">
                 {variant === "home" ? "Live Market Pools" : "Liquidity Pools"}
               </h2>
-              <p className="mt-2 max-w-xl text-sm text-[#8b9cb8]">
+              <p className="mt-2 max-w-xl text-sm text-[#9ca3af]">
                 {isMintLive()
                   ? "Live Raydium stats. ACOPAY/USDT is listed when our pool is live."
                   : "These figures are Raydium Solana market totals — not ACOPAY. ACOPAY has no pool yet."}
               </p>
-              <p className="mt-2 text-xs text-[#5c6b85]">
+              <p className="mt-2 text-xs text-[#6b7280]">
                 {summary?.source ?? "—"} · {liveCount} pools · Updated {updated}
                 <button
                   type="button"
                   onClick={() => refresh()}
                   disabled={loading}
-                  className="ml-2 font-medium text-[#2ed3b7] hover:underline disabled:opacity-50"
+                  className="ml-2 font-medium text-[#c7f284] hover:underline disabled:opacity-50"
                 >
                   {loading ? "Refreshing…" : "Refresh"}
                 </button>
@@ -133,8 +133,8 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
           </div>
 
           {!isMintLive() && (
-            <div className="mt-6 rounded-2xl border border-[#f7c025]/25 bg-[#f7c025]/[0.06] px-4 py-3 text-sm text-[#8b9cb8]">
-              <span className="font-semibold text-[#f7c025]">ACOPAY is not listed yet.</span> The
+            <div className="mt-6 rounded-2xl border border-[#c7f284]/25 bg-[#c7f284]/[0.06] px-4 py-3 text-sm text-[#9ca3af]">
+              <span className="font-semibold text-[#c7f284]">ACOPAY is not listed yet.</span> The
               yellow ACOPAY/USDT row is a placeholder. Top pools below are other Solana pairs from
               Raydium API (real data, not ours).
             </div>
@@ -173,7 +173,7 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
           )}
 
           <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex flex-wrap gap-1 rounded-2xl border border-white/[0.06] bg-[#0b1020]/50 p-1">
+            <div className="flex flex-wrap gap-1 rounded-2xl border border-white/[0.06] bg-[#0c1017]/50 p-1">
               {POOL_FILTERS.map((f) => (
                 <button
                   key={f.id}
@@ -181,8 +181,8 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
                   onClick={() => setFilter(f.id)}
                   className={`rounded-xl px-3 py-2 text-sm font-medium transition sm:px-4 ${
                     filter === f.id
-                      ? "bg-[#2ed3b7]/15 text-[#2ed3b7] ring-1 ring-[#2ed3b7]/30"
-                      : "text-[#8b9cb8] hover:bg-white/[0.04] hover:text-white"
+                      ? "bg-[#c7f284]/15 text-[#c7f284] ring-1 ring-[#c7f284]/30"
+                      : "text-[#9ca3af] hover:bg-white/[0.04] hover:text-white"
                   }`}
                 >
                   {f.label}
@@ -194,7 +194,7 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
               placeholder="Search tokens..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full rounded-2xl border border-white/[0.08] bg-[#0b1020] py-2.5 pl-4 pr-4 text-sm text-white placeholder:text-[#5c6b85] focus:border-[#2ed3b7]/40 focus:outline-none sm:max-w-xs"
+              className="w-full rounded-2xl border border-white/[0.08] bg-[#0c1017] py-2.5 pl-4 pr-4 text-sm text-white placeholder:text-[#6b7280] focus:border-[#c7f284]/40 focus:outline-none sm:max-w-xs"
             />
           </div>
 
@@ -211,15 +211,15 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
           )}
 
           {warning && !error && (
-            <div className="mt-4 rounded-2xl border border-[#f7c025]/30 bg-[#f7c025]/10 px-4 py-3 text-sm text-[#f7c025]">
+            <div className="mt-4 rounded-2xl border border-[#c7f284]/30 bg-[#c7f284]/10 px-4 py-3 text-sm text-[#c7f284]">
               {warning}
             </div>
           )}
 
-          <div className="orca-table-wrap mt-6 overflow-x-auto rounded-2xl border border-white/[0.07] bg-[#0b1020]/60">
+          <div className="orca-table-wrap mt-6 overflow-x-auto rounded-2xl border border-white/[0.07] bg-[#0c1017]/60">
             <table className="orca-pools-table w-full min-w-[1000px]">
               <thead>
-                <tr className="border-b border-white/[0.06] text-left text-[11px] font-semibold uppercase tracking-wider text-[#8b9cb8]">
+                <tr className="border-b border-white/[0.06] text-left text-[11px] font-semibold uppercase tracking-wider text-[#9ca3af]">
                   <th className="px-5 py-4">Pool</th>
                   <th className="px-5 py-4">Trend 7D</th>
                   <th className="px-5 py-4">Yield / TVL</th>
@@ -251,7 +251,7 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
                   ))
                 ) : filtered.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="px-5 py-12 text-center text-[#8b9cb8]">
+                    <td colSpan={7} className="px-5 py-12 text-center text-[#9ca3af]">
                       No pools match your filters.
                     </td>
                   </tr>
@@ -260,7 +260,7 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
                     <tr
                       key={row.id}
                       className={`border-b border-white/[0.04] transition hover:bg-white/[0.03] ${
-                        row.isAcopay ? "bg-[#f7c025]/[0.06] ring-1 ring-inset ring-[#f7c025]/20" : ""
+                        row.isAcopay ? "bg-[#c7f284]/[0.06] ring-1 ring-inset ring-[#c7f284]/20" : ""
                       }`}
                     >
                       <td className="px-5 py-4">
@@ -268,14 +268,14 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
                           <PoolIcon row={row} />
                           <div>
                             <div className="font-semibold text-white">{row.pair}</div>
-                            <div className="flex flex-wrap items-center gap-1.5 text-xs text-[#8b9cb8]">
-                              <span className="text-[#f7c025]">◆</span>
+                            <div className="flex flex-wrap items-center gap-1.5 text-xs text-[#9ca3af]">
+                              <span className="text-[#c7f284]">◆</span>
                               {row.feeTier} · {row.platform}
                               {!row.isAcopay && row.priceUsd !== undefined && (
-                                <span className="text-[#2ed3b7]">{fmtPrice(row.priceUsd)}</span>
+                                <span className="text-[#c7f284]">{fmtPrice(row.priceUsd)}</span>
                               )}
                               {row.isAcopay && (
-                                <span className="rounded-full bg-[#f7c025]/20 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-[#f7c025]">
+                                <span className="rounded-full bg-[#c7f284]/20 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-[#c7f284]">
                                   {row.status}
                                 </span>
                               )}
@@ -291,7 +291,7 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
                           {row.isAcopay ? "—" : `${row.yieldPct.toFixed(2)}%`}
                         </div>
                         <div
-                          className={`text-xs ${row.change24h >= 0 ? "text-[#2ed3b7]" : "text-red-400"}`}
+                          className={`text-xs ${row.change24h >= 0 ? "text-[#c7f284]" : "text-red-400"}`}
                         >
                           {row.isAcopay ? "—" : `${fmtPct(row.change24h)} vol`}
                         </div>
@@ -332,7 +332,7 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
                 href={TOKEN.links.raydium}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-orca-secondary !border-[#f7c025]/40 !text-[#f7c025]"
+                className="btn-orca-secondary !border-[#c7f284]/40 !text-[#c7f284]"
               >
                 + Create Pool on Raydium
               </a>
@@ -362,9 +362,9 @@ function StatCard({
   accent?: boolean;
 }) {
   return (
-    <div className="rounded-2xl border border-white/[0.06] bg-[#0b1020]/70 px-4 py-3 text-center sm:px-5 sm:py-4 sm:text-left">
-      <div className="text-[10px] font-semibold uppercase tracking-wider text-[#5c6b85]">{label}</div>
-      <div className={`mt-1 text-lg font-bold sm:text-xl ${accent ? "text-[#2ed3b7]" : "text-white"}`}>
+    <div className="rounded-2xl border border-white/[0.06] bg-[#0c1017]/70 px-4 py-3 text-center sm:px-5 sm:py-4 sm:text-left">
+      <div className="text-[10px] font-semibold uppercase tracking-wider text-[#6b7280]">{label}</div>
+      <div className={`mt-1 text-lg font-bold sm:text-xl ${accent ? "text-[#c7f284]" : "text-white"}`}>
         {value}
       </div>
     </div>
@@ -385,21 +385,21 @@ function Promo({
   href?: string;
 }) {
   const className =
-    "block rounded-2xl border border-white/[0.06] bg-[#0b1020]/50 p-5 transition hover:border-[#2ed3b7]/25 hover:bg-[#0b1020]/80";
+    "block rounded-2xl border border-white/[0.06] bg-[#0c1017]/50 p-5 transition hover:border-[#c7f284]/25 hover:bg-[#0c1017]/80";
   if (to) {
     return (
       <Link to={to} className={className}>
         <h3 className="font-bold text-white">{title}</h3>
-        <p className="mt-2 text-sm text-[#8b9cb8]">{desc}</p>
-        <span className="mt-3 inline-block text-sm font-semibold text-[#f7c025]">{cta}</span>
+        <p className="mt-2 text-sm text-[#9ca3af]">{desc}</p>
+        <span className="mt-3 inline-block text-sm font-semibold text-[#c7f284]">{cta}</span>
       </Link>
     );
   }
   return (
     <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
       <h3 className="font-bold text-white">{title}</h3>
-      <p className="mt-2 text-sm text-[#8b9cb8]">{desc}</p>
-      <span className="mt-3 inline-block text-sm font-semibold text-[#f7c025]">{cta}</span>
+      <p className="mt-2 text-sm text-[#9ca3af]">{desc}</p>
+      <span className="mt-3 inline-block text-sm font-semibold text-[#c7f284]">{cta}</span>
     </a>
   );
 }
