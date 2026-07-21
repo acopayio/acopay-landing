@@ -34,14 +34,16 @@ export function OrcaLayout() {
         <Link to="/" className="flex items-center gap-2.5 px-4 py-5">
           <img src="/assets/logo.png" alt="" className="h-9 w-9 shrink-0 rounded-full ring-2 ring-[#00E5FF]/35" />
           <div className="min-w-0 flex-1">
-            <div className="truncate text-base font-bold tracking-tight text-white">ACOPAY</div>
+            <div className="text-base font-bold tracking-tight text-white">ACOPAY</div>
             <p
-              className="mt-0.5 flex w-full justify-between text-[10px] font-semibold leading-none text-[#00E5FF]"
+              className="mt-1 flex w-full justify-between text-[9px] font-semibold leading-none text-[#00E5FF]"
               aria-label="Pay your way"
             >
-              <span>Pay</span>
-              <span>your</span>
-              <span>way</span>
+              {Array.from("Pay your way").map((ch, i) => (
+                <span key={i} className={ch === " " ? "select-none opacity-0" : undefined}>
+                  {ch === " " ? "·" : ch}
+                </span>
+              ))}
             </p>
           </div>
         </Link>

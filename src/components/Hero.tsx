@@ -19,12 +19,14 @@ export function Hero() {
               {TOKEN.name}
             </h1>
             <p
-              className="mt-2 flex w-full justify-between gap-1 text-xl font-semibold text-[#00E5FF] sm:text-2xl"
+              className="mt-2 flex w-full justify-between text-[1.05rem] font-semibold leading-none tracking-normal text-[#00E5FF] sm:text-[1.35rem] md:text-[1.6rem]"
               aria-label={TOKEN.tagline}
             >
-              <span>Pay</span>
-              <span>your</span>
-              <span>way</span>
+              {Array.from("Pay your way").map((ch, i) => (
+                <span key={i} className={ch === " " ? "select-none opacity-0" : undefined}>
+                  {ch === " " ? "·" : ch}
+                </span>
+              ))}
             </p>
           </div>
           <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[#9ca3af] sm:text-base">
