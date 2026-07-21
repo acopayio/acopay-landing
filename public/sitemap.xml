@@ -26,6 +26,15 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://acopay.net/trade"/>
   </url>
   <url>
+    <loc>https://acopay.net/pools</loc>
+    <lastmod>2026-07-21</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://acopay.net/pools"/>
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://acopay.net/pools"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://acopay.net/pools"/>
+  </url>
+  <url>
     <loc>https://acopay.net/token</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>weekly</changefreq>

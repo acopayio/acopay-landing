@@ -1,6 +1,6 @@
 import type { MarketSummary, PoolRow } from "../types/pool";
 import { MIN_LIVE_POOLS, trendFromChange } from "../types/pool";
-import { TOKEN, USDT_MINT, isPoolLive, jupiterSwapUrl, raydiumSwapUrl } from "../config/token";
+import { TOKEN } from "../config/token";
 
 type RaydiumMint = {
   symbol?: string;
@@ -92,11 +92,16 @@ function poolHref(pool: RaydiumPool): string {
   return TOKEN.links.raydium;
 }
 
-function tradeHref(): string {
-  return raydiumSwapUrl() ?? jupiterSwapUrl() ?? TOKEN.links.raydium;
+function isAcopayPool(pool: RaydiumPool): boolean {
+  const mint = TOKEN.mintAddress;
+  const poolId = TOKEN.dex.poolId;
+  if (poolId && pool.id === poolId) return true;
+  if (mint && (pool.mintA?.address === mint || pool.mintB?.address === mint)) return true;
+  const sym = `${pool.mintA?.symbol ?? ""}/${pool.mintB?.symbol ?? ""}`.toUpperCase();
+  return sym.includes("ACOPAY");
 }
 
-function mapRaydiumPool(pool: RaydiumPool, opts?: { isAcopay?: boolean }): PoolRow | null {
+function mapRaydiumPool(pool: RaydiumPool): PoolRow | null {
   const base = pool.mintA?.symbol ?? "?";
   const quote = pool.mintB?.symbol ?? "?";
   const tvl = pool.tvl ?? 0;
@@ -104,7 +109,7 @@ function mapRaydiumPool(pool: RaydiumPool, opts?: { isAcopay?: boolean }): PoolR
   const fees24h = pool.day?.volumeFee ?? 0;
   const apr = pool.day?.apr ?? 0;
 
-  if (!opts?.isAcopay && tvl < 1000 && volume24h < 100) return null;
+  if (tvl < 1000 && volume24h < 100) return null;
 
   const change7d = volumeTrend7d(volume24h, pool.week?.volume ?? 0);
 
@@ -120,64 +125,12 @@ function mapRaydiumPool(pool: RaydiumPool, opts?: { isAcopay?: boolean }): PoolR
     yieldPct: apr,
     change24h: change7d,
     trend: trendFromChange(change7d),
-    href: opts?.isAcopay ? tradeHref() : poolHref(pool),
-    isAcopay: opts?.isAcopay,
-    status: opts?.isAcopay ? (isPoolLive() ? "Live" : TOKEN.dex.status) : undefined,
+    href: poolHref(pool),
     baseSymbol: base,
     quoteSymbol: quote,
     priceUsd: pool.price,
-    imageUrl: opts?.isAcopay ? "/assets/logo.png" : pool.mintA?.logoURI,
+    imageUrl: pool.mintA?.logoURI,
   };
-}
-
-function acopayFallbackRow(): PoolRow {
-  return {
-    id: TOKEN.dex.poolId || "acopay-usdt",
-    pair: "ACOPAY / USDT",
-    platform: "Raydium",
-    feeTier: "0.25%",
-    category: "payment",
-    tvl: 0,
-    volume24h: 0,
-    fees24h: 0,
-    yieldPct: 0,
-    change24h: 0,
-    trend: "flat",
-    href: tradeHref(),
-    isAcopay: true,
-    status: isPoolLive() ? "Live" : TOKEN.dex.status,
-    baseSymbol: "ACOPAY",
-    quoteSymbol: "USDT",
-    priceUsd: isPoolLive() ? 1 : undefined,
-    imageUrl: "/assets/logo.png",
-  };
-}
-
-async function loadAcopayPool(): Promise<PoolRow> {
-  if (!isPoolLive() || !TOKEN.mintAddress) return acopayFallbackRow();
-
-  const url =
-    `${RAYDIUM_API}/pools/info/mint?mint1=${TOKEN.mintAddress}` +
-    `&poolType=all&poolSortField=default&sortType=desc&pageSize=10&page=1`;
-
-  try {
-    const res = await fetchJson(url);
-    if (!res.ok) return acopayFallbackRow();
-    const json = (await res.json()) as RaydiumListResponse;
-    const pools = json.data?.data ?? [];
-    const match =
-      pools.find(
-        (p) =>
-          p.mintA?.address === TOKEN.mintAddress &&
-          (p.mintB?.address === USDT_MINT || p.mintB?.symbol?.toUpperCase() === "USDT"),
-      ) ?? pools[0];
-
-    if (!match) return acopayFallbackRow();
-    const mapped = mapRaydiumPool(match, { isAcopay: true });
-    return mapped ?? acopayFallbackRow();
-  } catch {
-    return acopayFallbackRow();
-  }
 }
 
 async function loadRaydiumPools(): Promise<{ pools: RaydiumPool[]; errors: string[] }> {
@@ -233,16 +186,13 @@ export type FetchPoolsResult = {
 };
 
 export async function fetchLivePools(): Promise<FetchPoolsResult> {
-  const [poolOut, mainInfo, acopay] = await Promise.all([
-    loadRaydiumPools(),
-    loadRaydiumMainInfo(),
-    loadAcopayPool(),
-  ]);
+  const [poolOut, mainInfo] = await Promise.all([loadRaydiumPools(), loadRaydiumMainInfo()]);
 
+  // Keep Markets widget, but exclude ACOPAY/USDT (low-TVL payment pool).
   const mapped = poolOut.pools
+    .filter((p) => !isAcopayPool(p))
     .map((p) => mapRaydiumPool(p))
     .filter((p): p is PoolRow => p !== null)
-    .filter((p) => p.id !== acopay.id)
     .slice(0, MAX_POOLS);
 
   const warnings = [...poolOut.errors];
@@ -255,20 +205,19 @@ export async function fetchLivePools(): Promise<FetchPoolsResult> {
   const tvl = mainInfo.tvl > 0 ? mainInfo.tvl : mapped.reduce((s, p) => s + p.tvl, 0);
   const volume24h =
     mainInfo.volume24h > 0 ? mainInfo.volume24h : mapped.reduce((s, p) => s + p.volume24h, 0);
-  const fees24h = mapped.reduce((s, p) => s + p.fees24h, 0) + (acopay.fees24h || 0);
+  const fees24h = mapped.reduce((s, p) => s + p.fees24h, 0);
 
   if (mainInfo.tvl <= 0 && tvl <= 0) {
     warnings.push("Raydium protocol TVL unavailable");
   }
 
-  const pools = [acopay, ...mapped];
   const fatalError =
     mapped.length === 0
       ? warnings.join(". ") || "Raydium API returned no pools"
       : undefined;
 
   return {
-    pools,
+    pools: mapped,
     summary: {
       tvl,
       volume24h,

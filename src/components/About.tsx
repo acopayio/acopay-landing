@@ -6,8 +6,8 @@ const FEATURES = [
     desc: "Send and settle value wallet-to-wallet on Solana with a clear on-chain transfer fee.",
   },
   {
-    title: "Optional swap",
-    desc: "USDT ↔ ACOPAY on Jupiter or Raydium when needed — not a high-TVL trading product.",
+    title: "Trade",
+    desc: "Buy and sell ACOPAY against USDT on Raydium and Jupiter.",
   },
   {
     title: "On-chain clarity",
@@ -23,7 +23,7 @@ export function About() {
         <h2 className="mt-2 text-3xl font-bold text-white sm:text-4xl">What is ACOPAY?</h2>
         <p className="mt-4 max-w-2xl text-lg leading-relaxed text-[#9ca3af]">
           ACOPAY is a payment utility on Solana. Use it to pay, settle, or move funds between wallets
-          in your group. Market swaps are optional, not the core product.
+          — and trade the ACOPAY/USDT pair when you need market liquidity.
         </p>
 
         <div className="mt-12 grid gap-4 md:grid-cols-3">

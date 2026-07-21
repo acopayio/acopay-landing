@@ -100,6 +100,9 @@ export function LaunchStatus() {
               <Link to="/contract" className="btn-orca-ghost !py-2 !text-xs">
                 Contract
               </Link>
+              <Link to="/pools" className="btn-orca-ghost !py-2 !text-xs">
+                Pools
+              </Link>
             </div>
           </div>
         </div>
