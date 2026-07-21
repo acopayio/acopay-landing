@@ -125,6 +125,10 @@ function mapRaydiumPool(pool: RaydiumPool): PoolRow | null {
 }
 
 function acopayRow(): PoolRow {
+  const href =
+    TOKEN.dex.poolId != null && TOKEN.dex.poolId.length > 0
+      ? `https://raydium.io/liquidity/increase/?mode=add&pool_id=${TOKEN.dex.poolId}`
+      : TOKEN.links.raydium;
   return {
     id: "acopay-usdt",
     pair: "ACOPAY / USDT",
@@ -137,7 +141,7 @@ function acopayRow(): PoolRow {
     yieldPct: 0,
     change24h: 0,
     trend: "flat",
-    href: TOKEN.links.raydium,
+    href,
     isAcopay: true,
     status: TOKEN.dex.status,
     baseSymbol: "ACOPAY",

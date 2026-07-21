@@ -29,9 +29,10 @@ export const TOKEN = {
     platform: "Raydium",
     pair: "ACOPAY / USDT",
     quoteMint: USDT_MINT,
-    /** Set true after Raydium ACOPAY/USDT pool exists. */
-    status: "Pool pending",
-    poolLive: false as boolean,
+    /** Raydium CPMM pool id (AMM ID). */
+    poolId: "BwKQMhYMqdBhxke3HEMJ9MMf9ud5sdbbU6VcEQLfZLj",
+    status: "Live",
+    poolLive: true as boolean,
   },
   safety: {
     noOtc: true,
@@ -83,4 +84,10 @@ export function jupiterSwapUrl(): string | null {
 export function raydiumSwapUrl(): string | null {
   if (!isPoolLive()) return null;
   return `https://raydium.io/swap/?inputMint=${USDT_MINT}&outputMint=${TOKEN.mintAddress}`;
+}
+
+/** Raydium pool page. */
+export function raydiumPoolUrl(): string | null {
+  if (!isPoolLive() || !TOKEN.dex.poolId) return null;
+  return `https://raydium.io/liquidity/increase/?mode=add&pool_id=${TOKEN.dex.poolId}`;
 }

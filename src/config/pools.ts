@@ -5,13 +5,13 @@ export const POOLS = [
     pair: "ACOPAY / USDT",
     feeTier: "0.25%",
     category: "payment",
-    status: "Coming soon" as const,
+    status: "Live" as const,
     tvl: "—",
     volume24h: "—",
     fees24h: "—",
     yield: "—",
     trend: "flat" as const,
-    href: "https://raydium.io/",
+    href: "https://raydium.io/liquidity/increase/?mode=add&pool_id=BwKQMhYMqdBhxke3HEMJ9MMf9ud5sdbbU6VcEQLfZLj",
   },
   {
     id: "usdt-acopay-jupiter",
@@ -19,13 +19,13 @@ export const POOLS = [
     pair: "USDT / ACOPAY",
     feeTier: "Aggregator",
     category: "payment",
-    status: "Coming soon" as const,
+    status: "Live" as const,
     tvl: "—",
     volume24h: "—",
     fees24h: "—",
     yield: "—",
     trend: "flat" as const,
-    href: "https://jup.ag/",
+    href: "https://jup.ag/swap/Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB-6Pcq8xnkVYxR42FEehXrucvaMB1fZYuqoR8B9FGSAS8F",
   },
 ] as const;
 
@@ -33,7 +33,7 @@ export const POOL_STATS = {
   tvl: "—",
   volume24h: "—",
   fees24h: "—",
-  label: "Live after mainnet pool launch",
+  label: "ACOPAY/USDT pool live on Raydium",
 };
 
 export const POOL_FILTERS = [
