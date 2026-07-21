@@ -33,7 +33,7 @@ export function OrcaLayout() {
       {/* Desktop sidebar — Jupiter style */}
       <aside className="sticky top-0 z-40 hidden h-[100dvh] w-[220px] shrink-0 flex-col overflow-x-hidden border-r border-white/[0.06] bg-[#090b0e] lg:flex">
         <Link to="/" className="flex items-center gap-2.5 px-4 py-5">
-          <img src="/assets/logo.png" alt="" className="h-9 w-9 shrink-0 rounded-full ring-2 ring-[#00E5FF]/35" />
+          <img src="/assets/logo.png" alt="" className="h-9 w-9 shrink-0 object-contain" />
           <span className="text-base font-bold tracking-tight text-white">ACOPAY</span>
         </Link>
 

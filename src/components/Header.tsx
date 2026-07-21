@@ -28,7 +28,7 @@ export function Header() {
     >
       <div className="page-wrap flex h-[72px] items-center justify-between">
         <a href="#" className="flex items-center gap-3 font-bold text-white">
-          <img src="/assets/logo.png" alt="ACOPAY" className="h-10 w-10 rounded-2xl ring-2 ring-[#00E5FF]/20" />
+          <img src="/assets/logo.png" alt="ACOPAY" className="h-10 w-10 object-contain" />
           <span className="text-lg tracking-tight">ACOPAY</span>
         </a>
 

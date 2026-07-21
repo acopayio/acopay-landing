@@ -10,7 +10,7 @@ export function Footer() {
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1fr] md:items-stretch">
           <div className="flex flex-col">
             <Link to="/" className="flex items-center gap-3 font-bold text-white">
-              <img src="/assets/logo.png" alt="" className="h-9 w-9 rounded-xl" />
+              <img src="/assets/logo.png" alt="" className="h-9 w-9 object-contain" />
               ACOPAY
             </Link>
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-[#9ca3af]">

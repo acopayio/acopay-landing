@@ -33,7 +33,7 @@ function PoolIcon({ row }: { row: PoolRow }) {
   if (row.isAcopay) {
     return (
       <div className="flex -space-x-2">
-        <img src="/assets/logo.png" alt="" className="h-9 w-9 rounded-full ring-2 ring-[#191c22]" />
+        <img src="/assets/logo.png" alt="" className="h-9 w-9 object-contain ring-2 ring-[#191c22]" />
         <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#0c1017] text-[9px] font-bold text-[#9ca3af] ring-2 ring-[#191c22]">
           USD
         </span>
