@@ -31,7 +31,7 @@ export const TOKEN = {
     quoteMint: USDT_MINT,
     /** Set true after Raydium ACOPAY/USDT pool exists. */
     status: "Pool pending",
-    poolLive: false,
+    poolLive: false as boolean,
   },
   safety: {
     noOtc: true,
