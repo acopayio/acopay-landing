@@ -9,7 +9,7 @@ export function Hero() {
   const live = isMintLive();
 
   return (
-    <section className="relative overflow-hidden py-5 md:py-7">
+    <section className="relative overflow-hidden pb-4 pt-3 md:pb-5 md:pt-4">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(0, 229, 255,0.07),_transparent_55%)]" />
       <div className="page-wrap relative space-y-4">
         <div>

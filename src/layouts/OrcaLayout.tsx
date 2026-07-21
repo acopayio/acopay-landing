@@ -90,21 +90,6 @@ export function OrcaLayout() {
           </div>
         </header>
 
-        {/* Desktop top bar — actions only */}
-        <header className="sticky top-0 z-30 hidden border-b border-white/[0.06] bg-[#0c1017]/90 backdrop-blur-xl lg:block">
-          <div className="page-wrap flex h-14 items-center justify-end gap-3">
-            <a
-              href="https://solscan.io/token/6Pcq8xnkVYxR42FEehXrucvaMB1fZYuqoR8B9FGSAS8F"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-xl border border-white/10 px-3 py-1.5 text-xs font-medium text-[#9ca3af] transition hover:border-[#00E5FF]/30 hover:text-white"
-            >
-              Solscan ↗
-            </a>
-            <BuyButton className="btn-orca-primary !rounded-xl !px-4 !py-2" />
-          </div>
-        </header>
-
         <main className="flex-1">
           <Outlet />
         </main>
