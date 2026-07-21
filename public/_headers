@@ -40,6 +40,10 @@
   Cache-Control: public, max-age=3600
   X-Content-Type-Options: nosniff
 
+/assets/logo-512.png
+  Cache-Control: public, max-age=3600
+  X-Content-Type-Options: nosniff
+
 /assets/favicon.png
   Cache-Control: public, max-age=86400
   X-Content-Type-Options: nosniff
