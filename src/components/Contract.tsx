@@ -73,9 +73,8 @@ export function Contract() {
               </tbody>
             </table>
             <p className="border-t border-white/[0.06] px-5 py-3 text-xs leading-relaxed text-[#9ca3af]">
-              Freeze authority is <span className="text-slate-300">revoked</span> (cannot freeze
-              holders). Mint authority is <span className="text-slate-300">active</span> until the
-              project optionally revokes it later — supply can still change while mint is active.
+              Freeze: <span className="text-slate-300">revoked</span> — wallets cannot be frozen. Mint:{" "}
+              <span className="text-slate-300">active</span> — supply can still increase.
             </p>
             <div className="flex flex-wrap gap-2 border-t border-white/[0.06] px-5 py-4">
               {live ? (

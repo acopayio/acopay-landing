@@ -27,11 +27,11 @@ const FAQS = [
   },
   {
     q: "Can wallets be frozen?",
-    a: "No. Freeze authority is revoked.",
+    a: "No. Freeze is revoked — wallets cannot be frozen.",
   },
   {
     q: "Jupiter verification?",
-    a: "Submitted after the Raydium pool is live (Jupiter Standard is free). Until approved, use the address published here.",
+    a: "Will be submitted after the Raydium pool is live. Until then, use the address on this site.",
   },
   {
     q: "Contact?",

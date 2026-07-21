@@ -1,5 +1,5 @@
 ﻿import { Link } from "react-router-dom";
-import { isMintLive, jupiterSwapUrl, raydiumSwapUrl } from "../config/token";
+import { isPoolLive, jupiterSwapUrl, raydiumSwapUrl } from "../config/token";
 import { BuyButton } from "./BuyButton";
 
 const STEPS = [
@@ -9,19 +9,18 @@ const STEPS = [
   },
   {
     title: "Match the contract address",
-    desc: "Copy it from this site (Contract page) and confirm on Solscan or Explorer before you swap.",
+    desc: "Copy it from the Contract page and confirm on Solscan or Explorer before you swap.",
   },
   {
     title: "Swap USDT → ACOPAY",
-    desc: "Use Jupiter or Raydium when the ACOPAY/USDT pool is available. Your wallet signs the swap on-chain.",
+    desc: "Use Jupiter or Raydium when the ACOPAY/USDT pool is live. Your wallet signs the swap.",
   },
 ];
 
 export function Trade() {
-  const live = isMintLive();
+  const pool = isPoolLive();
   const jup = jupiterSwapUrl();
   const ray = raydiumSwapUrl();
-  const poolReady = Boolean(live && jup);
 
   return (
     <section className="section-pad">
@@ -29,9 +28,9 @@ export function Trade() {
         <p className="label-orca">Trade</p>
         <h2 className="mt-2 text-3xl font-bold text-white sm:text-4xl">How to buy</h2>
         <p className="mt-3 max-w-xl text-[#9ca3af]">
-          {poolReady
-            ? "Swap USDT for ACOPAY with your own wallet on Jupiter or Raydium."
-            : "DEX buy opens when the Raydium ACOPAY/USDT pool is live. Until then, use Contract to verify the token address."}
+          {pool
+            ? "Swap USDT for ACOPAY on Jupiter or Raydium with your wallet."
+            : "Buy opens after the Raydium ACOPAY/USDT pool is live. Until then, check the Contract page for the token address."}
         </p>
 
         <ol className="mt-10 space-y-3">
@@ -49,12 +48,12 @@ export function Trade() {
         </ol>
 
         <div className="mt-8 flex flex-wrap gap-3">
-          {live && jup ? (
+          {pool && jup ? (
             <a href={jup} target="_blank" rel="noopener noreferrer" className="btn-orca-primary">
               Open Jupiter ↗
             </a>
           ) : (
-            <BuyButton label="Open Jupiter ↗" pendingLabel="Jupiter — pool pending" />
+            <BuyButton label="Open Jupiter ↗" pendingLabel="Pool pending" />
           )}
           <Link to="/contract" className="btn-orca-secondary">
             Contract
@@ -62,7 +61,7 @@ export function Trade() {
           <Link to="/pools" className="btn-orca-ghost">
             Pools
           </Link>
-          {live && ray ? (
+          {pool && ray ? (
             <a href={ray} target="_blank" rel="noopener noreferrer" className="btn-orca-ghost">
               Raydium ↗
             </a>

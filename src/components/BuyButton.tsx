@@ -1,27 +1,22 @@
-import { isMintLive, jupiterSwapUrl } from "../config/token";
+import { isPoolLive, jupiterSwapUrl } from "../config/token";
 
 type Props = {
   className?: string;
-  /** Label when mint is live (default: Buy ACOPAY) */
   label?: string;
-  /** Label when mint is not live (default: Coming soon) */
   pendingLabel?: string;
 };
 
-/**
- * Buy CTA: disabled until mainnet mint is set in token.ts,
- * then opens Jupiter USDT → ACOPAY swap.
- */
+/** Buy opens Jupiter only after Raydium pool is marked live in token.ts. */
 export function BuyButton({
   className = "btn-orca-primary",
   label = "Buy ACOPAY",
-  pendingLabel = "Coming soon",
+  pendingLabel = "Pool pending",
 }: Props) {
   const href = jupiterSwapUrl();
 
-  if (!isMintLive() || !href) {
+  if (!isPoolLive() || !href) {
     return (
-      <button type="button" disabled className={className} title="Trading opens after mainnet launch">
+      <button type="button" disabled className={className} title="Opens after the ACOPAY/USDT pool is live">
         {pendingLabel}
       </button>
     );

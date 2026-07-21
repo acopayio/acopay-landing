@@ -20,8 +20,7 @@ export function Tokenomics() {
         <p className="label-orca">Token</p>
         <h2 className="mt-2 text-3xl font-bold text-white sm:text-4xl">Token overview</h2>
         <p className="mt-3 max-w-xl text-[#9ca3af]">
-          Mainnet design parameters. Built for payments with transparent on-chain rules — not
-          speculation marketing.
+          Supply, fee, and authority settings for ACOPAY on Solana.
         </p>
 
         <div className="mt-8 grid gap-3 sm:grid-cols-3">
@@ -64,11 +63,11 @@ export function Tokenomics() {
         </div>
 
         <p className="mt-6 text-sm text-[#6b7280]">
-          Mint authority remains active until revoked on-chain. See{" "}
+          Mint authority is still active, so more tokens can be minted later. See{" "}
           <Link to="/contract" className="text-[#00E5FF] hover:underline">
             Contract
           </Link>{" "}
-          for the official mint when published.
+          for the address and full parameters.
         </p>
       </div>
     </section>

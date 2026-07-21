@@ -29,7 +29,9 @@ export const TOKEN = {
     platform: "Raydium",
     pair: "ACOPAY / USDT",
     quoteMint: USDT_MINT,
-    status: "Pending mainnet pool",
+    /** Set true after Raydium ACOPAY/USDT pool exists. */
+    status: "Pool pending",
+    poolLive: false,
   },
   safety: {
     noOtc: true,
@@ -50,6 +52,11 @@ export function isMintLive(): boolean {
   return m.length >= 32;
 }
 
+/** True only after Raydium pool is created — gates Buy / Jupiter CTAs. */
+export function isPoolLive(): boolean {
+  return isMintLive() && TOKEN.dex.poolLive === true;
+}
+
 export function mintDisplay(): string {
   return isMintLive() ? TOKEN.mintAddress : "Not published yet — check back on acopay.net";
 }
@@ -66,14 +73,14 @@ export function solscanUrl(): string {
     : TOKEN.links.solscan;
 }
 
-/** Jupiter deep link USDT → ACOPAY. Null before mainnet mint. */
+/** Jupiter deep link USDT → ACOPAY. Null until pool is live. */
 export function jupiterSwapUrl(): string | null {
-  if (!isMintLive()) return null;
+  if (!isPoolLive()) return null;
   return `https://jup.ag/swap/${USDT_MINT}-${TOKEN.mintAddress}`;
 }
 
-/** Raydium swap deep link USDT → ACOPAY. Null before mainnet mint. */
+/** Raydium swap deep link USDT → ACOPAY. Null until pool is live. */
 export function raydiumSwapUrl(): string | null {
-  if (!isMintLive()) return null;
+  if (!isPoolLive()) return null;
   return `https://raydium.io/swap/?inputMint=${USDT_MINT}&outputMint=${TOKEN.mintAddress}`;
 }

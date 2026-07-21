@@ -1,7 +1,7 @@
 ﻿import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { POOL_FILTERS, type PoolFilterId } from "../../config/pools";
-import { TOKEN, isMintLive, jupiterSwapUrl } from "../../config/token";
+import { TOKEN, isMintLive, isPoolLive, jupiterSwapUrl } from "../../config/token";
 import { useLivePools } from "../../hooks/useLivePools";
 import type { PoolRow } from "../../types/pool";
 import { HOME_POOL_ROWS, fmtPct, fmtUsd } from "../../types/pool";
@@ -147,7 +147,7 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
                 cta="Open →"
                 to="/contract"
               />
-              {isMintLive() && jupiterSwapUrl() ? (
+              {isPoolLive() && jupiterSwapUrl() ? (
                 <Promo
                   title="Jupiter"
                   desc="Swap routes across Solana DEXs."

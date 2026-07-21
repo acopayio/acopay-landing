@@ -18,7 +18,7 @@ const MOBILE_NAV = [
   { to: "/", label: "Home", end: true, icon: HomeIcon },
   { to: "/trade", label: "Trade", end: false, icon: SwapIcon },
   { to: "/pools", label: "Pools", end: false, icon: PoolsIcon },
-  { to: "/contract", label: "Mint", end: false, icon: ContractIcon },
+  { to: "/contract", label: "Contract", end: false, icon: ContractIcon },
   { to: "/token", label: "Token", end: false, icon: TokenIcon },
 ];
 

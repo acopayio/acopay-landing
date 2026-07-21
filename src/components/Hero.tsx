@@ -19,8 +19,8 @@ export function Hero() {
           </h1>
           <p className="mt-2 text-xl font-semibold text-[#00E5FF] sm:text-2xl">{TOKEN.tagline}</p>
           <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[#9ca3af] sm:text-base">
-            Payment utility for wallet-to-wallet transfers. On-chain transfer fee {TOKEN.transferFee}.
-            Freeze authority revoked.
+            Payment utility for wallet-to-wallet transfers. On-chain fee {TOKEN.transferFee}. Wallets
+            cannot be frozen.
           </p>
 
           <div className="mt-6 flex flex-wrap gap-3">
