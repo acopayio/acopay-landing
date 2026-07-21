@@ -13,11 +13,20 @@ export function Hero() {
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(0, 229, 255,0.07),_transparent_55%)]" />
       <div className="page-wrap relative space-y-6">
         <div>
-          <p className="label-orca">Solana · Token-2022</p>
-          <h1 className="mt-2 text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">
-            {TOKEN.name}
-          </h1>
-          <p className="mt-2 text-xl font-semibold text-[#00E5FF] sm:text-2xl">{TOKEN.tagline}</p>
+          <div className="w-fit max-w-full">
+            <p className="label-orca">Solana · Token-2022</p>
+            <h1 className="mt-2 text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">
+              {TOKEN.name}
+            </h1>
+            <p
+              className="mt-2 flex w-full justify-between gap-1 text-xl font-semibold text-[#00E5FF] sm:text-2xl"
+              aria-label={TOKEN.tagline}
+            >
+              <span>Pay</span>
+              <span>your</span>
+              <span>way</span>
+            </p>
+          </div>
           <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[#9ca3af] sm:text-base">
             Payment utility for wallet-to-wallet transfers. On-chain fee {TOKEN.transferFee}. Wallets
             cannot be frozen.
