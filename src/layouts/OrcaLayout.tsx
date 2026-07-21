@@ -71,10 +71,6 @@ export function OrcaLayout() {
             ))}
           </div>
         </nav>
-
-        <div className="border-t border-white/[0.06] p-3">
-          <BuyButton className="btn-orca-primary w-full !rounded-xl !px-3" label="Buy" />
-        </div>
       </aside>
 
       {/* Main column */}
