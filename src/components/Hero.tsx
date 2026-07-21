@@ -9,9 +9,9 @@ export function Hero() {
   const live = isMintLive();
 
   return (
-    <section className="relative overflow-hidden pb-8 pt-6 md:pb-12 md:pt-10">
+    <section className="relative overflow-hidden py-5 md:py-7">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(0, 229, 255,0.07),_transparent_55%)]" />
-      <div className="page-wrap relative space-y-6">
+      <div className="page-wrap relative space-y-4">
         <div>
           <p className="label-orca">Solana · Token-2022</p>
           <div className="mt-2 w-fit max-w-full">
@@ -29,12 +29,12 @@ export function Hero() {
               ))}
             </p>
           </div>
-          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[#9ca3af] sm:text-base">
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[#9ca3af] sm:text-base">
             Payment utility for wallet-to-wallet transfers. On-chain fee {TOKEN.transferFee}. Wallets
             cannot be frozen.
           </p>
 
-          <div className="mt-6 flex flex-wrap gap-3">
+          <div className="mt-4 flex flex-wrap gap-3">
             <BuyButton />
             <Link to="/contract" className="btn-orca-secondary">
               Contract
