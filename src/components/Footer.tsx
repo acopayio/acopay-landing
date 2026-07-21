@@ -1,6 +1,5 @@
 ﻿import { Link } from "react-router-dom";
 import { TOKEN, explorerUrl, jupiterSwapUrl, solscanUrl } from "../config/token";
-import { BuyButton } from "./BuyButton";
 
 export function Footer() {
   const jup = jupiterSwapUrl();
@@ -17,10 +16,9 @@ export function Footer() {
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-[#9ca3af]">
               Solana payment utility.
             </p>
-            <div className="mt-6 flex flex-wrap items-center gap-3 md:mt-auto md:pt-2">
-              <p className="text-xs text-[#6b7280]">© {TOKEN.founded} ACOPAY</p>
-              <BuyButton className="btn-orca-primary !rounded-lg !px-3 !py-1.5 !text-xs" />
-            </div>
+            <p className="mt-6 text-xs text-[#6b7280] md:mt-auto md:pt-2">
+              © {TOKEN.founded} ACOPAY
+            </p>
           </div>
           <div>
             <h4 className="label-orca">Product</h4>
@@ -60,24 +58,22 @@ export function Footer() {
           <div>
             <h4 className="label-orca">On-chain</h4>
             <ul className="mt-4 space-y-2 text-sm">
-              <li>
+              <li className="flex flex-wrap items-center gap-x-3 gap-y-1">
                 <a
                   href={explorerUrl()}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[#9ca3af] hover:text-[#00E5FF]"
                 >
-                  Solana Explorer
+                  Explorer ↗
                 </a>
-              </li>
-              <li>
                 <a
                   href={solscanUrl()}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[#9ca3af] hover:text-[#00E5FF]"
                 >
-                  Solscan
+                  Solscan ↗
                 </a>
               </li>
               <li>

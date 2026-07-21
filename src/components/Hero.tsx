@@ -40,14 +40,24 @@ export function Hero() {
               Contract
             </Link>
             {live ? (
-              <a
-                href={explorerUrl()}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-orca-ghost"
-              >
-                Explorer ↗
-              </a>
+              <>
+                <a
+                  href={explorerUrl()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-orca-ghost"
+                >
+                  Explorer ↗
+                </a>
+                <a
+                  href={solscanUrl()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-orca-ghost"
+                >
+                  Solscan ↗
+                </a>
+              </>
             ) : (
               <Link to="/faq" className="btn-orca-ghost">
                 FAQ
