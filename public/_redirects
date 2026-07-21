@@ -1,2 +1,8 @@
-/* SPA fallback for Cloudflare Pages */
+# Never SPA-fallback hashed assets — missing CSS/JS must 404 (not HTML 200).
+# Otherwise browsers apply index.html as stylesheet → blank/unstyled page.
+/assets/*.css   /404.html   404
+/assets/*.js    /404.html   404
+/assets/*.map   /404.html   404
+
+# Client-side routes (React Router)
 /*    /index.html   200

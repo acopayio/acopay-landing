@@ -30,12 +30,12 @@ export function OrcaLayout() {
   return (
     <div className="jup-shell flex">
       {/* Desktop sidebar — Jupiter style */}
-      <aside className="sticky top-0 z-40 hidden h-[100dvh] w-[220px] shrink-0 flex-col border-r border-white/[0.06] bg-[#090b0e] lg:flex">
-        <Link to="/" className="flex items-center gap-2.5 px-5 py-5">
-          <img src="/assets/logo.png" alt="" className="h-9 w-9 rounded-full ring-2 ring-[#00E5FF]/35" />
-          <div>
-            <div className="text-base font-bold tracking-tight text-white">ACOPAY</div>
-            <div className="text-[11px] font-medium text-[#00E5FF]">Pay your way</div>
+      <aside className="sticky top-0 z-40 hidden h-[100dvh] w-[220px] shrink-0 flex-col overflow-x-hidden border-r border-white/[0.06] bg-[#090b0e] lg:flex">
+        <Link to="/" className="flex items-center gap-2.5 px-4 py-5">
+          <img src="/assets/logo.png" alt="" className="h-9 w-9 shrink-0 rounded-full ring-2 ring-[#00E5FF]/35" />
+          <div className="min-w-0">
+            <div className="truncate text-base font-bold tracking-tight text-white">ACOPAY</div>
+            <div className="truncate text-[11px] font-medium text-[#00E5FF]">Pay your way</div>
           </div>
         </Link>
 
@@ -75,13 +75,8 @@ export function OrcaLayout() {
         </nav>
 
         <div className="border-t border-white/[0.06] p-3">
-          <BuyButton className="btn-orca-primary w-full !rounded-xl" label="Buy" />
-          <a
-            href="https://acopay.net"
-            className="mt-2 block text-center text-[11px] text-[#6b7280] hover:text-[#00E5FF]"
-          >
-            acopay.net
-          </a>
+          <BuyButton className="btn-orca-primary w-full !rounded-xl !px-3" label="Buy" />
+          <p className="mt-2 text-center text-[11px] text-[#6b7280]">acopay.net</p>
         </div>
       </aside>
 
