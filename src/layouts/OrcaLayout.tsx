@@ -33,10 +33,10 @@ export function OrcaLayout() {
       <aside className="sticky top-0 z-40 hidden h-[100dvh] w-[220px] shrink-0 flex-col overflow-x-hidden border-r border-white/[0.06] bg-[#090b0e] lg:flex">
         <Link to="/" className="flex items-center gap-2.5 px-4 py-5">
           <img src="/assets/logo.png" alt="" className="h-9 w-9 shrink-0 rounded-full ring-2 ring-[#00E5FF]/35" />
-          <div className="min-w-0 flex-1">
+          <div className="w-fit min-w-0">
             <div className="text-base font-bold tracking-tight text-white">ACOPAY</div>
             <p
-              className="mt-1 flex w-full justify-between text-[9px] font-semibold leading-none text-[#00E5FF]"
+              className="mt-1 flex w-full justify-between text-[8px] font-semibold leading-none text-[#00E5FF]"
               aria-label="Pay your way"
             >
               {Array.from("Pay your way").map((ch, i) => (

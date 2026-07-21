@@ -13,13 +13,13 @@ export function Hero() {
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(0, 229, 255,0.07),_transparent_55%)]" />
       <div className="page-wrap relative space-y-6">
         <div>
-          <div className="w-fit max-w-full">
-            <p className="label-orca">Solana · Token-2022</p>
-            <h1 className="mt-2 text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">
+          <p className="label-orca">Solana · Token-2022</p>
+          <div className="mt-2 w-fit max-w-full">
+            <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">
               {TOKEN.name}
             </h1>
             <p
-              className="mt-2 flex w-full justify-between text-[1.05rem] font-semibold leading-none tracking-normal text-[#00E5FF] sm:text-[1.35rem] md:text-[1.6rem]"
+              className="mt-2 flex w-full justify-between text-[0.95rem] font-semibold leading-none text-[#00E5FF] sm:text-[1.2rem] md:text-[1.45rem]"
               aria-label={TOKEN.tagline}
             >
               {Array.from("Pay your way").map((ch, i) => (
