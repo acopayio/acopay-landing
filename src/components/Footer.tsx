@@ -1,13 +1,89 @@
 ﻿import { Link } from "react-router-dom";
 import { TOKEN, explorerUrl, jupiterSwapUrl, solscanUrl } from "../config/token";
 
+const PRODUCT_LINKS = [
+  { to: "/token", label: "Token" },
+  { to: "/pools", label: "Pools" },
+  { to: "/trade", label: "Trade" },
+  { to: "/contract", label: "Contract" },
+  { to: "/roadmap", label: "Roadmap" },
+  { to: "/faq", label: "FAQ" },
+] as const;
+
 export function Footer() {
   const jup = jupiterSwapUrl();
 
   return (
-    <footer className="border-t border-white/[0.06] bg-[#090b0e]/80 py-14">
+    <footer className="border-t border-white/[0.06] bg-[#090b0e]/80 py-8 md:py-14">
       <div className="page-wrap">
-        <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1fr] md:items-stretch">
+        {/* Mobile — compact */}
+        <div className="md:hidden">
+          <div className="flex items-center justify-between gap-3">
+            <Link to="/" className="flex min-w-0 items-center gap-2">
+              <img src="/assets/logo.png" alt="" className="h-7 w-7 object-contain" />
+              <div className="min-w-0">
+                <div className="text-sm font-bold tracking-tight text-white">ACOPAY</div>
+                <div className="text-[11px] text-[#6b7280]">{TOKEN.tagline}</div>
+              </div>
+            </Link>
+            <a
+              href={`mailto:${TOKEN.email}`}
+              className="shrink-0 text-[11px] font-medium text-[#00E5FF]"
+            >
+              Contact
+            </a>
+          </div>
+
+          <div className="mt-5 grid grid-cols-2 gap-x-6 gap-y-4">
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#00E5FF]">
+                Product
+              </p>
+              <ul className="mt-2 columns-2 gap-x-4 text-sm leading-7 text-[#9ca3af]">
+                {PRODUCT_LINKS.map((l) => (
+                  <li key={l.to}>
+                    <Link to={l.to} className="hover:text-[#00E5FF]">
+                      {l.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#00E5FF]">
+                On-chain
+              </p>
+              <ul className="mt-2 space-y-1.5 text-sm text-[#9ca3af]">
+                <li>
+                  <a href={explorerUrl()} target="_blank" rel="noopener noreferrer" className="hover:text-[#00E5FF]">
+                    Explorer ↗
+                  </a>
+                </li>
+                <li>
+                  <a href={solscanUrl()} target="_blank" rel="noopener noreferrer" className="hover:text-[#00E5FF]">
+                    Solscan ↗
+                  </a>
+                </li>
+                <li>
+                  {jup ? (
+                    <a href={jup} target="_blank" rel="noopener noreferrer" className="hover:text-[#00E5FF]">
+                      Jupiter ↗
+                    </a>
+                  ) : (
+                    <Link to="/trade" className="hover:text-[#00E5FF]">
+                      Trade
+                    </Link>
+                  )}
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <p className="mt-6 text-center text-[11px] text-[#6b7280]">© {TOKEN.founded} ACOPAY</p>
+        </div>
+
+        {/* Desktop */}
+        <div className="hidden gap-10 md:grid md:grid-cols-[1.4fr_1fr_1fr_1fr] md:items-stretch">
           <div className="flex flex-col">
             <Link to="/" className="flex items-center gap-3 font-bold text-white">
               <img src="/assets/logo.png" alt="" className="h-9 w-9 object-contain" />
@@ -23,36 +99,13 @@ export function Footer() {
           <div>
             <h4 className="label-orca">Product</h4>
             <ul className="mt-4 space-y-2 text-sm">
-              <li>
-                <Link to="/token" className="text-[#9ca3af] hover:text-[#00E5FF]">
-                  Token
-                </Link>
-              </li>
-              <li>
-                <Link to="/pools" className="text-[#9ca3af] hover:text-[#00E5FF]">
-                  Pools
-                </Link>
-              </li>
-              <li>
-                <Link to="/trade" className="text-[#9ca3af] hover:text-[#00E5FF]">
-                  Trade
-                </Link>
-              </li>
-              <li>
-                <Link to="/contract" className="text-[#9ca3af] hover:text-[#00E5FF]">
-                  Contract
-                </Link>
-              </li>
-              <li>
-                <Link to="/roadmap" className="text-[#9ca3af] hover:text-[#00E5FF]">
-                  Roadmap
-                </Link>
-              </li>
-              <li>
-                <Link to="/faq" className="text-[#9ca3af] hover:text-[#00E5FF]">
-                  FAQ
-                </Link>
-              </li>
+              {PRODUCT_LINKS.map((l) => (
+                <li key={l.to}>
+                  <Link to={l.to} className="text-[#9ca3af] hover:text-[#00E5FF]">
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
           <div>

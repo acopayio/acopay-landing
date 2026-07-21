@@ -72,7 +72,7 @@ body {
 }
 
 .section-pad {
-  @apply py-12 md:py-16;
+  @apply py-8 md:py-16;
 }
 
 /* One shared content rail — desktop + mobile */
@@ -126,7 +126,7 @@ body {
 }
 
 .jup-bottom-nav-item {
-  @apply flex flex-1 flex-col items-center justify-center gap-0.5 py-1.5 text-[10px] font-medium text-[#6b7280] transition;
+  @apply flex flex-1 flex-col items-center justify-center gap-0.5 py-1.5 text-[10px] font-medium text-[#6b7280] transition active:scale-95;
 }
 
 .jup-bottom-nav-item-active {
