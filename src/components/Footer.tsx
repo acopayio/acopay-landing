@@ -22,27 +22,27 @@ export function Footer() {
             <h4 className="label-orca">Product</h4>
             <ul className="mt-4 space-y-2 text-sm">
               <li>
-                <Link to="/token" className="text-[#9ca3af] hover:text-[#c7f284]">
+                <Link to="/token" className="text-[#9ca3af] hover:text-[#00E5FF]">
                   Token
                 </Link>
               </li>
               <li>
-                <Link to="/pools" className="text-[#9ca3af] hover:text-[#c7f284]">
+                <Link to="/pools" className="text-[#9ca3af] hover:text-[#00E5FF]">
                   Pools
                 </Link>
               </li>
               <li>
-                <Link to="/trade" className="text-[#9ca3af] hover:text-[#c7f284]">
+                <Link to="/trade" className="text-[#9ca3af] hover:text-[#00E5FF]">
                   Trade
                 </Link>
               </li>
               <li>
-                <Link to="/contract" className="text-[#9ca3af] hover:text-[#c7f284]">
+                <Link to="/contract" className="text-[#9ca3af] hover:text-[#00E5FF]">
                   Contract
                 </Link>
               </li>
               <li>
-                <Link to="/faq" className="text-[#9ca3af] hover:text-[#c7f284]">
+                <Link to="/faq" className="text-[#9ca3af] hover:text-[#00E5FF]">
                   FAQ
                 </Link>
               </li>
@@ -57,7 +57,7 @@ export function Footer() {
                     href={explorerUrl()}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[#9ca3af] hover:text-[#c7f284]"
+                    className="text-[#9ca3af] hover:text-[#00E5FF]"
                   >
                     Solana Explorer
                   </a>
@@ -71,7 +71,7 @@ export function Footer() {
                     href={solscanUrl()}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[#9ca3af] hover:text-[#c7f284]"
+                    className="text-[#9ca3af] hover:text-[#00E5FF]"
                   >
                     Solscan
                   </a>
@@ -85,12 +85,12 @@ export function Footer() {
                     href={jup}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[#9ca3af] hover:text-[#c7f284]"
+                    className="text-[#9ca3af] hover:text-[#00E5FF]"
                   >
                     Jupiter
                   </a>
                 ) : (
-                  <Link to="/trade" className="text-[#9ca3af] hover:text-[#c7f284]">
+                  <Link to="/trade" className="text-[#9ca3af] hover:text-[#00E5FF]">
                     Trade guide
                   </Link>
                 )}
@@ -101,7 +101,7 @@ export function Footer() {
             <h4 className="label-orca">Contact</h4>
             <a
               href={`mailto:${TOKEN.email}`}
-              className="mt-4 inline-block text-sm text-[#9ca3af] hover:text-[#c7f284]"
+              className="mt-4 inline-block text-sm text-[#9ca3af] hover:text-[#00E5FF]"
             >
               {TOKEN.email}
             </a>

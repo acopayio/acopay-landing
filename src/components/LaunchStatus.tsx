@@ -51,15 +51,15 @@ export function LaunchStatus() {
                 </tr>
               </thead>
               <tbody>
-                <tr className="bg-[#c7f284]/[0.04]">
+                <tr className="bg-[#00E5FF]/[0.04]">
                   <td className="font-medium text-[#9ca3af]">Mint address</td>
                   <td className="font-semibold text-white">
                     {live ? (
-                      <code className="break-all font-mono text-xs text-[#c7f284] sm:text-sm">
+                      <code className="break-all font-mono text-xs text-[#00E5FF] sm:text-sm">
                         {TOKEN.mintAddress}
                       </code>
                     ) : (
-                      <span className="text-[#c7f284]">Not published yet</span>
+                      <span className="text-[#00E5FF]">Not published yet</span>
                     )}
                   </td>
                 </tr>
@@ -84,7 +84,7 @@ export function LaunchStatus() {
                   <td>
                     <a
                       href={`mailto:${TOKEN.email}`}
-                      className="font-semibold text-[#c7f284] hover:underline"
+                      className="font-semibold text-[#00E5FF] hover:underline"
                     >
                       {TOKEN.email}
                     </a>
@@ -103,7 +103,7 @@ export function LaunchStatus() {
                     <span
                       className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px] font-bold ${
                         item.done
-                          ? "bg-[#c7f284]/20 text-[#c7f284]"
+                          ? "bg-[#00E5FF]/20 text-[#00E5FF]"
                           : "bg-white/[0.06] text-[#6b7280]"
                       }`}
                     >

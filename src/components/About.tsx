@@ -24,13 +24,13 @@ export function About() {
         <p className="mt-4 max-w-2xl text-lg leading-relaxed text-[#9ca3af]">
           ACOPAY is a payment utility token on Solana Mainnet. Use it for peer-to-peer transfers —
           pay a counterpart, settle a bill, or move funds with a clear on-chain fee model.{" "}
-          <span className="font-semibold text-[#c7f284]">Pay your way.</span>
+          <span className="font-semibold text-[#00E5FF]">Pay your way.</span>
         </p>
 
         <div className="mt-12 grid gap-4 md:grid-cols-3">
           {FEATURES.map((f, i) => (
             <article key={f.title} className="orca-card orca-card-hover p-6">
-              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-[#c7f284]/10 text-sm font-bold text-[#c7f284] ring-1 ring-[#c7f284]/20">
+              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-[#00E5FF]/10 text-sm font-bold text-[#00E5FF] ring-1 ring-[#00E5FF]/20">
                 {String(i + 1).padStart(2, "0")}
               </div>
               <h3 className="text-lg font-bold text-white">{f.title}</h3>
@@ -41,15 +41,15 @@ export function About() {
 
         <p className="mt-8 text-sm text-[#6b7280]">
           Fees & safety →{" "}
-          <Link to="/faq" className="font-medium text-[#c7f284] hover:underline">
+          <Link to="/faq" className="font-medium text-[#00E5FF] hover:underline">
             FAQ
           </Link>
           {" · "}
-          <Link to="/contract" className="font-medium text-[#c7f284] hover:underline">
+          <Link to="/contract" className="font-medium text-[#00E5FF] hover:underline">
             Contract
           </Link>
           {" · "}
-          <Link to="/token" className="font-medium text-[#c7f284] hover:underline">
+          <Link to="/token" className="font-medium text-[#00E5FF] hover:underline">
             Token
           </Link>
         </p>

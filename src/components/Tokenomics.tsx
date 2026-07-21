@@ -27,7 +27,7 @@ export function Tokenomics() {
         <div className="mt-8 grid gap-3 sm:grid-cols-3">
           <div className="orca-card p-5">
             <p className="text-xs font-semibold uppercase tracking-wider text-[#6b7280]">Supply</p>
-            <p className="mt-2 text-2xl font-bold text-[#c7f284]">{TOKEN.totalSupply}</p>
+            <p className="mt-2 text-2xl font-bold text-[#00E5FF]">{TOKEN.totalSupply}</p>
             <p className="mt-1 text-xs text-[#9ca3af]">ACOPAY · {TOKEN.decimals} decimals</p>
           </div>
           <div className="orca-card p-5">
@@ -37,7 +37,7 @@ export function Tokenomics() {
           </div>
           <div className="orca-card p-5">
             <p className="text-xs font-semibold uppercase tracking-wider text-[#6b7280]">Safety</p>
-            <p className="mt-2 text-2xl font-bold text-[#c7f284]">Freeze revoked</p>
+            <p className="mt-2 text-2xl font-bold text-[#00E5FF]">Freeze revoked</p>
             <p className="mt-1 text-xs text-[#9ca3af]">Wallets cannot be frozen</p>
           </div>
         </div>
@@ -54,7 +54,7 @@ export function Tokenomics() {
               {METRICS.map((m) => (
                 <tr key={m.label}>
                   <td className="font-medium text-[#9ca3af]">{m.label}</td>
-                  <td className={`font-semibold ${m.accent ? "text-[#c7f284]" : "text-white"}`}>
+                  <td className={`font-semibold ${m.accent ? "text-[#00E5FF]" : "text-white"}`}>
                     {m.value}
                   </td>
                 </tr>
@@ -65,7 +65,7 @@ export function Tokenomics() {
 
         <p className="mt-6 text-sm text-[#6b7280]">
           Mint authority remains active until revoked on-chain. See{" "}
-          <Link to="/contract" className="text-[#c7f284] hover:underline">
+          <Link to="/contract" className="text-[#00E5FF] hover:underline">
             Contract
           </Link>{" "}
           for the official mint when published.

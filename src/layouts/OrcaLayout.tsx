@@ -1,4 +1,4 @@
-import { NavLink, Outlet, Link } from "react-router-dom";
+﻿import { NavLink, Outlet, Link } from "react-router-dom";
 import { BuyButton } from "../components/BuyButton";
 import { Footer } from "../components/Footer";
 
@@ -32,10 +32,10 @@ export function OrcaLayout() {
       {/* Desktop sidebar — Jupiter style */}
       <aside className="sticky top-0 z-40 hidden h-[100dvh] w-[220px] shrink-0 flex-col border-r border-white/[0.06] bg-[#090b0e] lg:flex">
         <Link to="/" className="flex items-center gap-2.5 px-5 py-5">
-          <img src="/assets/logo.png" alt="" className="h-9 w-9 rounded-full ring-2 ring-[#c7f284]/35" />
+          <img src="/assets/logo.png" alt="" className="h-9 w-9 rounded-full ring-2 ring-[#00E5FF]/35" />
           <div>
             <div className="text-base font-bold tracking-tight text-white">ACOPAY</div>
-            <div className="text-[11px] font-medium text-[#c7f284]">Pay your way</div>
+            <div className="text-[11px] font-medium text-[#00E5FF]">Pay your way</div>
           </div>
         </Link>
 
@@ -78,7 +78,7 @@ export function OrcaLayout() {
           <BuyButton className="btn-orca-primary w-full !rounded-xl" label="Buy" />
           <a
             href="https://acopay.net"
-            className="mt-2 block text-center text-[11px] text-[#6b7280] hover:text-[#c7f284]"
+            className="mt-2 block text-center text-[11px] text-[#6b7280] hover:text-[#00E5FF]"
           >
             acopay.net
           </a>
@@ -91,7 +91,7 @@ export function OrcaLayout() {
         <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-[#0c1017]/95 backdrop-blur-xl lg:hidden">
           <div className="page-wrap flex h-14 items-center justify-between gap-3">
             <Link to="/" className="flex min-w-0 items-center gap-2">
-              <img src="/assets/logo.png" alt="" className="h-8 w-8 rounded-full ring-1 ring-[#c7f284]/40" />
+              <img src="/assets/logo.png" alt="" className="h-8 w-8 rounded-full ring-1 ring-[#00E5FF]/40" />
               <span className="truncate font-bold tracking-tight text-white">ACOPAY</span>
             </Link>
             <BuyButton className="btn-orca-primary !min-h-9 !rounded-lg !px-3 !py-1.5 !text-xs" label="Buy" />
@@ -110,7 +110,7 @@ export function OrcaLayout() {
                 href="https://solscan.io/token/6Pcq8xnkVYxR42FEehXrucvaMB1fZYuqoR8B9FGSAS8F"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-xl border border-white/10 px-3 py-1.5 text-xs font-medium text-[#9ca3af] transition hover:border-[#c7f284]/30 hover:text-white"
+                className="rounded-xl border border-white/10 px-3 py-1.5 text-xs font-medium text-[#9ca3af] transition hover:border-[#00E5FF]/30 hover:text-white"
               >
                 Solscan ↗
               </a>

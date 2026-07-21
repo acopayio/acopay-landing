@@ -39,7 +39,7 @@ export function Trade() {
 
         {!live && (
           <div className="orca-card mt-6 flex items-start gap-3 !rounded-2xl px-4 py-3.5">
-            <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-[#c7f284]" />
+            <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-[#00E5FF]" />
             <p className="text-sm leading-relaxed text-[#9ca3af]">
               <span className="font-semibold text-white">No OTC / no private sales.</span> Anyone
               asking you to send USDT to a wallet for ACOPAY is not official. Wait for mint + pool,
@@ -51,7 +51,7 @@ export function Trade() {
         <ol className="mt-10 space-y-3">
           {STEPS.map((step, i) => (
             <li key={step.title} className="orca-card flex gap-4 p-5 sm:p-6">
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#c7f284] text-sm font-bold text-[#0c1017]">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#00E5FF] text-sm font-bold text-[#0c1017]">
                 {i + 1}
               </span>
               <div>

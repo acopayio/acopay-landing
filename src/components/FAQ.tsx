@@ -57,13 +57,13 @@ export function FAQ() {
           {FAQS.map((item, i) => (
             <details
               key={item.q}
-              className="orca-card group overflow-hidden !rounded-2xl open:ring-1 open:ring-[#c7f284]/20"
+              className="orca-card group overflow-hidden !rounded-2xl open:ring-1 open:ring-[#00E5FF]/20"
               open={i === 0}
             >
               <summary className="cursor-pointer list-none px-5 py-4 font-semibold text-white [&::-webkit-details-marker]:hidden">
                 <span className="flex items-center justify-between gap-4">
                   {item.q}
-                  <span className="text-[#c7f284] transition group-open:rotate-45">+</span>
+                  <span className="text-[#00E5FF] transition group-open:rotate-45">+</span>
                 </span>
               </summary>
               <p className="border-t border-white/[0.06] px-5 py-4 text-sm leading-relaxed text-[#9ca3af]">

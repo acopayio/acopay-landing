@@ -48,11 +48,11 @@ export function Contract() {
                 </tr>
               </thead>
               <tbody>
-                <tr className="bg-[#c7f284]/[0.04]">
+                <tr className="bg-[#00E5FF]/[0.04]">
                   <td className="font-medium text-[#9ca3af]">Mint address</td>
                   <td>
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-                      <code className="break-all font-mono text-xs text-[#c7f284] sm:text-sm">
+                      <code className="break-all font-mono text-xs text-[#00E5FF] sm:text-sm">
                         {mint}
                       </code>
                       <button
@@ -116,7 +116,7 @@ export function Contract() {
             <ol className="mt-5 space-y-4">
               {VERIFY_STEPS.map((step, i) => (
                 <li key={step} className="flex gap-3 text-sm leading-relaxed text-[#9ca3af]">
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#c7f284]/15 text-xs font-bold text-[#c7f284]">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#00E5FF]/15 text-xs font-bold text-[#00E5FF]">
                     {i + 1}
                   </span>
                   {step}
@@ -125,7 +125,7 @@ export function Contract() {
             </ol>
             <p className="mt-6 text-xs text-[#6b7280]">
               Contact:{" "}
-              <a href={`mailto:${TOKEN.email}`} className="text-[#c7f284] hover:underline">
+              <a href={`mailto:${TOKEN.email}`} className="text-[#00E5FF] hover:underline">
                 {TOKEN.email}
               </a>
             </p>

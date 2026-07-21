@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+﻿import { Link } from "react-router-dom";
 import { TOKEN, explorerUrl, isMintLive, mintDisplay, solscanUrl } from "../config/token";
 import { BuyButton } from "./BuyButton";
 import { useCopy } from "../hooks/useCopy";
@@ -10,17 +10,17 @@ export function Hero() {
 
   return (
     <section className="relative overflow-hidden pb-8 pt-6 md:pb-12 md:pt-10">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(199,242,132,0.07),_transparent_55%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(0, 229, 255,0.07),_transparent_55%)]" />
       <div className="page-wrap relative space-y-6">
         <div
           className={`flex items-start gap-3 rounded-2xl border px-4 py-3.5 ${
             live
-              ? "border-[#c7f284]/25 bg-[#c7f284]/[0.06]"
+              ? "border-[#00E5FF]/25 bg-[#00E5FF]/[0.06]"
               : "border-white/[0.08] bg-[#191c22]"
           }`}
         >
           <span
-            className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${live ? "bg-[#c7f284]" : "bg-[#9ca3af]"}`}
+            className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${live ? "bg-[#00E5FF]" : "bg-[#9ca3af]"}`}
           />
           <p className="text-sm leading-relaxed text-[#9ca3af]">
             {live ? (
@@ -42,7 +42,7 @@ export function Hero() {
           <h1 className="mt-2 text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">
             {TOKEN.name}
           </h1>
-          <p className="mt-2 text-xl font-semibold text-[#c7f284] sm:text-2xl">{TOKEN.tagline}</p>
+          <p className="mt-2 text-xl font-semibold text-[#00E5FF] sm:text-2xl">{TOKEN.tagline}</p>
           <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[#9ca3af] sm:text-base">
             Payment utility on Solana (Token-2022). Transparent on-chain fee. Freeze revoked. Official
             source: acopay.net only.
@@ -72,7 +72,7 @@ export function Hero() {
 
         <div className="orca-card p-4 sm:p-5">
           <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-            <p className="text-xs font-semibold uppercase tracking-wider text-[#c7f284]">
+            <p className="text-xs font-semibold uppercase tracking-wider text-[#00E5FF]">
               Official mint
             </p>
             <div className="flex gap-3 text-xs font-medium">
@@ -81,7 +81,7 @@ export function Hero() {
                   href={solscanUrl()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[#c7f284] hover:underline"
+                  className="text-[#00E5FF] hover:underline"
                 >
                   Solscan ↗
                 </a>
