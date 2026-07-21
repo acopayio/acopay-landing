@@ -30,7 +30,13 @@ Output: `dist/` — upload this folder or connect GitHub to Cloudflare Pages.
 | Node version | 20+ |
 
 Custom domain: **acopay.net** (canonical).  
-Also attach **www.acopay.net** in Cloudflare Pages → Custom domains, then `_redirects` forces `www` → apex (301). Do not leave www on a different project/deploy.
+
+In Cloudflare Pages → Custom domains:
+1. Add both `acopay.net` and `www.acopay.net` to the **same** Pages project (not two projects).
+2. Prefer Cloudflare “Redirect to apex” / Bulk Redirect: `www.acopay.net` → `https://acopay.net`.
+3. Repo also forces www → apex via `functions/_middleware.ts` + a small script in `index.html`.
+
+`public/CNAME` lists apex only.
 
 ## After mainnet launch
 

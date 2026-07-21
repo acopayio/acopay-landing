@@ -32,6 +32,14 @@
     />
     <meta name="twitter:image" content="https://acopay.net/assets/og-image.png" />
     <meta name="theme-color" content="#0c1017" />
+    <!-- One canonical host: avoid www vs apex split browser cache -->
+    <script>
+      if (location.hostname === "www.acopay.net") {
+        location.replace(
+          "https://acopay.net" + location.pathname + location.search + location.hash
+        );
+      }
+    </script>
     <!-- Critical fallback: if main CSS fails mid-deploy, avoid white/purple unstyled flash -->
     <style>
       html,
