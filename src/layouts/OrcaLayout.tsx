@@ -37,39 +37,18 @@ export function OrcaLayout() {
           <span className="text-base font-bold tracking-tight text-white">ACOPAY</span>
         </Link>
 
-        <nav className="flex-1 space-y-6 overflow-y-auto px-3 pb-4">
-          <div>
-            <p className="mb-1.5 px-3 text-[10px] font-semibold uppercase tracking-wider text-[#6b7280]">
-              Trade
-            </p>
-            {TRADE_NAV.map((item) => (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                end={item.end}
-                className={({ isActive }) => linkClass(isActive)}
-              >
-                <item.icon />
-                {item.label}
-              </NavLink>
-            ))}
-          </div>
-          <div>
-            <p className="mb-1.5 px-3 text-[10px] font-semibold uppercase tracking-wider text-[#6b7280]">
-              Info
-            </p>
-            {INFO_NAV.map((item) => (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                end={item.end}
-                className={({ isActive }) => linkClass(isActive)}
-              >
-                <item.icon />
-                {item.label}
-              </NavLink>
-            ))}
-          </div>
+        <nav className="flex-1 space-y-0.5 overflow-y-auto px-3 pb-4">
+          {[...TRADE_NAV, ...INFO_NAV].map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.end}
+              className={({ isActive }) => linkClass(isActive)}
+            >
+              <item.icon />
+              {item.label}
+            </NavLink>
+          ))}
         </nav>
 
         <div className="mt-auto border-t border-white/[0.06] p-3">
