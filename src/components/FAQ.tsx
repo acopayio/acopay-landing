@@ -3,19 +3,19 @@
 const FAQS = [
   {
     q: "What is ACOPAY?",
-    a: "A Solana payment utility token (Token-2022) for wallet-to-wallet transfers.",
+    a: "ACOPAY is a Solana payment utility token (Token-2022) for wallet-to-wallet transfers and settlement.",
   },
   {
     q: "Where is the contract address?",
-    a: "On this site — Contract page and homepage. Confirm the same address on Solscan or Solana Explorer.",
+    a: "On this site (Contract page and homepage). Confirm the same mint on Solscan or Solana Explorer before you trade.",
   },
   {
     q: "How do I buy?",
-    a: "When the Raydium ACOPAY/USDT pool is live, swap USDT → ACOPAY on Jupiter or Raydium with your wallet.",
+    a: "Swap USDT → ACOPAY on Jupiter or Raydium. Always match the contract address published on this site.",
   },
   {
     q: "Can I transfer ACOPAY peer-to-peer?",
-    a: "Yes. Transfers are for payments. Market price discovery comes from the liquidity pool once it exists.",
+    a: "Yes. Send ACOPAY between wallets for payments. Market price comes from the Raydium ACOPAY/USDT pool.",
   },
   {
     q: "Network and supply?",
@@ -23,15 +23,19 @@ const FAQS = [
   },
   {
     q: "What are the fees?",
-    a: "On-chain transfer fee is 0.01% (1 bps), paid by the sender. SOL gas is paid by the sending wallet.",
+    a: "On-chain transfer fee is 0.01% (1 bps), paid by the sender. Network gas is paid in SOL.",
   },
   {
     q: "Can wallets be frozen?",
-    a: "No. Freeze is revoked — wallets cannot be frozen.",
+    a: "No. Freeze authority is revoked — wallets cannot be frozen.",
+  },
+  {
+    q: "Where is the liquidity pool?",
+    a: `Raydium CPMM pair ${TOKEN.dex.pair}. Pool ID: ${TOKEN.dex.poolId}.`,
   },
   {
     q: "Jupiter verification?",
-    a: "Will be submitted after the Raydium pool is live. Until then, use the address on this site.",
+    a: "Jupiter verification will be submitted next. Until then, use the contract address on this site.",
   },
   {
     q: "Contact?",

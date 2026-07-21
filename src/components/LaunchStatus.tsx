@@ -16,8 +16,8 @@ const FACTS = [
 const NEXT = [
   { done: true, text: "Token live on Solana Mainnet" },
   { done: true, text: "Metadata + contract published" },
-  { done: false, text: "Open ACOPAY/USDT pool on Raydium" },
-  { done: false, text: "ACOPAY payment on web" },
+  { done: true, text: "Raydium ACOPAY/USDT pool" },
+  { done: false, text: "Jupiter token list verification" },
 ];
 
 export function LaunchStatus() {
@@ -29,8 +29,7 @@ export function LaunchStatus() {
         <p className="label-orca">Token</p>
         <h2 className="mt-2 text-2xl font-bold text-white sm:text-3xl">Parameters</h2>
         <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[#9ca3af]">
-          On-chain facts for ACOPAY. Raydium TVL elsewhere on this site is market reference, not our
-          pool until ACOPAY/USDT is live.
+          On-chain facts for ACOPAY. The ACOPAY/USDT pool is live on Raydium.
         </p>
 
         <div className="mt-8 grid gap-4 lg:grid-cols-2">
@@ -77,7 +76,7 @@ export function LaunchStatus() {
           </div>
 
           <div className="orca-card p-6">
-            <p className="label-orca">Next</p>
+            <p className="label-orca">Status</p>
             <ul className="mt-4 space-y-3">
               {NEXT.map((item) => (
                 <li key={item.text} className="flex gap-3 text-sm text-[#9ca3af]">
@@ -95,11 +94,11 @@ export function LaunchStatus() {
               ))}
             </ul>
             <div className="mt-6 flex flex-wrap gap-2">
-              <Link to="/contract" className="btn-orca-secondary !py-2 !text-xs">
-                Contract
-              </Link>
-              <Link to="/trade" className="btn-orca-ghost !py-2 !text-xs">
+              <Link to="/trade" className="btn-orca-secondary !py-2 !text-xs">
                 How to buy
+              </Link>
+              <Link to="/contract" className="btn-orca-ghost !py-2 !text-xs">
+                Contract
               </Link>
               <Link to="/pools" className="btn-orca-ghost !py-2 !text-xs">
                 Pools

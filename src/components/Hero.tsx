@@ -30,8 +30,8 @@ export function Hero() {
             </p>
           </div>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[#9ca3af] sm:text-base">
-            Payment utility for wallet-to-wallet transfers. On-chain fee {TOKEN.transferFee}. Wallets
-            cannot be frozen.
+            Solana payment utility for wallet-to-wallet transfers. Trade ACOPAY/USDT on Raydium and
+            Jupiter. On-chain fee {TOKEN.transferFee}. Freeze revoked.
           </p>
 
           <div className="mt-4 flex flex-wrap gap-3">

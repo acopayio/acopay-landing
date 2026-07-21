@@ -12,6 +12,8 @@ const ROWS = [
   ["Transfer fee", `${TOKEN.transferFee} — ${TOKEN.transferFeeNote}`],
   ["Freeze authority", TOKEN.freezeAuthority],
   ["Mint authority", TOKEN.mintAuthority],
+  ["DEX pair", `${TOKEN.dex.pair} · ${TOKEN.dex.platform}`],
+  ["Pool ID", TOKEN.dex.poolId],
   ["Website", TOKEN.website],
   ["Contact", TOKEN.email],
 ] as const;
@@ -19,7 +21,7 @@ const ROWS = [
 const VERIFY_STEPS = [
   "Copy the contract address from this page.",
   "Paste into Solscan or Solana Explorer and confirm name, logo, and supply.",
-  "When trading, use Jupiter or Raydium with that same address.",
+  "Swap USDT → ACOPAY on Jupiter or Raydium using that same address.",
 ];
 
 export function Contract() {
@@ -76,28 +78,22 @@ export function Contract() {
               <span className="text-slate-300">active</span> — supply can still increase.
             </p>
             <div className="flex flex-wrap gap-2 border-t border-white/[0.06] px-5 py-4">
-              {live ? (
-                <>
-                  <a
-                    href={explorerUrl()}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-orca-ghost"
-                  >
-                    Solana Explorer ↗
-                  </a>
-                  <a
-                    href={solscanUrl()}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-orca-ghost"
-                  >
-                    Solscan ↗
-                  </a>
-                </>
-              ) : (
-                <span className="text-xs text-[#6b7280]">Explorer links appear when the address is set.</span>
-              )}
+              <a
+                href={explorerUrl()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-orca-ghost"
+              >
+                Solana Explorer ↗
+              </a>
+              <a
+                href={solscanUrl()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-orca-ghost"
+              >
+                Solscan ↗
+              </a>
               <Link to="/trade" className="btn-orca-secondary !py-2 !text-xs">
                 How to buy →
               </Link>

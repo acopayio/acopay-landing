@@ -99,8 +99,8 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
               </h2>
               <p className="mt-2 text-sm leading-relaxed text-[#9ca3af]">
                 {isPoolLive()
-                  ? "ACOPAY/USDT and other Raydium pools."
-                  : "Raydium market data. ACOPAY/USDT lists here after our pool is created."}
+                  ? "ACOPAY/USDT is live on Raydium. Other rows are Raydium market reference."
+                  : "Raydium market data."}
               </p>
               <p className="mt-2 text-xs text-[#6b7280]">
                 {summary?.source ?? "—"} · {liveCount} pools · Updated {updated}
@@ -134,7 +134,7 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
 
           {!isPoolLive() && (
             <div className="mt-6 rounded-2xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-sm text-[#9ca3af]">
-              ACOPAY/USDT is pending. Other rows are live Raydium pairs.
+              ACOPAY/USDT pool status updates from site config.
             </div>
           )}
 

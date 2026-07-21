@@ -2,13 +2,15 @@ const MILESTONES = [
   {
     year: "2026",
     title: "Liquidity",
-    items: ["Open the ACOPAY/USDT pool on Raydium"],
+    done: true,
+    items: ["ACOPAY/USDT pool live on Raydium"],
     art: "/assets/roadmap/2026-pool.png",
     alt: "3D illustration of ACOPAY liquidity pool",
   },
   {
     year: "2027",
     title: "Web pay",
+    done: false,
     items: [
       "March — Launch ACOPAY payment on web",
       "September — Add more liquidity to the pool",
@@ -19,6 +21,7 @@ const MILESTONES = [
   {
     year: "2028",
     title: "Mobile",
+    done: false,
     items: ["Launch ACOPAY payment on mobile"],
     art: "/assets/roadmap/2028-mobile.png",
     alt: "3D illustration of ACOPAY mobile payment",
@@ -26,6 +29,7 @@ const MILESTONES = [
   {
     year: "2029",
     title: "Markets",
+    done: false,
     items: ["Listing on CoinGecko"],
     art: "/assets/roadmap/2029-markets.png",
     alt: "3D illustration of market listing growth",
@@ -33,6 +37,7 @@ const MILESTONES = [
   {
     year: "2030",
     title: "Scale",
+    done: false,
     items: ["Listing on Binance", "Launch the ACOPAY payment gateway"],
     art: "/assets/roadmap/2030-gateway.png",
     alt: "3D illustration of ACOPAY payment gateway",
@@ -53,7 +58,7 @@ export function Roadmap() {
 
       <div className="page-wrap relative">
         <h2 className="text-3xl font-bold text-white sm:text-4xl">Roadmap</h2>
-        <p className="mt-3 max-w-xl text-[#9ca3af]">Planned milestones through 2030.</p>
+        <p className="mt-3 max-w-xl text-[#9ca3af]">Milestones through 2030.</p>
 
         <ol className="roadmap-rail mt-10">
           {MILESTONES.map((m, i) => (
@@ -75,6 +80,11 @@ export function Roadmap() {
                     <span className="text-xs font-semibold uppercase tracking-[0.14em] text-[#6b7280]">
                       {m.title}
                     </span>
+                    {m.done && (
+                      <span className="rounded-md bg-[#00E5FF]/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[#00E5FF]">
+                        Done
+                      </span>
+                    )}
                   </div>
                   <ul className="mt-3 space-y-2">
                     {m.items.map((item) => (

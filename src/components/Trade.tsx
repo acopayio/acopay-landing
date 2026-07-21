@@ -1,6 +1,5 @@
 ﻿import { Link } from "react-router-dom";
-import { isPoolLive, jupiterSwapUrl, raydiumSwapUrl } from "../config/token";
-import { BuyButton } from "./BuyButton";
+import { jupiterSwapUrl, raydiumSwapUrl } from "../config/token";
 
 const STEPS = [
   {
@@ -13,12 +12,11 @@ const STEPS = [
   },
   {
     title: "Swap USDT → ACOPAY",
-    desc: "Use Jupiter or Raydium when the ACOPAY/USDT pool is live.",
+    desc: "Open Jupiter or Raydium, select USDT to ACOPAY, then confirm in your wallet.",
   },
 ];
 
 export function Trade() {
-  const pool = isPoolLive();
   const jup = jupiterSwapUrl();
   const ray = raydiumSwapUrl();
 
@@ -28,9 +26,7 @@ export function Trade() {
         <p className="label-orca">Trade</p>
         <h2 className="mt-2 text-3xl font-bold text-white sm:text-4xl">How to buy</h2>
         <p className="mt-3 max-w-xl text-[#9ca3af]">
-          {pool
-            ? "Swap USDT for ACOPAY on Jupiter or Raydium with your wallet."
-            : "Available when the ACOPAY/USDT pool is live. See Contract for the token address."}
+          Swap USDT for ACOPAY on Jupiter or Raydium. The ACOPAY/USDT pool is live on Raydium.
         </p>
 
         <ol className="mt-10 space-y-3">
@@ -48,28 +44,22 @@ export function Trade() {
         </ol>
 
         <div className="mt-8 flex flex-wrap gap-3">
-          {pool && jup ? (
+          {jup && (
             <a href={jup} target="_blank" rel="noopener noreferrer" className="btn-orca-primary">
               Open Jupiter ↗
             </a>
-          ) : (
-            <BuyButton label="Open Jupiter ↗" pendingLabel="Pool pending" />
           )}
-          <Link to="/contract" className="btn-orca-secondary">
+          {ray && (
+            <a href={ray} target="_blank" rel="noopener noreferrer" className="btn-orca-secondary">
+              Open Raydium ↗
+            </a>
+          )}
+          <Link to="/contract" className="btn-orca-ghost">
             Contract
           </Link>
           <Link to="/pools" className="btn-orca-ghost">
             Pools
           </Link>
-          {pool && ray ? (
-            <a href={ray} target="_blank" rel="noopener noreferrer" className="btn-orca-ghost">
-              Raydium ↗
-            </a>
-          ) : (
-            <button type="button" disabled className="btn-orca-ghost">
-              Raydium — pool pending
-            </button>
-          )}
         </div>
       </div>
     </section>

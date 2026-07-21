@@ -10,7 +10,7 @@ const METRICS = [
   { label: "Mint authority", value: TOKEN.mintAuthority },
   { label: "Token standard", value: TOKEN.tokenStandard },
   { label: "Network", value: TOKEN.network },
-  { label: "Planned pair", value: TOKEN.dex.pair },
+  { label: "DEX pair", value: `${TOKEN.dex.pair} · ${TOKEN.dex.status}` },
 ];
 
 export function Tokenomics() {

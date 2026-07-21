@@ -1,9 +1,8 @@
-/** USDT (SPL) on Solana Mainnet — planned ACOPAY pair quote. */
+/** USDT (SPL) on Solana Mainnet — ACOPAY/USDT quote. */
 export const USDT_MINT = "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB";
 
 /**
  * Single source of truth for the official site (acopay.net).
- * After mainnet create-token: set mintAddress + status "live", then deploy.
  */
 export const TOKEN = {
   name: "ACOPAY",
