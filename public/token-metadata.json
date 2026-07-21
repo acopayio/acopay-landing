@@ -2,7 +2,7 @@
   "name": "ACOPAY",
   "symbol": "ACOPAY",
   "description": "ACOPAY is a Solana Mainnet payment utility token (Token-2022) for wallet-to-wallet transfers. Pay your way. Official website: https://acopay.net",
-  "image": "https://acopay.net/assets/logo.png",
+  "image": "https://acopay.net/assets/logo-solid.png",
   "external_url": "https://acopay.net",
   "attributes": [
     { "trait_type": "Network", "value": "Solana Mainnet" },
