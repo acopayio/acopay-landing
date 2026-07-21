@@ -1,0 +1,17 @@
+{
+  "name": "ACOPAY",
+  "symbol": "ACOPAY",
+  "description": "ACOPAY — Solana mainnet payment utility token. Pay your way. Wallet-to-wallet on-chain transfers with Token-2022 transfer fee.",
+  "image": "https://acopay.net/assets/logo.png",
+  "external_url": "https://acopay.net",
+  "attributes": [
+    { "trait_type": "Network", "value": "Solana Mainnet" },
+    { "trait_type": "Token Standard", "value": "Token-2022" },
+    { "trait_type": "Transfer Fee", "value": "0.0099% target (1 bps on-chain min)" },
+    { "trait_type": "Decimals", "value": "9" },
+    { "trait_type": "Total Supply", "value": "100000000" },
+    { "trait_type": "Tagline", "value": "Pay your way" },
+    { "trait_type": "Website", "value": "https://acopay.net" },
+    { "trait_type": "Freeze Authority", "value": "Revoked" }
+  ]
+}
