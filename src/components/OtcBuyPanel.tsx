@@ -7,6 +7,7 @@ import {
   formatSessionClock,
   otcAcopayForUsdt,
 } from "../config/otc";
+import { solscanUrl } from "../config/token";
 import { useCopy } from "../hooks/useCopy";
 
 const PRESETS = [10, 50, 100, 250, 500] as const;
@@ -36,7 +37,6 @@ export function OtcBuyPanel() {
   const [paidSig, setPaidSig] = useState<string | null>(null);
   const [buyerPubkey, setBuyerPubkey] = useState<string | null>(null);
   const [baselineAcopay, setBaselineAcopay] = useState<number | null>(null);
-  /** after Phantom USDT send: settling → complete when ACOPAY balance rises */
   const [settleStatus, setSettleStatus] = useState<"idle" | "settling" | "complete">("idle");
   const [creditedAcopay, setCreditedAcopay] = useState<number | null>(null);
 
@@ -129,7 +129,6 @@ export function OtcBuyPanel() {
       const bal = await getAcopayUiBalance(buyerPubkey!);
       if (cancelled || bal == null) return;
       const gained = bal - base;
-      // Token-2022 fee ~0.01% — accept ~99.9% of expected
       if (gained + 1e-9 >= need * 0.998) {
         setCreditedAcopay(gained);
         setSettleStatus("complete");
@@ -157,8 +156,8 @@ export function OtcBuyPanel() {
 
   useEffect(() => {
     let cancelled = false;
-    if (!payUrl || phase === "expired") {
-      if (phase !== "paying") setQrDataUrl(null);
+    if (!payUrl || phase === "expired" || settleStatus !== "idle") {
+      if (phase !== "paying" || settleStatus !== "idle") setQrDataUrl(null);
       return;
     }
     QRCode.toDataURL(payUrl, {
@@ -182,7 +181,7 @@ export function OtcBuyPanel() {
     return () => {
       cancelled = true;
     };
-  }, [payUrl, phase]);
+  }, [payUrl, phase, settleStatus]);
 
   function startSession() {
     if (!draftValid) return;
@@ -224,10 +223,12 @@ export function OtcBuyPanel() {
     if (sessionAmount != null) setAmountStr(String(sessionAmount));
   }
 
+  const showPaymentControls =
+    (phase === "paying" || phase === "expired") && settleStatus !== "complete";
+
   return (
     <div className="otc-panel mx-auto w-full max-w-5xl">
       <div className="otc-panel-inner otc-panel-grid">
-        {/* Left */}
         <div className="otc-col otc-col-main">
           <header className="otc-header">
             <div>
@@ -293,13 +294,15 @@ export function OtcBuyPanel() {
                 <span className="text-xs font-medium uppercase tracking-wider text-[#6b7280]">
                   You pay
                 </span>
-                <button
-                  type="button"
-                  onClick={changeAmount}
-                  className="text-xs font-medium text-[#00E5FF]/90 hover:text-[#00E5FF]"
-                >
-                  Edit
-                </button>
+                {settleStatus !== "complete" && (
+                  <button
+                    type="button"
+                    onClick={changeAmount}
+                    className="text-xs font-medium text-[#00E5FF]/90 hover:text-[#00E5FF]"
+                  >
+                    Edit
+                  </button>
+                )}
               </div>
               <p className="mt-2 text-3xl font-bold tracking-tight text-white">
                 {formatUsdt(activeAmount)}{" "}
@@ -310,9 +313,11 @@ export function OtcBuyPanel() {
 
           <div className="otc-receive">
             <div className="flex items-center justify-between gap-3">
-              <span className="text-sm text-[#9ca3af]">You receive</span>
+              <span className="text-sm text-[#9ca3af]">
+                {settleStatus === "complete" ? "Credited" : "You receive"}
+              </span>
               <span className="text-right text-xl font-bold text-white">
-                {activeValid ? formatUsdt(receive) : "—"}{" "}
+                {activeValid ? formatUsdt(creditedAcopay ?? receive) : "—"}{" "}
                 <span className="text-sm font-semibold text-[#00E5FF]">ACOPAY</span>
               </span>
             </div>
@@ -330,10 +335,10 @@ export function OtcBuyPanel() {
             </button>
           )}
 
-          {(phase === "paying" || phase === "expired") && (
+          {showPaymentControls && (
             <div className="mt-auto space-y-3 pt-2">
               <div className="otc-status-row">
-                {phase === "expired" && settleStatus !== "complete" ? (
+                {phase === "expired" ? (
                   <>
                     <span className="otc-status-dot otc-status-dot-expired" aria-hidden />
                     <div>
@@ -343,29 +348,17 @@ export function OtcBuyPanel() {
                       </p>
                     </div>
                   </>
-                ) : settleStatus === "complete" ? (
-                  <>
-                    <span className="otc-status-dot otc-status-dot-ok" aria-hidden />
-                    <div>
-                      <p className="text-sm font-semibold text-white">Purchase complete</p>
-                      <p className="text-xs leading-relaxed text-[#6b7280]">
-                        About{" "}
-                        {formatUsdt(creditedAcopay ?? receive)} ACOPAY credited to your wallet.
-                        Check Phantom (unhide spam tokens if needed) or Solscan.
-                      </p>
-                    </div>
-                  </>
                 ) : settleStatus === "settling" ? (
                   <>
                     <span className="otc-status-dot" aria-hidden />
                     <div>
-                      <p className="text-sm font-semibold text-white">USDT sent — settling</p>
+                      <p className="text-sm font-semibold text-white">USDT received</p>
                       <p className="text-xs leading-relaxed text-[#6b7280]">
-                        Waiting for the desk to send ACOPAY to your wallet…
+                        Desk is crediting ACOPAY to your wallet…
                       </p>
                     </div>
                   </>
-                ) : phase === "paying" ? (
+                ) : (
                   <>
                     <span className="otc-status-dot" aria-hidden />
                     <div>
@@ -375,10 +368,10 @@ export function OtcBuyPanel() {
                       </p>
                     </div>
                   </>
-                ) : null}
+                )}
               </div>
 
-              {phase === "paying" && payUrl && settleStatus !== "complete" && (
+              {phase === "paying" && payUrl && (
                 <div className="space-y-2">
                   <div className="flex flex-col gap-2 sm:flex-row">
                     <button
@@ -396,7 +389,8 @@ export function OtcBuyPanel() {
                     <button
                       type="button"
                       onClick={copyPayLink}
-                      className="btn-orca-secondary flex-1 !rounded-xl"
+                      disabled={settleStatus === "settling"}
+                      className="btn-orca-secondary flex-1 !rounded-xl disabled:opacity-50"
                     >
                       {payLinkCopied ? "Copied" : "Copy Solana Pay"}
                     </button>
@@ -417,24 +411,16 @@ export function OtcBuyPanel() {
                   {walletError && (
                     <p className="text-xs leading-relaxed text-amber-400/90">{walletError}</p>
                   )}
-                  <p className="text-[11px] leading-relaxed text-[#6b7280]">
-                    Desktop: Phantom extension popup. Mobile: Phantom app when installed. Or scan
-                    the QR / send USDT to the deposit address.
-                  </p>
+                  {settleStatus === "idle" && (
+                    <p className="text-[11px] leading-relaxed text-[#6b7280]">
+                      Desktop: Phantom extension. Mobile: Phantom app. Or scan the QR / send to the
+                      deposit address.
+                    </p>
+                  )}
                 </div>
               )}
 
-              {settleStatus === "complete" && (
-                <button
-                  type="button"
-                  onClick={changeAmount}
-                  className="btn-orca-primary w-full !rounded-xl !py-3"
-                >
-                  Buy again
-                </button>
-              )}
-
-              {phase === "expired" && settleStatus !== "complete" && (
+              {phase === "expired" && (
                 <button
                   type="button"
                   onClick={refreshSession}
@@ -445,12 +431,92 @@ export function OtcBuyPanel() {
               )}
             </div>
           )}
+
+          {settleStatus === "complete" && (
+            <div className="mt-auto space-y-3 pt-2">
+              <p className="text-xs leading-relaxed text-[#6b7280]">
+                Settled at a fixed 1:1 rate. If Phantom hides ACOPAY, unhide it under Manage tokens.
+              </p>
+              <button
+                type="button"
+                onClick={changeAmount}
+                className="btn-orca-primary w-full !rounded-xl !py-3.5"
+              >
+                Buy again
+              </button>
+            </div>
+          )}
         </div>
 
-        {/* Right */}
         <div className="otc-col otc-col-qr">
-          <div className={`otc-qr-stage ${phase === "expired" ? "is-expired" : ""}`}>
-            {phase === "setup" ? (
+          <div
+            className={`otc-qr-stage ${phase === "expired" && settleStatus === "idle" ? "is-expired" : ""} ${
+              settleStatus === "complete" ? "otc-qr-stage-success" : ""
+            } ${settleStatus === "settling" ? "otc-qr-stage-settling" : ""}`}
+          >
+            {settleStatus === "complete" ? (
+              <div className="otc-success" role="status" aria-live="polite">
+                <div className="otc-success-mark" aria-hidden>
+                  <svg viewBox="0 0 48 48" className="otc-success-check" fill="none">
+                    <circle cx="24" cy="24" r="22" stroke="currentColor" strokeWidth="2" opacity="0.35" />
+                    <path
+                      d="M14 24.5 20.5 31 34 17"
+                      stroke="currentColor"
+                      strokeWidth="2.75"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="otc-success-check-path"
+                    />
+                  </svg>
+                </div>
+                <p className="otc-success-kicker">ACOPAY desk</p>
+                <h2 className="otc-success-title">Payment successful</h2>
+                <p className="otc-success-amount">
+                  +{formatUsdt(creditedAcopay ?? receive)} <span>ACOPAY</span>
+                </p>
+                <p className="otc-success-sub">
+                  Paid {formatUsdt(activeAmount)} USDT · fixed 1:1 · Solana
+                </p>
+                <div className="otc-success-actions">
+                  {paidSig && (
+                    <a
+                      href={`https://solscan.io/tx/${paidSig}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-orca-secondary !rounded-xl !px-4 !py-2.5 !text-xs"
+                    >
+                      USDT transaction ↗
+                    </a>
+                  )}
+                  <a
+                    href={solscanUrl()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-orca-ghost !rounded-xl !px-4 !py-2.5 !text-xs"
+                  >
+                    Token on Solscan ↗
+                  </a>
+                </div>
+              </div>
+            ) : settleStatus === "settling" ? (
+              <div className="otc-settling" role="status" aria-live="polite">
+                <div className="otc-settling-ring" aria-hidden />
+                <p className="mt-6 text-sm font-semibold tracking-wide text-white">Settling payment</p>
+                <p className="mt-2 max-w-[16rem] text-center text-xs leading-relaxed text-[#6b7280]">
+                  USDT confirmed. Waiting for ACOPAY to arrive in your wallet…
+                </p>
+                {paidSig && (
+                  <a
+                    href={`https://solscan.io/tx/${paidSig}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-5 text-xs font-medium text-[#00E5FF] hover:underline"
+                  >
+                    View USDT tx ↗
+                  </a>
+                )}
+              </div>
+            ) : phase === "setup" ? (
               <div className="otc-qr-placeholder">
                 <div className="otc-qr-preview-frame" aria-hidden>
                   <img src="/assets/logo.png" alt="" className="h-12 w-12 opacity-90" />
@@ -530,27 +596,29 @@ export function OtcBuyPanel() {
             )}
           </div>
 
-          <div className="otc-address-block">
-            <p className="text-xs font-medium uppercase tracking-wider text-[#6b7280]">
-              Deposit address
-            </p>
-            <button
-              type="button"
-              onClick={() => copy(OTC.address)}
-              className="group mt-2 flex w-full items-center gap-2 rounded-xl border border-white/[0.08] bg-[#0c1017]/60 px-3 py-3 text-left transition hover:border-[#00E5FF]/35"
-            >
-              <code className="min-w-0 flex-1 truncate font-mono text-xs text-[#e5e7eb] sm:text-[13px]">
-                {OTC.address}
-              </code>
-              <span className="shrink-0 text-xs font-semibold text-[#00E5FF]">
-                {copied ? "Copied" : "Copy"}
-              </span>
-            </button>
-            <p className="mt-2 text-[11px] leading-relaxed text-[#6b7280]">
-              USDT (SPL) on Solana only · {shortAddr(OTC.usdtMint)}. Never withdraw from an
-              exchange directly to this address.
-            </p>
-          </div>
+          {settleStatus === "idle" && (
+            <div className="otc-address-block">
+              <p className="text-xs font-medium uppercase tracking-wider text-[#6b7280]">
+                Deposit address
+              </p>
+              <button
+                type="button"
+                onClick={() => copy(OTC.address)}
+                className="group mt-2 flex w-full items-center gap-2 rounded-xl border border-white/[0.08] bg-[#0c1017]/60 px-3 py-3 text-left transition hover:border-[#00E5FF]/35"
+              >
+                <code className="min-w-0 flex-1 truncate font-mono text-xs text-[#e5e7eb] sm:text-[13px]">
+                  {OTC.address}
+                </code>
+                <span className="shrink-0 text-xs font-semibold text-[#00E5FF]">
+                  {copied ? "Copied" : "Copy"}
+                </span>
+              </button>
+              <p className="mt-2 text-[11px] leading-relaxed text-[#6b7280]">
+                USDT (SPL) on Solana only · {shortAddr(OTC.usdtMint)}. Never withdraw from an
+                exchange directly to this address.
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>

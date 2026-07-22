@@ -406,6 +406,135 @@ body {
   opacity: 0.92;
 }
 
+.otc-qr-stage-success {
+  border-color: rgba(52, 211, 153, 0.28);
+  background:
+    radial-gradient(ellipse at 50% 20%, rgba(52, 211, 153, 0.12), transparent 55%),
+    rgba(9, 11, 14, 0.82);
+}
+
+.otc-qr-stage-settling {
+  border-color: rgba(0, 229, 255, 0.22);
+}
+
+.otc-success {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem 1rem 1.5rem;
+  animation: otc-success-in 0.55s ease both;
+}
+
+.otc-success-mark {
+  color: #34d399;
+  width: 4.5rem;
+  height: 4.5rem;
+}
+
+.otc-success-check {
+  width: 100%;
+  height: 100%;
+}
+
+.otc-success-check-path {
+  stroke-dasharray: 36;
+  stroke-dashoffset: 36;
+  animation: otc-check-draw 0.55s 0.2s ease forwards;
+}
+
+.otc-success-kicker {
+  margin-top: 1.15rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #00e5ff;
+}
+
+.otc-success-title {
+  margin-top: 0.35rem;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+.otc-success-amount {
+  margin-top: 1rem;
+  font-size: 2.15rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: #fff;
+}
+
+.otc-success-amount span {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #00e5ff;
+}
+
+.otc-success-sub {
+  margin-top: 0.55rem;
+  max-width: 16rem;
+  text-align: center;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: #6b7280;
+}
+
+.otc-success-actions {
+  margin-top: 1.35rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.otc-settling {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  animation: otc-success-in 0.4s ease both;
+}
+
+.otc-settling-ring {
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 9999px;
+  border: 2px solid rgba(0, 229, 255, 0.18);
+  border-top-color: #00e5ff;
+  animation: otc-spin 0.9s linear infinite;
+}
+
+@keyframes otc-success-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes otc-check-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes otc-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .otc-qr-placeholder {
   display: flex;
   width: 100%;
@@ -553,6 +682,15 @@ body {
   .otc-live-pill::before,
   .otc-status-dot {
     animation: none;
+  }
+  .otc-success,
+  .otc-settling,
+  .otc-success-check-path,
+  .otc-settling-ring {
+    animation: none;
+  }
+  .otc-success-check-path {
+    stroke-dashoffset: 0;
   }
 }
 
