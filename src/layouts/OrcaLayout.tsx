@@ -76,19 +76,15 @@ export function OrcaLayout() {
               <img src="/assets/logo.png" alt="" className="h-8 w-8 object-contain" />
               <span className="truncate font-bold tracking-tight text-white">ACOPAY</span>
             </Link>
-            <div className="flex shrink-0 items-center gap-1.5">
+            <div className="flex shrink-0 items-center">
               <a
                 href={TOKEN.telegramPayUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-orca-secondary !min-h-9 !rounded-lg !px-2.5 !py-1.5 !text-xs"
+                className="btn-orca-secondary inline-flex !h-9 items-center !rounded-lg !px-3 !text-xs"
               >
                 Telegram
               </a>
-              <BuyButton
-                className="btn-orca-primary !min-h-9 !rounded-lg !px-3 !py-1.5 !text-xs"
-                label="Buy"
-              />
             </div>
           </div>
         </header>

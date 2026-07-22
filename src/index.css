@@ -304,45 +304,82 @@ body {
 
 .otc-header {
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+}
+
+.otc-header-top {
+  display: flex;
+  align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
+  min-height: 1.5rem;
 }
 
-.otc-field-block {
-  margin-top: 0.35rem;
-}
-
-.otc-col-qr {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  height: 100%;
+.otc-header-top .label-orca {
+  margin: 0;
+  line-height: 1.2;
 }
 
 .otc-live-pill {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
+  flex-shrink: 0;
+  align-self: center;
   border-radius: 9999px;
   border: 1px solid rgba(0, 229, 255, 0.35);
   background: rgba(0, 229, 255, 0.1);
-  padding: 0.3rem 0.65rem;
+  padding: 0.28rem 0.65rem;
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: #00e5ff;
+  line-height: 1;
 }
 
 .otc-live-pill::before {
   content: "";
   width: 6px;
   height: 6px;
+  flex-shrink: 0;
   border-radius: 9999px;
   background: #00e5ff;
   box-shadow: 0 0 8px rgba(0, 229, 255, 0.8);
   animation: otc-pulse 1.6s ease-in-out infinite;
+}
+
+.otc-field-block {
+  margin-top: 0.35rem;
+}
+
+.otc-col-qr,
+.otc-inline-pay {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.otc-col-qr {
+  height: 100%;
+}
+
+@media (max-width: 899px) {
+  .otc-panel-inner {
+    padding: 1.1rem 1rem 1.25rem;
+  }
+
+  .otc-inline-pay .otc-qr-stage {
+    min-height: 0;
+  }
+
+  .otc-phase-paying .otc-header h1,
+  .otc-phase-expired .otc-header h1,
+  .otc-phase-done .otc-header h1 {
+    font-size: 1.55rem;
+  }
 }
 
 .otc-receive,
