@@ -65,6 +65,7 @@ export function OtcBuyPanel() {
       window.setTimeout(() => setPayLinkCopied(false), 2000);
     }
   }
+
   useEffect(() => {
     if (phase !== "paying" || sessionEndsAt == null) return;
     const id = window.setInterval(() => {
@@ -134,28 +135,28 @@ export function OtcBuyPanel() {
   return (
     <div className="otc-panel mx-auto w-full max-w-5xl">
       <div className="otc-panel-inner otc-panel-grid">
-        {/* Left: order */}
-        <div className="otc-col">
-          <div className="flex items-start justify-between gap-3">
+        {/* Left */}
+        <div className="otc-col otc-col-main">
+          <header className="otc-header">
             <div>
               <p className="label-orca">Official desk</p>
-              <h1 className="mt-1 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+              <h1 className="mt-1 text-3xl font-bold tracking-tight text-white sm:text-[2.15rem]">
                 Buy ACOPAY
               </h1>
               <p className="mt-2 max-w-md text-sm leading-relaxed text-[#9ca3af]">
-                Pay with USDT on Solana. Our desk sends ACOPAY{" "}
-                <span className="font-semibold text-[#00E5FF]">1:1</span> to the
-                same wallet — usually within {OTC.settleHintSec} seconds.
+                Pay USDT from your own Solana wallet. ACOPAY returns{" "}
+                <span className="text-[#00E5FF]">1:1</span> to that same address — not to an
+                exchange.
               </p>
             </div>
             <span className="otc-live-pill shrink-0">Live</span>
-          </div>
+          </header>
 
           {phase === "setup" ? (
-            <>
-              <label className="mt-8 block">
+            <div className="otc-field-block">
+              <label className="block">
                 <span className="text-xs font-medium uppercase tracking-wider text-[#6b7280]">
-                  Amount to pay
+                  Amount
                 </span>
                 <div className="mt-2 flex items-center gap-2 rounded-2xl border border-white/[0.08] bg-[#0c1017]/80 px-4 py-3.5 focus-within:border-[#00E5FF]/45">
                   <input
@@ -191,23 +192,21 @@ export function OtcBuyPanel() {
               </div>
 
               {!draftValid && amountStr.trim() !== "" && (
-                <p className="mt-2 text-xs text-amber-400/90">
-                  Minimum {OTC.minUsdt} USDT
-                </p>
+                <p className="mt-2 text-xs text-amber-400/90">Minimum {OTC.minUsdt} USDT</p>
               )}
-            </>
+            </div>
           ) : (
-            <div className="otc-order-summary mt-8">
+            <div className="otc-order-summary">
               <div className="flex items-center justify-between gap-3">
                 <span className="text-xs font-medium uppercase tracking-wider text-[#6b7280]">
-                  Payment amount
+                  You pay
                 </span>
                 <button
                   type="button"
                   onClick={changeAmount}
-                  className="text-xs font-semibold text-[#00E5FF] hover:underline"
+                  className="text-xs font-medium text-[#00E5FF]/90 hover:text-[#00E5FF]"
                 >
-                  Change amount
+                  Edit
                 </button>
               </div>
               <p className="mt-2 text-3xl font-bold tracking-tight text-white">
@@ -217,7 +216,7 @@ export function OtcBuyPanel() {
             </div>
           )}
 
-          <div className="otc-receive mt-5">
+          <div className="otc-receive">
             <div className="flex items-center justify-between gap-3">
               <span className="text-sm text-[#9ca3af]">You receive</span>
               <span className="text-right text-xl font-bold text-white">
@@ -225,7 +224,7 @@ export function OtcBuyPanel() {
                 <span className="text-sm font-semibold text-[#00E5FF]">ACOPAY</span>
               </span>
             </div>
-            <p className="mt-1 text-[11px] text-[#6b7280]">Fixed rate · no slippage</p>
+            <p className="mt-1 text-[11px] text-[#6b7280]">Fixed conversion · no slippage</p>
           </div>
 
           {phase === "setup" && (
@@ -233,22 +232,22 @@ export function OtcBuyPanel() {
               type="button"
               disabled={!draftValid}
               onClick={startSession}
-              className="btn-orca-primary mt-8 w-full !rounded-xl !py-3.5 !text-base"
+              className="btn-orca-primary mt-auto w-full !rounded-xl !py-3.5 !text-[0.95rem]"
             >
-              Generate payment QR
+              Continue to payment
             </button>
           )}
 
           {(phase === "paying" || phase === "expired") && (
-            <div className="mt-6 space-y-3">
+            <div className="mt-auto space-y-3 pt-2">
               <div className="otc-status-row">
                 {phase === "paying" ? (
                   <>
                     <span className="otc-status-dot" aria-hidden />
                     <div>
-                      <p className="text-sm font-semibold text-white">Waiting for USDT</p>
-                      <p className="text-xs text-[#6b7280]">
-                        Desk is watching the chain. Keep this page open until ACOPAY arrives.
+                      <p className="text-sm font-semibold text-white">Awaiting payment</p>
+                      <p className="text-xs leading-relaxed text-[#6b7280]">
+                        Monitoring Solana for your USDT transfer.
                       </p>
                     </div>
                   </>
@@ -256,9 +255,9 @@ export function OtcBuyPanel() {
                   <>
                     <span className="otc-status-dot otc-status-dot-expired" aria-hidden />
                     <div>
-                      <p className="text-sm font-semibold text-white">Session expired</p>
-                      <p className="text-xs text-[#6b7280]">
-                        Refresh for a new {OTC.sessionMinutes}-minute window, or change the amount.
+                      <p className="text-sm font-semibold text-white">Session ended</p>
+                      <p className="text-xs leading-relaxed text-[#6b7280]">
+                        Start a new payment code, or edit the amount.
                       </p>
                     </div>
                   </>
@@ -266,29 +265,22 @@ export function OtcBuyPanel() {
               </div>
 
               {phase === "paying" && payUrl && (
-                <div className="space-y-2">
-                  <div className="flex flex-col gap-2 sm:flex-row">
-                    <a
-                      href={phantomBrowseUrl(payUrl)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn-orca-primary flex-1 !rounded-xl"
-                    >
-                      Open in Phantom
-                    </a>
-                    <button
-                      type="button"
-                      onClick={copyPayLink}
-                      className="btn-orca-secondary flex-1 !rounded-xl"
-                    >
-                      {payLinkCopied ? "Payment link copied" : "Copy payment link"}
-                    </button>
-                  </div>
-                  <p className="text-[11px] leading-relaxed text-[#6b7280]">
-                    Best on desktop: use <span className="text-[#9ca3af]">Open in Phantom</span> or
-                    scan the QR. A raw <code className="text-[#9ca3af]">solana:</code> link often
-                    does nothing in Chrome unless a wallet app is installed.
-                  </p>
+                <div className="flex flex-col gap-2 sm:flex-row">
+                  <a
+                    href={phantomBrowseUrl(payUrl)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-orca-primary flex-1 !rounded-xl"
+                  >
+                    Open Phantom
+                  </a>
+                  <button
+                    type="button"
+                    onClick={copyPayLink}
+                    className="btn-orca-secondary flex-1 !rounded-xl"
+                  >
+                    {payLinkCopied ? "Copied" : "Copy link"}
+                  </button>
                 </div>
               )}
 
@@ -298,43 +290,39 @@ export function OtcBuyPanel() {
                   onClick={refreshSession}
                   className="btn-orca-primary w-full !rounded-xl !py-3"
                 >
-                  Refresh QR · new {OTC.sessionMinutes} min
+                  New payment code
                 </button>
               )}
             </div>
           )}
-
-          <ul className="otc-steps mt-8">
-            <li>
-              <span>1</span>
-              Choose an amount and generate a QR for a {OTC.sessionMinutes}-minute session.
-            </li>
-            <li>
-              <span>2</span>
-              Scan the QR with Phantom / Solflare, or tap Open in Phantom, then send USDT only.
-            </li>
-            <li>
-              <span>3</span>
-              ACOPAY is credited automatically to the sending wallet (keep a little SOL for fees).
-            </li>
-          </ul>
         </div>
 
-        {/* Right: QR + timer */}
+        {/* Right */}
         <div className="otc-col otc-col-qr">
           <div className={`otc-qr-stage ${phase === "expired" ? "is-expired" : ""}`}>
             {phase === "setup" ? (
               <div className="otc-qr-placeholder">
-                <img
-                  src="/assets/logo.png"
-                  alt=""
-                  className="mb-4 h-14 w-14 opacity-80"
-                />
-                <p className="text-sm font-semibold text-white">Payment QR</p>
-                <p className="mt-1 max-w-[14rem] text-center text-xs leading-relaxed text-[#6b7280]">
-                  Enter an amount, then generate a Solana Pay code. Valid for{" "}
-                  {OTC.sessionMinutes} minutes.
+                <div className="otc-qr-preview-frame" aria-hidden>
+                  <img src="/assets/logo.png" alt="" className="h-12 w-12 opacity-90" />
+                </div>
+                <p className="mt-5 text-sm font-semibold text-white">Payment code</p>
+                <p className="mt-1.5 max-w-[15rem] text-center text-xs leading-relaxed text-[#6b7280]">
+                  Choose an amount on the left, then continue to reveal your Solana Pay QR.
                 </p>
+                <dl className="otc-preview-meta">
+                  <div>
+                    <dt>Rate</dt>
+                    <dd>1 USDT = 1 ACOPAY</dd>
+                  </div>
+                  <div>
+                    <dt>Network</dt>
+                    <dd>Solana Mainnet</dd>
+                  </div>
+                  <div>
+                    <dt>Asset</dt>
+                    <dd>USDT (SPL)</dd>
+                  </div>
+                </dl>
               </div>
             ) : (
               <>
@@ -347,7 +335,7 @@ export function OtcBuyPanel() {
                   >
                     <div className="otc-timer-core">
                       <p className="text-[10px] font-semibold uppercase tracking-wider text-[#6b7280]">
-                        {phase === "expired" ? "Expired" : "Time left"}
+                        {phase === "expired" ? "Ended" : "Session"}
                       </p>
                       <p
                         className={`font-mono text-2xl font-bold tabular-nums tracking-tight ${
@@ -362,9 +350,6 @@ export function OtcBuyPanel() {
                       </p>
                     </div>
                   </div>
-                  <p className="mt-3 text-center text-[11px] text-[#6b7280]">
-                    Session refreshes every {OTC.sessionMinutes} minutes for a clean QR
-                  </p>
                 </div>
 
                 <div className="otc-qr-frame mt-5">
@@ -372,48 +357,37 @@ export function OtcBuyPanel() {
                     <div className="relative">
                       <img
                         src={qrDataUrl}
-                        alt="Solana Pay QR — scan to send USDT"
+                        alt="Solana Pay QR"
                         className="h-[220px] w-[220px] sm:h-[240px] sm:w-[240px]"
                       />
-                      <img
-                        src="/assets/logo.png"
-                        alt=""
-                        className="otc-qr-logo"
-                      />
+                      <img src="/assets/logo.png" alt="" className="otc-qr-logo" />
                     </div>
                   ) : (
                     <div className="flex h-[220px] w-[220px] flex-col items-center justify-center gap-2 sm:h-[240px] sm:w-[240px]">
                       <p className="text-sm font-medium text-[#9ca3af]">
-                        {qrError || (phase === "expired" ? "QR locked" : "Preparing…")}
+                        {qrError || (phase === "expired" ? "Code expired" : "Preparing…")}
                       </p>
-                      {phase === "expired" && (
-                        <p className="max-w-[12rem] text-center text-[11px] text-[#6b7280]">
-                          Refresh to unlock a new code
-                        </p>
-                      )}
                     </div>
                   )}
                 </div>
 
-                <p className="mt-4 max-w-xs text-center text-xs leading-relaxed text-[#6b7280]">
-                  Scan to connect your wallet and pay{" "}
-                  <span className="text-[#9ca3af]">
-                    {activeValid ? `${formatUsdt(activeAmount)} USDT` : "USDT"}
-                  </span>
-                  .
+                <p className="mt-4 max-w-[16rem] text-center text-xs leading-relaxed text-[#6b7280]">
+                  {phase === "paying"
+                    ? `Scan to pay ${activeValid ? `${formatUsdt(activeAmount)} USDT` : "USDT"}.`
+                    : "Request a new code to continue."}
                 </p>
               </>
             )}
           </div>
 
-          <div className="mt-5 space-y-2">
+          <div className="otc-address-block">
             <p className="text-xs font-medium uppercase tracking-wider text-[#6b7280]">
               Deposit address
             </p>
             <button
               type="button"
               onClick={() => copy(OTC.address)}
-              className="group flex w-full items-center gap-2 rounded-xl border border-white/[0.08] bg-[#0c1017]/60 px-3 py-3 text-left transition hover:border-[#00E5FF]/35"
+              className="group mt-2 flex w-full items-center gap-2 rounded-xl border border-white/[0.08] bg-[#0c1017]/60 px-3 py-3 text-left transition hover:border-[#00E5FF]/35"
             >
               <code className="min-w-0 flex-1 truncate font-mono text-xs text-[#e5e7eb] sm:text-[13px]">
                 {OTC.address}
@@ -422,9 +396,9 @@ export function OtcBuyPanel() {
                 {copied ? "Copied" : "Copy"}
               </span>
             </button>
-            <p className="text-[11px] leading-relaxed text-[#6b7280]">
-              Send only <span className="text-[#9ca3af]">USDT (SPL)</span> on Solana
-              Mainnet ({shortAddr(OTC.usdtMint)}). Other assets cannot be recovered.
+            <p className="mt-2 text-[11px] leading-relaxed text-[#6b7280]">
+              USDT (SPL) on Solana only · {shortAddr(OTC.usdtMint)}. Never withdraw from an
+              exchange directly to this address.
             </p>
           </div>
         </div>

@@ -8,10 +8,8 @@ export const OTC = {
   rate: 1,
   minUsdt: 1,
   label: "ACOPAY",
-  message: "ACOPAY OTC — 1 USDT = 1 ACOPAY",
-  /** Typical settle window after USDT is confirmed. */
-  settleHintSec: "15–60",
-  /** Payment QR session lifetime (client-side). */
+  message: "ACOPAY — USDT to ACOPAY",
+  /** Payment QR session lifetime (client-side), minutes. */
   sessionMinutes: 30,
 } as const;
 
