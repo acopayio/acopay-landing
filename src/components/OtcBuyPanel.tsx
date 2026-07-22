@@ -34,6 +34,11 @@ export function OtcBuyPanel() {
   const [payingWallet, setPayingWallet] = useState(false);
   const [walletError, setWalletError] = useState<string | null>(null);
   const [paidSig, setPaidSig] = useState<string | null>(null);
+  const [buyerPubkey, setBuyerPubkey] = useState<string | null>(null);
+  const [baselineAcopay, setBaselineAcopay] = useState<number | null>(null);
+  /** after Phantom USDT send: settling → complete when ACOPAY balance rises */
+  const [settleStatus, setSettleStatus] = useState<"idle" | "settling" | "complete">("idle");
+  const [creditedAcopay, setCreditedAcopay] = useState<number | null>(null);
 
   const draftAmount = useMemo(() => {
     const n = Number(amountStr.replace(",", "."));
@@ -72,8 +77,12 @@ export function OtcBuyPanel() {
     if (!activeValid) return;
     setWalletError(null);
     setPaidSig(null);
+    setBuyerPubkey(null);
+    setBaselineAcopay(null);
+    setCreditedAcopay(null);
+    setSettleStatus("idle");
 
-    const { hasPhantomExtension, openPhantomFallback, payUsdtWithPhantom } =
+    const { hasPhantomExtension, openPhantomFallback, payUsdtWithPhantom, getAcopayUiBalance } =
       await import("../lib/phantomPay");
 
     if (!hasPhantomExtension()) {
@@ -88,8 +97,12 @@ export function OtcBuyPanel() {
 
     setPayingWallet(true);
     try {
-      const sig = await payUsdtWithPhantom(activeAmount);
-      setPaidSig(sig);
+      const { signature, buyer } = await payUsdtWithPhantom(activeAmount);
+      const before = await getAcopayUiBalance(buyer);
+      setPaidSig(signature);
+      setBuyerPubkey(buyer);
+      setBaselineAcopay(before ?? 0);
+      setSettleStatus("settling");
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
       if (msg === "PHANTOM_MISSING") {
@@ -106,14 +119,41 @@ export function OtcBuyPanel() {
   }
 
   useEffect(() => {
+    if (settleStatus !== "settling" || !buyerPubkey || !activeValid) return;
+    let cancelled = false;
+    const need = receive;
+    const base = baselineAcopay ?? 0;
+
+    async function tick() {
+      const { getAcopayUiBalance } = await import("../lib/phantomPay");
+      const bal = await getAcopayUiBalance(buyerPubkey!);
+      if (cancelled || bal == null) return;
+      const gained = bal - base;
+      // Token-2022 fee ~0.01% — accept ~99.9% of expected
+      if (gained + 1e-9 >= need * 0.998) {
+        setCreditedAcopay(gained);
+        setSettleStatus("complete");
+      }
+    }
+
+    void tick();
+    const id = window.setInterval(() => void tick(), 4000);
+    return () => {
+      cancelled = true;
+      window.clearInterval(id);
+    };
+  }, [settleStatus, buyerPubkey, baselineAcopay, activeValid, receive]);
+
+  useEffect(() => {
     if (phase !== "paying" || sessionEndsAt == null) return;
+    if (settleStatus === "settling" || settleStatus === "complete") return;
     const id = window.setInterval(() => {
       const t = Date.now();
       setNow(t);
       if (t >= sessionEndsAt) setPhase("expired");
     }, 250);
     return () => window.clearInterval(id);
-  }, [phase, sessionEndsAt]);
+  }, [phase, sessionEndsAt, settleStatus]);
 
   useEffect(() => {
     let cancelled = false;
@@ -150,6 +190,11 @@ export function OtcBuyPanel() {
     setSessionAmount(draftAmount);
     setSessionEndsAt(ends);
     setNow(Date.now());
+    setPaidSig(null);
+    setBuyerPubkey(null);
+    setSettleStatus("idle");
+    setCreditedAcopay(null);
+    setWalletError(null);
     setPhase("paying");
   }
 
@@ -161,6 +206,10 @@ export function OtcBuyPanel() {
     const ends = Date.now() + OTC_SESSION_MS;
     setSessionEndsAt(ends);
     setNow(Date.now());
+    setPaidSig(null);
+    setBuyerPubkey(null);
+    setSettleStatus("idle");
+    setCreditedAcopay(null);
     setPhase("paying");
   }
 
@@ -168,6 +217,10 @@ export function OtcBuyPanel() {
     setPhase("setup");
     setSessionEndsAt(null);
     setQrDataUrl(null);
+    setPaidSig(null);
+    setBuyerPubkey(null);
+    setSettleStatus("idle");
+    setCreditedAcopay(null);
     if (sessionAmount != null) setAmountStr(String(sessionAmount));
   }
 
@@ -280,17 +333,7 @@ export function OtcBuyPanel() {
           {(phase === "paying" || phase === "expired") && (
             <div className="mt-auto space-y-3 pt-2">
               <div className="otc-status-row">
-                {phase === "paying" ? (
-                  <>
-                    <span className="otc-status-dot" aria-hidden />
-                    <div>
-                      <p className="text-sm font-semibold text-white">Awaiting payment</p>
-                      <p className="text-xs leading-relaxed text-[#6b7280]">
-                        Monitoring Solana for your USDT transfer.
-                      </p>
-                    </div>
-                  </>
-                ) : (
+                {phase === "expired" && settleStatus !== "complete" ? (
                   <>
                     <span className="otc-status-dot otc-status-dot-expired" aria-hidden />
                     <div>
@@ -300,19 +343,55 @@ export function OtcBuyPanel() {
                       </p>
                     </div>
                   </>
-                )}
+                ) : settleStatus === "complete" ? (
+                  <>
+                    <span className="otc-status-dot otc-status-dot-ok" aria-hidden />
+                    <div>
+                      <p className="text-sm font-semibold text-white">Purchase complete</p>
+                      <p className="text-xs leading-relaxed text-[#6b7280]">
+                        About{" "}
+                        {formatUsdt(creditedAcopay ?? receive)} ACOPAY credited to your wallet.
+                        Check Phantom (unhide spam tokens if needed) or Solscan.
+                      </p>
+                    </div>
+                  </>
+                ) : settleStatus === "settling" ? (
+                  <>
+                    <span className="otc-status-dot" aria-hidden />
+                    <div>
+                      <p className="text-sm font-semibold text-white">USDT sent — settling</p>
+                      <p className="text-xs leading-relaxed text-[#6b7280]">
+                        Waiting for the desk to send ACOPAY to your wallet…
+                      </p>
+                    </div>
+                  </>
+                ) : phase === "paying" ? (
+                  <>
+                    <span className="otc-status-dot" aria-hidden />
+                    <div>
+                      <p className="text-sm font-semibold text-white">Awaiting payment</p>
+                      <p className="text-xs leading-relaxed text-[#6b7280]">
+                        Pay with Phantom, scan the QR, or send USDT to the deposit address.
+                      </p>
+                    </div>
+                  </>
+                ) : null}
               </div>
 
-              {phase === "paying" && payUrl && (
+              {phase === "paying" && payUrl && settleStatus !== "complete" && (
                 <div className="space-y-2">
                   <div className="flex flex-col gap-2 sm:flex-row">
                     <button
                       type="button"
-                      disabled={payingWallet}
+                      disabled={payingWallet || settleStatus === "settling"}
                       onClick={openPhantomPay}
                       className="btn-orca-primary flex-1 !rounded-xl disabled:opacity-60"
                     >
-                      {payingWallet ? "Confirm in Phantom…" : "Pay with Phantom"}
+                      {payingWallet
+                        ? "Confirm in Phantom…"
+                        : settleStatus === "settling"
+                          ? "Settling…"
+                          : "Pay with Phantom"}
                     </button>
                     <button
                       type="button"
@@ -324,7 +403,7 @@ export function OtcBuyPanel() {
                   </div>
                   {paidSig && (
                     <p className="text-xs leading-relaxed text-[#00E5FF]/90">
-                      USDT sent. ACOPAY will credit this wallet after confirmation.{" "}
+                      USDT tx submitted.{" "}
                       <a
                         href={`https://solscan.io/tx/${paidSig}`}
                         target="_blank"
@@ -339,13 +418,23 @@ export function OtcBuyPanel() {
                     <p className="text-xs leading-relaxed text-amber-400/90">{walletError}</p>
                   )}
                   <p className="text-[11px] leading-relaxed text-[#6b7280]">
-                    Desktop: uses the Phantom extension popup. Mobile: opens the Phantom app when
-                    installed. Or scan the QR / send USDT to the deposit address.
+                    Desktop: Phantom extension popup. Mobile: Phantom app when installed. Or scan
+                    the QR / send USDT to the deposit address.
                   </p>
                 </div>
               )}
 
-              {phase === "expired" && (
+              {settleStatus === "complete" && (
+                <button
+                  type="button"
+                  onClick={changeAmount}
+                  className="btn-orca-primary w-full !rounded-xl !py-3"
+                >
+                  Buy again
+                </button>
+              )}
+
+              {phase === "expired" && settleStatus !== "complete" && (
                 <button
                   type="button"
                   onClick={refreshSession}

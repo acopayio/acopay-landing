@@ -6,14 +6,17 @@ import {
 } from "@solana/web3.js";
 import {
   TOKEN_PROGRAM_ID,
+  TOKEN_2022_PROGRAM_ID,
   createAssociatedTokenAccountIdempotentInstruction,
   createTransferInstruction,
   getAccount,
   getAssociatedTokenAddressSync,
 } from "@solana/spl-token";
 import { OTC, phantomBrowseUrl, buildSolanaPayUrl } from "../config/otc";
+import { TOKEN } from "../config/token";
 
 const USDT_DECIMALS = 6;
+const ACOPAY_DECIMALS = TOKEN.decimals;
 
 /**
  * Browser RPC candidates. Official api.mainnet-beta often returns 403 from web apps.
@@ -97,7 +100,9 @@ async function getWorkingConnection(): Promise<Connection> {
 /**
  * Connect Phantom extension and send USDT (SPL) to the OTC desk.
  */
-export async function payUsdtWithPhantom(amountUsdt: number): Promise<string> {
+export async function payUsdtWithPhantom(
+  amountUsdt: number
+): Promise<{ signature: string; buyer: string }> {
   const provider = getPhantomProvider();
   if (!provider) {
     throw new Error("PHANTOM_MISSING");
@@ -137,7 +142,6 @@ export async function payUsdtWithPhantom(amountUsdt: number): Promise<string> {
     if (/could not find account|Account does not exist|Invalid param/i.test(msg)) {
       throw new Error("This wallet has no USDT on Solana. Fund USDT (SPL) first.");
     }
-    // If balance check RPC fails, still build the transfer — Phantom will reject if empty.
   }
 
   const ixs: TransactionInstruction[] = [
@@ -167,11 +171,25 @@ export async function payUsdtWithPhantom(amountUsdt: number): Promise<string> {
       skipPreflight: true,
       maxRetries: 3,
     });
-    return signature;
+    return { signature, buyer: owner.toBase58() };
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
     if (/User rejected|rejected the request|4001/i.test(msg)) throw e;
     throw new Error(friendlyRpcError(e));
+  }
+}
+
+/** ACOPAY (Token-2022) UI balance for an owner wallet. */
+export async function getAcopayUiBalance(ownerBase58: string): Promise<number | null> {
+  try {
+    const connection = await getWorkingConnection();
+    const owner = new PublicKey(ownerBase58);
+    const mint = new PublicKey(TOKEN.mintAddress);
+    const ata = getAssociatedTokenAddressSync(mint, owner, false, TOKEN_2022_PROGRAM_ID);
+    const account = await getAccount(connection, ata, "confirmed", TOKEN_2022_PROGRAM_ID);
+    return Number(account.amount) / 10 ** ACOPAY_DECIMALS;
+  } catch {
+    return null;
   }
 }
 

@@ -380,6 +380,12 @@ body {
   animation: none;
 }
 
+.otc-status-dot-ok {
+  background: #34d399;
+  box-shadow: 0 0 10px rgba(52, 211, 153, 0.75);
+  animation: none;
+}
+
 .otc-qr-stage {
   display: flex;
   flex: 1;
