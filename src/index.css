@@ -269,3 +269,87 @@ body {
   }
 }
 
+/* OTC Buy panel */
+.otc-panel {
+  animation: otc-in 0.55s ease both;
+}
+
+.otc-panel-inner {
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 1.35rem;
+  background:
+    linear-gradient(165deg, rgba(25, 28, 34, 0.96), rgba(12, 16, 23, 0.92)),
+    radial-gradient(ellipse at top right, rgba(0, 229, 255, 0.07), transparent 55%);
+  padding: 1.35rem 1.25rem 1.5rem;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+}
+
+@media (min-width: 640px) {
+  .otc-panel-inner {
+    padding: 1.75rem 1.75rem 1.85rem;
+  }
+}
+
+.otc-live-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(0, 229, 255, 0.35);
+  background: rgba(0, 229, 255, 0.1);
+  padding: 0.3rem 0.65rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #00e5ff;
+}
+
+.otc-live-pill::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: #00e5ff;
+  box-shadow: 0 0 8px rgba(0, 229, 255, 0.8);
+  animation: otc-pulse 1.6s ease-in-out infinite;
+}
+
+.otc-qr-frame {
+  border-radius: 1.1rem;
+  border: 1px solid rgba(0, 229, 255, 0.22);
+  background: #fff;
+  padding: 0.65rem;
+  box-shadow: 0 0 0 6px rgba(0, 229, 255, 0.06);
+}
+
+@keyframes otc-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes otc-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .otc-panel {
+    animation: none;
+  }
+  .otc-live-pill::before {
+    animation: none;
+  }
+}
+

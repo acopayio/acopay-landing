@@ -53,10 +53,16 @@ export const PAGE_SEO: Record<string, PageSeo> = {
     description: SITE.defaultDescription,
     path: "/",
   },
-  "/trade": {
-    title: "How to Buy ACOPAY | Swap USDT on Jupiter & Raydium",
+  "/buy": {
+    title: "Buy ACOPAY | OTC Desk USDT 1:1 — Solana Pay QR",
     description:
-      "Buy ACOPAY with USDT on Jupiter or Raydium. Match the official contract on acopay.net, then swap. Pay your way on Solana.",
+      "Buy ACOPAY with USDT at 1:1 on the official OTC desk. Scan the Solana Pay QR with Phantom or Solflare — ACOPAY is sent automatically.",
+    path: "/buy",
+  },
+  "/trade": {
+    title: "How to Buy ACOPAY | OTC Desk & DEX Swap",
+    description:
+      "Buy ACOPAY via official OTC (USDT 1:1) or swap on Jupiter and Raydium. Match the official contract on acopay.net. Pay your way on Solana.",
     path: "/trade",
   },
   "/pools": {

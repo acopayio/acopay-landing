@@ -20,7 +20,8 @@
     "minTransferAcopay": 0.1,
     "firstAtaOpenFeeAcopay": 1,
     "paidBy": "sender",
-    "solGasSponsor": "sender (app default)"
+    "openFeeTreasury": "287s1e5LVRwQ1sfXuFGKwLog7n2vLBJDAm5buW5T3WSQ",
+    "solGasSponsor": "sender (app default); bots: OPERATOR"
   },
   "authorities": {
     "mintAuthority": "active",

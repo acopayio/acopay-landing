@@ -4,6 +4,7 @@ import { Footer } from "../components/Footer";
 
 const TRADE_NAV = [
   { to: "/", label: "Home", end: true, icon: HomeIcon },
+  { to: "/buy", label: "Buy", end: false, icon: BuyIcon },
   { to: "/trade", label: "Trade", end: false, icon: SwapIcon },
   { to: "/pools", label: "Pools", end: false, icon: PoolsIcon },
 ];
@@ -17,9 +18,9 @@ const INFO_NAV = [
 
 const MOBILE_NAV = [
   { to: "/", label: "Home", end: true, icon: HomeIcon },
+  { to: "/buy", label: "Buy", end: false, icon: BuyIcon },
   { to: "/trade", label: "Trade", end: false, icon: SwapIcon },
   { to: "/pools", label: "Pools", end: false, icon: PoolsIcon },
-  { to: "/contract", label: "Contract", end: false, icon: ContractIcon },
   { to: "/token", label: "Token", end: false, icon: TokenIcon },
 ];
 
@@ -100,6 +101,15 @@ function HomeIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
       <path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5Z" />
+    </svg>
+  );
+}
+
+function BuyIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+      <rect x="3" y="6" width="18" height="13" rx="2" />
+      <path d="M3 10h18M8 14h4" strokeLinecap="round" />
     </svg>
   );
 }

@@ -1,3 +1,11 @@
+# ACOPAY landing (acopay.net)
+
+Official site for ACOPAY on Solana Mainnet. Deploy: Cloudflare Pages ← GitHub `acopayio/acopay-landing`.
+
+**AI handoff (read first):** `C:\Users\adminpc\Desktop\solana\DOCS\16-ACOPAY-LANDING-HANDOFF.md`
+
+---
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.

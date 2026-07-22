@@ -7,6 +7,7 @@ import { HomePage } from "./pages/HomePage";
 import { PoolsPage } from "./pages/PoolsPage";
 import { RoadmapPage } from "./pages/RoadmapPage";
 import { TokenPage } from "./pages/TokenPage";
+import { BuyPage } from "./pages/BuyPage";
 import { TradePage } from "./pages/TradePage";
 
 export default function App() {
@@ -16,6 +17,7 @@ export default function App() {
       <Routes>
         <Route element={<OrcaLayout />}>
           <Route index element={<HomePage />} />
+          <Route path="buy" element={<BuyPage />} />
           <Route path="token" element={<TokenPage />} />
           <Route path="pools" element={<PoolsPage />} />
           <Route path="trade" element={<TradePage />} />
