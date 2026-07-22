@@ -31,6 +31,7 @@ export function OtcBuyPanel() {
   const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
   const [qrError, setQrError] = useState<string | null>(null);
   const { copied, copy } = useCopy();
+  const [payLinkCopied, setPayLinkCopied] = useState(false);
 
   const draftAmount = useMemo(() => {
     const n = Number(amountStr.replace(",", "."));
@@ -56,6 +57,14 @@ export function OtcBuyPanel() {
     }
   }, [activeAmount, activeValid, phase]);
 
+  async function copyPayLink() {
+    if (!payUrl) return;
+    const ok = await copy(payUrl);
+    if (ok) {
+      setPayLinkCopied(true);
+      window.setTimeout(() => setPayLinkCopied(false), 2000);
+    }
+  }
   useEffect(() => {
     if (phase !== "paying" || sessionEndsAt == null) return;
     const id = window.setInterval(() => {
@@ -257,18 +266,29 @@ export function OtcBuyPanel() {
               </div>
 
               {phase === "paying" && payUrl && (
-                <div className="flex flex-col gap-2 sm:flex-row">
-                  <a
-                    href={phantomBrowseUrl(payUrl)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-orca-primary flex-1 !rounded-xl"
-                  >
-                    Open in Phantom
-                  </a>
-                  <a href={payUrl} className="btn-orca-secondary flex-1 !rounded-xl">
-                    Wallet deep link
-                  </a>
+                <div className="space-y-2">
+                  <div className="flex flex-col gap-2 sm:flex-row">
+                    <a
+                      href={phantomBrowseUrl(payUrl)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-orca-primary flex-1 !rounded-xl"
+                    >
+                      Open in Phantom
+                    </a>
+                    <button
+                      type="button"
+                      onClick={copyPayLink}
+                      className="btn-orca-secondary flex-1 !rounded-xl"
+                    >
+                      {payLinkCopied ? "Payment link copied" : "Copy payment link"}
+                    </button>
+                  </div>
+                  <p className="text-[11px] leading-relaxed text-[#6b7280]">
+                    Best on desktop: use <span className="text-[#9ca3af]">Open in Phantom</span> or
+                    scan the QR. A raw <code className="text-[#9ca3af]">solana:</code> link often
+                    does nothing in Chrome unless a wallet app is installed.
+                  </p>
                 </div>
               )}
 
@@ -291,7 +311,7 @@ export function OtcBuyPanel() {
             </li>
             <li>
               <span>2</span>
-              Scan with Phantom or Solflare — or open the wallet link — and send USDT only.
+              Scan the QR with Phantom / Solflare, or tap Open in Phantom, then send USDT only.
             </li>
             <li>
               <span>3</span>
