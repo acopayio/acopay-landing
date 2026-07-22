@@ -1,7 +1,6 @@
 ﻿import { Link } from "react-router-dom";
 import { TOKEN, explorerUrl, isMintLive, mintDisplay, solscanUrl } from "../config/token";
 import { BuyButton } from "./BuyButton";
-import { TelegramPayButton } from "./TelegramPayButton";
 import { useCopy } from "../hooks/useCopy";
 
 export function Hero() {
@@ -35,9 +34,8 @@ export function Hero() {
             Jupiter. On-chain fee {TOKEN.transferFee}. Freeze revoked.
           </p>
 
-          <div className="mt-4 flex flex-wrap gap-3">
+          <div className="mt-4 flex flex-wrap items-center gap-3">
             <BuyButton />
-            <TelegramPayButton />
             <Link to="/contract" className="btn-orca-secondary">
               Contract
             </Link>
@@ -47,7 +45,7 @@ export function Hero() {
                   href={explorerUrl()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-orca-ghost"
+                  className="btn-orca-secondary"
                 >
                   Explorer ↗
                 </a>
@@ -55,13 +53,13 @@ export function Hero() {
                   href={solscanUrl()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-orca-ghost"
+                  className="btn-orca-secondary"
                 >
                   Solscan ↗
                 </a>
               </>
             ) : (
-              <Link to="/faq" className="btn-orca-ghost">
+              <Link to="/faq" className="btn-orca-secondary">
                 FAQ
               </Link>
             )}
