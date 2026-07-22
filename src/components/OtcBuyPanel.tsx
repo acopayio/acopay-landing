@@ -236,6 +236,16 @@ export function OtcBuyPanel() {
                   Pay on Telegram ↗
                 </a>
               </p>
+              <div className="mt-4">
+                <a
+                  href={TOKEN.telegramPayUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-orca-secondary inline-flex items-center justify-center"
+                >
+                  Open Telegram Pay
+                </a>
+              </div>
             </div>
             <span className="otc-live-pill shrink-0">Live</span>
           </header>

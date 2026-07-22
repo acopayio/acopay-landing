@@ -1,6 +1,7 @@
 ﻿import { Link } from "react-router-dom";
 import { TOKEN, explorerUrl, isMintLive, mintDisplay, solscanUrl } from "../config/token";
 import { BuyButton } from "./BuyButton";
+import { TelegramPayButton } from "./TelegramPayButton";
 import { useCopy } from "../hooks/useCopy";
 
 export function Hero() {
@@ -36,6 +37,7 @@ export function Hero() {
 
           <div className="mt-4 flex flex-wrap gap-3">
             <BuyButton />
+            <TelegramPayButton />
             <Link to="/contract" className="btn-orca-secondary">
               Contract
             </Link>

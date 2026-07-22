@@ -1,6 +1,8 @@
 ﻿import { NavLink, Outlet, Link } from "react-router-dom";
 import { BuyButton } from "../components/BuyButton";
+import { TelegramPayButton } from "../components/TelegramPayButton";
 import { Footer } from "../components/Footer";
+import { TOKEN } from "../config/token";
 
 const TRADE_NAV = [
   { to: "/", label: "Home", end: true, icon: HomeIcon },
@@ -50,10 +52,23 @@ export function OrcaLayout() {
               {item.label}
             </NavLink>
           ))}
+          <a
+            href={TOKEN.telegramPayUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={linkClass(false)}
+          >
+            <TelegramIcon />
+            Telegram Pay
+          </a>
         </nav>
 
-        <div className="mt-auto border-t border-white/[0.06] p-3">
+        <div className="mt-auto space-y-2 border-t border-white/[0.06] p-3">
           <BuyButton className="btn-orca-primary w-full !rounded-xl !px-3" label="Buy" />
+          <TelegramPayButton
+            className="btn-orca-secondary flex w-full items-center justify-center !rounded-xl !px-3"
+            label="Telegram Pay"
+          />
         </div>
       </aside>
 
@@ -61,12 +76,21 @@ export function OrcaLayout() {
       <div className="flex min-w-0 flex-1 flex-col pb-[4.25rem] lg:pb-0">
         {/* Mobile / tablet top bar */}
         <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-[#0c1017]/95 backdrop-blur-xl lg:hidden">
-          <div className="page-wrap flex h-14 items-center justify-between gap-3">
+          <div className="page-wrap flex h-14 items-center justify-between gap-2">
             <Link to="/" className="flex min-w-0 items-center gap-2">
               <img src="/assets/logo.png" alt="" className="h-8 w-8 object-contain" />
               <span className="truncate font-bold tracking-tight text-white">ACOPAY</span>
             </Link>
-            <BuyButton className="btn-orca-primary !min-h-9 !rounded-lg !px-3 !py-1.5 !text-xs" label="Buy" />
+            <div className="flex shrink-0 items-center gap-1.5">
+              <TelegramPayButton
+                className="btn-orca-secondary !min-h-9 !rounded-lg !px-2.5 !py-1.5 !text-xs"
+                label="Telegram"
+              />
+              <BuyButton
+                className="btn-orca-primary !min-h-9 !rounded-lg !px-3 !py-1.5 !text-xs"
+                label="Buy"
+              />
+            </div>
           </div>
         </header>
 
@@ -101,6 +125,14 @@ function HomeIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
       <path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5Z" />
+    </svg>
+  );
+}
+
+function TelegramIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+      <path d="M21.5 3.4 2.9 10.6c-1.3.5-1.3 1.2-.2 1.5l4.7 1.5 1.8 5.5c.2.7.1.9.9.9.6 0 .8-.3 1.1-.6l2.7-2.6 5.6 4.1c1 .6 1.8.3 2-.9L23 4.8c.3-1.3-.5-1.9-1.5-1.4Zm-14 9.4 10.2-6.4c.5-.3 1-.1.6.3l-8.3 7.5-.3 3.5-2.2-4.9Z" />
     </svg>
   );
 }
