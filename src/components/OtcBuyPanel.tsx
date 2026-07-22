@@ -6,7 +6,6 @@ import {
   buildSolanaPayUrl,
   formatSessionClock,
   otcAcopayForUsdt,
-  phantomBrowseUrl,
 } from "../config/otc";
 import { useCopy } from "../hooks/useCopy";
 
@@ -32,6 +31,9 @@ export function OtcBuyPanel() {
   const [qrError, setQrError] = useState<string | null>(null);
   const { copied, copy } = useCopy();
   const [payLinkCopied, setPayLinkCopied] = useState(false);
+  const [payingWallet, setPayingWallet] = useState(false);
+  const [walletError, setWalletError] = useState<string | null>(null);
+  const [paidSig, setPaidSig] = useState<string | null>(null);
 
   const draftAmount = useMemo(() => {
     const n = Number(amountStr.replace(",", "."));
@@ -63,6 +65,43 @@ export function OtcBuyPanel() {
     if (ok) {
       setPayLinkCopied(true);
       window.setTimeout(() => setPayLinkCopied(false), 2000);
+    }
+  }
+
+  async function openPhantomPay() {
+    if (!activeValid) return;
+    setWalletError(null);
+    setPaidSig(null);
+
+    const { hasPhantomExtension, openPhantomFallback, payUsdtWithPhantom } =
+      await import("../lib/phantomPay");
+
+    if (!hasPhantomExtension()) {
+      openPhantomFallback(activeAmount);
+      if (!/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)) {
+        setWalletError(
+          "Phantom extension not detected in this browser. Install it, or scan the QR / copy the deposit address."
+        );
+      }
+      return;
+    }
+
+    setPayingWallet(true);
+    try {
+      const sig = await payUsdtWithPhantom(activeAmount);
+      setPaidSig(sig);
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      if (msg === "PHANTOM_MISSING") {
+        openPhantomFallback(activeAmount);
+        setWalletError("Phantom extension not detected.");
+      } else if (/User rejected|rejected the request|4001/i.test(msg)) {
+        setWalletError("Request cancelled in Phantom.");
+      } else {
+        setWalletError(msg);
+      }
+    } finally {
+      setPayingWallet(false);
     }
   }
 
@@ -265,22 +304,44 @@ export function OtcBuyPanel() {
               </div>
 
               {phase === "paying" && payUrl && (
-                <div className="flex flex-col gap-2 sm:flex-row">
-                  <a
-                    href={phantomBrowseUrl(payUrl)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-orca-primary flex-1 !rounded-xl"
-                  >
-                    Open Phantom
-                  </a>
-                  <button
-                    type="button"
-                    onClick={copyPayLink}
-                    className="btn-orca-secondary flex-1 !rounded-xl"
-                  >
-                    {payLinkCopied ? "Copied" : "Copy link"}
-                  </button>
+                <div className="space-y-2">
+                  <div className="flex flex-col gap-2 sm:flex-row">
+                    <button
+                      type="button"
+                      disabled={payingWallet}
+                      onClick={openPhantomPay}
+                      className="btn-orca-primary flex-1 !rounded-xl disabled:opacity-60"
+                    >
+                      {payingWallet ? "Confirm in Phantom…" : "Pay with Phantom"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={copyPayLink}
+                      className="btn-orca-secondary flex-1 !rounded-xl"
+                    >
+                      {payLinkCopied ? "Copied" : "Copy Solana Pay"}
+                    </button>
+                  </div>
+                  {paidSig && (
+                    <p className="text-xs leading-relaxed text-[#00E5FF]/90">
+                      USDT sent. ACOPAY will credit this wallet after confirmation.{" "}
+                      <a
+                        href={`https://solscan.io/tx/${paidSig}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline hover:text-[#00E5FF]"
+                      >
+                        View tx
+                      </a>
+                    </p>
+                  )}
+                  {walletError && (
+                    <p className="text-xs leading-relaxed text-amber-400/90">{walletError}</p>
+                  )}
+                  <p className="text-[11px] leading-relaxed text-[#6b7280]">
+                    Desktop: uses the Phantom extension popup. Mobile: opens the Phantom app when
+                    installed. Or scan the QR / send USDT to the deposit address.
+                  </p>
                 </div>
               )}
 
