@@ -63,10 +63,9 @@ export function OrcaLayout() {
           </a>
         </nav>
 
-        <div className="mt-auto space-y-2 border-t border-white/[0.06] p-3">
-          <BuyButton className="btn-orca-primary w-full !rounded-xl !px-3" label="Buy" />
+        <div className="mt-auto border-t border-white/[0.06] p-3">
           <TelegramPayButton
-            className="btn-orca-secondary flex w-full items-center justify-center !rounded-xl !px-3"
+            className="btn-orca-primary flex w-full items-center justify-center !rounded-xl !px-3"
             label="Telegram Pay"
           />
         </div>
