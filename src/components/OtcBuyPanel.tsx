@@ -587,20 +587,39 @@ export function OtcBuyPanel() {
                   )}
                 </div>
 
-                <p className="mt-4 max-w-[16rem] text-center text-xs leading-relaxed text-[#6b7280]">
-                  {phase === "paying"
-                    ? `Scan to pay ${activeValid ? `${formatUsdt(activeAmount)} USDT` : "USDT"}.`
-                    : "Request a new code to continue."}
-                </p>
+                <div className="mt-4 max-w-[17rem] text-center">
+                  {phase === "paying" ? (
+                    <>
+                      <p className="text-sm font-semibold text-white">
+                        Scan to pay {activeValid ? formatUsdt(activeAmount) : ""} USDT
+                      </p>
+                      <p className="mt-1.5 text-xs font-medium tracking-wide text-[#00E5FF]">
+                        Solana Mainnet · USDT (SPL)
+                      </p>
+                      <p className="mt-1 text-[11px] leading-relaxed text-[#6b7280]">
+                        Not ERC-20, BEP-20, or TRC-20. Wrong network cannot be recovered.
+                      </p>
+                    </>
+                  ) : (
+                    <p className="text-xs leading-relaxed text-[#6b7280]">
+                      Request a new code to continue.
+                    </p>
+                  )}
+                </div>
               </>
             )}
           </div>
 
           {settleStatus === "idle" && (
             <div className="otc-address-block">
-              <p className="text-xs font-medium uppercase tracking-wider text-[#6b7280]">
-                Deposit address
-              </p>
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <p className="text-xs font-medium uppercase tracking-wider text-[#6b7280]">
+                  Deposit address
+                </p>
+                <p className="rounded-md border border-[#00E5FF]/25 bg-[#00E5FF]/08 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[#00E5FF]">
+                  Solana · USDT SPL
+                </p>
+              </div>
               <button
                 type="button"
                 onClick={() => copy(OTC.address)}
@@ -614,8 +633,10 @@ export function OtcBuyPanel() {
                 </span>
               </button>
               <p className="mt-2 text-[11px] leading-relaxed text-[#6b7280]">
-                USDT (SPL) on Solana only · {shortAddr(OTC.usdtMint)}. Never withdraw from an
-                exchange directly to this address.
+                Send only USDT on <span className="text-[#d1d5db]">Solana Mainnet (SPL)</span>
+                {" · "}
+                mint {shortAddr(OTC.usdtMint)}. Do not use Ethereum, BSC, Tron, or exchange withdraw
+                to this address.
               </p>
             </div>
           )}
