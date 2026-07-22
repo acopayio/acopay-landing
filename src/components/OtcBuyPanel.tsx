@@ -31,7 +31,6 @@ export function OtcBuyPanel() {
   const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
   const [qrError, setQrError] = useState<string | null>(null);
   const { copied, copy } = useCopy();
-  const [payLinkCopied, setPayLinkCopied] = useState(false);
   const [payingWallet, setPayingWallet] = useState(false);
   const [walletError, setWalletError] = useState<string | null>(null);
   const [paidSig, setPaidSig] = useState<string | null>(null);
@@ -63,15 +62,6 @@ export function OtcBuyPanel() {
       return null;
     }
   }, [activeAmount, activeValid, phase]);
-
-  async function copyPayLink() {
-    if (!payUrl) return;
-    const ok = await copy(payUrl);
-    if (ok) {
-      setPayLinkCopied(true);
-      window.setTimeout(() => setPayLinkCopied(false), 2000);
-    }
-  }
 
   async function openPhantomPay() {
     if (!activeValid) return;
@@ -373,28 +363,18 @@ export function OtcBuyPanel() {
 
               {phase === "paying" && payUrl && (
                 <div className="space-y-2">
-                  <div className="flex flex-col gap-2 sm:flex-row">
-                    <button
-                      type="button"
-                      disabled={payingWallet || settleStatus === "settling"}
-                      onClick={openPhantomPay}
-                      className="btn-orca-primary flex-1 !rounded-xl disabled:opacity-60"
-                    >
-                      {payingWallet
-                        ? "Confirm in Phantom…"
-                        : settleStatus === "settling"
-                          ? "Settling…"
-                          : "Pay with Phantom"}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={copyPayLink}
-                      disabled={settleStatus === "settling"}
-                      className="btn-orca-secondary flex-1 !rounded-xl disabled:opacity-50"
-                    >
-                      {payLinkCopied ? "Copied" : "Copy Solana Pay"}
-                    </button>
-                  </div>
+                  <button
+                    type="button"
+                    disabled={payingWallet || settleStatus === "settling"}
+                    onClick={openPhantomPay}
+                    className="btn-orca-primary w-full !rounded-xl disabled:opacity-60"
+                  >
+                    {payingWallet
+                      ? "Confirm in Phantom…"
+                      : settleStatus === "settling"
+                        ? "Settling…"
+                        : "Pay with Phantom"}
+                  </button>
                   {paidSig && (
                     <p className="text-xs leading-relaxed text-[#00E5FF]/90">
                       USDT tx submitted.{" "}
@@ -413,8 +393,7 @@ export function OtcBuyPanel() {
                   )}
                   {settleStatus === "idle" && (
                     <p className="text-[11px] leading-relaxed text-[#6b7280]">
-                      Desktop: Phantom extension. Mobile: Phantom app. Or scan the QR / send to the
-                      deposit address.
+                      No Phantom? Scan the QR or send USDT (SPL) on Solana to the deposit address.
                     </p>
                   )}
                 </div>
