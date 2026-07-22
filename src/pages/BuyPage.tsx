@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
 import { OtcBuyPanel } from "../components/OtcBuyPanel";
-import { jupiterSwapUrl, raydiumSwapUrl } from "../config/token";
+import { TOKEN, jupiterSwapUrl, raydiumSwapUrl, solscanUrl } from "../config/token";
 
 export function BuyPage() {
   const jup = jupiterSwapUrl();
   const ray = raydiumSwapUrl();
+  const solscan = solscanUrl();
 
   return (
     <section className="section-pad relative overflow-hidden pb-12 md:pb-16">
@@ -27,7 +28,30 @@ export function BuyPage() {
             <li>
               Correct path: exchange to your wallet, then this desk. Keep a little SOL for fees.
             </li>
+            <li>
+              Official site is <span className="text-[#e5e7eb]">acopay.net</span> only. Confirm the
+              mint on Solscan before you trust any other link or message.
+            </li>
+            <li>
+              Phantom may mark new tokens as spam. Your ACOPAY is still on-chain — open Manage
+              tokens / spam settings and show ACOPAY, or check the balance on Solscan.
+            </li>
           </ul>
+          <p className="mt-3 text-[11px] leading-relaxed text-[#6b7280]">
+            Official mint:{" "}
+            <a
+              href={solscan}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="break-all font-mono text-[#00E5FF]/90 hover:text-[#00E5FF]"
+            >
+              {TOKEN.mintAddress}
+            </a>
+            {" · "}
+            <Link to="/faq" className="text-[#00E5FF]/90 hover:text-[#00E5FF]">
+              Phantom warning FAQ
+            </Link>
+          </p>
         </aside>
 
         <div className="mx-auto grid max-w-5xl gap-4 sm:grid-cols-3">

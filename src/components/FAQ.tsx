@@ -7,11 +7,15 @@ const FAQS = [
   },
   {
     q: "Where is the contract address?",
-    a: "On this site (Contract page and homepage). Confirm the same mint on Solscan or Solana Explorer before you trade.",
+    a: `Official mint: ${TOKEN.mintAddress}. Always confirm it on acopay.net and Solscan before you send funds. Ignore DMs or sites that show a different mint.`,
   },
   {
     q: "How do I buy?",
-    a: "Swap USDT → ACOPAY on Jupiter or Raydium. Always match the contract address published on this site.",
+    a: "Prefer the official desk at /buy (USDT → ACOPAY 1:1). You can also swap on Jupiter or Raydium — always match the mint published on acopay.net.",
+  },
+  {
+    q: "Why does Phantom say ACOPAY is spam?",
+    a: "Phantom often flags new tokens until they appear on trusted lists (such as Jupiter Verified). A spam or “junk” label does not mean your tokens are gone — they remain on Solana. In Phantom, open Manage tokens / spam settings and show ACOPAY, or verify the balance on Solscan with the official mint. Only use acopay.net.",
   },
   {
     q: "Can I transfer ACOPAY peer-to-peer?",
@@ -35,7 +39,7 @@ const FAQS = [
   },
   {
     q: "Jupiter verification?",
-    a: "Jupiter verification will be submitted next. Until then, use the contract address on this site.",
+    a: "Jupiter verification is planned next. Until then, Phantom may show unverified or spam warnings — use the mint on acopay.net and Solscan to confirm you hold the real ACOPAY.",
   },
   {
     q: "Contact?",
