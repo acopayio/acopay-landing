@@ -1,17 +1,21 @@
-/** OTC desk — USDT → ACOPAY 1:1 (bot auto-send). */
+/** Official OTC desk — USDT → ACOPAY 1:1 (auto settle). */
 import { USDT_MINT } from "./token";
 
 export const OTC = {
-  /** Seller wallet — receives USDT, bot sends ACOPAY. */
+  /** Seller wallet — receives USDT; bot sends ACOPAY. */
   address: "FQwBxdMmPHt7aJTMpsvb2V1rV4UfdGLgrihrGS4Awpii",
   usdtMint: USDT_MINT,
   rate: 1,
   minUsdt: 1,
-  label: "ACOPAY OTC",
-  message: "Buy ACOPAY 1:1 USDT",
-  /** Typical bot poll interval. */
+  label: "ACOPAY",
+  message: "ACOPAY OTC — 1 USDT = 1 ACOPAY",
+  /** Typical settle window after USDT is confirmed. */
   settleHintSec: "15–60",
+  /** Payment QR session lifetime (client-side). */
+  sessionMinutes: 30,
 } as const;
+
+export const OTC_SESSION_MS = OTC.sessionMinutes * 60 * 1000;
 
 export function otcAcopayForUsdt(usdt: number): number {
   if (!Number.isFinite(usdt) || usdt <= 0) return 0;
@@ -22,9 +26,8 @@ export function otcAcopayForUsdt(usdt: number): number {
 export function buildSolanaPayUrl(usdtAmount: number): string {
   const amount = Number(usdtAmount);
   if (!Number.isFinite(amount) || amount < OTC.minUsdt) {
-    throw new Error(`Min ${OTC.minUsdt} USDT`);
+    throw new Error(`Minimum ${OTC.minUsdt} USDT`);
   }
-  // Keep up to 6 decimals (USDT)
   const amt = amount.toFixed(6).replace(/\.?0+$/, "");
   const params = new URLSearchParams({
     amount: amt,
@@ -37,4 +40,11 @@ export function buildSolanaPayUrl(usdtAmount: number): string {
 
 export function phantomBrowseUrl(solanaPayUrl: string): string {
   return `https://phantom.app/ul/browse/${encodeURIComponent(solanaPayUrl)}?ref=${encodeURIComponent("https://acopay.net")}`;
+}
+
+export function formatSessionClock(msLeft: number): string {
+  const total = Math.max(0, Math.ceil(msLeft / 1000));
+  const m = Math.floor(total / 60);
+  const s = total % 60;
+  return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
 }
