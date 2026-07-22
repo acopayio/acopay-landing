@@ -64,10 +64,7 @@ export function OrcaLayout() {
         </nav>
 
         <div className="mt-auto border-t border-white/[0.06] p-3">
-          <TelegramPayButton
-            className="btn-orca-primary flex w-full items-center justify-center !rounded-xl !px-3"
-            label="Telegram Pay"
-          />
+          <BuyButton className="btn-orca-primary w-full !rounded-xl !px-3" label="Buy" />
         </div>
       </aside>
 
@@ -75,16 +72,20 @@ export function OrcaLayout() {
       <div className="flex min-w-0 flex-1 flex-col pb-[4.25rem] lg:pb-0">
         {/* Mobile / tablet top bar */}
         <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-[#0c1017]/95 backdrop-blur-xl lg:hidden">
-          <div className="page-wrap flex h-14 items-center justify-between gap-2">
+          <div className="page-wrap flex h-14 items-center justify-between gap-3">
             <Link to="/" className="flex min-w-0 items-center gap-2">
               <img src="/assets/logo.png" alt="" className="h-8 w-8 object-contain" />
               <span className="truncate font-bold tracking-tight text-white">ACOPAY</span>
             </Link>
             <div className="flex shrink-0 items-center gap-1.5">
-              <TelegramPayButton
+              <a
+                href={TOKEN.telegramPayUrl}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="btn-orca-secondary !min-h-9 !rounded-lg !px-2.5 !py-1.5 !text-xs"
-                label="Telegram"
-              />
+              >
+                Telegram
+              </a>
               <BuyButton
                 className="btn-orca-primary !min-h-9 !rounded-lg !px-3 !py-1.5 !text-xs"
                 label="Buy"
