@@ -13,7 +13,19 @@ import {
 import { OTC, phantomBrowseUrl, buildSolanaPayUrl } from "../config/otc";
 
 const USDT_DECIMALS = 6;
-const RPC = "https://api.mainnet-beta.solana.com";
+
+/**
+ * Browser RPC candidates. Official api.mainnet-beta often returns 403 from web apps.
+ * Optional build-time override: VITE_SOLANA_RPC (Cloudflare Pages env).
+ */
+const RPC_CANDIDATES = [
+  ...(typeof import.meta !== "undefined" && import.meta.env?.VITE_SOLANA_RPC
+    ? [String(import.meta.env.VITE_SOLANA_RPC)]
+    : []),
+  "https://solana-rpc.publicnode.com",
+  "https://solana.drpc.org",
+  "https://api.mainnet-beta.solana.com",
+];
 
 type PhantomProvider = {
   isPhantom?: boolean;
@@ -55,6 +67,32 @@ function usdtToRaw(amount: number): bigint {
   return BigInt(Math.round(amount * 10 ** USDT_DECIMALS));
 }
 
+function friendlyRpcError(err: unknown): string {
+  const msg = err instanceof Error ? err.message : String(err);
+  if (/403|Access forbidden|Failed to fetch|CORS|429/i.test(msg)) {
+    return "Network RPC is busy. Try again in a moment, or scan the QR / send USDT to the deposit address.";
+  }
+  return msg;
+}
+
+async function getWorkingConnection(): Promise<Connection> {
+  let lastErr: unknown;
+  for (const rpc of RPC_CANDIDATES) {
+    if (!rpc) continue;
+    try {
+      const connection = new Connection(rpc, {
+        commitment: "confirmed",
+        confirmTransactionInitialTimeout: 60_000,
+      });
+      await connection.getLatestBlockhash("confirmed");
+      return connection;
+    } catch (e) {
+      lastErr = e;
+    }
+  }
+  throw new Error(friendlyRpcError(lastErr ?? new Error("No RPC available")));
+}
+
 /**
  * Connect Phantom extension and send USDT (SPL) to the OTC desk.
  */
@@ -70,7 +108,13 @@ export async function payUsdtWithPhantom(amountUsdt: number): Promise<string> {
     throw new Error("Could not read Phantom public key");
   }
 
-  const connection = new Connection(RPC, "confirmed");
+  let connection: Connection;
+  try {
+    connection = await getWorkingConnection();
+  } catch (e) {
+    throw new Error(friendlyRpcError(e));
+  }
+
   const mint = new PublicKey(OTC.usdtMint);
   const recipient = new PublicKey(OTC.address);
   const raw = usdtToRaw(amountUsdt);
@@ -78,9 +122,15 @@ export async function payUsdtWithPhantom(amountUsdt: number): Promise<string> {
   const fromAta = getAssociatedTokenAddressSync(mint, owner, false, TOKEN_PROGRAM_ID);
   const toAta = getAssociatedTokenAddressSync(mint, recipient, false, TOKEN_PROGRAM_ID);
 
-  const fromInfo = await connection.getAccountInfo(fromAta, "confirmed");
-  if (!fromInfo) {
-    throw new Error("This wallet has no USDT on Solana. Fund USDT (SPL) first.");
+  try {
+    const fromInfo = await connection.getAccountInfo(fromAta, "confirmed");
+    if (!fromInfo) {
+      throw new Error("This wallet has no USDT on Solana. Fund USDT (SPL) first.");
+    }
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    if (msg.includes("no USDT")) throw e;
+    // If balance check RPC fails, still build the transfer — Phantom will reject if empty.
   }
 
   const ixs: TransactionInstruction[] = [
@@ -94,16 +144,28 @@ export async function payUsdtWithPhantom(amountUsdt: number): Promise<string> {
     createTransferInstruction(fromAta, toAta, owner, raw, [], TOKEN_PROGRAM_ID),
   ];
 
-  const { blockhash } = await connection.getLatestBlockhash("confirmed");
+  let blockhash: string;
+  try {
+    ({ blockhash } = await connection.getLatestBlockhash("confirmed"));
+  } catch (e) {
+    throw new Error(friendlyRpcError(e));
+  }
+
   const tx = new Transaction().add(...ixs);
   tx.feePayer = owner;
   tx.recentBlockhash = blockhash;
 
-  const { signature } = await provider.signAndSendTransaction(tx, {
-    skipPreflight: false,
-    maxRetries: 3,
-  });
-  return signature;
+  try {
+    const { signature } = await provider.signAndSendTransaction(tx, {
+      skipPreflight: true,
+      maxRetries: 3,
+    });
+    return signature;
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    if (/User rejected|rejected the request|4001/i.test(msg)) throw e;
+    throw new Error(friendlyRpcError(e));
+  }
 }
 
 /** Mobile / no-extension fallback. */
