@@ -177,7 +177,7 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
           )}
 
           <div className="orca-table-wrap mt-6 hidden overflow-x-auto rounded-2xl border border-white/[0.07] bg-[#0c1017]/60 md:block">
-            <table className="orca-pools-table w-full min-w-[900px]">
+            <table className="pools-table w-full min-w-[900px]">
               <thead>
                 <tr className="border-b border-white/[0.06] text-left text-[11px] font-semibold uppercase tracking-wider text-[#9ca3af]">
                   <th className="px-5 py-4">Pool</th>

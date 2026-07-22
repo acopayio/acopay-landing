@@ -1,40 +1,51 @@
 # ACOPAY landing (acopay.net)
 
-Official site for ACOPAY on Solana Mainnet. Deploy: Cloudflare Pages ← GitHub `acopayio/acopay-landing`.
+Official website for **ACOPAY** on Solana Mainnet.
 
-**AI handoff (read first):** `C:\Users\adminpc\Desktop\solana\DOCS\16-ACOPAY-LANDING-HANDOFF.md`
+- **Live:** https://acopay.net  
+- **Repo:** https://github.com/acopayio/acopay-landing  
+- **Deploy:** Cloudflare Pages (auto-build on `main`)
 
----
+Site copy, comments, and public data are **English only**.
 
-# React + TypeScript + Vite
+## Develop
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bat
+run-local.bat
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Or: `npm install` then `npm run dev`
+
+## Build
+
+```bash
+npm run build
+```
+
+Output: `dist/`
+
+## Stack
+
+React 19 · Vite · TypeScript · Tailwind CSS v4 · React Router
+
+## Key routes
+
+| Path | Purpose |
+|------|---------|
+| `/` | Home |
+| `/buy` | OTC desk (USDT → ACOPAY 1:1, Solana Pay QR) |
+| `/trade` | How to buy |
+| `/pools` | Markets / pools widget |
+| `/token` | Token overview |
+| `/contract` | Official mint |
+| `/roadmap` | Roadmap |
+| `/faq` | FAQ |
+
+## Config
+
+- `src/config/token.ts` — mint, fee, DEX links  
+- `src/config/otc.ts` — OTC desk address & Solana Pay helpers  
+- `public/token-metadata.json` — off-chain metadata  
+- `public/token.json` — public token summary  
+
+Project-wide AI handoff (outside this repo): `../DOCS/16-ACOPAY-LANDING-HANDOFF.md`

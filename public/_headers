@@ -19,24 +19,12 @@
   Cache-Control: public, max-age=31536000, immutable
   X-Content-Type-Options: nosniff
 
-# Brand assets — allow refresh (not immutable)
+# Brand assets
 /assets/logo.png
   Cache-Control: public, max-age=86400
   X-Content-Type-Options: nosniff
 
 /assets/logo-solid.png
-  Cache-Control: public, max-age=3600
-  X-Content-Type-Options: nosniff
-
-/assets/logo-token.png
-  Cache-Control: public, max-age=3600
-  X-Content-Type-Options: nosniff
-
-/assets/logo-round.png
-  Cache-Control: public, max-age=3600
-  X-Content-Type-Options: nosniff
-
-/assets/logo-1024.png
   Cache-Control: public, max-age=3600
   X-Content-Type-Options: nosniff
 
@@ -50,10 +38,6 @@
 
 # Social preview image
 /assets/og-image.png
-  Cache-Control: public, max-age=86400
-  X-Content-Type-Options: nosniff
-
-/assets/og-image.jpg
   Cache-Control: public, max-age=86400
   X-Content-Type-Options: nosniff
 

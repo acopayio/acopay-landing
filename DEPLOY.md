@@ -1,24 +1,22 @@
-# ACOPAY Landing — React + Vite + Tailwind
+# ACOPAY Landing — Deploy
 
 Official homepage for **acopay.net**. Stack: React 19, Vite, Tailwind CSS v4.
-
-Inspired by professional Solana token sites ([Jupiter](https://jup.ag), [Raydium](https://raydium.io), [BONK](https://www.bonkcoin.com)) — clean dark UI, holder-focused content.
 
 ## Develop
 
 ```bat
-chay-local.bat
+run-local.bat
 ```
 
 Or: `npm install` then `npm run dev`
 
-## Build (deploy to Cloudflare Pages)
+## Build (Cloudflare Pages)
 
 ```bash
 npm run build
 ```
 
-Output: `dist/` — upload this folder or connect GitHub to Cloudflare Pages.
+Output: `dist/`
 
 ### Cloudflare Pages settings
 
@@ -26,41 +24,29 @@ Output: `dist/` — upload this folder or connect GitHub to Cloudflare Pages.
 |---------|-------|
 | Build command | `npm run build` |
 | Build output | `dist` |
-| Root directory | `acopay-landing` (if monorepo) or repo root |
+| Root directory | repo root |
 | Node version | 20+ |
 
-Custom domain: **acopay.net** (canonical).  
+Custom domain: **acopay.net** (canonical).
 
-In Cloudflare Pages → Custom domains:
-1. Add both `acopay.net` and `www.acopay.net` to the **same** Pages project (not two projects).
-2. Prefer Cloudflare “Redirect to apex” / Bulk Redirect: `www.acopay.net` → `https://acopay.net`.
-3. Repo also forces www → apex via `functions/_middleware.ts` + a small script in `index.html`.
+1. Add both `acopay.net` and `www.acopay.net` to the same Pages project.
+2. Prefer redirect www → apex (`https://acopay.net`).
+3. Repo also forces www → apex via `functions/_middleware.ts` and a small script in `index.html`.
 
 `public/CNAME` lists apex only.
 
-## After mainnet launch
+## After token updates
 
-1. Deploy mint + metadata on Solana Mainnet.
-2. Edit `src/config/token.ts`:
-
-```ts
-status: "live",
-mintAddress: "YOUR_MAINNET_MINT",
-```
-
-3. Sync `public/token.json` → `"mint": "YOUR_MAINNET_MINT"`.
-4. `git push` — Cloudflare Pages rebuilds automatically.
-5. Create Raydium ACOPAY/USDT pool, then submit Jupiter Standard at https://verified.jup.ag/tokens
-
+1. Keep `src/config/token.ts` in sync with mainnet mint / fee / pool id.
+2. Sync `public/token.json` and `public/token-metadata.json` if metadata changes.
+3. `git push` — Cloudflare Pages rebuilds automatically.
 
 ## Folder
 
 ```
 acopay-landing/
-├── public/assets/     # logo, og-image (official)
-├── src/config/token.ts
+├── public/assets/     # logo, favicon, og-image, roadmap art
+├── src/config/        # token + OTC config
 ├── src/components/
 └── dist/              # after npm run build
 ```
-
-Old static site remains in `../website/` for reference.
