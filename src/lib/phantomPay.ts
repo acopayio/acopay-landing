@@ -8,6 +8,7 @@ import {
   TOKEN_PROGRAM_ID,
   createAssociatedTokenAccountIdempotentInstruction,
   createTransferInstruction,
+  getAccount,
   getAssociatedTokenAddressSync,
 } from "@solana/spl-token";
 import { OTC, phantomBrowseUrl, buildSolanaPayUrl } from "../config/otc";
@@ -123,13 +124,19 @@ export async function payUsdtWithPhantom(amountUsdt: number): Promise<string> {
   const toAta = getAssociatedTokenAddressSync(mint, recipient, false, TOKEN_PROGRAM_ID);
 
   try {
-    const fromInfo = await connection.getAccountInfo(fromAta, "confirmed");
-    if (!fromInfo) {
-      throw new Error("This wallet has no USDT on Solana. Fund USDT (SPL) first.");
+    const fromAccount = await getAccount(connection, fromAta, "confirmed", TOKEN_PROGRAM_ID);
+    if (fromAccount.amount < raw) {
+      const have = Number(fromAccount.amount) / 10 ** USDT_DECIMALS;
+      throw new Error(
+        `Insufficient USDT: wallet has ${have.toLocaleString("en-US", { maximumFractionDigits: 6 })} USDT, need ${amountUsdt}.`
+      );
     }
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
-    if (msg.includes("no USDT")) throw e;
+    if (msg.startsWith("Insufficient USDT")) throw e;
+    if (/could not find account|Account does not exist|Invalid param/i.test(msg)) {
+      throw new Error("This wallet has no USDT on Solana. Fund USDT (SPL) first.");
+    }
     // If balance check RPC fails, still build the transfer — Phantom will reject if empty.
   }
 
