@@ -24,6 +24,10 @@ export const TOKEN = {
   website: "https://acopay.net",
   email: "contact@acopay.net",
   founded: "2026",
+  /** Official Telegram Pay bot (shared with volume admin). */
+  telegramBot: "AcopayNetwork_bot",
+  telegramUrl: "https://t.me/AcopayNetwork_bot",
+  telegramPayUrl: "https://t.me/AcopayNetwork_bot?start=pay",
   dex: {
     platform: "Raydium",
     pair: "ACOPAY / USDT",

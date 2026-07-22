@@ -1,13 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import QRCode from "qrcode";
-import {
-  OTC,
-  OTC_SESSION_MS,
-  buildSolanaPayUrl,
-  formatSessionClock,
-  otcAcopayForUsdt,
-} from "../config/otc";
-import { solscanUrl } from "../config/token";
+import { OTC, OTC_SESSION_MS, buildSolanaPayUrl, formatSessionClock, otcAcopayForUsdt } from "../config/otc";
+import { solscanUrl, TOKEN } from "../config/token";
 import { useCopy } from "../hooks/useCopy";
 
 const PRESETS = [10, 50, 100, 250, 500] as const;
@@ -230,6 +224,17 @@ export function OtcBuyPanel() {
                 Pay USDT from your own Solana wallet. ACOPAY returns{" "}
                 <span className="text-[#00E5FF]">1:1</span> to that same address — not to an
                 exchange.
+              </p>
+              <p className="mt-3 text-sm text-[#6b7280]">
+                Already hold ACOPAY?{" "}
+                <a
+                  href={TOKEN.telegramPayUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-[#00E5FF] hover:underline"
+                >
+                  Pay on Telegram ↗
+                </a>
               </p>
             </div>
             <span className="otc-live-pill shrink-0">Live</span>

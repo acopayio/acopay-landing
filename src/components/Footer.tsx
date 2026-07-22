@@ -75,6 +75,11 @@ export function Footer() {
                     </Link>
                   )}
                 </li>
+                <li>
+                  <a href={TOKEN.telegramPayUrl} target="_blank" rel="noopener noreferrer" className="hover:text-[#00E5FF]">
+                    Telegram Pay ↗
+                  </a>
+                </li>
               </ul>
             </div>
           </div>
@@ -147,6 +152,16 @@ export function Footer() {
                   </Link>
                 )}
               </li>
+              <li>
+                <a
+                  href={TOKEN.telegramPayUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#9ca3af] hover:text-[#00E5FF]"
+                >
+                  Telegram Pay ↗
+                </a>
+              </li>
             </ul>
           </div>
           <div>
@@ -156,6 +171,14 @@ export function Footer() {
               className="mt-4 inline-block text-sm text-[#9ca3af] hover:text-[#00E5FF]"
             >
               {TOKEN.email}
+            </a>
+            <a
+              href={TOKEN.telegramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 block text-sm text-[#9ca3af] hover:text-[#00E5FF]"
+            >
+              @{TOKEN.telegramBot}
             </a>
           </div>
         </div>
