@@ -257,29 +257,10 @@ export type LanguageOption = {
   native: string;
 };
 
-/** Menu order — Vietnamese is 6th so it is not promoted by IP. */
-export const LANGUAGE_MENU_ORDER = [
-  "en",
-  "zh",
-  "ja",
-  "ko",
-  "th",
-  "vi",
-  "id",
-  "ms",
-  "hi",
-  "es",
-  "pt",
-  "fr",
-  "de",
-  "nl",
-  "it",
-  "ru",
-  "uk",
-  "pl",
-  "tr",
-  "ar",
-] as const;
+/** Menu order: English names A–Z. */
+export const LANGUAGE_MENU_ORDER = Object.keys(LOCALE_ENGLISH_NAME).sort((a, b) =>
+  LOCALE_ENGLISH_NAME[a].localeCompare(LOCALE_ENGLISH_NAME[b], "en"),
+);
 
 export const LANGUAGE_OPTIONS: LanguageOption[] = LANGUAGE_MENU_ORDER.map((code) => ({
   code,
