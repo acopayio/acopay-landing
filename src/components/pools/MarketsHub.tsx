@@ -9,6 +9,7 @@ import { SwapMarketPanel } from "./SwapMarketPanel";
 import { TransfersExplorer } from "./TransfersExplorer";
 
 /** Markets hub: Pools | Binance | Transfers | Swap | Chart (OTC removed). */
+type Props = {
   variant?: "home" | "full";
 };
 
