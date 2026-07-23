@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import bs58 from "bs58";
+import { phantomBrowseUrl } from "../config/otc";
 import { getPhantomProvider, hasPhantomExtension, isMobileUa } from "../lib/phantomPay";
 
 function buildLinkMessage(tg: string, nonce: string, exp: string) {
@@ -26,7 +27,6 @@ function isUnsupportedDesktopBrowser(): boolean {
   if (isMobileUa()) return false;
   const ua = navigator.userAgent;
   if (/MSIE |Trident\//i.test(ua)) return true;
-  // EdgeHTML legacy (not Chromium Edge)
   if (/Edge\//i.test(ua) && !/Edg\//i.test(ua)) return true;
   return false;
 }
@@ -34,6 +34,9 @@ function isUnsupportedDesktopBrowser(): boolean {
 /**
  * Prove Phantom ownership → paste /linkok into @AcopayNetwork_bot.
  * No VPS call from the site; verification happens inside Telegram.
+ *
+ * Mobile: Safari / Telegram in-app browser do not inject Phantom.
+ * Use phantom.app/ul/browse so the same page opens inside Phantom (provider available).
  */
 export function LinkWalletPage() {
   const [params] = useSearchParams();
@@ -48,6 +51,11 @@ export function LinkWalletPage() {
 
   const expired = exp ? Math.floor(Date.now() / 1000) > Number(exp) : false;
   const badBrowser = isUnsupportedDesktopBrowser();
+  const mobile = isMobileUa();
+  const hasProvider = hasPhantomExtension();
+  /** Telegram / Safari on phone — need deeplink into Phantom app browser. */
+  const needsOpenInPhantom = mobile && !hasProvider;
+
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [pubkey, setPubkey] = useState<string | null>(null);
@@ -56,6 +64,7 @@ export function LinkWalletPage() {
   const [copiedUrl, setCopiedUrl] = useState(false);
 
   const pageUrl = typeof window !== "undefined" ? window.location.href : "";
+  const openInPhantomHref = pageUrl ? phantomBrowseUrl(pageUrl) : "https://phantom.com/download";
 
   async function copyPageUrl() {
     if (!pageUrl) return;
@@ -87,7 +96,7 @@ export function LinkWalletPage() {
     if (!provider?.signMessage) {
       setError(
         isMobileUa()
-          ? "Open this page in a browser with Phantom, or use Phantom’s in-app browser. Mobile Telegram in-app browser may not inject Phantom."
+          ? "Phantom is not available here. Tap “Open in Phantom app” below."
           : "Phantom extension not found. Install Phantom in Chrome, then retry.",
       );
       return;
@@ -158,6 +167,18 @@ export function LinkWalletPage() {
           </div>
         )}
 
+        {needsOpenInPhantom && message && !expired && (
+          <div className="mt-6 space-y-3 rounded-2xl border border-[#00E5FF]/30 bg-[#00E5FF]/5 p-4 text-sm text-[#e5e7eb]">
+            <p className="font-semibold text-white">iPhone / Android</p>
+            <p className="leading-relaxed text-[#9ca3af]">
+              Telegram and Safari cannot talk to Phantom. Open this same page{" "}
+              <b className="text-white">inside the Phantom app</b>, then Connect &amp; sign.
+              We cannot detect if Phantom is installed (OS privacy) — if nothing opens, install
+              Phantom first.
+            </p>
+          </div>
+        )}
+
         {!message ? (
           <p className="mt-8 rounded-2xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-100">
             Open this page from the bot: send <code className="text-white">/linkwallet</code> and tap
@@ -179,27 +200,59 @@ export function LinkWalletPage() {
               <p className="text-sm text-amber-300">Expired — run /linkwallet again in Telegram.</p>
             )}
 
-            <button
-              type="button"
-              disabled={busy || expired || badBrowser || !hasPhantomExtension()}
-              onClick={() => void sign()}
-              className="btn-orca-primary w-full !rounded-xl disabled:opacity-50"
-            >
-              {busy ? "Waiting for Phantom…" : "Connect Phantom & sign"}
-            </button>
-
-            {!badBrowser && !hasPhantomExtension() && (
-              <p className="text-xs text-[#9ca3af]">
-                Need Phantom?{" "}
+            {needsOpenInPhantom ? (
+              <div className="space-y-3">
                 <a
-                  href="https://phantom.com/download"
-                  className="text-[#00E5FF] hover:underline"
-                  target="_blank"
+                  href={openInPhantomHref}
+                  className="btn-orca-primary flex w-full !rounded-xl items-center justify-center"
                   rel="noopener noreferrer"
                 >
-                  Install for Chrome ↗
+                  Open in Phantom app
                 </a>
-              </p>
+                <button
+                  type="button"
+                  onClick={() => void copyPageUrl()}
+                  className="btn-orca-secondary w-full !text-xs"
+                >
+                  {copiedUrl ? "URL copied" : "Copy page URL"}
+                </button>
+                <p className="text-xs text-[#9ca3af]">
+                  No app?{" "}
+                  <a
+                    href="https://phantom.com/download"
+                    className="text-[#00E5FF] hover:underline"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Install Phantom ↗
+                  </a>
+                </p>
+              </div>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  disabled={busy || expired || badBrowser || !hasProvider}
+                  onClick={() => void sign()}
+                  className="btn-orca-primary w-full !rounded-xl disabled:opacity-50"
+                >
+                  {busy ? "Waiting for Phantom…" : "Connect Phantom & sign"}
+                </button>
+
+                {!badBrowser && !hasProvider && (
+                  <p className="text-xs text-[#9ca3af]">
+                    Need Phantom?{" "}
+                    <a
+                      href="https://phantom.com/download"
+                      className="text-[#00E5FF] hover:underline"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Install for Chrome ↗
+                    </a>
+                  </p>
+                )}
+              </>
             )}
 
             {error && <p className="text-sm text-amber-300">{error}</p>}

@@ -36,8 +36,14 @@ export function buildSolanaPayUrl(usdtAmount: number): string {
   return `solana:${OTC.address}?${params.toString()}`;
 }
 
-export function phantomBrowseUrl(solanaPayUrl: string): string {
-  return `https://phantom.app/ul/browse/${encodeURIComponent(solanaPayUrl)}?ref=${encodeURIComponent("https://acopay.net")}`;
+/**
+ * Open any URL (Solana Pay or https page) inside Phantom’s in-app browser.
+ * Mobile Safari / Telegram WebView cannot inject Phantom — use this deeplink.
+ * Docs: https://docs.phantom.com/phantom-deeplinks/other-methods/browse
+ * Note: iOS/Android cannot detect if Phantom is installed; deeplink fails → App Store.
+ */
+export function phantomBrowseUrl(targetUrl: string): string {
+  return `https://phantom.app/ul/browse/${encodeURIComponent(targetUrl)}?ref=${encodeURIComponent("https://acopay.net")}`;
 }
 
 export function formatSessionClock(msLeft: number): string {
