@@ -1,17 +1,19 @@
 ﻿import { Link } from "react-router-dom";
 import { TOKEN, explorerUrl, jupiterSwapUrl, solscanUrl } from "../config/token";
+import { useT } from "../i18n/LanguageProvider";
 
 const PRODUCT_LINKS = [
-  { to: "/token", label: "Token" },
-  { to: "/markets", label: "Markets" },
-  { to: "/trade", label: "Trade" },
-  { to: "/contract", label: "Contract" },
-  { to: "/roadmap", label: "Roadmap" },
-  { to: "/faq", label: "FAQ" },
+  { to: "/token", labelKey: "nav.token" },
+  { to: "/markets", labelKey: "nav.markets" },
+  { to: "/trade", labelKey: "nav.trade" },
+  { to: "/contract", labelKey: "nav.contract" },
+  { to: "/roadmap", labelKey: "nav.roadmap" },
+  { to: "/faq", labelKey: "nav.faq" },
 ] as const;
 
 export function Footer() {
   const jup = jupiterSwapUrl();
+  const t = useT();
 
   return (
     <footer className="border-t border-white/[0.06] bg-[#090b0e]/80 py-8 md:py-14">
@@ -31,13 +33,13 @@ export function Footer() {
           <div className="mt-5 grid grid-cols-2 gap-x-6 gap-y-4">
             <div>
               <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#00E5FF]">
-                Product
+                {t("footer.product")}
               </p>
               <ul className="mt-2 columns-2 gap-x-4 text-sm leading-7 text-[#9ca3af]">
                 {PRODUCT_LINKS.map((l) => (
                   <li key={l.to}>
                     <Link to={l.to} className="hover:text-[#00E5FF]">
-                      {l.label}
+                      {t(l.labelKey)}
                     </Link>
                   </li>
                 ))}
@@ -45,17 +47,17 @@ export function Footer() {
             </div>
             <div>
               <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#00E5FF]">
-                On-chain
+                {t("footer.onChain")}
               </p>
               <ul className="mt-2 space-y-1.5 text-sm text-[#9ca3af]">
                 <li>
                   <a href={explorerUrl()} target="_blank" rel="noopener noreferrer" className="hover:text-[#00E5FF]">
-                    Explorer ↗
+                    {t("hero.explorer")}
                   </a>
                 </li>
                 <li>
                   <a href={solscanUrl()} target="_blank" rel="noopener noreferrer" className="hover:text-[#00E5FF]">
-                    Solscan ↗
+                    {t("hero.solscan")}
                   </a>
                 </li>
                 <li>
@@ -65,13 +67,13 @@ export function Footer() {
                     </a>
                   ) : (
                     <Link to="/trade" className="hover:text-[#00E5FF]">
-                      Trade
+                      {t("nav.trade")}
                     </Link>
                   )}
                 </li>
                 <li>
                   <a href={TOKEN.telegramPayUrl} target="_blank" rel="noopener noreferrer" className="hover:text-[#00E5FF]">
-                    Telegram Pay ↗
+                    {t("nav.telegramPay")} ↗
                   </a>
                 </li>
               </ul>
@@ -93,19 +95,19 @@ export function Footer() {
             </p>
           </div>
           <div>
-            <h4 className="label-orca">Product</h4>
+            <h4 className="label-orca">{t("footer.product")}</h4>
             <ul className="mt-4 space-y-2 text-sm">
               {PRODUCT_LINKS.map((l) => (
                 <li key={l.to}>
                   <Link to={l.to} className="text-[#9ca3af] hover:text-[#00E5FF]">
-                    {l.label}
+                    {t(l.labelKey)}
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
           <div>
-            <h4 className="label-orca">On-chain</h4>
+            <h4 className="label-orca">{t("footer.onChain")}</h4>
             <ul className="mt-4 space-y-2 text-sm">
               <li>
                 <a
@@ -114,7 +116,7 @@ export function Footer() {
                   rel="noopener noreferrer"
                   className="text-[#9ca3af] hover:text-[#00E5FF]"
                 >
-                  Explorer ↗
+                  {t("hero.explorer")}
                 </a>
               </li>
               <li>
@@ -124,7 +126,7 @@ export function Footer() {
                   rel="noopener noreferrer"
                   className="text-[#9ca3af] hover:text-[#00E5FF]"
                 >
-                  Solscan ↗
+                  {t("hero.solscan")}
                 </a>
               </li>
               <li>
@@ -139,7 +141,7 @@ export function Footer() {
                   </a>
                 ) : (
                   <Link to="/trade" className="text-[#9ca3af] hover:text-[#00E5FF]">
-                    Trade
+                    {t("nav.trade")}
                   </Link>
                 )}
               </li>
@@ -150,13 +152,13 @@ export function Footer() {
                   rel="noopener noreferrer"
                   className="text-[#9ca3af] hover:text-[#00E5FF]"
                 >
-                  Telegram Pay ↗
+                  {t("nav.telegramPay")} ↗
                 </a>
               </li>
             </ul>
           </div>
           <div>
-            <h4 className="label-orca">Contact</h4>
+            <h4 className="label-orca">{t("footer.contact")}</h4>
             <a
               href={`mailto:${TOKEN.email}`}
               className="mt-4 inline-flex items-center gap-2 text-sm text-[#9ca3af] hover:text-[#00E5FF]"

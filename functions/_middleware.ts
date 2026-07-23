@@ -1,11 +1,11 @@
 /**
  * Cloudflare Pages middleware:
  * 1) www → apex
- * 2) SPA fallback
- * 3) Real 404 for missing /assets/*
+ * 2) Set country cookie from CF-IPCountry (for language detect — no VPS)
+ * 3) SPA fallback
+ * 4) Real 404 for missing /assets/* and /data/*.json
  *
- * Markets data (Binance + Transfers) is STATIC under /data/*.json
- * committed by GitHub Actions — website NEVER proxies to VPS.
+ * Markets data is STATIC under /data/*.json (GitHub Actions). Site never proxies to VPS.
  */
 type PagesContext = {
   request: Request;
@@ -14,6 +14,20 @@ type PagesContext = {
     ASSETS: { fetch: (input: Request | string) => Promise<Response> };
   };
 };
+
+function withCountryCookie(request: Request, response: Response): Response {
+  const cc = (request.headers.get("CF-IPCountry") || "XX").toUpperCase();
+  const headers = new Headers(response.headers);
+  headers.append(
+    "Set-Cookie",
+    `acopay_cc=${encodeURIComponent(cc)}; Path=/; Max-Age=86400; SameSite=Lax`,
+  );
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+}
 
 export async function onRequest(context: PagesContext): Promise<Response> {
   const url = new URL(context.request.url);
@@ -26,7 +40,7 @@ export async function onRequest(context: PagesContext): Promise<Response> {
   const response = await context.next();
 
   if (response.status !== 404) {
-    return response;
+    return withCountryCookie(context.request, response);
   }
 
   const path = url.pathname;
@@ -34,17 +48,19 @@ export async function onRequest(context: PagesContext): Promise<Response> {
     path.startsWith("/assets/") && /\.(css|js|map|woff2?|png|jpe?g|svg|webp|ico)$/i.test(path);
 
   if (isHashedAsset) {
-    return response;
+    return withCountryCookie(context.request, response);
   }
 
-  // Static data JSON must 404 if missing (do not SPA-fallback)
   if (path.startsWith("/data/") && path.endsWith(".json")) {
-    return response;
+    return withCountryCookie(context.request, response);
   }
 
   const index = await context.env.ASSETS.fetch(new URL("/index.html", url).toString());
-  return new Response(index.body, {
-    status: 200,
-    headers: index.headers,
-  });
+  return withCountryCookie(
+    context.request,
+    new Response(index.body, {
+      status: 200,
+      headers: index.headers,
+    }),
+  );
 }

@@ -35,7 +35,8 @@ React 19 · Vite · TypeScript · Tailwind CSS v4 · React Router
 | `/` | Home |
 | `/buy` | OTC desk (USDT → ACOPAY 1:1, Solana Pay QR) |
 | `/trade` | How to buy |
-| `/pools` | Markets / pools widget |
+| `/markets` | Markets hub (pools, Binance, transfers, OTC) |
+| `/pools` | Redirect → `/markets` |
 | `/token` | Token overview |
 | `/contract` | Official mint |
 | `/roadmap` | Roadmap |

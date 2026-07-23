@@ -2,12 +2,14 @@ import { useMemo, useState } from "react";
 import type { AcopayTransferRow } from "../../api/acopayTransfers";
 import { useAcopayTransfers } from "../../hooks/useAcopayTransfers";
 import { useCopy } from "../../hooks/useCopy";
+import { useT } from "../../i18n/LanguageProvider";
 import { solscanUrl } from "../../config/token";
 import { SortTh, compareSortValues, useColumnSort } from "../ui/SortTh";
 
 type TransferSort = "time" | "slot" | "from" | "to" | "amount" | "signature";
 
 const PAGE_SIZE = 20;
+
 
 function fmtAmount(n: number): string {
   if (!Number.isFinite(n)) return "—";
@@ -115,6 +117,7 @@ type ViewOpts = {
 export function TransfersExplorer() {
   const { rows, updatedAt, total, backfillComplete, loading, error, refresh } =
     useAcopayTransfers(60_000);
+  const t = useT();
   const { sortKey, sortDir, onSort } = useColumnSort<TransferSort>("time", "desc", [
     "from",
     "to",
@@ -170,21 +173,19 @@ export function TransfersExplorer() {
   return (
     <div className="space-y-4">
       <div className="space-y-2">
-        <h3 className="text-lg font-semibold text-white">Token Transfers</h3>
-        <p className="text-sm leading-relaxed text-[#9ca3af]">
-          Recent ACOPAY wallet transfers on Solana. Updated regularly — explore on Solscan for full
-          details.
-        </p>
+        <h3 className="text-lg font-semibold text-white">{t("markets.transfersTitle")}</h3>
+        <p className="text-sm leading-relaxed text-[#9ca3af]">{t("markets.transfersSubtitle")}</p>
         <p className="text-xs text-[#6b7280]">
-          {total.toLocaleString("en-US")} transfers
-          {!backfillComplete ? " · loading history…" : ""} · Updated {updated}
+          {t("markets.transfersCount", { n: total.toLocaleString("en-US") })}
+          {!backfillComplete ? ` · ${t("markets.loadingHistory")}` : ""} · {t("markets.updated")}{" "}
+          {updated}
           <button
             type="button"
             onClick={() => refresh()}
             disabled={loading}
             className="ml-2 font-medium text-[#00E5FF] hover:underline disabled:opacity-50"
           >
-            {loading && rows.length === 0 ? "Refreshing…" : "Refresh"}
+            {loading && rows.length === 0 ? t("markets.refreshing") : t("markets.refresh")}
           </button>
           <a
             href={solscanUrl()}
@@ -192,7 +193,7 @@ export function TransfersExplorer() {
             rel="noopener noreferrer"
             className="ml-3 font-medium text-[#00E5FF] hover:underline"
           >
-            Solscan token ↗
+            {t("markets.solscanToken")}
           </a>
         </p>
       </div>
@@ -201,12 +202,12 @@ export function TransfersExplorer() {
         <legend className="sr-only">Display options</legend>
         {(
           [
-            ["fullAddress", "Show full address"],
-            ["fullSignature", "Show full signature"],
-            ["showBlock", "Show block"],
-            ["showAge", "Show age"],
+            ["fullAddress", "markets.showFullAddress"],
+            ["fullSignature", "markets.showFullSignature"],
+            ["showBlock", "markets.showBlock"],
+            ["showAge", "markets.showAge"],
           ] as const
-        ).map(([key, label]) => (
+        ).map(([key, labelKey]) => (
           <label key={key} className="inline-flex cursor-pointer items-center gap-2 select-none">
             <input
               type="checkbox"
@@ -214,7 +215,7 @@ export function TransfersExplorer() {
               onChange={() => toggle(key)}
               className="h-3.5 w-3.5 rounded border-white/20 bg-[#0c1017] text-[#00E5FF] focus:ring-[#00E5FF]/40"
             />
-            <span>{label}</span>
+            <span>{t(labelKey)}</span>
           </label>
         ))}
       </fieldset>
@@ -224,9 +225,9 @@ export function TransfersExplorer() {
           role="alert"
           className="rounded-2xl border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-200"
         >
-          <strong className="font-semibold">Transfers unavailable.</strong> {error}
+          <strong className="font-semibold">{t("markets.transfersUnavailable")}</strong> {error}
           <button type="button" onClick={() => refresh()} className="ml-2 underline">
-            Retry
+            {t("markets.retry")}
           </button>
         </div>
       )}
@@ -236,41 +237,53 @@ export function TransfersExplorer() {
           <thead>
             <tr className="border-b border-white/[0.06] text-[11px]">
               <SortTh
-                label="Signature"
+                label={t("markets.signature")}
                 col="signature"
                 sortKey={sortKey}
                 sortDir={sortDir}
                 onSort={onSort}
               />
               {opts.showAge && (
-                <SortTh label="Age" col="time" sortKey={sortKey} sortDir={sortDir} onSort={onSort} />
+                <SortTh
+                  label={t("markets.age")}
+                  col="time"
+                  sortKey={sortKey}
+                  sortDir={sortDir}
+                  onSort={onSort}
+                />
               )}
               {opts.showBlock && (
                 <SortTh
-                  label="Block"
+                  label={t("markets.block")}
                   col="slot"
                   sortKey={sortKey}
                   sortDir={sortDir}
                   onSort={onSort}
                 />
               )}
-              <SortTh label="Source" col="from" sortKey={sortKey} sortDir={sortDir} onSort={onSort} />
               <SortTh
-                label="Destination"
+                label={t("markets.source")}
+                col="from"
+                sortKey={sortKey}
+                sortDir={sortDir}
+                onSort={onSort}
+              />
+              <SortTh
+                label={t("markets.destination")}
                 col="to"
                 sortKey={sortKey}
                 sortDir={sortDir}
                 onSort={onSort}
               />
               <SortTh
-                label="Amount"
+                label={t("markets.amount")}
                 col="amount"
                 sortKey={sortKey}
                 sortDir={sortDir}
                 onSort={onSort}
               />
               <th className="px-5 py-4 text-left text-[11px] font-semibold uppercase tracking-wider text-[#9ca3af]">
-                Result
+                {t("markets.result")}
               </th>
             </tr>
           </thead>
@@ -289,7 +302,7 @@ export function TransfersExplorer() {
                 ? (
                     <tr>
                       <td colSpan={colCount} className="px-5 py-12 text-center text-sm text-[#9ca3af]">
-                        No ACOPAY transfers found yet. Check back shortly.
+                        {t("markets.noTransfers")}
                       </td>
                     </tr>
                   )
@@ -300,8 +313,8 @@ export function TransfersExplorer() {
 
       <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-[#9ca3af]">
         <p>
-          Page {safePage} of {totalPages}
-          <span className="ml-2 text-xs">({PAGE_SIZE} per page)</span>
+          {t("markets.pageOf", { page: safePage, total: totalPages })}
+          <span className="ml-2 text-xs">{t("markets.perPage", { n: PAGE_SIZE })}</span>
         </p>
         <div className="flex gap-2">
           <button
@@ -310,7 +323,7 @@ export function TransfersExplorer() {
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             className="rounded-lg border border-white/10 px-3 py-1.5 text-xs font-medium text-white hover:bg-white/5 disabled:cursor-not-allowed disabled:opacity-40"
           >
-            Previous
+            {t("markets.previous")}
           </button>
           <button
             type="button"
@@ -318,7 +331,7 @@ export function TransfersExplorer() {
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             className="rounded-lg border border-white/10 px-3 py-1.5 text-xs font-medium text-white hover:bg-white/5 disabled:cursor-not-allowed disabled:opacity-40"
           >
-            Next
+            {t("markets.next")}
           </button>
         </div>
       </div>
@@ -327,6 +340,7 @@ export function TransfersExplorer() {
 }
 
 function TransferRow({ row, opts }: { row: AcopayTransferRow; opts: ViewOpts }) {
+  const t = useT();
   const ok = (row.status || "success") === "success";
   return (
     <tr className="border-b border-white/[0.04] transition hover:bg-white/[0.03]">
@@ -386,7 +400,7 @@ function TransferRow({ row, opts }: { row: AcopayTransferRow; opts: ViewOpts }) 
               : "bg-red-500/15 text-red-300 ring-1 ring-red-500/30"
           }`}
         >
-          {ok ? "Success" : "Failed"}
+          {ok ? t("markets.success") : t("markets.failed")}
         </span>
       </td>
     </tr>

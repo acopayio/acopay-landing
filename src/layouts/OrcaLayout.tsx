@@ -1,27 +1,37 @@
 ﻿import { NavLink, Outlet, Link } from "react-router-dom";
+import type { ReactElement } from "react";
 import { TelegramPayButton } from "../components/TelegramPayButton";
+import { LanguageToggle } from "../components/LanguageToggle";
 import { Footer } from "../components/Footer";
 import { TOKEN } from "../config/token";
+import { useT } from "../i18n/LanguageProvider";
 
-const TRADE_NAV = [
-  { to: "/", label: "Home", end: true, icon: HomeIcon },
-  { to: "/buy", label: "Buy", end: false, icon: BuyIcon },
-  { to: "/trade", label: "Trade", end: false, icon: SwapIcon },
-  { to: "/markets", label: "Markets", end: false, icon: PoolsIcon },
+type NavItem = {
+  to: string;
+  labelKey: string;
+  end: boolean;
+  icon: () => ReactElement;
+};
+
+const TRADE_NAV: NavItem[] = [
+  { to: "/", labelKey: "nav.home", end: true, icon: HomeIcon },
+  { to: "/buy", labelKey: "nav.buy", end: false, icon: BuyIcon },
+  { to: "/trade", labelKey: "nav.trade", end: false, icon: SwapIcon },
+  { to: "/markets", labelKey: "nav.markets", end: false, icon: PoolsIcon },
 ];
 
-const INFO_NAV = [
-  { to: "/token", label: "Token", end: false, icon: TokenIcon },
-  { to: "/contract", label: "Contract", end: false, icon: ContractIcon },
-  { to: "/roadmap", label: "Roadmap", end: false, icon: RoadmapIcon },
+const INFO_NAV: NavItem[] = [
+  { to: "/token", labelKey: "nav.token", end: false, icon: TokenIcon },
+  { to: "/contract", labelKey: "nav.contract", end: false, icon: ContractIcon },
+  { to: "/roadmap", labelKey: "nav.roadmap", end: false, icon: RoadmapIcon },
 ];
 
-const MOBILE_NAV = [
-  { to: "/", label: "Home", end: true, icon: HomeIcon },
-  { to: "/buy", label: "Buy", end: false, icon: BuyIcon },
-  { to: "/trade", label: "Trade", end: false, icon: SwapIcon },
-  { to: "/markets", label: "Markets", end: false, icon: PoolsIcon },
-  { to: "/token", label: "Token", end: false, icon: TokenIcon },
+const MOBILE_NAV: NavItem[] = [
+  { to: "/", labelKey: "nav.home", end: true, icon: HomeIcon },
+  { to: "/buy", labelKey: "nav.buy", end: false, icon: BuyIcon },
+  { to: "/trade", labelKey: "nav.trade", end: false, icon: SwapIcon },
+  { to: "/markets", labelKey: "nav.markets", end: false, icon: PoolsIcon },
+  { to: "/token", labelKey: "nav.token", end: false, icon: TokenIcon },
 ];
 
 function linkClass(isActive: boolean) {
@@ -29,9 +39,10 @@ function linkClass(isActive: boolean) {
 }
 
 export function OrcaLayout() {
+  const t = useT();
+
   return (
     <div className="jup-shell flex">
-      {/* Desktop sidebar — Jupiter style */}
       <aside className="sticky top-0 z-40 hidden h-[100dvh] w-[220px] shrink-0 flex-col overflow-x-hidden border-r border-white/[0.06] bg-[#090b0e] lg:flex">
         <Link to="/" className="flex items-center gap-2.5 px-4 py-5">
           <img src="/assets/logo.png" alt="" className="h-9 w-9 shrink-0 object-contain" />
@@ -47,36 +58,40 @@ export function OrcaLayout() {
               className={({ isActive }) => linkClass(isActive)}
             >
               <item.icon />
-              {item.label}
+              {t(item.labelKey)}
             </NavLink>
           ))}
+          <div className="mt-3 border-t border-white/[0.06] pt-3">
+            <LanguageToggle />
+          </div>
         </nav>
 
         <div className="mt-auto border-t border-white/[0.06] p-3">
           <TelegramPayButton
             className="btn-orca-primary w-full !rounded-xl !px-3"
-            label="Telegram Pay"
+            label={t("nav.telegramPay")}
           />
         </div>
       </aside>
 
-      {/* Main column */}
       <div className="flex min-w-0 flex-1 flex-col pb-[4.25rem] lg:pb-0">
-        {/* Mobile / tablet top bar */}
         <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-[#0c1017]/95 backdrop-blur-xl lg:hidden">
           <div className="page-wrap flex h-14 items-center justify-between gap-3">
             <Link to="/" className="flex min-w-0 items-center gap-2">
               <img src="/assets/logo.png" alt="" className="h-8 w-8 object-contain" />
               <span className="truncate font-bold tracking-tight text-white">ACOPAY</span>
             </Link>
-            <div className="flex shrink-0 items-center">
+            <div className="flex shrink-0 items-center gap-2">
+              <div className="max-w-[7.5rem]">
+                <LanguageToggle compact />
+              </div>
               <a
                 href={TOKEN.telegramPayUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-orca-secondary inline-flex !h-9 items-center !rounded-lg !px-3 !text-xs"
               >
-                Telegram
+                {t("nav.telegram")}
               </a>
             </div>
           </div>
@@ -89,7 +104,6 @@ export function OrcaLayout() {
         <Footer />
       </div>
 
-      {/* Mobile bottom nav */}
       <nav className="fixed inset-x-0 bottom-0 z-50 flex border-t border-white/[0.08] bg-[#090b0e]/95 backdrop-blur-xl lg:hidden safe-bottom">
         {MOBILE_NAV.map((item) => (
           <NavLink
@@ -101,7 +115,7 @@ export function OrcaLayout() {
             }
           >
             <item.icon />
-            <span>{item.label}</span>
+            <span>{t(item.labelKey)}</span>
           </NavLink>
         ))}
       </nav>
@@ -171,4 +185,3 @@ function RoadmapIcon() {
     </svg>
   );
 }
-

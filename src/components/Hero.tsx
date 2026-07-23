@@ -2,18 +2,20 @@
 import { TOKEN, explorerUrl, isMintLive, mintDisplay, solscanUrl } from "../config/token";
 import { BuyButton } from "./BuyButton";
 import { useCopy } from "../hooks/useCopy";
+import { useT } from "../i18n/LanguageProvider";
 
 export function Hero() {
   const { copied, copy } = useCopy();
   const mint = mintDisplay();
   const live = isMintLive();
+  const t = useT();
 
   return (
     <section className="relative overflow-hidden pb-4 pt-3 md:pb-5 md:pt-4">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(0, 229, 255,0.07),_transparent_55%)]" />
       <div className="page-wrap relative space-y-4">
         <div>
-          <p className="label-orca">Solana · Token-2022</p>
+          <p className="label-orca">{t("hero.eyebrow")}</p>
           <div className="mt-2 w-fit max-w-full">
             <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">
               {TOKEN.name}
@@ -30,8 +32,7 @@ export function Hero() {
             </p>
           </div>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[#9ca3af] sm:text-base">
-            Solana payment utility for wallet-to-wallet transfers. Trade ACOPAY/USDT on Raydium and
-            Jupiter. On-chain fee {TOKEN.transferFee}. Freeze revoked.
+            {t("hero.desc", { fee: TOKEN.transferFee })}
           </p>
 
           <div className="mt-4 flex flex-wrap items-center gap-3">
@@ -44,7 +45,7 @@ export function Hero() {
                   rel="noopener noreferrer"
                   className="btn-orca-secondary"
                 >
-                  Explorer ↗
+                  {t("hero.explorer")}
                 </a>
                 <a
                   href={solscanUrl()}
@@ -52,12 +53,12 @@ export function Hero() {
                   rel="noopener noreferrer"
                   className="btn-orca-secondary"
                 >
-                  Solscan ↗
+                  {t("hero.solscan")}
                 </a>
               </>
             ) : (
               <Link to="/faq" className="btn-orca-secondary">
-                FAQ
+                {t("nav.faq")}
               </Link>
             )}
           </div>
@@ -66,10 +67,10 @@ export function Hero() {
         <div className="orca-card p-4 sm:p-5">
           <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
             <p className="text-xs font-semibold uppercase tracking-wider text-[#00E5FF]">
-              Contract address
+              {t("hero.contractAddress")}
             </p>
             <Link to="/contract" className="text-xs font-medium text-[#9ca3af] hover:text-white">
-              Details →
+              {t("hero.details")}
             </Link>
           </div>
           <div className="flex flex-col gap-3 sm:flex-row sm:items-stretch">
@@ -82,7 +83,7 @@ export function Hero() {
               onClick={() => copy(TOKEN.mintAddress)}
               className="btn-orca-secondary shrink-0 sm:min-w-[5.5rem] disabled:opacity-40"
             >
-              {copied ? "Copied" : "Copy"}
+              {copied ? t("hero.copied") : t("hero.copy")}
             </button>
           </div>
         </div>

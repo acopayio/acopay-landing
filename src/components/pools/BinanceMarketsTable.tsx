@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useBinanceMarkets } from "../../hooks/useBinanceMarkets";
 import type { BinanceMarketRow } from "../../api/binanceMarkets";
 import { SortCaret, SortTh, compareSortValues, useColumnSort } from "../ui/SortTh";
+import { useT } from "../../i18n/LanguageProvider";
 
 type SortKey = "name" | "price" | "change24h" | "volume24h" | "marketCap";
 
@@ -69,6 +70,7 @@ type Props = {
 };
 
 export function BinanceMarketsTable({ variant = "full", limit, embedded = false }: Props) {
+  const t = useT();
   const { rows, updatedAt, loading, error, refresh } = useBinanceMarkets(3000);
   const [search, setSearch] = useState("");
   const { sortKey, sortDir, onSort } = useColumnSort<SortKey>("volume24h", "desc", ["name"]);
@@ -98,29 +100,27 @@ export function BinanceMarketsTable({ variant = "full", limit, embedded = false 
     <div className={embedded ? "" : "orca-card p-4 sm:p-6"}>
       {!embedded && (
         <div className="space-y-3">
-          <p className="label-orca">Spot</p>
-          <h2 className="text-2xl font-bold text-white sm:text-3xl">Markets</h2>
-          <p className="text-sm leading-relaxed text-[#9ca3af]">
-            Live Binance spot prices for reference. ACOPAY trades OTC — see Buy or Telegram Pay.
-          </p>
+          <p className="label-orca">{t("markets.binance")}</p>
+          <h2 className="text-2xl font-bold text-white sm:text-3xl">{t("markets.title")}</h2>
+          <p className="text-sm leading-relaxed text-[#9ca3af]">{t("markets.binanceSubtitle")}</p>
         </div>
       )}
       <p className={`text-xs text-[#6b7280] ${embedded ? "" : "mt-2"}`}>
-        Binance · Updated {updated}
+        {t("markets.binance")} · {t("markets.updated")} {updated}
         <button
           type="button"
           onClick={() => refresh()}
           disabled={loading}
           className="ml-2 font-medium text-[#00E5FF] hover:underline disabled:opacity-50"
         >
-          {loading && rows.length === 0 ? "Refreshing…" : "Refresh"}
+          {loading && rows.length === 0 ? t("markets.refreshing") : t("markets.refresh")}
         </button>
       </p>
 
       <div className="mt-5">
         <input
           type="search"
-          placeholder="Search coins..."
+          placeholder={t("markets.searchCoins")}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="w-full rounded-2xl border border-white/[0.08] bg-[#0c1017] py-2.5 px-4 text-sm text-white placeholder:text-[#6b7280] focus:border-[#00E5FF]/40 focus:outline-none"
@@ -132,9 +132,9 @@ export function BinanceMarketsTable({ variant = "full", limit, embedded = false 
           role="alert"
           className="mt-4 rounded-2xl border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-200"
         >
-          <strong className="font-semibold">Market data unavailable.</strong> {error}
+          <strong className="font-semibold">{t("markets.dataUnavailable")}</strong> {error}
           <button type="button" onClick={() => refresh()} className="ml-2 underline">
-            Retry
+            {t("markets.retry")}
           </button>
         </div>
       )}
@@ -143,31 +143,31 @@ export function BinanceMarketsTable({ variant = "full", limit, embedded = false 
         <table className="pools-table w-full min-w-[820px]">
           <thead>
             <tr className="border-b border-white/[0.06] text-[11px]">
-              <SortTh label="Name" col="name" sortKey={sortKey} sortDir={sortDir} onSort={onSort} />
-              <SortTh label="Price" col="price" sortKey={sortKey} sortDir={sortDir} onSort={onSort} />
+              <SortTh label={t("markets.name")} col="name" sortKey={sortKey} sortDir={sortDir} onSort={onSort} />
+              <SortTh label={t("markets.price")} col="price" sortKey={sortKey} sortDir={sortDir} onSort={onSort} />
               <SortTh
-                label="24h Change"
+                label={t("markets.change24hLong")}
                 col="change24h"
                 sortKey={sortKey}
                 sortDir={sortDir}
                 onSort={onSort}
               />
               <SortTh
-                label="24h Volume"
+                label={t("markets.volume24hLong")}
                 col="volume24h"
                 sortKey={sortKey}
                 sortDir={sortDir}
                 onSort={onSort}
               />
               <SortTh
-                label="Market Cap"
+                label={t("markets.marketCap")}
                 col="marketCap"
                 sortKey={sortKey}
                 sortDir={sortDir}
                 onSort={onSort}
               />
               <th className="px-5 py-4 text-right text-[11px] font-semibold uppercase tracking-wider text-[#9ca3af]">
-                Action
+                {t("markets.action")}
               </th>
             </tr>
           </thead>
@@ -192,7 +192,7 @@ export function BinanceMarketsTable({ variant = "full", limit, embedded = false 
                 ? (
                     <tr>
                       <td colSpan={6} className="px-5 py-12 text-center text-[#9ca3af]">
-                        No coins match your search.
+                        {t("markets.noCoins")}
                       </td>
                     </tr>
                   )
@@ -227,7 +227,7 @@ export function BinanceMarketsTable({ variant = "full", limit, embedded = false 
                           rel="noopener noreferrer"
                           className="btn-orca-primary !inline-flex !px-4 !py-2 !text-xs"
                         >
-                          Trade ↗
+                          {t("markets.trade")}
                         </a>
                       </td>
                     </tr>
@@ -239,11 +239,11 @@ export function BinanceMarketsTable({ variant = "full", limit, embedded = false 
       <div className="mt-4 flex flex-wrap gap-2 md:hidden">
         {(
           [
-            ["volume24h", "Vol"],
-            ["price", "Price"],
+            ["volume24h", t("markets.volShort")],
+            ["price", t("markets.price")],
             ["change24h", "24h"],
-            ["marketCap", "Cap"],
-            ["name", "Name"],
+            ["marketCap", t("markets.capShort")],
+            ["name", t("markets.name")],
           ] as const
         ).map(([col, label]) => {
           const active = sortKey === col;
@@ -272,7 +272,7 @@ export function BinanceMarketsTable({ variant = "full", limit, embedded = false 
             ))
           : filtered.length === 0
             ? (
-                <p className="py-8 text-center text-sm text-[#9ca3af]">No coins match your search.</p>
+                <p className="py-8 text-center text-sm text-[#9ca3af]">{t("markets.noCoins")}</p>
               )
             : filtered.map((row) => (
                 <div
@@ -293,12 +293,12 @@ export function BinanceMarketsTable({ variant = "full", limit, embedded = false 
                       rel="noopener noreferrer"
                       className="btn-orca-primary !px-3 !py-1.5 !text-xs"
                     >
-                      Trade
+                      {t("markets.trade")}
                     </a>
                   </div>
                   <div className="mt-3 grid grid-cols-2 gap-2 text-center text-xs sm:grid-cols-4">
                     <div>
-                      <div className="text-[#6b7280]">Price</div>
+                      <div className="text-[#6b7280]">{t("markets.price")}</div>
                       <div className="mt-0.5 font-semibold text-white">{fmtPrice(row.price)}</div>
                     </div>
                     <div>
@@ -312,11 +312,11 @@ export function BinanceMarketsTable({ variant = "full", limit, embedded = false 
                       </div>
                     </div>
                     <div>
-                      <div className="text-[#6b7280]">Vol</div>
+                      <div className="text-[#6b7280]">{t("markets.volShort")}</div>
                       <div className="mt-0.5 font-semibold text-white">{fmtUsd(row.volume24h)}</div>
                     </div>
                     <div>
-                      <div className="text-[#6b7280]">Cap</div>
+                      <div className="text-[#6b7280]">{t("markets.capShort")}</div>
                       <div className="mt-0.5 font-semibold text-white">{fmtUsd(row.marketCap)}</div>
                     </div>
                   </div>
@@ -335,7 +335,7 @@ export function BinanceMarketsTable({ variant = "full", limit, embedded = false 
         {variant === "home" && (
           <div className="mt-6 flex justify-center gap-3">
             <Link to="/markets" className="btn-orca-secondary w-full sm:w-auto">
-              View all markets →
+              {t("markets.viewAll")}
             </Link>
           </div>
         )}

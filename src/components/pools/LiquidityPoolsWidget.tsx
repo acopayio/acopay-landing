@@ -6,6 +6,14 @@ import { useLivePools } from "../../hooks/useLivePools";
 import type { PoolRow } from "../../types/pool";
 import { HOME_POOL_ROWS, fmtPct, fmtUsd } from "../../types/pool";
 import { SortCaret, SortTh, compareSortValues, useColumnSort } from "../ui/SortTh";
+import { useT } from "../../i18n/LanguageProvider";
+
+const FILTER_LABEL_KEY: Record<PoolFilterId, string> = {
+  all: "markets.allPools",
+  payment: "markets.payment",
+  stablecoins: "markets.stablecoins",
+  utility: "markets.utility",
+};
 
 type PoolSortKey = "pair" | "change24h" | "yieldPct" | "volume24h" | "tvl" | "fees24h";
 
@@ -86,6 +94,7 @@ type Props = {
 };
 
 export function LiquidityPoolsWidget({ variant = "full", embedded = false }: Props) {
+  const t = useT();
   const { pools, summary, loading, error, warning, refresh } = useLivePools();
   const [filter, setFilter] = useState<PoolFilterId>("all");
   const [search, setSearch] = useState("");
@@ -122,50 +131,58 @@ export function LiquidityPoolsWidget({ variant = "full", embedded = false }: Pro
             <div>
               <p className="label-orca">Raydium</p>
               <h2 className="mt-2 text-2xl font-bold text-white sm:text-3xl">
-                {variant === "home" ? "Markets" : "Pools"}
+                {t("markets.title")}
               </h2>
               <p className="mt-2 text-sm leading-relaxed text-[#9ca3af]">
-                ACOPAY/USDT is live on Raydium. Other rows are Raydium market reference.
+                {t("markets.poolsSubtitle")}
               </p>
               <p className="mt-2 text-xs text-[#6b7280]">
-                {summary?.source ?? "—"} · {liveCount} pools · Updated {updated}
+                {t("markets.poolsMeta", {
+                  source: summary?.source ?? "—",
+                  n: liveCount,
+                  time: updated,
+                })}
                 <button
                   type="button"
                   onClick={() => refresh()}
                   disabled={loading}
                   className="ml-2 font-medium text-[#00E5FF] hover:underline disabled:opacity-50"
                 >
-                  {loading ? "Refreshing…" : "Refresh"}
+                  {loading ? t("markets.refreshing") : t("markets.refresh")}
                 </button>
               </p>
             </div>
             )}
             {embedded && (
               <p className="text-xs text-[#6b7280]">
-                {summary?.source ?? "Raydium"} · {liveCount} pools · Updated {updated}
+                {t("markets.poolsMeta", {
+                  source: summary?.source ?? "Raydium",
+                  n: liveCount,
+                  time: updated,
+                })}
                 <button
                   type="button"
                   onClick={() => refresh()}
                   disabled={loading}
                   className="ml-2 font-medium text-[#00E5FF] hover:underline disabled:opacity-50"
                 >
-                  {loading ? "Refreshing…" : "Refresh"}
+                  {loading ? t("markets.refreshing") : t("markets.refresh")}
                 </button>
               </p>
             )}
 
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
               <StatCard
-                label="Raydium TVL"
+                label={t("markets.raydiumTvl")}
                 value={loading && !summary ? "…" : fmtUsd(summary?.tvl ?? 0)}
               />
               <StatCard
-                label="Raydium 24H Vol"
+                label={t("markets.raydiumVol")}
                 value={loading && !summary ? "…" : fmtUsd(summary?.volume24h ?? 0)}
                 accent
               />
               <StatCard
-                label="Fees 24H"
+                label={t("markets.fees24h")}
                 value={loading && !summary ? "…" : fmtUsd(summary?.fees24h ?? 0)}
               />
             </div>
@@ -184,13 +201,13 @@ export function LiquidityPoolsWidget({ variant = "full", embedded = false }: Pro
                       : "text-[#9ca3af] hover:bg-white/[0.04] hover:text-white"
                   }`}
                 >
-                  {f.label}
+                  {t(FILTER_LABEL_KEY[f.id])}
                 </button>
               ))}
             </div>
             <input
               type="search"
-              placeholder="Search tokens..."
+              placeholder={t("markets.searchTokens")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full rounded-2xl border border-white/[0.08] bg-[#0c1017] py-2.5 px-4 text-sm text-white placeholder:text-[#6b7280] focus:border-[#00E5FF]/40 focus:outline-none"
@@ -202,9 +219,9 @@ export function LiquidityPoolsWidget({ variant = "full", embedded = false }: Pro
               role="alert"
               className="mt-4 rounded-2xl border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-200"
             >
-              <strong className="font-semibold">Market data unavailable.</strong> {error}
+              <strong className="font-semibold">{t("markets.dataUnavailable")}</strong> {error}
               <button type="button" onClick={() => refresh()} className="ml-2 underline">
-                Retry
+                {t("markets.retry")}
               </button>
             </div>
           )}
@@ -219,38 +236,38 @@ export function LiquidityPoolsWidget({ variant = "full", embedded = false }: Pro
             <table className="pools-table w-full min-w-[900px]">
               <thead>
                 <tr className="border-b border-white/[0.06] text-[11px]">
-                  <SortTh label="Pool" col="pair" sortKey={sortKey} sortDir={sortDir} onSort={onSort} />
+                  <SortTh label={t("markets.pool")} col="pair" sortKey={sortKey} sortDir={sortDir} onSort={onSort} />
                   <SortTh
-                    label="Trend 7D"
+                    label={t("markets.trend7d")}
                     col="change24h"
                     sortKey={sortKey}
                     sortDir={sortDir}
                     onSort={onSort}
                   />
                   <SortTh
-                    label="Yield / TVL"
+                    label={t("markets.yieldTvl")}
                     col="yieldPct"
                     sortKey={sortKey}
                     sortDir={sortDir}
                     onSort={onSort}
                   />
                   <SortTh
-                    label="Volume 24H"
+                    label={t("markets.volume24h")}
                     col="volume24h"
                     sortKey={sortKey}
                     sortDir={sortDir}
                     onSort={onSort}
                   />
-                  <SortTh label="TVL" col="tvl" sortKey={sortKey} sortDir={sortDir} onSort={onSort} />
+                  <SortTh label={t("markets.tvl")} col="tvl" sortKey={sortKey} sortDir={sortDir} onSort={onSort} />
                   <SortTh
-                    label="Fees 24H"
+                    label={t("markets.fees24h")}
                     col="fees24h"
                     sortKey={sortKey}
                     sortDir={sortDir}
                     onSort={onSort}
                   />
                   <th className="px-5 py-4 text-right text-[11px] font-semibold uppercase tracking-wider text-[#9ca3af]">
-                    Action
+                    {t("markets.action")}
                   </th>
                 </tr>
               </thead>
@@ -277,7 +294,7 @@ export function LiquidityPoolsWidget({ variant = "full", embedded = false }: Pro
                 ) : filtered.length === 0 ? (
                   <tr>
                     <td colSpan={7} className="px-5 py-12 text-center text-[#9ca3af]">
-                      No pools match your filters.
+                      {t("markets.noPools")}
                     </td>
                   </tr>
                 ) : (
@@ -329,7 +346,7 @@ export function LiquidityPoolsWidget({ variant = "full", embedded = false }: Pro
                           rel="noopener noreferrer"
                           className="btn-orca-primary !inline-flex !px-4 !py-2 !text-xs"
                         >
-                          Trade ↗
+                          {t("markets.trade")}
                         </a>
                       </td>
                     </tr>
@@ -343,12 +360,12 @@ export function LiquidityPoolsWidget({ variant = "full", embedded = false }: Pro
           <div className="mt-4 flex flex-wrap gap-2 md:hidden">
             {(
               [
-                ["volume24h", "Vol"],
-                ["tvl", "TVL"],
-                ["fees24h", "Fees"],
-                ["yieldPct", "Yield"],
-                ["change24h", "Trend"],
-                ["pair", "Pool"],
+                ["volume24h", t("markets.volShort")],
+                ["tvl", t("markets.tvl")],
+                ["fees24h", t("markets.feesShort")],
+                ["yieldPct", t("markets.yieldShort")],
+                ["change24h", t("markets.trendShort")],
+                ["pair", t("markets.pool")],
               ] as const
             ).map(([col, label]) => {
               const active = sortKey === col;
@@ -377,7 +394,7 @@ export function LiquidityPoolsWidget({ variant = "full", embedded = false }: Pro
                 ))
               : filtered.length === 0
                 ? (
-                    <p className="py-8 text-center text-sm text-[#9ca3af]">No pools match your filters.</p>
+                    <p className="py-8 text-center text-sm text-[#9ca3af]">{t("markets.noPools")}</p>
                   )
                 : filtered.map((row) => (
                     <div
@@ -405,20 +422,20 @@ export function LiquidityPoolsWidget({ variant = "full", embedded = false }: Pro
                           rel="noopener noreferrer"
                           className="btn-orca-primary !px-3 !py-1.5 !text-xs"
                         >
-                          Trade
+                          {t("markets.trade")}
                         </a>
                       </div>
                       <div className="mt-3 grid grid-cols-3 gap-2 text-center text-xs">
                           <div>
-                            <div className="text-[#6b7280]">Vol 24H</div>
+                            <div className="text-[#6b7280]">{t("markets.volume24h")}</div>
                             <div className="mt-0.5 font-semibold text-white">{fmtUsd(row.volume24h)}</div>
                           </div>
                           <div>
-                            <div className="text-[#6b7280]">TVL</div>
+                            <div className="text-[#6b7280]">{t("markets.tvl")}</div>
                             <div className="mt-0.5 font-semibold text-white">{fmtUsd(row.tvl)}</div>
                           </div>
                           <div>
-                            <div className="text-[#6b7280]">Fees</div>
+                            <div className="text-[#6b7280]">{t("markets.feesShort")}</div>
                             <div className="mt-0.5 font-semibold text-white">{fmtUsd(row.fees24h)}</div>
                           </div>
                         </div>
@@ -455,7 +472,7 @@ export function LiquidityPoolsWidget({ variant = "full", embedded = false }: Pro
         {variant === "home" && (
           <div className="mt-6 flex justify-center">
             <Link to="/markets" className="btn-orca-secondary w-full sm:w-auto">
-              View all markets →
+              {t("markets.viewAll")}
             </Link>
           </div>
         )}
