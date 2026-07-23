@@ -18,13 +18,16 @@ export type AcopayTransferRow = {
 export type AcopayTransfersResponse = {
   updatedAt: string;
   source: string;
-  pollMs: number;
   mint: string;
+  historyDays: number;
+  backfillComplete?: boolean;
+  total: number;
   rows: AcopayTransferRow[];
   error?: string;
 };
 
-const ENDPOINT = "/api/markets/transfers";
+/** Static JSON from GitHub Actions → Cloudflare Pages. Never VPS / never Helius. */
+const ENDPOINT = "/data/transfers-30d.json";
 
 export async function fetchAcopayTransfers(): Promise<AcopayTransfersResponse> {
   const ctrl = new AbortController();
@@ -33,16 +36,13 @@ export async function fetchAcopayTransfers(): Promise<AcopayTransfersResponse> {
     const res = await fetch(ENDPOINT, {
       signal: ctrl.signal,
       headers: { Accept: "application/json" },
+      cache: "no-store",
     });
     const text = await res.text();
-    if (!text || text.startsWith("error code:") || text.trimStart().startsWith("<!")) {
-      throw new Error(
-        text.startsWith("error code:")
-          ? `Upstream blocked (${text.trim()})`
-          : `Transfers HTTP ${res.status}`,
-      );
+    if (!text || text.trimStart().startsWith("<!")) {
+      throw new Error(`Transfers HTTP ${res.status}`);
     }
-    let data: AcopayTransfersResponse & { error?: string };
+    let data: AcopayTransfersResponse & { error?: string; pollMs?: number };
     try {
       data = JSON.parse(text) as AcopayTransfersResponse & { error?: string };
     } catch {
@@ -51,12 +51,15 @@ export async function fetchAcopayTransfers(): Promise<AcopayTransfersResponse> {
     if (!res.ok) {
       throw new Error(data.error || `Transfers HTTP ${res.status}`);
     }
+    const rows = Array.isArray(data.rows) ? data.rows : [];
     return {
       updatedAt: data.updatedAt || new Date().toISOString(),
-      source: data.source || "solana-public-rpc+webshare",
-      pollMs: data.pollMs || 30_000,
+      source: data.source || "github-actions+solana-public-rpc",
       mint: data.mint || "",
-      rows: Array.isArray(data.rows) ? data.rows : [],
+      historyDays: data.historyDays || 30,
+      backfillComplete: data.backfillComplete,
+      total: typeof data.total === "number" ? data.total : rows.length,
+      rows,
       error: data.error,
     };
   } finally {

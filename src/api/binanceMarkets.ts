@@ -19,7 +19,8 @@ export type BinanceMarketsResponse = {
   error?: string;
 };
 
-const ENDPOINT = "/api/markets/binance";
+/** Static JSON from GitHub Actions → Cloudflare Pages. Never VPS. */
+const ENDPOINT = "/data/binance-markets.json";
 
 export async function fetchBinanceMarkets(): Promise<BinanceMarketsResponse> {
   const ctrl = new AbortController();
@@ -28,14 +29,11 @@ export async function fetchBinanceMarkets(): Promise<BinanceMarketsResponse> {
     const res = await fetch(ENDPOINT, {
       signal: ctrl.signal,
       headers: { Accept: "application/json" },
+      cache: "no-store",
     });
     const text = await res.text();
-    if (!text || text.startsWith("error code:") || text.trimStart().startsWith("<!")) {
-      throw new Error(
-        text.startsWith("error code:")
-          ? `Upstream blocked (${text.trim()}). Retry in a moment.`
-          : `Markets HTTP ${res.status}`,
-      );
+    if (!text || text.trimStart().startsWith("<!")) {
+      throw new Error(`Markets HTTP ${res.status}`);
     }
     let data: BinanceMarketsResponse & { error?: string };
     try {
@@ -48,8 +46,8 @@ export async function fetchBinanceMarkets(): Promise<BinanceMarketsResponse> {
     }
     return {
       updatedAt: data.updatedAt || new Date().toISOString(),
-      source: data.source || "binance",
-      pollMs: data.pollMs || 3000,
+      source: data.source || "github-actions+binance",
+      pollMs: data.pollMs || 600_000,
       proxy: data.proxy,
       rows: Array.isArray(data.rows) ? data.rows : [],
       error: data.error,

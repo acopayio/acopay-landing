@@ -7,6 +7,8 @@ import { SortTh, compareSortValues, useColumnSort } from "../ui/SortTh";
 
 type TransferSort = "time" | "slot" | "from" | "to" | "amount" | "signature";
 
+const PAGE_SIZE = 20;
+
 function fmtAmount(n: number): string {
   if (!Number.isFinite(n)) return "—";
   return n.toLocaleString("en-US", { maximumFractionDigits: 9 });
@@ -81,16 +83,8 @@ function ExtLink({ href }: { href: string }) {
   );
 }
 
-function AddrCell({
-  addr,
-  full,
-}: {
-  addr: string;
-  full: boolean;
-}) {
-  if (!addr) {
-    return <span className="text-[#6b7280]">—</span>;
-  }
+function AddrCell({ addr, full }: { addr: string; full: boolean }) {
+  if (!addr) return <span className="text-[#6b7280]">—</span>;
   return (
     <span className="inline-flex max-w-full items-center gap-1">
       <CopyIconBtn text={addr} label="address" />
@@ -116,12 +110,14 @@ type ViewOpts = {
 };
 
 export function TransfersExplorer() {
-  const { rows, updatedAt, loading, error, refresh } = useAcopayTransfers(30_000);
+  const { rows, updatedAt, total, historyDays, backfillComplete, loading, error, refresh } =
+    useAcopayTransfers(60_000);
   const { sortKey, sortDir, onSort } = useColumnSort<TransferSort>("time", "desc", [
     "from",
     "to",
     "signature",
   ]);
+  const [page, setPage] = useState(1);
   const [opts, setOpts] = useState<ViewOpts>({
     fullAddress: false,
     fullSignature: false,
@@ -159,43 +155,43 @@ export function TransfersExplorer() {
     });
   }, [rows, sortKey, sortDir]);
 
-  const updated = updatedAt ? new Date(updatedAt).toLocaleTimeString() : "—";
+  const totalPages = Math.max(1, Math.ceil(sorted.length / PAGE_SIZE) || 1);
+  const safePage = Math.min(page, totalPages);
+  const pageRows = sorted.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
+
+  const updated = updatedAt ? new Date(updatedAt).toLocaleString() : "—";
   const colCount = 5 + (opts.showAge ? 1 : 0) + (opts.showBlock ? 1 : 0) + 1;
 
-  const toggle = (key: keyof ViewOpts) =>
-    setOpts((o) => ({
-      ...o,
-      [key]: !o[key],
-    }));
+  const toggle = (key: keyof ViewOpts) => setOpts((o) => ({ ...o, [key]: !o[key] }));
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-        <div className="space-y-2">
-          <h3 className="text-lg font-semibold text-white">Token Transfers</h3>
-          <p className="text-sm leading-relaxed text-[#9ca3af]">
-            ACOPAY wallet transfers (Solscan-style). Public Solana RPC + Webshare — not Helius.
-          </p>
-          <p className="text-xs text-[#6b7280]">
-            Updated {updated}
-            <button
-              type="button"
-              onClick={() => refresh()}
-              disabled={loading}
-              className="ml-2 font-medium text-[#00E5FF] hover:underline disabled:opacity-50"
-            >
-              {loading && rows.length === 0 ? "Refreshing…" : "Refresh"}
-            </button>
-            <a
-              href={solscanUrl()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="ml-3 font-medium text-[#00E5FF] hover:underline"
-            >
-              Solscan token ↗
-            </a>
-          </p>
-        </div>
+      <div className="space-y-2">
+        <h3 className="text-lg font-semibold text-white">Token Transfers</h3>
+        <p className="text-sm leading-relaxed text-[#9ca3af]">
+          ACOPAY transfers — last {historyDays} days (Solscan-style). Data from GitHub Actions →
+          Cloudflare Pages. Website never contacts VPS. No Helius.
+        </p>
+        <p className="text-xs text-[#6b7280]">
+          {total.toLocaleString("en-US")} transfers
+          {!backfillComplete ? " · backfill in progress" : ""} · Updated {updated}
+          <button
+            type="button"
+            onClick={() => refresh()}
+            disabled={loading}
+            className="ml-2 font-medium text-[#00E5FF] hover:underline disabled:opacity-50"
+          >
+            {loading && rows.length === 0 ? "Refreshing…" : "Refresh"}
+          </button>
+          <a
+            href={solscanUrl()}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ml-3 font-medium text-[#00E5FF] hover:underline"
+          >
+            Solscan token ↗
+          </a>
+        </p>
       </div>
 
       <fieldset className="flex flex-wrap gap-x-4 gap-y-2 rounded-xl border border-white/[0.07] bg-[#0c1017]/50 px-3 py-2.5 text-xs text-[#9ca3af]">
@@ -255,13 +251,7 @@ export function TransfersExplorer() {
                   onSort={onSort}
                 />
               )}
-              <SortTh
-                label="Source"
-                col="from"
-                sortKey={sortKey}
-                sortDir={sortDir}
-                onSort={onSort}
-              />
+              <SortTh label="Source" col="from" sortKey={sortKey} sortDir={sortDir} onSort={onSort} />
               <SortTh
                 label="Destination"
                 col="to"
@@ -292,17 +282,42 @@ export function TransfersExplorer() {
                     ))}
                   </tr>
                 ))
-              : sorted.length === 0
+              : pageRows.length === 0
                 ? (
                     <tr>
                       <td colSpan={colCount} className="px-5 py-12 text-center text-sm text-[#9ca3af]">
-                        No ACOPAY transfers found yet.
+                        No ACOPAY transfers in ledger yet — GitHub Action will backfill (~10 min).
                       </td>
                     </tr>
                   )
-                : sorted.map((row) => <TransferRow key={row.id} row={row} opts={opts} />)}
+                : pageRows.map((row) => <TransferRow key={row.id} row={row} opts={opts} />)}
           </tbody>
         </table>
+      </div>
+
+      <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-[#9ca3af]">
+        <p>
+          Page {safePage} of {totalPages}
+          <span className="ml-2 text-xs">({PAGE_SIZE} per page)</span>
+        </p>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            disabled={safePage <= 1}
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            className="rounded-lg border border-white/10 px-3 py-1.5 text-xs font-medium text-white hover:bg-white/5 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            Previous
+          </button>
+          <button
+            type="button"
+            disabled={safePage >= totalPages}
+            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            className="rounded-lg border border-white/10 px-3 py-1.5 text-xs font-medium text-white hover:bg-white/5 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -358,8 +373,7 @@ function TransferRow({ row, opts }: { row: AcopayTransferRow; opts: ViewOpts }) 
         <AddrCell addr={row.to} full={opts.fullAddress} />
       </td>
       <td className="px-5 py-3.5 text-sm text-white">
-        {fmtAmount(row.amount)}{" "}
-        <span className="text-[#9ca3af]">ACOPAY</span>
+        {fmtAmount(row.amount)} <span className="text-[#9ca3af]">ACOPAY</span>
       </td>
       <td className="px-5 py-3.5">
         <span

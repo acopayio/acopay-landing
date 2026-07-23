@@ -4,15 +4,21 @@ import { fetchAcopayTransfers, type AcopayTransferRow } from "../api/acopayTrans
 type State = {
   rows: AcopayTransferRow[];
   updatedAt: string | null;
+  total: number;
+  historyDays: number;
+  backfillComplete: boolean;
   loading: boolean;
   error: string | null;
 };
 
-/** Client poll matches VPS TRANSFERS_POLL_MS (default 30s). */
-export function useAcopayTransfers(refreshMs = 30_000) {
+/** Client re-reads static GitHub/CF JSON (Action sync ~10m). Never VPS / never Helius. */
+export function useAcopayTransfers(refreshMs = 60_000) {
   const [state, setState] = useState<State>({
     rows: [],
     updatedAt: null,
+    total: 0,
+    historyDays: 30,
+    backfillComplete: false,
     loading: true,
     error: null,
   });
@@ -23,8 +29,11 @@ export function useAcopayTransfers(refreshMs = 30_000) {
       setState({
         rows: data.rows,
         updatedAt: data.updatedAt,
+        total: data.total,
+        historyDays: data.historyDays,
+        backfillComplete: Boolean(data.backfillComplete),
         loading: false,
-        error: data.error || (data.rows.length ? null : null),
+        error: data.error || null,
       });
     } catch (e) {
       setState((s) => ({

@@ -8,8 +8,8 @@ type State = {
   error: string | null;
 };
 
-/** Client poll ~3s — VPS already refreshes every 3s with rotating Webshare IPs. */
-export function useBinanceMarkets(refreshMs = 3000) {
+/** Client re-reads static GitHub/CF JSON (Action sync ~10m). Never VPS. */
+export function useBinanceMarkets(refreshMs = 60_000) {
   const [state, setState] = useState<State>({
     rows: [],
     updatedAt: null,
@@ -24,7 +24,7 @@ export function useBinanceMarkets(refreshMs = 3000) {
         rows: data.rows,
         updatedAt: data.updatedAt,
         loading: false,
-        error: data.error || (data.rows.length ? null : "No market rows"),
+        error: data.error || (data.rows.length ? null : "No market rows yet — waiting for GitHub sync"),
       });
     } catch (e) {
       setState((s) => ({
