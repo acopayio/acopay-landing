@@ -2,6 +2,7 @@ import { useCallback, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import bs58 from "bs58";
 import { phantomBrowseUrl } from "../config/otc";
+import { useI18n } from "../i18n/LanguageProvider";
 import { getPhantomProvider, hasPhantomExtension, isMobileUa } from "../lib/phantomPay";
 
 function buildLinkMessage(tg: string, nonce: string, exp: string) {
@@ -33,12 +34,11 @@ function isUnsupportedDesktopBrowser(): boolean {
 
 /**
  * Prove Phantom ownership → paste /linkok into @AcopayNetwork_bot.
- * No VPS call from the site; verification happens inside Telegram.
- *
- * Mobile: Safari / Telegram in-app browser do not inject Phantom.
- * Use phantom.app/ul/browse so the same page opens inside Phantom (provider available).
+ * Mobile: Open in Phantom app only (no copy-URL step).
+ * Locale: ?lang= from bot (LanguageProvider) + full linkWallet i18n.
  */
 export function LinkWalletPage() {
+  const { t } = useI18n();
   const [params] = useSearchParams();
   const tg = (params.get("tg") || "").trim();
   const nonce = (params.get("nonce") || "").trim();
@@ -53,7 +53,6 @@ export function LinkWalletPage() {
   const badBrowser = isUnsupportedDesktopBrowser();
   const mobile = isMobileUa();
   const hasProvider = hasPhantomExtension();
-  /** Telegram / Safari on phone — need deeplink into Phantom app browser. */
   const needsOpenInPhantom = mobile && !hasProvider;
 
   const [busy, setBusy] = useState(false);
@@ -73,7 +72,7 @@ export function LinkWalletPage() {
       setCopiedUrl(true);
       window.setTimeout(() => setCopiedUrl(false), 2000);
     } catch {
-      setError("Could not copy URL — select the address bar manually.");
+      setError(t("linkWallet.errCopyUrl"));
     }
   }
 
@@ -81,24 +80,20 @@ export function LinkWalletPage() {
     setError(null);
     setLinkOk(null);
     if (!message) {
-      setError("Missing link parameters. Open this page from the Telegram bot (/linkwallet).");
+      setError(t("linkWallet.errMissing"));
       return;
     }
     if (expired) {
-      setError("This link expired. Run /linkwallet in Telegram again.");
+      setError(t("linkWallet.errExpired"));
       return;
     }
     if (badBrowser) {
-      setError("This browser cannot run Phantom. Open this page in Google Chrome.");
+      setError(t("linkWallet.errBadBrowser"));
       return;
     }
     const provider = getPhantomProvider();
     if (!provider?.signMessage) {
-      setError(
-        isMobileUa()
-          ? "Phantom is not available here. Tap “Open in Phantom app” below."
-          : "Phantom extension not found. Install Phantom in Chrome, then retry.",
-      );
+      setError(isMobileUa() ? t("linkWallet.errNoProviderMobile") : t("linkWallet.errNoProviderDesktop"));
       return;
     }
     setBusy(true);
@@ -112,12 +107,12 @@ export function LinkWalletPage() {
       setLinkOk(`/linkok ${pk} ${sig58}`);
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
-      if (/User rejected|rejected|4001/i.test(msg)) setError("Signature cancelled in Phantom.");
+      if (/User rejected|rejected|4001/i.test(msg)) setError(t("linkWallet.errCancelled"));
       else setError(msg);
     } finally {
       setBusy(false);
     }
-  }, [message, expired, badBrowser]);
+  }, [message, expired, badBrowser, t]);
 
   async function copyLine() {
     if (!linkOk) return;
@@ -126,79 +121,55 @@ export function LinkWalletPage() {
       setCopied(true);
       window.setTimeout(() => setCopied(false), 2000);
     } catch {
-      setError("Could not copy — select the /linkok line manually.");
+      setError(t("linkWallet.errCopyLine"));
     }
   }
 
   return (
     <section className="section-pad">
       <div className="page-wrap mx-auto max-w-lg">
-        <p className="label-orca">Telegram</p>
-        <h1 className="mt-2 text-3xl font-bold text-white">Link Phantom</h1>
-        <p className="mt-3 text-sm leading-relaxed text-[#9ca3af]">
-          Switch your ACOPAY Pay wallet to Phantom (one wallet). Paste the result into{" "}
-          <a
-            href="https://t.me/AcopayNetwork_bot"
-            className="text-[#00E5FF] hover:underline"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            @AcopayNetwork_bot
-          </a>
-          . We never ask for your private key. Telegram /pay turns off while Phantom is linked.
-        </p>
+        <p className="label-orca">{t("linkWallet.kicker")}</p>
+        <h1 className="mt-2 text-3xl font-bold text-white">{t("linkWallet.title")}</h1>
+        <p className="mt-3 text-sm leading-relaxed text-[#9ca3af]">{t("linkWallet.intro")}</p>
 
         {badBrowser && (
           <div className="mt-6 space-y-3 rounded-2xl border border-amber-500/40 bg-amber-500/10 p-4 text-sm text-amber-50">
-            <p className="font-semibold text-amber-100">Wrong browser (IE / old Edge)</p>
-            <p className="text-amber-50/90 leading-relaxed">
-              Phantom only works in <b>Google Chrome</b> (or Brave). Telegram opens your{" "}
-              <b>Windows default</b> browser — we cannot force Chrome from the bot.
-            </p>
+            <p className="font-semibold text-amber-100">{t("linkWallet.wrongBrowserTitle")}</p>
+            <p className="text-amber-50/90 leading-relaxed">{t("linkWallet.wrongBrowserBody")}</p>
             <ol className="list-decimal space-y-1 pl-5 text-amber-50/90">
-              <li>
-                Windows: Settings → Apps → Default apps → <b>Google Chrome</b> → Set default
-              </li>
-              <li>Or: Copy this page URL → open Chrome → paste into the address bar</li>
+              <li>{t("linkWallet.wrongBrowserStep1")}</li>
+              <li>{t("linkWallet.wrongBrowserStep2")}</li>
             </ol>
             <button type="button" onClick={() => void copyPageUrl()} className="btn-orca-secondary !text-xs">
-              {copiedUrl ? "URL copied" : "Copy page URL for Chrome"}
+              {copiedUrl ? t("linkWallet.urlCopied") : t("linkWallet.copyUrlChrome")}
             </button>
           </div>
         )}
 
         {needsOpenInPhantom && message && !expired && (
           <div className="mt-6 space-y-3 rounded-2xl border border-[#00E5FF]/30 bg-[#00E5FF]/5 p-4 text-sm text-[#e5e7eb]">
-            <p className="font-semibold text-white">iPhone / Android</p>
-            <p className="leading-relaxed text-[#9ca3af]">
-              Telegram and Safari cannot talk to Phantom. Open this same page{" "}
-              <b className="text-white">inside the Phantom app</b>, then Connect &amp; sign.
-              We cannot detect if Phantom is installed (OS privacy) — if nothing opens, install
-              Phantom first.
-            </p>
+            <p className="font-semibold text-white">{t("linkWallet.mobileTitle")}</p>
+            <p className="leading-relaxed text-[#9ca3af]">{t("linkWallet.mobileBody")}</p>
           </div>
         )}
 
         {!message ? (
           <p className="mt-8 rounded-2xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-100">
-            Open this page from the bot: send <code className="text-white">/linkwallet</code> and tap
-            the link button.
+            {t("linkWallet.missingParams")}
           </p>
         ) : (
           <div className="mt-8 space-y-4">
             <div className="rounded-2xl border border-white/[0.08] bg-[#0c1017]/80 p-4">
               <p className="text-xs font-semibold uppercase tracking-wider text-[#6b7280]">
-                Message to sign
+                {t("linkWallet.messageLabel")}
               </p>
               <pre className="mt-2 whitespace-pre-wrap break-all font-mono text-xs text-[#e5e7eb]">
                 {message}
               </pre>
-              <p className="mt-2 text-[11px] text-[#6b7280]">Telegram id: {tg}</p>
+              <p className="mt-2 text-[11px] text-[#6b7280]">{t("linkWallet.telegramId", { tg })}</p>
             </div>
 
-            {expired && (
-              <p className="text-sm text-amber-300">Expired — run /linkwallet again in Telegram.</p>
-            )}
+            {expired && <p className="text-sm text-amber-300">{t("linkWallet.expired")}</p>}
 
             {needsOpenInPhantom ? (
               <div className="space-y-3">
@@ -207,24 +178,17 @@ export function LinkWalletPage() {
                   className="btn-orca-primary flex w-full !rounded-xl items-center justify-center"
                   rel="noopener noreferrer"
                 >
-                  Open in Phantom app
+                  {t("linkWallet.openInPhantom")}
                 </a>
-                <button
-                  type="button"
-                  onClick={() => void copyPageUrl()}
-                  className="btn-orca-secondary w-full !text-xs"
-                >
-                  {copiedUrl ? "URL copied" : "Copy page URL"}
-                </button>
                 <p className="text-xs text-[#9ca3af]">
-                  No app?{" "}
+                  {t("linkWallet.noApp")}{" "}
                   <a
                     href="https://phantom.com/download"
                     className="text-[#00E5FF] hover:underline"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Install Phantom ↗
+                    {t("linkWallet.installPhantom")}
                   </a>
                 </p>
               </div>
@@ -236,19 +200,19 @@ export function LinkWalletPage() {
                   onClick={() => void sign()}
                   className="btn-orca-primary w-full !rounded-xl disabled:opacity-50"
                 >
-                  {busy ? "Waiting for Phantom…" : "Connect Phantom & sign"}
+                  {busy ? t("linkWallet.waitingPhantom") : t("linkWallet.connectSign")}
                 </button>
 
                 {!badBrowser && !hasProvider && (
                   <p className="text-xs text-[#9ca3af]">
-                    Need Phantom?{" "}
+                    {t("linkWallet.needPhantom")}{" "}
                     <a
                       href="https://phantom.com/download"
                       className="text-[#00E5FF] hover:underline"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      Install for Chrome ↗
+                      {t("linkWallet.installChrome")}
                     </a>
                   </p>
                 )}
@@ -260,12 +224,10 @@ export function LinkWalletPage() {
             {linkOk && (
               <div className="space-y-3 rounded-2xl border border-[#00E5FF]/25 bg-[#00E5FF]/05 p-4">
                 <p className="text-sm font-semibold text-white">
-                  Signed
+                  {t("linkWallet.signed")}
                   {pubkey ? ` · ${pubkey.slice(0, 4)}…${pubkey.slice(-4)}` : ""}
                 </p>
-                <p className="text-xs text-[#9ca3af]">
-                  Copy this line and paste it into the Telegram bot chat:
-                </p>
+                <p className="text-xs text-[#9ca3af]">{t("linkWallet.pasteHint")}</p>
                 <code className="block break-all rounded-xl bg-[#0c1017] px-3 py-3 font-mono text-[11px] text-[#e5e7eb]">
                   {linkOk}
                 </code>
@@ -275,7 +237,7 @@ export function LinkWalletPage() {
                     onClick={() => void copyLine()}
                     className="btn-orca-secondary !text-xs"
                   >
-                    {copied ? "Copied" : "Copy /linkok"}
+                    {copied ? t("linkWallet.copied") : t("linkWallet.copyLinkOk")}
                   </button>
                   <a
                     href="https://t.me/AcopayNetwork_bot"
@@ -283,7 +245,7 @@ export function LinkWalletPage() {
                     rel="noopener noreferrer"
                     className="btn-orca-ghost !text-xs"
                   >
-                    Open Telegram ↗
+                    {t("linkWallet.openTelegram")}
                   </a>
                 </div>
               </div>

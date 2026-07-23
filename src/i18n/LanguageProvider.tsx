@@ -83,7 +83,18 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      const explicit = readSavedLocale();
+      // Bot / deep-link: ?lang=vi forces locale (also persists)
+      const urlLang =
+        typeof window !== "undefined"
+          ? new URLSearchParams(window.location.search).get("lang")
+          : null;
+      const fromUrl = isSupportedLocale(urlLang) ? urlLang : null;
+
+      const explicit = fromUrl || readSavedLocale();
+      if (fromUrl) {
+        localStorage.setItem(STORAGE_LOCALE, fromUrl);
+        localStorage.removeItem(STORAGE_MODE);
+      }
 
       let cc = readCookie(COOKIE_COUNTRY);
       if (!cc || cc === "XX" || cc === "T1") {

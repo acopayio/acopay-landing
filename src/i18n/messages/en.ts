@@ -372,6 +372,46 @@ export const en = {
   swap: {
     loadingJupiter: "Loading Jupiter…",
   },
+  linkWallet: {
+    kicker: "Telegram",
+    title: "Link Phantom",
+    intro:
+      "Switch your ACOPAY Pay wallet to Phantom (one wallet). Paste the result into @AcopayNetwork_bot. We never ask for your private key. Telegram /pay turns off while Phantom is linked.",
+    wrongBrowserTitle: "Wrong browser (IE / old Edge)",
+    wrongBrowserBody:
+      "Phantom only works in Google Chrome (or Brave). Telegram opens your Windows default browser — we cannot force Chrome from the bot.",
+    wrongBrowserStep1: "Windows: Settings → Apps → Default apps → Google Chrome → Set default",
+    wrongBrowserStep2: "Or: Copy this page URL → open Chrome → paste into the address bar",
+    copyUrlChrome: "Copy page URL for Chrome",
+    urlCopied: "URL copied",
+    mobileTitle: "iPhone / Android",
+    mobileBody:
+      "Telegram and Safari cannot talk to Phantom. Open this same page inside the Phantom app, then Connect & sign. We cannot detect if Phantom is installed (OS privacy) — if nothing opens, install Phantom first.",
+    missingParams: "Open this page from the bot: send /linkwallet and tap the link button.",
+    messageLabel: "Message to sign",
+    telegramId: "Telegram id: {tg}",
+    expired: "Expired — run /linkwallet again in Telegram.",
+    openInPhantom: "Open in Phantom app",
+    installPhantom: "Install Phantom ↗",
+    noApp: "No app?",
+    connectSign: "Connect Phantom & sign",
+    waitingPhantom: "Waiting for Phantom…",
+    needPhantom: "Need Phantom?",
+    installChrome: "Install for Chrome ↗",
+    signed: "Signed",
+    pasteHint: "Copy this line and paste it into the Telegram bot chat:",
+    copyLinkOk: "Copy /linkok",
+    copied: "Copied",
+    openTelegram: "Open Telegram ↗",
+    errMissing: "Missing link parameters. Open this page from the Telegram bot (/linkwallet).",
+    errExpired: "This link expired. Run /linkwallet in Telegram again.",
+    errBadBrowser: "This browser cannot run Phantom. Open this page in Google Chrome.",
+    errNoProviderMobile: "Phantom is not available here. Tap “Open in Phantom app” below.",
+    errNoProviderDesktop: "Phantom extension not found. Install Phantom in Chrome, then retry.",
+    errCancelled: "Signature cancelled in Phantom.",
+    errCopyLine: "Could not copy — select the /linkok line manually.",
+    errCopyUrl: "Could not copy URL — select the address bar manually.",
+  },
 };
 
 export type Messages = {
