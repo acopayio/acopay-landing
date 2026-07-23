@@ -1,36 +1,27 @@
 ﻿import { Link } from "react-router-dom";
 import { jupiterSwapUrl, raydiumSwapUrl } from "../config/token";
-
-const STEPS = [
-  {
-    title: "OTC desk (recommended)",
-    desc: "Send USDT via Solana Pay QR on the Buy page — bot returns ACOPAY 1:1 to your wallet.",
-  },
-  {
-    title: "Or swap on a DEX",
-    desc: "Use Jupiter or Raydium. Match the official mint on the Contract page before you swap.",
-  },
-  {
-    title: "Keep a little SOL",
-    desc: "Network fees are paid in SOL. OTC open-ATA rent is sponsored by the desk when needed.",
-  },
-];
+import { useT } from "../i18n/LanguageProvider";
 
 export function Trade() {
+  const t = useT();
   const jup = jupiterSwapUrl();
   const ray = raydiumSwapUrl();
+
+  const steps = [
+    { title: t("tradePage.step1Title"), desc: t("tradePage.step1Desc") },
+    { title: t("tradePage.step2Title"), desc: t("tradePage.step2Desc") },
+    { title: t("tradePage.step3Title"), desc: t("tradePage.step3Desc") },
+  ];
 
   return (
     <section className="section-pad">
       <div className="page-wrap">
-        <p className="label-orca">Trade</p>
-        <h2 className="mt-2 text-3xl font-bold text-white sm:text-4xl">How to buy</h2>
-        <p className="mt-3 max-w-xl text-[#9ca3af]">
-          Fastest path: OTC desk at 1 USDT = 1 ACOPAY. DEX swaps remain available on Raydium / Jupiter.
-        </p>
+        <p className="label-orca">{t("tradePage.label")}</p>
+        <h2 className="mt-2 text-3xl font-bold text-white sm:text-4xl">{t("tradePage.title")}</h2>
+        <p className="mt-3 max-w-xl text-[#9ca3af]">{t("tradePage.subtitle")}</p>
 
         <ol className="mt-10 space-y-3">
-          {STEPS.map((step, i) => (
+          {steps.map((step, i) => (
             <li key={step.title} className="orca-card flex gap-4 p-5 sm:p-6">
               <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#00E5FF] text-sm font-bold text-[#0c1017]">
                 {i + 1}
@@ -45,7 +36,7 @@ export function Trade() {
 
         <div className="mt-8 flex flex-wrap gap-3">
           <Link to="/buy" className="btn-orca-primary">
-            Open OTC Buy
+            {t("tradePage.openOtc")}
           </Link>
           {jup && (
             <a href={jup} target="_blank" rel="noopener noreferrer" className="btn-orca-secondary">
@@ -58,7 +49,7 @@ export function Trade() {
             </a>
           )}
           <Link to="/contract" className="btn-orca-ghost">
-            Contract
+            {t("tradePage.contract")}
           </Link>
         </div>
       </div>

@@ -1,11 +1,19 @@
 import { Link } from "react-router-dom";
 import { OtcBuyPanel } from "../components/OtcBuyPanel";
 import { TOKEN, jupiterSwapUrl, raydiumSwapUrl, solscanUrl } from "../config/token";
+import { useT } from "../i18n/LanguageProvider";
 
 export function BuyPage() {
+  const t = useT();
   const jup = jupiterSwapUrl();
   const ray = raydiumSwapUrl();
   const solscan = solscanUrl();
+
+  const features = [
+    { title: t("buyPage.feat1Title"), body: t("buyPage.feat1Body") },
+    { title: t("buyPage.feat2Title"), body: t("buyPage.feat2Body") },
+    { title: t("buyPage.feat3Title"), body: t("buyPage.feat3Body") },
+  ];
 
   return (
     <section className="section-pad relative overflow-hidden pb-12 md:pb-16">
@@ -14,31 +22,16 @@ export function BuyPage() {
         <OtcBuyPanel />
 
         <aside className="otc-notice mx-auto max-w-5xl">
-          <h2 className="text-sm font-semibold text-white">Before you pay</h2>
+          <h2 className="text-sm font-semibold text-white">{t("buyPage.beforeTitle")}</h2>
           <ul className="mt-2 space-y-1.5 text-xs leading-relaxed text-[#9ca3af]">
-            <li>
-              Send from a wallet you control (Phantom, Solflare, Backpack, etc.). ACOPAY is
-              credited to that same Solana address.
-            </li>
-            <li>
-              Do not withdraw USDT from Binance, OKX, Bybit, or other exchanges straight to this
-              desk. The chain sees the exchange hot wallet as the sender — ACOPAY would go there,
-              not to you.
-            </li>
-            <li>
-              Correct path: exchange to your wallet, then this desk. Keep a little SOL for fees.
-            </li>
-            <li>
-              Official site is <span className="text-[#e5e7eb]">acopay.net</span> only. Confirm the
-              mint on Solscan before you trust any other link or message.
-            </li>
-            <li>
-              Phantom may mark new tokens as spam. Your ACOPAY is still on-chain — open Manage
-              tokens / spam settings and show ACOPAY, or check the balance on Solscan.
-            </li>
+            <li>{t("buyPage.before1")}</li>
+            <li>{t("buyPage.before2")}</li>
+            <li>{t("buyPage.before3")}</li>
+            <li>{t("buyPage.before4")}</li>
+            <li>{t("buyPage.before5")}</li>
           </ul>
           <p className="mt-3 text-[11px] leading-relaxed text-[#6b7280]">
-            Official mint:{" "}
+            {t("buyPage.mintPrefix")}{" "}
             <a
               href={solscan}
               target="_blank"
@@ -49,26 +42,13 @@ export function BuyPage() {
             </a>
             {" · "}
             <Link to="/faq" className="text-[#00E5FF]/90 hover:text-[#00E5FF]">
-              Phantom warning FAQ
+              {t("buyPage.phantomFaq")}
             </Link>
           </p>
         </aside>
 
         <div className="mx-auto grid max-w-5xl gap-4 sm:grid-cols-3">
-          {[
-            {
-              title: "Fixed rate",
-              body: "One USDT converts to one ACOPAY at the desk — no pool slippage.",
-            },
-            {
-              title: "Same-wallet settle",
-              body: "ACOPAY is sent to the Solana wallet that paid USDT — not to an exchange account.",
-            },
-            {
-              title: "USDT on Solana only",
-              body: "Pay USDT (SPL) on Solana Mainnet to the address shown. Other assets cannot be recovered.",
-            },
-          ].map((item) => (
+          {features.map((item) => (
             <div key={item.title} className="otc-feature">
               <h3 className="text-sm font-semibold text-white">{item.title}</h3>
               <p className="mt-1.5 text-xs leading-relaxed text-[#6b7280]">{item.body}</p>
@@ -77,7 +57,7 @@ export function BuyPage() {
         </div>
 
         <div className="mx-auto max-w-5xl border-t border-white/[0.06] pt-8 text-center">
-          <p className="text-xs tracking-wide text-[#6b7280]">Prefer to swap on a DEX?</p>
+          <p className="text-xs tracking-wide text-[#6b7280]">{t("buyPage.preferDex")}</p>
           <div className="mt-3 flex flex-wrap justify-center gap-2">
             {jup && (
               <a href={jup} target="_blank" rel="noopener noreferrer" className="btn-orca-ghost !text-xs">
@@ -90,7 +70,7 @@ export function BuyPage() {
               </a>
             )}
             <Link to="/trade" className="btn-orca-ghost !text-xs">
-              How to swap
+              {t("buyPage.howToSwap")}
             </Link>
           </div>
         </div>
