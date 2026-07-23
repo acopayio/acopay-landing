@@ -6,7 +6,8 @@ type Env = {
   MARKETS_UPSTREAM?: string;
 };
 
-const DEFAULT_UPSTREAM = "http://169.58.56.156:8791";
+/** CF Workers only allow fetch to specific ports (80/8080/…). Not 8791. */
+const DEFAULT_UPSTREAM = "http://169.58.56.156:8080";
 
 export async function onRequestGet(context: { request: Request; env: Env }): Promise<Response> {
   const upstream = (context.env.MARKETS_UPSTREAM || DEFAULT_UPSTREAM).replace(/\/$/, "");
