@@ -18,7 +18,7 @@ export function Footer() {
       <div className="page-wrap">
         {/* Mobile — compact */}
         <div className="md:hidden">
-          <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
             <Link to="/" className="flex min-w-0 items-center gap-2">
               <img src="/assets/logo.png" alt="" className="h-7 w-7 object-contain" />
               <div className="min-w-0">
@@ -26,12 +26,6 @@ export function Footer() {
                 <div className="text-[11px] text-[#6b7280]">{TOKEN.tagline}</div>
               </div>
             </Link>
-            <a
-              href={`mailto:${TOKEN.email}`}
-              className="shrink-0 text-[11px] font-medium text-[#00E5FF]"
-            >
-              Contact
-            </a>
           </div>
 
           <div className="mt-5 grid grid-cols-2 gap-x-6 gap-y-4">
