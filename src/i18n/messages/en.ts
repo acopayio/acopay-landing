@@ -35,9 +35,10 @@ export const en = {
   markets: {
     label: "Markets",
     title: "Markets",
-    subtitle: "ACOPAY transactions, Raydium pools, Binance spot, and Jupiter swap.",
+    subtitle: "ACOPAY transactions, Raydium pools, spot prices, and Jupiter swap.",
     allPools: "All Pools",
-    binance: "Binance",
+    binance: "Spot",
+    spot: "Spot",
     transfers: "Transactions",
     swap: "Swap",
     viewAll: "View all markets →",
@@ -46,7 +47,10 @@ export const en = {
     refreshing: "Refreshing…",
     searchCoins: "Search coins...",
     searchTokens: "Search tokens...",
-    binanceSubtitle: "Binance spot prices for reference (updated every few minutes). ACOPAY trades OTC — see Buy or Telegram Pay.",
+    binanceSubtitle:
+      "Global USDT spot prices for reference (sourced from Binance public data). ACOPAY trades OTC — see Buy or Telegram Pay.",
+    spotSubtitle:
+      "Global USDT spot prices for reference (sourced from Binance public data). ACOPAY trades OTC — see Buy or Telegram Pay.",
     transfersTitle: "Token Transactions",
     transfersSubtitle:
       "ACOPAY wallet transfers on Solana from the last 24 hours. Explore on Solscan for full history.",

@@ -100,13 +100,13 @@ export function BinanceMarketsTable({ variant = "full", limit, embedded = false 
     <div className={embedded ? "" : "orca-card p-4 sm:p-6"}>
       {!embedded && (
         <div className="space-y-3">
-          <p className="label-orca">{t("markets.binance")}</p>
+          <p className="label-orca">{t("markets.spot")}</p>
           <h2 className="text-2xl font-bold text-white sm:text-3xl">{t("markets.title")}</h2>
-          <p className="text-sm leading-relaxed text-[#9ca3af]">{t("markets.binanceSubtitle")}</p>
+          <p className="text-sm leading-relaxed text-[#9ca3af]">{t("markets.spotSubtitle")}</p>
         </div>
       )}
       <p className={`text-xs text-[#6b7280] ${embedded ? "" : "mt-2"}`}>
-        {t("markets.binance")} · {t("markets.updated")} {updated}
+        {t("markets.spot")} · {t("markets.updated")} {updated}
         <button
           type="button"
           onClick={() => refresh()}

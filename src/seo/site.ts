@@ -67,13 +67,13 @@ export const PAGE_SEO: Record<string, PageSeo> = {
   "/markets": {
     title: "ACOPAY Markets | Transactions, Pools & Swap",
     description:
-      "Explore ACOPAY transactions, Raydium pools, Binance spot, and Jupiter swap.",
+      "Explore ACOPAY transactions, Raydium pools, spot prices, and Jupiter swap.",
     path: "/markets",
   },
   "/pools": {
     title: "ACOPAY Markets | Transactions, Pools & Swap",
     description:
-      "Explore ACOPAY transactions, Raydium pools, Binance spot, and Jupiter swap.",
+      "Explore ACOPAY transactions, Raydium pools, spot prices, and Jupiter swap.",
     path: "/markets",
   },
   "/token": {

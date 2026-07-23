@@ -7,7 +7,7 @@ import { LiquidityPoolsWidget } from "./LiquidityPoolsWidget";
 import { SwapMarketPanel } from "./SwapMarketPanel";
 import { TransfersExplorer } from "./TransfersExplorer";
 
-/** Markets hub: Transactions | Pools | Binance | Swap */
+/** Markets hub: Transactions | All Pools | Spot | Swap */
 type Props = {
   variant?: "home" | "full";
 };
@@ -45,7 +45,7 @@ export function MarketsHub({ variant = "full" }: Props) {
 
           <div className={`mt-6 ${tab === "swap" ? "flex justify-center py-2 sm:py-4" : ""}`}>
             {tab === "pools" && <LiquidityPoolsWidget variant={variant} embedded />}
-            {tab === "binance" && <BinanceMarketsTable variant={variant} embedded />}
+            {tab === "spot" && <BinanceMarketsTable variant={variant} embedded />}
             {tab === "transfers" && <TransfersExplorer />}
             {tab === "swap" && <SwapMarketPanel />}
           </div>
