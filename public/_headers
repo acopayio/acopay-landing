@@ -36,6 +36,11 @@
   Cache-Control: public, max-age=86400
   X-Content-Type-Options: nosniff
 
+# Language flag icons
+/flags/*
+  Cache-Control: public, max-age=604800
+  X-Content-Type-Options: nosniff
+
 # Social preview image
 /assets/og-image.png
   Cache-Control: public, max-age=86400

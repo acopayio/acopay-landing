@@ -221,40 +221,45 @@ export const LOCALE_ENGLISH_NAME: Record<string, string> = {
   ar: "Arabic",
 };
 
-/** Representative flag (emoji) per locale — not a political claim, just UI cue. */
-export const LOCALE_FLAG: Record<string, string> = {
-  en: "🇺🇸",
-  vi: "🇻🇳",
-  zh: "🇨🇳",
-  ja: "🇯🇵",
-  ko: "🇰🇷",
-  th: "🇹🇭",
-  id: "🇮🇩",
-  ms: "🇲🇾",
-  hi: "🇮🇳",
-  es: "🇪🇸",
-  pt: "🇧🇷",
-  fr: "🇫🇷",
-  de: "🇩🇪",
-  nl: "🇳🇱",
-  it: "🇮🇹",
-  ru: "🇷🇺",
-  uk: "🇺🇦",
-  pl: "🇵🇱",
-  tr: "🇹🇷",
-  ar: "🇸🇦",
+/** ISO 3166-1 alpha-2 used for `/flags/{cc}.png` (Windows cannot render emoji flags). */
+export const LOCALE_FLAG_CC: Record<string, string> = {
+  en: "us",
+  vi: "vn",
+  zh: "cn",
+  ja: "jp",
+  ko: "kr",
+  th: "th",
+  id: "id",
+  ms: "my",
+  hi: "in",
+  es: "es",
+  pt: "br",
+  fr: "fr",
+  de: "de",
+  nl: "nl",
+  it: "it",
+  ru: "ru",
+  uk: "ua",
+  pl: "pl",
+  tr: "tr",
+  ar: "sa",
 };
+
+export function flagSrc(localeOrCc: string): string {
+  const cc = (LOCALE_FLAG_CC[localeOrCc] || localeOrCc).toLowerCase();
+  return `/flags/${cc}.png`;
+}
 
 export type LanguageOption = {
   code: string;
-  flag: string;
+  flagCc: string;
   english: string;
   native: string;
 };
 
 export const LANGUAGE_OPTIONS: LanguageOption[] = Object.keys(LOCALE_NATIVE_NAME).map((code) => ({
   code,
-  flag: LOCALE_FLAG[code] || "🌐",
+  flagCc: LOCALE_FLAG_CC[code] || "us",
   english: LOCALE_ENGLISH_NAME[code] || code,
   native: LOCALE_NATIVE_NAME[code] || code,
 }));

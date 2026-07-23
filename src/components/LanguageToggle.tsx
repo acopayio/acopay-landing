@@ -1,11 +1,11 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import {
   LANGUAGE_OPTIONS,
-  LOCALE_FLAG,
   LOCALE_ENGLISH_NAME,
   localeFromCountry,
 } from "../i18n/countries";
 import { useI18n } from "../i18n/LanguageProvider";
+import { FlagImg } from "./FlagImg";
 
 type PanelPos = { top: number; left: number; width: number; maxHeight: number };
 
@@ -19,7 +19,6 @@ export function LanguageToggle({ compact = false }: { compact?: boolean }) {
   const listId = useId();
 
   const suggested = localeFromCountry(country);
-  const flag = LOCALE_FLAG[locale] || "🌐";
   const englishName = LOCALE_ENGLISH_NAME[locale] || "English";
 
   const updatePos = () => {
@@ -41,7 +40,6 @@ export function LanguageToggle({ compact = false }: { compact?: boolean }) {
       left = Math.min(r.right + 8, window.innerWidth - width - 8);
       top = Math.min(Math.max(8, r.bottom - maxHeight), window.innerHeight - 80);
       if (left < r.right && left + width > r.left) {
-        // fallback: above the button inside viewport
         left = Math.min(Math.max(8, r.left), window.innerWidth - width - 8);
         top = Math.max(8, r.top - maxHeight - 8);
       }
@@ -101,9 +99,11 @@ export function LanguageToggle({ compact = false }: { compact?: boolean }) {
         title={t("lang.aria")}
         className={triggerClass}
       >
-        <span className="text-base leading-none" aria-hidden>
-          {ready ? flag : "🌐"}
-        </span>
+        {ready ? (
+          <FlagImg locale={locale} className="!h-[14px] !w-[18px]" />
+        ) : (
+          <span className="inline-block h-[14px] w-[18px] rounded-[2px] bg-white/10" aria-hidden />
+        )}
         <span className="truncate">{ready ? t("lang.menu") : t("lang.detecting")}</span>
       </button>
 
@@ -143,9 +143,7 @@ export function LanguageToggle({ compact = false }: { compact?: boolean }) {
                     : "text-[#d1d5db] hover:bg-white/[0.05] hover:text-white"
                 }`}
               >
-                <span className="text-lg leading-none" aria-hidden>
-                  {opt.flag}
-                </span>
+                <FlagImg locale={opt.code} className="!h-4 !w-[22px]" title={opt.english} />
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-sm font-medium text-white">{opt.english}</span>
                   {opt.native !== opt.english && (
