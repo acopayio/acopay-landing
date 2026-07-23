@@ -10,6 +10,9 @@ export type AcopayTransferRow = {
   signature: string;
   href: string;
   feePayer?: string;
+  slot?: number;
+  status?: "success" | "failed" | string;
+  sigShort?: string;
 };
 
 export type AcopayTransfersResponse = {
