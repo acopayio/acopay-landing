@@ -8,7 +8,7 @@ import { LiquidityPoolsWidget } from "./LiquidityPoolsWidget";
 import { SwapMarketPanel } from "./SwapMarketPanel";
 import { TransfersExplorer } from "./TransfersExplorer";
 
-type Props = {
+/** Markets hub: Pools | Binance | Transfers | Swap | Chart (OTC removed). */
   variant?: "home" | "full";
 };
 
