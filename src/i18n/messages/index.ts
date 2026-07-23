@@ -52,7 +52,7 @@ const partials: Record<string, DeepPartialMessages> = {
     },
     hero: {
       eyebrow: "Solana · Token-2022",
-      desc: "Tiện ích thanh toán Solana cho chuyển khoản ví-sang-ví. Giao dịch ACOPAY/USDT trên Raydium và Jupiter. Phí on-chain {fee}. Đã thu hồi quyền đóng băng.",
+      desc: "Tiện ích thanh toán Solana cho chuyển khoản ví-sang-ví. Giao dịch ACOPAY/USDT trên Raydium và Jupiter. Phí on-chain {fee}.",
       explorer: "Khám phá ↗",
       solscan: "Solscan ↗",
       contractAddress: "Địa chỉ hợp đồng",
@@ -413,7 +413,7 @@ const partials: Record<string, DeepPartialMessages> = {
     hero: {
       explorer: "区块浏览器 ↗",
       solscan: "Solscan ↗",
-      desc: "Solana 钱包到钱包支付工具。在 Raydium 与 Jupiter 交易 ACOPAY/USDT。链上手续费 {fee}。冻结权限已撤销。",
+      desc: "Solana 钱包到钱包支付工具。在 Raydium 与 Jupiter 交易 ACOPAY/USDT。链上手续费 {fee}。",
       contractAddress: "合约地址",
       details: "详情 →",
       copy: "复制",
@@ -505,7 +505,7 @@ const partials: Record<string, DeepPartialMessages> = {
     hero: {
       explorer: "エクスプローラー ↗",
       solscan: "Solscan ↗",
-      desc: "ウォレット間送金向け Solana 決済ユーティリティ。Raydium と Jupiter で ACOPAY/USDT を取引。オンチェーン手数料 {fee}。フリーズ権限は取り消済み。",
+      desc: "ウォレット間送金向け Solana 決済ユーティリティ。Raydium と Jupiter で ACOPAY/USDT を取引。オンチェーン手数料 {fee}。",
       contractAddress: "コントラクトアドレス",
       details: "詳細 →",
       copy: "コピー",
@@ -597,7 +597,7 @@ const partials: Record<string, DeepPartialMessages> = {
     hero: {
       explorer: "탐색기 ↗",
       solscan: "Solscan ↗",
-      desc: "지갑 간 송금을 위한 Solana 결제 유틸리티. Raydium·Jupiter에서 ACOPAY/USDT 거래. 온체인 수수료 {fee}. 동결 권한 철회됨.",
+      desc: "지갑 간 송금을 위한 Solana 결제 유틸리티. Raydium·Jupiter에서 ACOPAY/USDT 거래. 온체인 수수료 {fee}.",
       contractAddress: "컨트랙트 주소",
       details: "자세히 →",
       copy: "복사",
@@ -689,7 +689,7 @@ const partials: Record<string, DeepPartialMessages> = {
     hero: {
       explorer: "Explorador ↗",
       solscan: "Solscan ↗",
-      desc: "Utilidad de pago en Solana para transferencias entre billeteras. Opera ACOPAY/USDT en Raydium y Jupiter. Comisión on-chain {fee}. Freeze revocado.",
+      desc: "Utilidad de pago en Solana para transferencias entre billeteras. Opera ACOPAY/USDT en Raydium y Jupiter. Comisión on-chain {fee}.",
       contractAddress: "Dirección del contrato",
       details: "Detalles →",
       copy: "Copiar",
@@ -781,7 +781,7 @@ const partials: Record<string, DeepPartialMessages> = {
     hero: {
       explorer: "Explorador ↗",
       solscan: "Solscan ↗",
-      desc: "Utilitário de pagamento Solana para transferências entre carteiras. Negocie ACOPAY/USDT na Raydium e Jupiter. Taxa on-chain {fee}. Freeze revogado.",
+      desc: "Utilitário de pagamento Solana para transferências entre carteiras. Negocie ACOPAY/USDT na Raydium e Jupiter. Taxa on-chain {fee}.",
       contractAddress: "Endereço do contrato",
       details: "Detalhes →",
       copy: "Copiar",
@@ -873,7 +873,7 @@ const partials: Record<string, DeepPartialMessages> = {
     hero: {
       explorer: "Explorateur ↗",
       solscan: "Solscan ↗",
-      desc: "Utilitaire de paiement Solana pour les transferts portefeuille à portefeuille. Échangez ACOPAY/USDT sur Raydium et Jupiter. Frais on-chain {fee}. Freeze révoqué.",
+      desc: "Utilitaire de paiement Solana pour les transferts portefeuille à portefeuille. Échangez ACOPAY/USDT sur Raydium et Jupiter. Frais on-chain {fee}.",
       contractAddress: "Adresse du contrat",
       details: "Détails →",
       copy: "Copier",
@@ -965,7 +965,7 @@ const partials: Record<string, DeepPartialMessages> = {
     hero: {
       explorer: "Explorer ↗",
       solscan: "Solscan ↗",
-      desc: "Solana-Zahlungs-Utility für Wallet-zu-Wallet-Transfers. Handle ACOPAY/USDT auf Raydium und Jupiter. On-Chain-Gebühr {fee}. Freeze widerrufen.",
+      desc: "Solana-Zahlungs-Utility für Wallet-zu-Wallet-Transfers. Handle ACOPAY/USDT auf Raydium und Jupiter. On-Chain-Gebühr {fee}.",
       contractAddress: "Vertragsadresse",
       details: "Details →",
       copy: "Kopieren",
@@ -1057,7 +1057,7 @@ const partials: Record<string, DeepPartialMessages> = {
     hero: {
       explorer: "Обозреватель ↗",
       solscan: "Solscan ↗",
-      desc: "Платёжная утилита Solana для переводов между кошельками. Торгуйте ACOPAY/USDT на Raydium и Jupiter. Комиссия on-chain {fee}. Freeze отозван.",
+      desc: "Платёжная утилита Solana для переводов между кошельками. Торгуйте ACOPAY/USDT на Raydium и Jupiter. Комиссия on-chain {fee}.",
       contractAddress: "Адрес контракта",
       details: "Подробнее →",
       copy: "Копировать",
@@ -1149,7 +1149,7 @@ const partials: Record<string, DeepPartialMessages> = {
     hero: {
       explorer: "المستكشف ↗",
       solscan: "Solscan ↗",
-      desc: "أداة دفع على Solana للتحويلات بين المحافظ. تداول ACOPAY/USDT على Raydium و Jupiter. رسوم على السلسلة {fee}. تم إلغاء صلاحية التجميد.",
+      desc: "أداة دفع على Solana للتحويلات بين المحافظ. تداول ACOPAY/USDT على Raydium و Jupiter. رسوم على السلسلة {fee}.",
       contractAddress: "عنوان العقد",
       details: "التفاصيل ←",
       copy: "نسخ",
@@ -1241,7 +1241,7 @@ const partials: Record<string, DeepPartialMessages> = {
     hero: {
       explorer: "สำรวจ ↗",
       solscan: "Solscan ↗",
-      desc: "ยูทิลิตี้ชำระเงินบน Solana สำหรับโอนกระเป๋าถึงกระเป๋า เทรด ACOPAY/USDT บน Raydium และ Jupiter ค่าธรรมเนียมบนเชน {fee} ยกเลิกสิทธิ์แช่แข็งแล้ว",
+      desc: "ยูทิลิตี้ชำระเงินบน Solana สำหรับโอนกระเป๋าถึงกระเป๋า เทรด ACOPAY/USDT บน Raydium และ Jupiter ค่าธรรมเนียมบนเชน {fee}",
       contractAddress: "ที่อยู่สัญญา",
       details: "รายละเอียด →",
       copy: "คัดลอก",
@@ -1333,7 +1333,7 @@ const partials: Record<string, DeepPartialMessages> = {
     hero: {
       explorer: "Jelajahi ↗",
       solscan: "Solscan ↗",
-      desc: "Utilitas pembayaran Solana untuk transfer dompet-ke-dompet. Perdagangkan ACOPAY/USDT di Raydium dan Jupiter. Biaya on-chain {fee}. Freeze dicabut.",
+      desc: "Utilitas pembayaran Solana untuk transfer dompet-ke-dompet. Perdagangkan ACOPAY/USDT di Raydium dan Jupiter. Biaya on-chain {fee}.",
       contractAddress: "Alamat kontrak",
       details: "Detail →",
       copy: "Salin",
