@@ -162,17 +162,21 @@ export function Footer() {
             <h4 className="label-orca">Contact</h4>
             <a
               href={`mailto:${TOKEN.email}`}
-              className="mt-4 inline-block text-sm text-[#9ca3af] hover:text-[#00E5FF]"
+              className="mt-4 inline-flex items-center gap-2 text-sm text-[#9ca3af] hover:text-[#00E5FF]"
             >
+              <span aria-hidden="true">✉️</span>
               {TOKEN.email}
             </a>
             <a
               href={TOKEN.telegramUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-3 block text-sm text-[#9ca3af] hover:text-[#00E5FF]"
+              className="mt-3 inline-flex items-center gap-2 text-sm text-[#9ca3af] hover:text-[#00E5FF]"
             >
-              @{TOKEN.telegramBot}
+              <TelegramGlyph />
+              <span>
+                Telegram · @{TOKEN.telegramBot}
+              </span>
             </a>
           </div>
         </div>
