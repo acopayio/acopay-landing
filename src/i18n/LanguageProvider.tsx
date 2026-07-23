@@ -9,21 +9,19 @@ import {
 } from "react";
 import {
   COOKIE_COUNTRY,
+  STORAGE_LOCALE,
   STORAGE_MODE,
+  isSupportedLocale,
   localeFromCountry,
 } from "./countries";
 import { getMessages, type Messages } from "./messages";
 
-type LangMode = "en" | "local";
-
 type I18nContextValue = {
-  mode: LangMode;
   locale: string;
-  localLocale: string;
   country: string | null;
   messages: Messages;
   t: (path: string, vars?: Record<string, string | number>) => string;
-  toggleLanguage: () => void;
+  setLocale: (code: string) => void;
   ready: boolean;
 };
 
@@ -66,23 +64,41 @@ async function detectCountryFallback(): Promise<string | null> {
   }
 }
 
+function readSavedLocale(): string | null {
+  const saved = localStorage.getItem(STORAGE_LOCALE);
+  if (isSupportedLocale(saved)) return saved;
+
+  // Migrate legacy en|local toggle
+  const legacy = localStorage.getItem(STORAGE_MODE);
+  if (legacy === "en") return "en";
+  if (legacy === "local") return null; // resolve after country detect
+  return null;
+}
+
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [country, setCountry] = useState<string | null>(null);
-  const [mode, setMode] = useState<LangMode>("en");
+  const [locale, setLocaleState] = useState("en");
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      const saved = localStorage.getItem(STORAGE_MODE) as LangMode | null;
-      if (saved === "en" || saved === "local") setMode(saved);
+      const explicit = readSavedLocale();
 
       let cc = readCookie(COOKIE_COUNTRY);
       if (!cc || cc === "XX" || cc === "T1") {
         cc = await detectCountryFallback();
       }
+
+      let next = explicit;
+      if (!next) {
+        const legacy = localStorage.getItem(STORAGE_MODE);
+        next = legacy === "local" ? localeFromCountry(cc) : "en";
+      }
+
       if (!cancelled) {
         setCountry(cc);
+        setLocaleState(isSupportedLocale(next) ? next : "en");
         setReady(true);
       }
     })();
@@ -91,14 +107,13 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  const localLocale = useMemo(() => localeFromCountry(country), [country]);
-  const locale = mode === "local" ? localLocale : "en";
   const messages = useMemo(() => getMessages(locale), [locale]);
 
   useEffect(() => {
+    if (!ready) return;
     document.documentElement.lang = locale === "zh" ? "zh-CN" : locale;
     document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
-  }, [locale]);
+  }, [locale, ready]);
 
   const t = useCallback(
     (path: string, vars?: Record<string, string | number>) => {
@@ -108,26 +123,23 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     [messages],
   );
 
-  const toggleLanguage = useCallback(() => {
-    setMode((prev) => {
-      const next: LangMode = prev === "en" ? "local" : "en";
-      localStorage.setItem(STORAGE_MODE, next);
-      return next;
-    });
+  const setLocale = useCallback((code: string) => {
+    const next = isSupportedLocale(code) ? code : "en";
+    localStorage.setItem(STORAGE_LOCALE, next);
+    localStorage.removeItem(STORAGE_MODE);
+    setLocaleState(next);
   }, []);
 
   const value = useMemo(
     () => ({
-      mode,
       locale,
-      localLocale,
       country,
       messages,
       t,
-      toggleLanguage,
+      setLocale,
       ready,
     }),
-    [mode, locale, localLocale, country, messages, t, toggleLanguage, ready],
+    [locale, country, messages, t, setLocale, ready],
   );
 
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;

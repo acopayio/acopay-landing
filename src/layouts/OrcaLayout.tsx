@@ -61,9 +61,9 @@ export function OrcaLayout() {
               {t(item.labelKey)}
             </NavLink>
           ))}
-          <div className="mt-3 border-t border-white/[0.06] pt-3">
-            <LanguageToggle />
-          </div>
+              <div className="mt-3 overflow-visible border-t border-white/[0.06] pt-3">
+                <LanguageToggle />
+              </div>
         </nav>
 
         <div className="mt-auto border-t border-white/[0.06] p-3">
@@ -81,8 +81,8 @@ export function OrcaLayout() {
               <img src="/assets/logo.png" alt="" className="h-8 w-8 object-contain" />
               <span className="truncate font-bold tracking-tight text-white">ACOPAY</span>
             </Link>
-            <div className="flex shrink-0 items-center gap-2">
-              <div className="max-w-[7.5rem]">
+            <div className="flex shrink-0 items-center gap-2 overflow-visible">
+              <div className="relative overflow-visible">
                 <LanguageToggle compact />
               </div>
               <a
