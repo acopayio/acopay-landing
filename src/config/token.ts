@@ -102,13 +102,6 @@ export function dexscreenerUrl(): string | null {
   return `https://dexscreener.com/solana/${TOKEN.dex.poolId}`;
 }
 
-/** DexScreener dark embed for Markets Chart tab. */
-export function dexscreenerEmbedUrl(): string | null {
-  const base = dexscreenerUrl();
-  if (!base) return null;
-  return `${base}?embed=1&loadChartSettings=0&trades=0&tabs=0&info=0&chartLeftToolbar=0&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15`;
-}
-
 /** Birdeye token page. */
 export function birdeyeUrl(): string | null {
   if (!isMintLive()) return null;

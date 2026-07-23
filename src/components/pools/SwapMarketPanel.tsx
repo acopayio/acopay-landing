@@ -85,17 +85,19 @@ export function SwapMarketPanel() {
   }, [poolOk, targetId]);
 
   return (
-    <div className="space-y-4">
-      <div className="space-y-2">
-        <h3 className="text-lg font-semibold text-white">{t("markets.swapTitle")}</h3>
-        <p className="text-sm leading-relaxed text-[#9ca3af]">{t("markets.swapSubtitle")}</p>
-        <div className="flex flex-wrap gap-3">
+    <div className="mx-auto w-full max-w-[440px] space-y-5">
+      <div className="space-y-3 text-center sm:text-left">
+        <div className="space-y-1.5">
+          <h3 className="text-lg font-semibold text-white">{t("markets.swapTitle")}</h3>
+          <p className="text-sm leading-relaxed text-[#9ca3af]">{t("markets.swapSubtitle")}</p>
+        </div>
+        <div className="flex flex-wrap items-center justify-center gap-2 sm:justify-start">
           {jup && (
             <a
               href={jup}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-orca-secondary !inline-flex !px-4 !py-2 !text-sm"
+              className="btn-orca-secondary !inline-flex !px-3.5 !py-2 !text-xs sm:!text-sm"
             >
               {t("markets.openJupiter")} ↗
             </a>
@@ -105,7 +107,7 @@ export function SwapMarketPanel() {
               href={ray}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-orca-secondary !inline-flex !px-4 !py-2 !text-sm"
+              className="btn-orca-secondary !inline-flex !px-3.5 !py-2 !text-xs sm:!text-sm"
             >
               {t("markets.openRaydium")} ↗
             </a>
@@ -114,7 +116,7 @@ export function SwapMarketPanel() {
       </div>
 
       {!poolOk ? (
-        <p className="rounded-2xl border border-white/[0.07] bg-[#0c1017]/60 px-4 py-8 text-center text-sm text-[#9ca3af]">
+        <p className="rounded-2xl border border-white/[0.07] bg-[#0c1017]/60 px-4 py-10 text-center text-sm text-[#9ca3af]">
           {t("markets.swapUnavailable")}
         </p>
       ) : error ? (
@@ -130,11 +132,14 @@ export function SwapMarketPanel() {
           )}
         </div>
       ) : (
-        <div
-          id={targetId}
-          className="min-h-[560px] overflow-hidden rounded-2xl border border-white/[0.07] bg-[#0c1017]/80"
-        />
+        <div className="overflow-hidden rounded-2xl border border-white/[0.08] bg-[#11141b] shadow-[0_0_0_1px_rgba(255,255,255,0.02)]">
+          <div id={targetId} className="min-h-[520px] w-full [&_iframe]:!max-w-full" />
+        </div>
       )}
+
+      <p className="text-center text-[11px] leading-relaxed text-[#6b7280]">
+        {t("markets.swapFootnote")}
+      </p>
     </div>
   );
 }

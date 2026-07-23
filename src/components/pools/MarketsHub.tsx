@@ -3,12 +3,11 @@ import { useState } from "react";
 import { MARKET_TABS, type MarketTabId } from "../../config/markets";
 import { useT } from "../../i18n/LanguageProvider";
 import { BinanceMarketsTable } from "./BinanceMarketsTable";
-import { ChartMarketPanel } from "./ChartMarketPanel";
 import { LiquidityPoolsWidget } from "./LiquidityPoolsWidget";
 import { SwapMarketPanel } from "./SwapMarketPanel";
 import { TransfersExplorer } from "./TransfersExplorer";
 
-/** Markets hub: Pools | Binance | Transfers | Swap | Chart (OTC removed). */
+/** Markets hub: Pools | Binance | Transfers | Swap */
 type Props = {
   variant?: "home" | "full";
 };
@@ -49,7 +48,6 @@ export function MarketsHub({ variant = "full" }: Props) {
             {tab === "binance" && <BinanceMarketsTable variant={variant} embedded />}
             {tab === "transfers" && <TransfersExplorer />}
             {tab === "swap" && <SwapMarketPanel />}
-            {tab === "chart" && <ChartMarketPanel />}
           </div>
         </div>
 
