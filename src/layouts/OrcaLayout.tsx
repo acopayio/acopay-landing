@@ -14,7 +14,6 @@ const INFO_NAV = [
   { to: "/token", label: "Token", end: false, icon: TokenIcon },
   { to: "/contract", label: "Contract", end: false, icon: ContractIcon },
   { to: "/roadmap", label: "Roadmap", end: false, icon: RoadmapIcon },
-  { to: "/faq", label: "FAQ", end: false, icon: FaqIcon },
 ];
 
 const MOBILE_NAV = [
