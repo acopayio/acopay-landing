@@ -136,7 +136,7 @@ export function LinkWalletPage() {
         <p className="label-orca">Telegram</p>
         <h1 className="mt-2 text-3xl font-bold text-white">Link Phantom</h1>
         <p className="mt-3 text-sm leading-relaxed text-[#9ca3af]">
-          Prove you own a Solana address. Paste the result into{" "}
+          Switch your ACOPAY Pay wallet to Phantom (one wallet). Paste the result into{" "}
           <a
             href="https://t.me/AcopayNetwork_bot"
             className="text-[#00E5FF] hover:underline"
@@ -145,7 +145,7 @@ export function LinkWalletPage() {
           >
             @AcopayNetwork_bot
           </a>
-          . We never ask for your private key.
+          . We never ask for your private key. Telegram /pay turns off while Phantom is linked.
         </p>
 
         {badBrowser && (
