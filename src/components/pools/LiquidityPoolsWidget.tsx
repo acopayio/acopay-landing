@@ -5,6 +5,26 @@ import { TOKEN } from "../../config/token";
 import { useLivePools } from "../../hooks/useLivePools";
 import type { PoolRow } from "../../types/pool";
 import { HOME_POOL_ROWS, fmtPct, fmtUsd } from "../../types/pool";
+import { SortCaret, SortTh, compareSortValues, useColumnSort } from "../ui/SortTh";
+
+type PoolSortKey = "pair" | "change24h" | "yieldPct" | "volume24h" | "tvl" | "fees24h";
+
+function poolSortValue(row: PoolRow, key: PoolSortKey): string | number {
+  switch (key) {
+    case "pair":
+      return row.pair.toLowerCase();
+    case "change24h":
+      return row.change24h;
+    case "yieldPct":
+      return row.yieldPct;
+    case "volume24h":
+      return row.volume24h;
+    case "tvl":
+      return row.tvl;
+    case "fees24h":
+      return row.fees24h;
+  }
+}
 
 function fmtPrice(value?: number): string {
   if (value === undefined || !Number.isFinite(value) || value <= 0) return "—";
@@ -69,6 +89,7 @@ export function LiquidityPoolsWidget({ variant = "full", embedded = false }: Pro
   const { pools, summary, loading, error, warning, refresh } = useLivePools();
   const [filter, setFilter] = useState<PoolFilterId>("all");
   const [search, setSearch] = useState("");
+  const { sortKey, sortDir, onSort } = useColumnSort<PoolSortKey>("volume24h", "desc", ["pair"]);
 
   const liveCount = pools.filter((p) => !p.isAcopay).length;
 
@@ -83,9 +104,12 @@ export function LiquidityPoolsWidget({ variant = "full", embedded = false }: Pro
         (p) => p.pair.toLowerCase().includes(q) || p.platform.toLowerCase().includes(q),
       );
     }
+    list = [...list].sort((a, b) =>
+      compareSortValues(poolSortValue(a, sortKey), poolSortValue(b, sortKey), sortDir),
+    );
     if (variant === "home") list = list.slice(0, HOME_POOL_ROWS);
     return list;
-  }, [pools, filter, search, variant]);
+  }, [pools, filter, search, variant, sortKey, sortDir]);
 
   const updated = summary?.updatedAt
     ? new Date(summary.updatedAt).toLocaleTimeString()
@@ -194,14 +218,40 @@ export function LiquidityPoolsWidget({ variant = "full", embedded = false }: Pro
           <div className="orca-table-wrap mt-6 hidden overflow-x-auto rounded-2xl border border-white/[0.07] bg-[#0c1017]/60 md:block">
             <table className="pools-table w-full min-w-[900px]">
               <thead>
-                <tr className="border-b border-white/[0.06] text-left text-[11px] font-semibold uppercase tracking-wider text-[#9ca3af]">
-                  <th className="px-5 py-4">Pool</th>
-                  <th className="px-5 py-4">Trend 7D</th>
-                  <th className="px-5 py-4">Yield / TVL</th>
-                  <th className="px-5 py-4">Volume 24H</th>
-                  <th className="px-5 py-4">TVL</th>
-                  <th className="px-5 py-4">Fees 24H</th>
-                  <th className="px-5 py-4 text-right">Action</th>
+                <tr className="border-b border-white/[0.06] text-[11px]">
+                  <SortTh label="Pool" col="pair" sortKey={sortKey} sortDir={sortDir} onSort={onSort} />
+                  <SortTh
+                    label="Trend 7D"
+                    col="change24h"
+                    sortKey={sortKey}
+                    sortDir={sortDir}
+                    onSort={onSort}
+                  />
+                  <SortTh
+                    label="Yield / TVL"
+                    col="yieldPct"
+                    sortKey={sortKey}
+                    sortDir={sortDir}
+                    onSort={onSort}
+                  />
+                  <SortTh
+                    label="Volume 24H"
+                    col="volume24h"
+                    sortKey={sortKey}
+                    sortDir={sortDir}
+                    onSort={onSort}
+                  />
+                  <SortTh label="TVL" col="tvl" sortKey={sortKey} sortDir={sortDir} onSort={onSort} />
+                  <SortTh
+                    label="Fees 24H"
+                    col="fees24h"
+                    sortKey={sortKey}
+                    sortDir={sortDir}
+                    onSort={onSort}
+                  />
+                  <th className="px-5 py-4 text-right text-[11px] font-semibold uppercase tracking-wider text-[#9ca3af]">
+                    Action
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -289,8 +339,38 @@ export function LiquidityPoolsWidget({ variant = "full", embedded = false }: Pro
             </table>
           </div>
 
-          {/* Mobile: stacked cards — same rail width, no horizontal scroll */}
-          <div className="mt-6 space-y-3 md:hidden">
+          {/* Mobile: sort chips + stacked cards */}
+          <div className="mt-4 flex flex-wrap gap-2 md:hidden">
+            {(
+              [
+                ["volume24h", "Vol"],
+                ["tvl", "TVL"],
+                ["fees24h", "Fees"],
+                ["yieldPct", "Yield"],
+                ["change24h", "Trend"],
+                ["pair", "Pool"],
+              ] as const
+            ).map(([col, label]) => {
+              const active = sortKey === col;
+              return (
+                <button
+                  key={col}
+                  type="button"
+                  onClick={() => onSort(col)}
+                  className={`inline-flex items-center rounded-lg border px-2.5 py-1.5 text-xs font-medium ${
+                    active
+                      ? "border-[#F0B90B]/50 bg-[#F0B90B]/10 text-[#F0B90B]"
+                      : "border-white/[0.08] text-[#9ca3af]"
+                  }`}
+                >
+                  {label}
+                  <SortCaret active={active} dir={active ? sortDir : null} />
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="mt-4 space-y-3 md:hidden">
             {loading && pools.length === 0
               ? Array.from({ length: 4 }).map((_, i) => (
                   <div key={i} className="h-24 animate-pulse rounded-2xl bg-white/[0.04]" />

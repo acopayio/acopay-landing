@@ -1,7 +1,8 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import { MARKET_TABS, type MarketTabId } from "../../config/markets";
 import { TOKEN, solscanUrl } from "../../config/token";
+import { SortTh, useColumnSort } from "../ui/SortTh";
 import { BinanceMarketsTable } from "./BinanceMarketsTable";
 import { LiquidityPoolsWidget } from "./LiquidityPoolsWidget";
 
@@ -11,10 +12,10 @@ type Props = {
 
 /**
  * Markets hub:
- * 1) All Pools — Raydium (restored)
- * 2) Binance — spot via VPS + Webshare
- * 3) Transfers — ACOPAY↔ACOPAY explorer (dedicated API later)
- * 4) OTC Desk — USDT↔ACOPAY from otc-ledger (recommended)
+ * 1) All Pools — Raydium
+ * 2) Binance — spot
+ * 3) Transfers — ACOPAY↔ACOPAY (sortable headers ready)
+ * 4) OTC Desk — USDT↔ACOPAY ledger (sortable headers ready)
  */
 export function MarketsHub({ variant = "full" }: Props) {
   const [tab, setTab] = useState<MarketTabId>("pools");
@@ -68,52 +69,124 @@ export function MarketsHub({ variant = "full" }: Props) {
   );
 }
 
+type TransferSort = "time" | "from" | "to" | "amount";
+
 function TransfersPanel() {
+  const { sortKey, sortDir, onSort } = useColumnSort<TransferSort>("time", "desc", [
+    "from",
+    "to",
+  ]);
+
   return (
-    <div className="space-y-4 rounded-2xl border border-white/[0.06] bg-[#0c1017]/60 p-5">
-      <h3 className="text-lg font-semibold text-white">ACOPAY transfers</h3>
-      <p className="text-sm leading-relaxed text-[#9ca3af]">
-        Wallet-to-wallet ACOPAY transfers (Pay + peer). Explorer feed uses a dedicated
-        Helius/Solscan path — separate from OTC and volume bots — so rate limits stay isolated.
-      </p>
-      <p className="text-sm text-[#6b7280]">
-        Live list on this tab is next. Until then, open Solscan for the mint.
-      </p>
-      <a
-        href={solscanUrl()}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="btn-orca-primary !inline-flex !px-4 !py-2 !text-sm"
-      >
-        Open Solscan ↗
-      </a>
+    <div className="space-y-4">
+      <div className="space-y-2">
+        <h3 className="text-lg font-semibold text-white">ACOPAY transfers</h3>
+        <p className="text-sm leading-relaxed text-[#9ca3af]">
+          Wallet-to-wallet ACOPAY transfers (Pay + peer). Dedicated Helius/Solscan feed coming next.
+        </p>
+        <a
+          href={solscanUrl()}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn-orca-primary !inline-flex !px-4 !py-2 !text-sm"
+        >
+          Open Solscan ↗
+        </a>
+      </div>
+
+      <div className="orca-table-wrap overflow-x-auto rounded-2xl border border-white/[0.07] bg-[#0c1017]/60">
+        <table className="pools-table w-full min-w-[640px]">
+          <thead>
+            <tr className="border-b border-white/[0.06] text-[11px]">
+              <SortTh label="Time" col="time" sortKey={sortKey} sortDir={sortDir} onSort={onSort} />
+              <SortTh label="From" col="from" sortKey={sortKey} sortDir={sortDir} onSort={onSort} />
+              <SortTh label="To" col="to" sortKey={sortKey} sortDir={sortDir} onSort={onSort} />
+              <SortTh
+                label="Amount"
+                col="amount"
+                sortKey={sortKey}
+                sortDir={sortDir}
+                onSort={onSort}
+              />
+              <th className="px-5 py-4 text-right text-[11px] font-semibold uppercase tracking-wider text-[#9ca3af]">
+                Tx
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colSpan={5} className="px-5 py-12 text-center text-sm text-[#9ca3af]">
+                No transfers loaded yet — sort headers ready for the live feed.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
 
+type OtcSort = "time" | "buyer" | "usdt" | "acopay" | "status";
+
 function OtcDeskPanel() {
+  const { sortKey, sortDir, onSort } = useColumnSort<OtcSort>("time", "desc", ["buyer", "status"]);
+
   return (
-    <div className="space-y-4 rounded-2xl border border-white/[0.06] bg-[#0c1017]/60 p-5">
-      <h3 className="text-lg font-semibold text-white">OTC desk</h3>
-      <p className="text-sm leading-relaxed text-[#9ca3af]">
-        Recent USDT → ACOPAY settles from the OTC bot ledger on our VPS — the source of truth
-        for desk trades (not DEX pools, not Solscan scrape).
-      </p>
-      <p className="text-sm text-[#6b7280]">
-        Feed API + table coming next. Buy now via the site desk or Telegram.
-      </p>
-      <div className="flex flex-wrap gap-3">
-        <Link to="/buy" className="btn-orca-primary !inline-flex !px-4 !py-2 !text-sm">
-          Buy ACOPAY
-        </Link>
-        <a
-          href={TOKEN.telegramPayUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn-orca-secondary !inline-flex !px-4 !py-2 !text-sm"
-        >
-          Telegram Pay ↗
-        </a>
+    <div className="space-y-4">
+      <div className="space-y-2">
+        <h3 className="text-lg font-semibold text-white">OTC desk</h3>
+        <p className="text-sm leading-relaxed text-[#9ca3af]">
+          Recent USDT → ACOPAY settles from the OTC bot ledger. Live rows coming next.
+        </p>
+        <div className="flex flex-wrap gap-3">
+          <Link to="/buy" className="btn-orca-primary !inline-flex !px-4 !py-2 !text-sm">
+            Buy ACOPAY
+          </Link>
+          <a
+            href={TOKEN.telegramPayUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-orca-secondary !inline-flex !px-4 !py-2 !text-sm"
+          >
+            Telegram Pay ↗
+          </a>
+        </div>
+      </div>
+
+      <div className="orca-table-wrap overflow-x-auto rounded-2xl border border-white/[0.07] bg-[#0c1017]/60">
+        <table className="pools-table w-full min-w-[720px]">
+          <thead>
+            <tr className="border-b border-white/[0.06] text-[11px]">
+              <SortTh label="Time" col="time" sortKey={sortKey} sortDir={sortDir} onSort={onSort} />
+              <SortTh label="Buyer" col="buyer" sortKey={sortKey} sortDir={sortDir} onSort={onSort} />
+              <SortTh label="USDT" col="usdt" sortKey={sortKey} sortDir={sortDir} onSort={onSort} />
+              <SortTh
+                label="ACOPAY"
+                col="acopay"
+                sortKey={sortKey}
+                sortDir={sortDir}
+                onSort={onSort}
+              />
+              <SortTh
+                label="Status"
+                col="status"
+                sortKey={sortKey}
+                sortDir={sortDir}
+                onSort={onSort}
+              />
+              <th className="px-5 py-4 text-right text-[11px] font-semibold uppercase tracking-wider text-[#9ca3af]">
+                Tx
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colSpan={6} className="px-5 py-12 text-center text-sm text-[#9ca3af]">
+                No OTC settles loaded yet — sort headers ready for the ledger feed.
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   );

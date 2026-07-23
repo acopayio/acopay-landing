@@ -2,59 +2,9 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useBinanceMarkets } from "../../hooks/useBinanceMarkets";
 import type { BinanceMarketRow } from "../../api/binanceMarkets";
+import { SortCaret, SortTh, compareSortValues, useColumnSort } from "../ui/SortTh";
 
 type SortKey = "name" | "price" | "change24h" | "volume24h" | "marketCap";
-type SortDir = "asc" | "desc";
-
-/** Binance-style dual triangle: inactive gray, active gold. */
-function SortCaret({ active, dir }: { active: boolean; dir: SortDir | null }) {
-  const idle = "#848E9C";
-  const on = "#F0B90B";
-  const up = active && dir === "asc" ? on : idle;
-  const down = active && dir === "desc" ? on : idle;
-  return (
-    <span className="ml-1 inline-flex flex-col gap-px" aria-hidden>
-      <svg width="8" height="5" viewBox="0 0 8 5" className="block">
-        <path d="M4 0 L8 5 H0 Z" fill={up} />
-      </svg>
-      <svg width="8" height="5" viewBox="0 0 8 5" className="block">
-        <path d="M0 0 H8 L4 5 Z" fill={down} />
-      </svg>
-    </span>
-  );
-}
-
-function SortTh({
-  label,
-  col,
-  sortKey,
-  sortDir,
-  onSort,
-  align = "left",
-}: {
-  label: string;
-  col: SortKey;
-  sortKey: SortKey;
-  sortDir: SortDir;
-  onSort: (col: SortKey) => void;
-  align?: "left" | "right";
-}) {
-  const active = sortKey === col;
-  return (
-    <th className={`px-5 py-4 ${align === "right" ? "text-right" : "text-left"}`}>
-      <button
-        type="button"
-        onClick={() => onSort(col)}
-        className={`inline-flex items-center gap-0.5 font-semibold uppercase tracking-wider transition hover:text-white ${
-          active ? "text-[#F0B90B]" : "text-[#9ca3af]"
-        }`}
-      >
-        {label}
-        <SortCaret active={active} dir={active ? sortDir : null} />
-      </button>
-    </th>
-  );
-}
 
 function fmtUsd(n: number, digits = 2): string {
   if (!Number.isFinite(n) || n <= 0) return "—";
@@ -121,17 +71,7 @@ type Props = {
 export function BinanceMarketsTable({ variant = "full", limit, embedded = false }: Props) {
   const { rows, updatedAt, loading, error, refresh } = useBinanceMarkets(3000);
   const [search, setSearch] = useState("");
-  const [sortKey, setSortKey] = useState<SortKey>("volume24h");
-  const [sortDir, setSortDir] = useState<SortDir>("desc");
-
-  const onSort = (col: SortKey) => {
-    if (sortKey === col) {
-      setSortDir((d) => (d === "asc" ? "desc" : "asc"));
-    } else {
-      setSortKey(col);
-      setSortDir(col === "name" ? "asc" : "desc");
-    }
-  };
+  const { sortKey, sortDir, onSort } = useColumnSort<SortKey>("volume24h", "desc", ["name"]);
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -144,17 +84,9 @@ export function BinanceMarketsTable({ variant = "full", limit, embedded = false 
           r.symbol.toLowerCase().includes(q),
       );
     }
-    list = [...list].sort((a, b) => {
-      const va = sortValue(a, sortKey);
-      const vb = sortValue(b, sortKey);
-      let cmp = 0;
-      if (typeof va === "string" && typeof vb === "string") {
-        cmp = va.localeCompare(vb);
-      } else {
-        cmp = Number(va) - Number(vb);
-      }
-      return sortDir === "asc" ? cmp : -cmp;
-    });
+    list = [...list].sort((a, b) =>
+      compareSortValues(sortValue(a, sortKey), sortValue(b, sortKey), sortDir),
+    );
     const max = limit ?? (variant === "home" ? 12 : undefined);
     if (max) list = list.slice(0, max);
     return list;
@@ -304,7 +236,6 @@ export function BinanceMarketsTable({ variant = "full", limit, embedded = false 
         </table>
       </div>
 
-      {/* Mobile: sort chips + cards */}
       <div className="mt-4 flex flex-wrap gap-2 md:hidden">
         {(
           [
