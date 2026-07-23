@@ -43,10 +43,10 @@ export const en = {
     refreshing: "Refreshing…",
     searchCoins: "Search coins...",
     searchTokens: "Search tokens...",
-    binanceSubtitle: "Live Binance spot prices for reference. ACOPAY trades OTC — see Buy or Telegram Pay.",
+    binanceSubtitle: "Binance spot prices for reference (updated every few minutes). ACOPAY trades OTC — see Buy or Telegram Pay.",
     transfersTitle: "Token Transfers",
     transfersSubtitle:
-      "Recent ACOPAY wallet transfers on Solana. Updated regularly — explore on Solscan for full details.",
+      "ACOPAY wallet transfers on Solana from the last 24 hours. Explore on Solscan for full history.",
     transfersCount: "{n} transfers",
     loadingHistory: "loading history…",
     solscanToken: "Solscan token ↗",

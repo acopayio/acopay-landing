@@ -1,7 +1,7 @@
 /**
- * Sync ACOPAY token transfers (30d) → public/data/transfers-30d.json
+ * Sync ACOPAY token transfers (24h) → public/data/transfers-24h.json
  * Public Solana RPC + Webshare. KHONG Helius (Helius = OTC bot on VPS only).
- * Website reads static JSON only — never VPS.
+ * Collector may run on VPS and push to GitHub; website reads /data/*.json only — never VPS HTTP.
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -16,10 +16,10 @@ import {
 } from "./lib/webshare.mjs";
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
-const OUT = path.join(ROOT, "public", "data", "transfers-30d.json");
+const OUT = path.join(ROOT, "public", "data", "transfers-24h.json");
 const ACOPAY_MINT =
   process.env.ACOPAY_MINT || "6Pcq8xnkVYxR42FEehXrucvaMB1fZYuqoR8B9FGSAS8F";
-const HISTORY_DAYS = Math.max(1, Number(process.env.TRANSFERS_HISTORY_DAYS || 30));
+const HISTORY_DAYS = Math.max(1, Number(process.env.TRANSFERS_HISTORY_DAYS || 1));
 const HEAD_LIMIT = Math.max(5, Number(process.env.TRANSFERS_HEAD_LIMIT || 40));
 const BACKFILL_BATCH = Math.max(5, Number(process.env.TRANSFERS_BACKFILL_BATCH || 25));
 const TX_GAP_MS = Math.max(50, Number(process.env.TRANSFERS_TX_GAP_MS || 350));
@@ -318,11 +318,11 @@ async function main() {
     source: "solana",
     mint: ACOPAY_MINT,
     historyDays: HISTORY_DAYS,
-    historyNote: "ACOPAY transfers ledger",
+    historyNote: "ACOPAY transfers ledger (24h)",
     backfillComplete,
     backfillBefore: backfillComplete ? null : backfillBefore,
     total: rows.length,
-    seenSigs: [...seen].slice(-8000),
+    seenSigs: [...seen].slice(-4000),
     rows,
   };
 

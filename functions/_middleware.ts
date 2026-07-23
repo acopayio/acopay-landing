@@ -5,7 +5,7 @@
  * 3) SPA fallback
  * 4) Real 404 for missing /assets/* and /data/*.json
  *
- * Markets data is STATIC under /data/*.json (GitHub Actions). Site never proxies to VPS.
+ * Markets: static /data/*.json from GitHub (VPS collector pushes; site never proxies to VPS).
  */
 type PagesContext = {
   request: Request;

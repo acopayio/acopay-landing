@@ -11,13 +11,13 @@ type State = {
   error: string | null;
 };
 
-/** Client re-reads static GitHub/CF JSON (Action sync ~10m). Never VPS / never Helius. */
-export function useAcopayTransfers(refreshMs = 60_000) {
+/** Re-read GitHub/CF JSON (VPS sync ~2–3 min). Never VPS HTTP / never Helius. */
+export function useAcopayTransfers(refreshMs = 30_000) {
   const [state, setState] = useState<State>({
     rows: [],
     updatedAt: null,
     total: 0,
-    historyDays: 30,
+    historyDays: 1,
     backfillComplete: false,
     loading: true,
     error: null,

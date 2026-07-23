@@ -26,8 +26,8 @@ export type AcopayTransfersResponse = {
   error?: string;
 };
 
-/** Static JSON from GitHub Actions → Cloudflare Pages. Never VPS / never Helius. */
-const ENDPOINT = "/data/transfers-30d.json";
+/** Static JSON from GitHub → Cloudflare Pages. Never VPS HTTP / never Helius. */
+const ENDPOINT = "/data/transfers-24h.json";
 
 export async function fetchAcopayTransfers(): Promise<AcopayTransfersResponse> {
   const ctrl = new AbortController();
@@ -54,9 +54,9 @@ export async function fetchAcopayTransfers(): Promise<AcopayTransfersResponse> {
     const rows = Array.isArray(data.rows) ? data.rows : [];
     return {
       updatedAt: data.updatedAt || new Date().toISOString(),
-      source: data.source || "github-actions+solana-public-rpc",
+      source: data.source || "github+solana-public-rpc",
       mint: data.mint || "",
-      historyDays: data.historyDays || 30,
+      historyDays: data.historyDays || 1,
       backfillComplete: data.backfillComplete,
       total: typeof data.total === "number" ? data.total : rows.length,
       rows,

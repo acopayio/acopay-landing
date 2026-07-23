@@ -1,6 +1,6 @@
 /**
- * Shared Webshare + fetch helpers for GitHub Actions collectors.
- * Website never talks to VPS — collectors write public/data/*.json only.
+ * Shared Webshare + fetch helpers for markets collectors (VPS sync + GH Actions backup).
+ * Website never talks to VPS HTTP — only reads /data/*.json from GitHub → CF Pages.
  */
 import { ProxyAgent, fetch as undiciFetch } from "undici";
 

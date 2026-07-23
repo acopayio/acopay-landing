@@ -1,6 +1,7 @@
 /**
  * Sync Binance USDT top markets → public/data/binance-markets.json
- * Runs on GitHub Actions + Webshare. Website reads static JSON only (no VPS).
+ * Collector: VPS (primary) or GitHub Actions (backup) + Webshare.
+ * Website reads static JSON only — never calls VPS HTTP.
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -85,7 +86,7 @@ async function main() {
   const payload = {
     updatedAt: new Date().toISOString(),
     source: "binance",
-    pollMs: 600_000,
+    pollMs: Number(process.env.MARKETS_SYNC_MS || 180_000),
     rows,
   };
 

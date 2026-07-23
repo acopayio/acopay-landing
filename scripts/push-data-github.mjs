@@ -1,0 +1,110 @@
+/**
+ * Push public/data/*.json to GitHub via Contents API.
+ * Used by VPS collector — website never talks to VPS.
+ *
+ * Env:
+ *   GITHUB_TOKEN   (required) — PAT with contents:write
+ *   GITHUB_REPO    (default acopayio/acopay-landing)
+ *   GITHUB_BRANCH  (default main)
+ */
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { fetch as undiciFetch } from "undici";
+
+const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
+const REPO = process.env.GITHUB_REPO || "acopayio/acopay-landing";
+const BRANCH = process.env.GITHUB_BRANCH || "main";
+const TOKEN = (process.env.GITHUB_TOKEN || process.env.GH_TOKEN || "").trim();
+
+const DEFAULT_FILES = [
+  "public/data/binance-markets.json",
+  "public/data/transfers-24h.json",
+];
+
+function log(...args) {
+  console.log(new Date().toISOString(), ...args);
+}
+
+async function gh(pathname, init = {}) {
+  if (!TOKEN) throw new Error("GITHUB_TOKEN missing");
+  const res = await undiciFetch(`https://api.github.com${pathname}`, {
+    ...init,
+    headers: {
+      Accept: "application/vnd.github+json",
+      Authorization: `Bearer ${TOKEN}`,
+      "X-GitHub-Api-Version": "2022-11-28",
+      "User-Agent": "acopay-markets-sync",
+      ...(init.headers || {}),
+    },
+  });
+  const text = await res.text();
+  let json = null;
+  try {
+    json = text ? JSON.parse(text) : null;
+  } catch {
+    json = null;
+  }
+  return { res, text, json };
+}
+
+async function putFile(relPath) {
+  const abs = path.join(ROOT, relPath);
+  if (!fs.existsSync(abs)) {
+    log(`[push] skip missing ${relPath}`);
+    return { skipped: true };
+  }
+  const raw = fs.readFileSync(abs);
+  const contentB64 = raw.toString("base64");
+  const apiPath = `/repos/${REPO}/contents/${relPath.replace(/\\/g, "/")}`;
+
+  const cur = await gh(`${apiPath}?ref=${encodeURIComponent(BRANCH)}`);
+  const sha = cur.res.ok && cur.json?.sha ? String(cur.json.sha) : undefined;
+  if (cur.res.ok && cur.json?.content) {
+    const remote = Buffer.from(String(cur.json.content).replace(/\n/g, ""), "base64");
+    if (remote.equals(raw)) {
+      log(`[push] unchanged ${relPath}`);
+      return { unchanged: true };
+    }
+  }
+
+  const body = {
+    message: `chore: sync markets data ${path.basename(relPath)}`,
+    content: contentB64,
+    branch: BRANCH,
+  };
+  if (sha) body.sha = sha;
+
+  const put = await gh(apiPath, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  if (!put.res.ok) {
+    throw new Error(`PUT ${relPath} HTTP ${put.res.status}: ${(put.text || "").slice(0, 200)}`);
+  }
+  log(`[push] ok ${relPath} → ${BRANCH}`);
+  return { ok: true };
+}
+
+export async function pushMarketsData(files = DEFAULT_FILES) {
+  let pushed = 0;
+  for (const f of files) {
+    const r = await putFile(f);
+    if (r.ok) pushed += 1;
+  }
+  return { pushed };
+}
+
+const isMain =
+  process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+if (isMain) {
+  pushMarketsData()
+    .then((r) => {
+      log(`[push] done pushed=${r.pushed}`);
+    })
+    .catch((e) => {
+      console.error(e);
+      process.exit(1);
+    });
+}

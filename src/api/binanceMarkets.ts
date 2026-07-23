@@ -19,7 +19,7 @@ export type BinanceMarketsResponse = {
   error?: string;
 };
 
-/** Static JSON from GitHub Actions → Cloudflare Pages. Never VPS. */
+/** Static JSON from GitHub → Cloudflare Pages. Never VPS HTTP. */
 const ENDPOINT = "/data/binance-markets.json";
 
 export async function fetchBinanceMarkets(): Promise<BinanceMarketsResponse> {
@@ -46,8 +46,8 @@ export async function fetchBinanceMarkets(): Promise<BinanceMarketsResponse> {
     }
     return {
       updatedAt: data.updatedAt || new Date().toISOString(),
-      source: data.source || "github-actions+binance",
-      pollMs: data.pollMs || 600_000,
+      source: data.source || "github+binance",
+      pollMs: data.pollMs || 180_000,
       proxy: data.proxy,
       rows: Array.isArray(data.rows) ? data.rows : [],
       error: data.error,
