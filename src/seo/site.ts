@@ -65,15 +65,15 @@ export const PAGE_SEO: Record<string, PageSeo> = {
     path: "/trade",
   },
   "/markets": {
-    title: "ACOPAY Markets | Pools, Binance & Transfers",
+    title: "ACOPAY Markets | Pools, Binance, Swap & Chart",
     description:
-      "Explore Raydium pools, Binance spot reference, ACOPAY transfers, and the official OTC desk.",
+      "Explore Raydium pools, Binance spot reference, ACOPAY transfers, Jupiter swap, and DexScreener charts.",
     path: "/markets",
   },
   "/pools": {
-    title: "ACOPAY Markets | Pools, Binance & Transfers",
+    title: "ACOPAY Markets | Pools, Binance, Swap & Chart",
     description:
-      "Explore Raydium pools, Binance spot reference, ACOPAY transfers, and the official OTC desk.",
+      "Explore Raydium pools, Binance spot reference, ACOPAY transfers, Jupiter swap, and DexScreener charts.",
     path: "/markets",
   },
   "/token": {

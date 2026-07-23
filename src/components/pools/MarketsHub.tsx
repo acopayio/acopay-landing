@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { MARKET_TABS, type MarketTabId } from "../../config/markets";
-import { TOKEN } from "../../config/token";
 import { useT } from "../../i18n/LanguageProvider";
-import { SortTh, useColumnSort } from "../ui/SortTh";
 import { BinanceMarketsTable } from "./BinanceMarketsTable";
+import { ChartMarketPanel } from "./ChartMarketPanel";
 import { LiquidityPoolsWidget } from "./LiquidityPoolsWidget";
+import { SwapMarketPanel } from "./SwapMarketPanel";
 import { TransfersExplorer } from "./TransfersExplorer";
 
 type Props = {
@@ -47,7 +47,8 @@ export function MarketsHub({ variant = "full" }: Props) {
             {tab === "pools" && <LiquidityPoolsWidget variant={variant} embedded />}
             {tab === "binance" && <BinanceMarketsTable variant={variant} embedded />}
             {tab === "transfers" && <TransfersExplorer />}
-            {tab === "otc" && <OtcDeskPanel />}
+            {tab === "swap" && <SwapMarketPanel />}
+            {tab === "chart" && <ChartMarketPanel />}
           </div>
         </div>
 
@@ -60,64 +61,5 @@ export function MarketsHub({ variant = "full" }: Props) {
         )}
       </div>
     </section>
-  );
-}
-
-type OtcSort = "time" | "buyer" | "usdt" | "acopay" | "status";
-
-function OtcDeskPanel() {
-  const { sortKey, sortDir, onSort } = useColumnSort<OtcSort>("time", "desc", ["buyer", "status"]);
-  const t = useT();
-
-  return (
-    <div className="space-y-4">
-      <div className="space-y-2">
-        <h3 className="text-lg font-semibold text-white">{t("markets.otcTitle")}</h3>
-        <p className="text-sm leading-relaxed text-[#9ca3af]">{t("markets.otcSubtitle")}</p>
-        <div className="flex flex-wrap gap-3">
-          <Link to="/buy" className="btn-orca-primary !inline-flex !px-4 !py-2 !text-sm">
-            {t("markets.buyAcopay")}
-          </Link>
-          <a
-            href={TOKEN.telegramPayUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-orca-secondary !inline-flex !px-4 !py-2 !text-sm"
-          >
-            {t("nav.telegramPay")} ↗
-          </a>
-        </div>
-      </div>
-
-      <div className="orca-table-wrap overflow-x-auto rounded-2xl border border-white/[0.07] bg-[#0c1017]/60">
-        <table className="pools-table w-full min-w-[720px]">
-          <thead>
-            <tr className="border-b border-white/[0.06] text-[11px]">
-              <SortTh label={t("markets.time")} col="time" sortKey={sortKey} sortDir={sortDir} onSort={onSort} />
-              <SortTh label={t("markets.buyer")} col="buyer" sortKey={sortKey} sortDir={sortDir} onSort={onSort} />
-              <SortTh label="USDT" col="usdt" sortKey={sortKey} sortDir={sortDir} onSort={onSort} />
-              <SortTh label="ACOPAY" col="acopay" sortKey={sortKey} sortDir={sortDir} onSort={onSort} />
-              <SortTh
-                label={t("markets.status")}
-                col="status"
-                sortKey={sortKey}
-                sortDir={sortDir}
-                onSort={onSort}
-              />
-              <th className="px-5 py-4 text-right text-[11px] font-semibold uppercase tracking-wider text-[#9ca3af]">
-                {t("markets.tx")}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td colSpan={6} className="px-5 py-12 text-center text-sm text-[#9ca3af]">
-                {t("markets.noOtc")}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
   );
 }
