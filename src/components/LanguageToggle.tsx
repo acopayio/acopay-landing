@@ -1,9 +1,5 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
-import {
-  LANGUAGE_OPTIONS,
-  LOCALE_ENGLISH_NAME,
-  localeFromCountry,
-} from "../i18n/countries";
+import { LANGUAGE_OPTIONS, LOCALE_ENGLISH_NAME } from "../i18n/countries";
 import { useI18n } from "../i18n/LanguageProvider";
 import { FlagImg } from "./FlagImg";
 
@@ -11,14 +7,13 @@ type PanelPos = { top: number; left: number; width: number; maxHeight: number };
 
 /** Sidebar / mobile: open a flag-labeled language menu (default English). */
 export function LanguageToggle({ compact = false }: { compact?: boolean }) {
-  const { locale, country, setLocale, ready, t } = useI18n();
+  const { locale, setLocale, ready, t } = useI18n();
   const [open, setOpen] = useState(false);
   const [pos, setPos] = useState<PanelPos | null>(null);
   const rootRef = useRef<HTMLDivElement>(null);
   const btnRef = useRef<HTMLButtonElement>(null);
   const listId = useId();
 
-  const suggested = localeFromCountry(country);
   const englishName = LOCALE_ENGLISH_NAME[locale] || "English";
 
   const updatePos = () => {
@@ -126,7 +121,6 @@ export function LanguageToggle({ compact = false }: { compact?: boolean }) {
           </p>
           {LANGUAGE_OPTIONS.map((opt) => {
             const selected = opt.code === locale;
-            const isSuggested = Boolean(country) && opt.code === suggested && !selected;
             return (
               <button
                 key={opt.code}
@@ -150,11 +144,6 @@ export function LanguageToggle({ compact = false }: { compact?: boolean }) {
                     <span className="block truncate text-[11px] text-[#9ca3af]">{opt.native}</span>
                   )}
                 </span>
-                {isSuggested && (
-                  <span className="shrink-0 rounded-md bg-white/[0.06] px-1.5 py-0.5 text-[10px] text-[#9ca3af]">
-                    {t("lang.suggested")}
-                  </span>
-                )}
                 {selected && (
                   <span className="shrink-0 text-xs text-[#00E5FF]" aria-hidden>
                     ✓
