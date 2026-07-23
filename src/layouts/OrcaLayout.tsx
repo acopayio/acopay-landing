@@ -7,7 +7,7 @@ const TRADE_NAV = [
   { to: "/", label: "Home", end: true, icon: HomeIcon },
   { to: "/buy", label: "Buy", end: false, icon: BuyIcon },
   { to: "/trade", label: "Trade", end: false, icon: SwapIcon },
-  { to: "/pools", label: "Pools", end: false, icon: PoolsIcon },
+  { to: "/markets", label: "Markets", end: false, icon: PoolsIcon },
 ];
 
 const INFO_NAV = [
@@ -20,7 +20,7 @@ const MOBILE_NAV = [
   { to: "/", label: "Home", end: true, icon: HomeIcon },
   { to: "/buy", label: "Buy", end: false, icon: BuyIcon },
   { to: "/trade", label: "Trade", end: false, icon: SwapIcon },
-  { to: "/pools", label: "Pools", end: false, icon: PoolsIcon },
+  { to: "/markets", label: "Markets", end: false, icon: PoolsIcon },
   { to: "/token", label: "Token", end: false, icon: TokenIcon },
 ];
 

@@ -19,7 +19,8 @@ export default function App() {
           <Route index element={<HomePage />} />
           <Route path="buy" element={<BuyPage />} />
           <Route path="token" element={<TokenPage />} />
-          <Route path="pools" element={<PoolsPage />} />
+          <Route path="markets" element={<PoolsPage />} />
+          <Route path="pools" element={<Navigate to="/markets" replace />} />
           <Route path="trade" element={<TradePage />} />
           <Route path="contract" element={<ContractPage />} />
           <Route path="roadmap" element={<RoadmapPage />} />

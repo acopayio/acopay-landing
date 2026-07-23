@@ -53,7 +53,7 @@ export function MarketsHub({ variant = "full" }: Props) {
 
         {variant === "home" && (
           <div className="mt-6 flex justify-center">
-            <Link to="/pools" className="btn-orca-secondary w-full sm:w-auto">
+            <Link to="/markets" className="btn-orca-secondary w-full sm:w-auto">
               View all markets →
             </Link>
           </div>

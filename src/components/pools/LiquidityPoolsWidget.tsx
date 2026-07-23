@@ -454,8 +454,8 @@ export function LiquidityPoolsWidget({ variant = "full", embedded = false }: Pro
         {body}
         {variant === "home" && (
           <div className="mt-6 flex justify-center">
-            <Link to="/pools" className="btn-orca-secondary w-full sm:w-auto">
-              View all pools →
+            <Link to="/markets" className="btn-orca-secondary w-full sm:w-auto">
+              View all markets →
             </Link>
           </div>
         )}

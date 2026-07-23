@@ -64,11 +64,17 @@ export const PAGE_SEO: Record<string, PageSeo> = {
       "Buy ACOPAY via official OTC (USDT 1:1) or swap on Jupiter and Raydium. Match the official contract on acopay.net.",
     path: "/trade",
   },
-  "/pools": {
-    title: "ACOPAY Pools | ACOPAY/USDT on Raydium",
+  "/markets": {
+    title: "ACOPAY Markets | Pools, Binance & Transfers",
     description:
-      "Explore the live ACOPAY/USDT liquidity pool on Raydium and Solana market data.",
-    path: "/pools",
+      "Explore Raydium pools, Binance spot reference, ACOPAY transfers, and the official OTC desk.",
+    path: "/markets",
+  },
+  "/pools": {
+    title: "ACOPAY Markets | Pools, Binance & Transfers",
+    description:
+      "Explore Raydium pools, Binance spot reference, ACOPAY transfers, and the official OTC desk.",
+    path: "/markets",
   },
   "/token": {
     title: "ACOPAY Token Overview | Supply, Fee & Authorities",

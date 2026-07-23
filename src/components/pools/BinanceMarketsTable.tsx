@@ -334,7 +334,7 @@ export function BinanceMarketsTable({ variant = "full", limit, embedded = false 
         {body}
         {variant === "home" && (
           <div className="mt-6 flex justify-center gap-3">
-            <Link to="/pools" className="btn-orca-secondary w-full sm:w-auto">
+            <Link to="/markets" className="btn-orca-secondary w-full sm:w-auto">
               View all markets →
             </Link>
           </div>
