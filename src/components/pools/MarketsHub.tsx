@@ -7,13 +7,13 @@ import { LiquidityPoolsWidget } from "./LiquidityPoolsWidget";
 import { SwapMarketPanel } from "./SwapMarketPanel";
 import { TransfersExplorer } from "./TransfersExplorer";
 
-/** Markets hub: Pools | Binance | Transfers | Swap */
+/** Markets hub: Transactions | Pools | Binance | Swap */
 type Props = {
   variant?: "home" | "full";
 };
 
 export function MarketsHub({ variant = "full" }: Props) {
-  const [tab, setTab] = useState<MarketTabId>("pools");
+  const [tab, setTab] = useState<MarketTabId>("transfers");
   const t = useT();
 
   return (
