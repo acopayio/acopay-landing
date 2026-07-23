@@ -71,21 +71,9 @@ export function Hero() {
             <p className="text-xs font-semibold uppercase tracking-wider text-[#00E5FF]">
               Contract address
             </p>
-            <div className="flex gap-3 text-xs font-medium">
-              {live && (
-                <a
-                  href={solscanUrl()}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[#00E5FF] hover:underline"
-                >
-                  Solscan ↗
-                </a>
-              )}
-              <Link to="/contract" className="text-[#9ca3af] hover:text-white">
-                Details →
-              </Link>
-            </div>
+            <Link to="/contract" className="text-xs font-medium text-[#9ca3af] hover:text-white">
+              Details →
+            </Link>
           </div>
           <div className="flex flex-col gap-3 sm:flex-row sm:items-stretch">
             <code className="flex min-w-0 flex-1 items-center break-all rounded-xl bg-[#0c1017] px-3 py-3 font-mono text-xs text-[#e5e7eb] ring-1 ring-white/[0.06] sm:px-4 sm:text-sm">
