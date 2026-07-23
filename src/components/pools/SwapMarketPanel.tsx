@@ -151,7 +151,7 @@ export function SwapMarketPanel() {
                 className="h-5 w-5 animate-spin rounded-full border-2 border-[#00E5FF]/30 border-t-[#00E5FF]"
                 aria-hidden
               />
-              Loading Jupiter…
+              {t("swap.loadingJupiter")}
             </div>
           )}
         </div>

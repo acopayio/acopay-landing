@@ -103,9 +103,7 @@ export function OtcBuyPanel() {
     if (!hasPhantomExtension()) {
       openPhantomFallback(activeAmount);
       if (!/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)) {
-        setWalletError(
-          "Phantom extension not detected in this browser. Install it, or scan the QR / copy the deposit address."
-        );
+        setWalletError(t("otc.phantomMissingLong"));
       }
       return;
     }
@@ -122,9 +120,9 @@ export function OtcBuyPanel() {
       const msg = e instanceof Error ? e.message : String(e);
       if (msg === "PHANTOM_MISSING") {
         openPhantomFallback(activeAmount);
-        setWalletError("Phantom extension not detected.");
+        setWalletError(t("otc.phantomMissing"));
       } else if (/User rejected|rejected the request|4001/i.test(msg)) {
-        setWalletError("Request cancelled in Phantom.");
+        setWalletError(t("otc.phantomCancelled"));
       } else {
         setWalletError(msg);
       }
@@ -162,9 +160,9 @@ export function OtcBuyPanel() {
     if (phase !== "paying" || sessionEndsAt == null) return;
     if (settleStatus === "settling" || settleStatus === "complete") return;
     const id = window.setInterval(() => {
-      const t = Date.now();
-      setNow(t);
-      if (t >= sessionEndsAt) setPhase("expired");
+      const stamp = Date.now();
+      setNow(stamp);
+      if (stamp >= sessionEndsAt) setPhase("expired");
     }, 250);
     return () => window.clearInterval(id);
   }, [phase, sessionEndsAt, settleStatus]);
@@ -190,13 +188,13 @@ export function OtcBuyPanel() {
       .catch((e) => {
         if (!cancelled) {
           setQrDataUrl(null);
-          setQrError(e instanceof Error ? e.message : "Could not generate QR");
+          setQrError(e instanceof Error ? e.message : t("otc.qrFail"));
         }
       });
     return () => {
       cancelled = true;
     };
-  }, [payUrl, phase, settleStatus]);
+  }, [payUrl, phase, settleStatus, t]);
 
   function startSession() {
     if (!draftValid) return;
@@ -265,13 +263,13 @@ export function OtcBuyPanel() {
               />
             </svg>
           </div>
-          <p className="otc-success-kicker">ACOPAY desk</p>
-          <h2 className="otc-success-title">Payment successful</h2>
+          <p className="otc-success-kicker">{t("otc.successKicker")}</p>
+          <h2 className="otc-success-title">{t("otc.paymentSuccessful")}</h2>
           <p className="otc-success-amount">
             +{formatUsdt(creditedAcopay ?? receive)} <span>ACOPAY</span>
           </p>
           <p className="otc-success-sub">
-            Paid {formatUsdt(activeAmount)} USDT · fixed 1:1 · Solana
+            {t("otc.paidLine", { amount: formatUsdt(activeAmount) })}
           </p>
           <div className="otc-success-actions">
             {paidSig && (
@@ -281,7 +279,7 @@ export function OtcBuyPanel() {
                 rel="noopener noreferrer"
                 className="btn-orca-secondary !rounded-xl !px-4 !py-2.5 !text-xs"
               >
-                USDT transaction ↗
+                {t("otc.usdtTx")}
               </a>
             )}
             <a
@@ -290,16 +288,16 @@ export function OtcBuyPanel() {
               rel="noopener noreferrer"
               className="btn-orca-ghost !rounded-xl !px-4 !py-2.5 !text-xs"
             >
-              Token on Solscan ↗
+              {t("otc.tokenSolscan")}
             </a>
           </div>
         </div>
       ) : settleStatus === "settling" ? (
         <div className="otc-settling" role="status" aria-live="polite">
           <div className="otc-settling-ring" aria-hidden />
-          <p className="mt-6 text-sm font-semibold tracking-wide text-white">Settling payment</p>
+          <p className="mt-6 text-sm font-semibold tracking-wide text-white">{t("otc.settlingTitle")}</p>
           <p className="mt-2 max-w-[16rem] text-center text-xs leading-relaxed text-[#6b7280]">
-            USDT confirmed. Waiting for ACOPAY to arrive in your wallet…
+            {t("otc.settlingHint")}
           </p>
           {paidSig && (
             <a
@@ -308,7 +306,7 @@ export function OtcBuyPanel() {
               rel="noopener noreferrer"
               className="mt-5 text-xs font-medium text-[#00E5FF] hover:underline"
             >
-              View USDT tx ↗
+              {t("otc.viewUsdtTx")}
             </a>
           )}
         </div>
@@ -317,22 +315,22 @@ export function OtcBuyPanel() {
           <div className="otc-qr-preview-frame" aria-hidden>
             <img src="/assets/logo.png" alt="" className="h-12 w-12 opacity-90" />
           </div>
-          <p className="mt-5 text-sm font-semibold text-white">Payment code</p>
+          <p className="mt-5 text-sm font-semibold text-white">{t("otc.paymentCode")}</p>
           <p className="mt-1.5 max-w-[15rem] text-center text-xs leading-relaxed text-[#6b7280]">
-            Choose an amount, then continue to reveal your Solana Pay QR.
+            {t("otc.chooseAmount")}
           </p>
           <dl className="otc-preview-meta">
             <div>
-              <dt>Rate</dt>
-              <dd>1 USDT = 1 ACOPAY</dd>
+              <dt>{t("otc.rate")}</dt>
+              <dd>{t("otc.rateValue")}</dd>
             </div>
             <div>
-              <dt>Network</dt>
-              <dd>Solana Mainnet</dd>
+              <dt>{t("otc.network")}</dt>
+              <dd>{t("otc.networkValue")}</dd>
             </div>
             <div>
-              <dt>Asset</dt>
-              <dd>USDT (SPL)</dd>
+              <dt>{t("otc.asset")}</dt>
+              <dd>{t("otc.assetValue")}</dd>
             </div>
           </dl>
         </div>
@@ -347,7 +345,7 @@ export function OtcBuyPanel() {
             >
               <div className="otc-timer-core">
                 <p className="text-[10px] font-semibold uppercase tracking-wider text-[#6b7280]">
-                  {phase === "expired" ? "Ended" : "Session"}
+                  {phase === "expired" ? t("otc.ended") : t("otc.session")}
                 </p>
                 <p
                   className={`font-mono text-2xl font-bold tabular-nums tracking-tight ${
@@ -369,7 +367,7 @@ export function OtcBuyPanel() {
               <div className="relative">
                 <img
                   src={qrDataUrl}
-                  alt="Solana Pay QR"
+                  alt={t("otc.qrAlt")}
                   className="h-[220px] w-[220px] sm:h-[240px] sm:w-[240px]"
                 />
                 <img src="/assets/logo.png" alt="" className="otc-qr-logo" />
@@ -377,7 +375,7 @@ export function OtcBuyPanel() {
             ) : (
               <div className="flex h-[220px] w-[220px] flex-col items-center justify-center gap-2 sm:h-[240px] sm:w-[240px]">
                 <p className="text-sm font-medium text-[#9ca3af]">
-                  {qrError || (phase === "expired" ? "Code expired" : "Preparing…")}
+                  {qrError || (phase === "expired" ? t("otc.codeExpired") : t("otc.preparing"))}
                 </p>
               </div>
             )}
@@ -387,17 +385,17 @@ export function OtcBuyPanel() {
             {phase === "paying" ? (
               <>
                 <p className="text-sm font-semibold text-white">
-                  Scan to pay {activeValid ? formatUsdt(activeAmount) : ""} USDT
+                  {t("otc.scanToPay", { amount: activeValid ? formatUsdt(activeAmount) : "" })}
                 </p>
                 <p className="mt-1.5 text-xs font-medium tracking-wide text-[#00E5FF]">
-                  Solana Mainnet · USDT (SPL)
+                  {t("otc.networkUsdt")}
                 </p>
                 <p className="mt-1 text-[11px] leading-relaxed text-[#6b7280]">
-                  Not ERC-20, BEP-20, or TRC-20. Wrong network cannot be recovered.
+                  {t("otc.wrongNetwork")}
                 </p>
               </>
             ) : (
-              <p className="text-xs leading-relaxed text-[#6b7280]">Request a new code to continue.</p>
+              <p className="text-xs leading-relaxed text-[#6b7280]">{t("otc.requestNew")}</p>
             )}
           </div>
         </>
@@ -409,9 +407,11 @@ export function OtcBuyPanel() {
     settleStatus === "idle" && phase !== "setup" ? (
       <div className="otc-address-block">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <p className="text-xs font-medium uppercase tracking-wider text-[#6b7280]">Deposit address</p>
+          <p className="text-xs font-medium uppercase tracking-wider text-[#6b7280]">
+            {t("otc.depositAddress")}
+          </p>
           <p className="rounded-md border border-[#00E5FF]/25 bg-[#00E5FF]/08 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[#00E5FF]">
-            Solana · USDT SPL
+            {t("otc.solanaUsdtBadge")}
           </p>
         </div>
         <button
@@ -423,22 +423,21 @@ export function OtcBuyPanel() {
             {OTC.address}
           </code>
           <span className="shrink-0 text-xs font-semibold text-[#00E5FF]">
-            {copied ? "Copied" : "Copy"}
+            {copied ? t("otc.copied") : t("otc.copy")}
           </span>
         </button>
         <p className="mt-2 text-[11px] leading-relaxed text-[#6b7280]">
-          Send only USDT on <span className="text-[#d1d5db]">Solana Mainnet (SPL)</span>
-          {" · "}
-          mint {shortAddr(OTC.usdtMint)}. Do not use Ethereum, BSC, Tron, or exchange withdraw to this
-          address.
+          {t("otc.depositHint", { mint: shortAddr(OTC.usdtMint) })}
         </p>
       </div>
     ) : settleStatus === "idle" && phase === "setup" && showSidePay ? (
       <div className="otc-address-block opacity-70">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <p className="text-xs font-medium uppercase tracking-wider text-[#6b7280]">Deposit address</p>
+          <p className="text-xs font-medium uppercase tracking-wider text-[#6b7280]">
+            {t("otc.depositAddress")}
+          </p>
           <p className="rounded-md border border-[#00E5FF]/25 bg-[#00E5FF]/08 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[#00E5FF]">
-            Solana · USDT SPL
+            {t("otc.solanaUsdtBadge")}
           </p>
         </div>
         <button
@@ -450,12 +449,10 @@ export function OtcBuyPanel() {
             {OTC.address}
           </code>
           <span className="shrink-0 text-xs font-semibold text-[#00E5FF]">
-            {copied ? "Copied" : "Copy"}
+            {copied ? t("otc.copied") : t("otc.copy")}
           </span>
         </button>
-        <p className="mt-2 text-[11px] leading-relaxed text-[#6b7280]">
-          Continues after you choose an amount.
-        </p>
+        <p className="mt-2 text-[11px] leading-relaxed text-[#6b7280]">{t("otc.continuesAfter")}</p>
       </div>
     ) : null;
 
@@ -465,28 +462,24 @@ export function OtcBuyPanel() {
         <div className="otc-col otc-col-main">
           <header className="otc-header">
             <div className="otc-header-top">
-              <p className="label-orca">Official desk</p>
-              <span className="otc-live-pill">Live</span>
+              <p className="label-orca">{t("otc.deskLabel")}</p>
+              <span className="otc-live-pill">{t("otc.live")}</span>
             </div>
             <h1 className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-[2.15rem]">
               {t("markets.buyAcopay")}
             </h1>
             {phase === "setup" && (
               <div className="otc-header-desc">
-                <p className="mt-2 max-w-md text-sm leading-relaxed text-[#9ca3af]">
-                  Pay USDT from your own Solana wallet. ACOPAY returns{" "}
-                  <span className="text-[#00E5FF]">1:1</span> to that same address — not to an
-                  exchange.
-                </p>
+                <p className="mt-2 max-w-md text-sm leading-relaxed text-[#9ca3af]">{t("otc.intro")}</p>
                 <p className="mt-2 text-sm text-[#6b7280]">
-                  Already hold ACOPAY?{" "}
+                  {t("otc.alreadyHold")}{" "}
                   <a
                     href={TOKEN.telegramPayUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="font-medium text-[#00E5FF] hover:underline"
                   >
-                    Pay on Telegram ↗
+                    {t("otc.payTelegram")}
                   </a>
                 </p>
               </div>
@@ -497,7 +490,7 @@ export function OtcBuyPanel() {
             <div className="otc-field-block">
               <label className="block">
                 <span className="text-xs font-medium uppercase tracking-wider text-[#6b7280]">
-                  Amount
+                  {t("otc.amount")}
                 </span>
                 <div className="mt-2 flex items-center gap-2 rounded-2xl border border-white/[0.08] bg-[#0c1017]/80 px-4 py-3.5 focus-within:border-[#00E5FF]/45">
                   <input
@@ -507,7 +500,7 @@ export function OtcBuyPanel() {
                     onChange={(e) => setAmountStr(e.target.value.replace(/[^\d.,]/g, ""))}
                     className="w-full bg-transparent text-3xl font-semibold tracking-tight text-white outline-none placeholder:text-[#4b5563]"
                     placeholder="0"
-                    aria-label="USDT amount"
+                    aria-label={t("otc.usdtAmountAria")}
                   />
                   <span className="shrink-0 rounded-lg bg-white/[0.06] px-2.5 py-1 text-sm font-semibold text-[#9ca3af]">
                     USDT
@@ -533,14 +526,14 @@ export function OtcBuyPanel() {
               </div>
 
               {!draftValid && amountStr.trim() !== "" && (
-                <p className="mt-2 text-xs text-amber-400/90">Minimum {OTC.minUsdt} USDT</p>
+                <p className="mt-2 text-xs text-amber-400/90">{t("otc.minUsdt", { min: OTC.minUsdt })}</p>
               )}
             </div>
           ) : (
             <div className="otc-order-summary">
               <div className="flex items-center justify-between gap-3">
                 <span className="text-xs font-medium uppercase tracking-wider text-[#6b7280]">
-                  You pay
+                  {t("otc.youPay")}
                 </span>
                 {settleStatus !== "complete" && (
                   <button
@@ -548,7 +541,7 @@ export function OtcBuyPanel() {
                     onClick={changeAmount}
                     className="text-xs font-medium text-[#00E5FF]/90 hover:text-[#00E5FF]"
                   >
-                    Edit amount
+                    {t("otc.editAmount")}
                   </button>
                 )}
               </div>
@@ -574,13 +567,13 @@ export function OtcBuyPanel() {
             <>
               <div className="otc-receive">
                 <div className="flex items-center justify-between gap-3">
-                  <span className="text-sm text-[#9ca3af]">You receive</span>
+                  <span className="text-sm text-[#9ca3af]">{t("otc.youReceive")}</span>
                   <span className="text-right text-xl font-bold text-white">
                     {draftValid ? formatUsdt(receive) : "—"}{" "}
                     <span className="text-sm font-semibold text-[#00E5FF]">ACOPAY</span>
                   </span>
                 </div>
-                <p className="mt-1 text-[11px] text-[#6b7280]">Fixed conversion · no slippage</p>
+                <p className="mt-1 text-[11px] text-[#6b7280]">{t("otc.fixedConversion")}</p>
               </div>
               <button
                 type="button"
@@ -588,7 +581,7 @@ export function OtcBuyPanel() {
                 onClick={startSession}
                 className="btn-orca-primary mt-auto w-full !rounded-xl !py-3.5 !text-[0.95rem]"
               >
-                Continue to payment
+                {t("otc.continuePay")}
               </button>
             </>
           )}
@@ -600,31 +593,25 @@ export function OtcBuyPanel() {
                   <>
                     <span className="otc-status-dot otc-status-dot-expired" aria-hidden />
                     <div>
-                      <p className="text-sm font-semibold text-white">Session ended</p>
-                      <p className="text-xs leading-relaxed text-[#6b7280]">
-                        Start a new payment code, or edit the amount.
-                      </p>
+                      <p className="text-sm font-semibold text-white">{t("otc.sessionEnded")}</p>
+                      <p className="text-xs leading-relaxed text-[#6b7280]">{t("otc.sessionEndedHint")}</p>
                     </div>
                   </>
                 ) : settleStatus === "settling" ? (
                   <>
                     <span className="otc-status-dot" aria-hidden />
                     <div>
-                      <p className="text-sm font-semibold text-white">USDT received</p>
-                      <p className="text-xs leading-relaxed text-[#6b7280]">
-                        Desk is crediting ACOPAY to your wallet…
-                      </p>
+                      <p className="text-sm font-semibold text-white">{t("otc.usdtReceived")}</p>
+                      <p className="text-xs leading-relaxed text-[#6b7280]">{t("otc.crediting")}</p>
                     </div>
                   </>
                 ) : (
                   <>
                     <span className="otc-status-dot" aria-hidden />
                     <div>
-                      <p className="text-sm font-semibold text-white">Awaiting payment</p>
+                      <p className="text-sm font-semibold text-white">{t("otc.awaiting")}</p>
                       <p className="text-xs leading-relaxed text-[#6b7280]">
-                        {isNarrow
-                          ? "Scan the QR, copy the deposit address, or pay with Phantom."
-                          : "Pay with Phantom, scan the QR, or send USDT to the deposit address."}
+                        {isNarrow ? t("otc.awaitHintNarrow") : t("otc.awaitHintWide")}
                       </p>
                     </div>
                   </>
@@ -640,21 +627,21 @@ export function OtcBuyPanel() {
                     className="btn-orca-primary w-full !rounded-xl disabled:opacity-60"
                   >
                     {payingWallet
-                      ? "Confirm in Phantom…"
+                      ? t("otc.confirmPhantom")
                       : settleStatus === "settling"
-                        ? "Settling…"
-                        : "Pay with Phantom"}
+                        ? t("otc.settling")
+                        : t("otc.payPhantom")}
                   </button>
                   {paidSig && (
                     <p className="text-xs leading-relaxed text-[#00E5FF]/90">
-                      USDT tx submitted.{" "}
+                      {t("otc.usdtSubmitted")}{" "}
                       <a
                         href={`https://solscan.io/tx/${paidSig}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="underline hover:text-[#00E5FF]"
                       >
-                        View tx
+                        {t("otc.viewTx")}
                       </a>
                     </p>
                   )}
@@ -670,7 +657,7 @@ export function OtcBuyPanel() {
                   onClick={refreshSession}
                   className="btn-orca-primary w-full !rounded-xl !py-3"
                 >
-                  New payment code
+                  {t("otc.newCode")}
                 </button>
               )}
             </div>
@@ -678,15 +665,13 @@ export function OtcBuyPanel() {
 
           {settleStatus === "complete" && (
             <div className="mt-auto space-y-3 pt-2">
-              <p className="text-xs leading-relaxed text-[#6b7280]">
-                Settled at a fixed 1:1 rate. If Phantom hides ACOPAY, unhide it under Manage tokens.
-              </p>
+              <p className="text-xs leading-relaxed text-[#6b7280]">{t("otc.settleNote")}</p>
               <button
                 type="button"
                 onClick={changeAmount}
                 className="btn-orca-primary w-full !rounded-xl !py-3.5"
               >
-                Buy again
+                {t("otc.buyAgain")}
               </button>
             </div>
           )}
