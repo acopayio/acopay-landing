@@ -47,7 +47,7 @@ export async function fetchBinanceMarkets(): Promise<BinanceMarketsResponse> {
     return {
       updatedAt: data.updatedAt || new Date().toISOString(),
       source: data.source || "github+binance",
-      pollMs: data.pollMs || 180_000,
+      pollMs: data.pollMs || 30_000,
       proxy: data.proxy,
       rows: Array.isArray(data.rows) ? data.rows : [],
       error: data.error,

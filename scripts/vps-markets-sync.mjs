@@ -6,7 +6,7 @@
  * Env (file /root/acopay-markets/.env or process env):
  *   WEBSHARE_API_KEY
  *   GITHUB_TOKEN
- *   MARKETS_SYNC_MS   (default 180000 = 3 min — avoid CF rebuild spam)
+ *   MARKETS_SYNC_MS   (default 30000 — near-live; more GitHub/CF rebuilds)
  */
 import fs from "node:fs";
 import { spawn } from "node:child_process";
@@ -36,7 +36,7 @@ function loadDotEnv() {
 
 loadDotEnv();
 
-const SYNC_MS = Math.max(60_000, Number(process.env.MARKETS_SYNC_MS || 180_000));
+const SYNC_MS = Math.max(30_000, Number(process.env.MARKETS_SYNC_MS || 30_000));
 
 function log(...args) {
   console.log(new Date().toISOString(), ...args);

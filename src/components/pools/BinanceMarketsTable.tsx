@@ -71,7 +71,7 @@ type Props = {
 
 export function BinanceMarketsTable({ variant = "full", limit, embedded = false }: Props) {
   const t = useT();
-  const { rows, updatedAt, loading, error, refresh } = useBinanceMarkets(30_000);
+  const { rows, updatedAt, loading, error, refresh } = useBinanceMarkets(15_000);
   const [search, setSearch] = useState("");
   const { sortKey, sortDir, onSort } = useColumnSort<SortKey>("volume24h", "desc", ["name"]);
 

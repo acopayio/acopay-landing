@@ -35,7 +35,7 @@ jobs:
       - name: Sync Binance markets JSON
         env:
           WEBSHARE_API_KEY: ${{ secrets.WEBSHARE_API_KEY }}
-          MARKETS_SYNC_MS: "180000"
+          MARKETS_SYNC_MS: "30000"
         run: node scripts/sync-binance-markets.mjs
 
       - name: Sync ACOPAY transfers 24h JSON
