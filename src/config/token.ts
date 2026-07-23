@@ -1,6 +1,9 @@
 /** USDT (SPL) on Solana Mainnet — ACOPAY/USDT quote. */
 export const USDT_MINT = "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB";
 
+/** Wrapped SOL (native SOL mint on Jupiter / SPL). */
+export const SOL_MINT = "So11111111111111111111111111111111111111112";
+
 /**
  * Single source of truth for the official site (acopay.net).
  */

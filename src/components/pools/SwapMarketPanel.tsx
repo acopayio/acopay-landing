@@ -1,5 +1,12 @@
 import { useEffect, useId, useRef, useState } from "react";
-import { TOKEN, USDT_MINT, jupiterSwapUrl, raydiumSwapUrl, isPoolLive } from "../../config/token";
+import {
+  TOKEN,
+  USDT_MINT,
+  SOL_MINT,
+  jupiterSwapUrl,
+  raydiumSwapUrl,
+  isPoolLive,
+} from "../../config/token";
 import { useT } from "../../i18n/LanguageProvider";
 
 declare global {
@@ -12,6 +19,8 @@ declare global {
 }
 
 const JUPITER_SCRIPT = "https://plugin.jup.ag/plugin-v1.js";
+/** Keep widget height tight — avoid empty black below Swap. */
+const JUPITER_HEIGHT_PX = 440;
 
 function loadJupiterScript(): Promise<void> {
   const existing = document.querySelector<HTMLScriptElement>(`script[src="${JUPITER_SCRIPT}"]`);
@@ -34,7 +43,7 @@ function loadJupiterScript(): Promise<void> {
   });
 }
 
-function shortMint(mint: string): string {
+function shortMint(mint: string) {
   return `${mint.slice(0, 4)}…${mint.slice(-4)}`;
 }
 
@@ -63,12 +72,22 @@ export function SwapMarketPanel() {
         if (!mounted.current || !window.Jupiter) {
           throw new Error("Jupiter plugin unavailable");
         }
+        // Default USDT → SOL (not ACOPAY) so the form does not open with Jupiter token warnings.
+        // Users can pick ACOPAY manually; mint stays shown below + Buy / deep links.
         window.Jupiter.init({
           displayMode: "integrated",
           integratedTargetId: targetId,
+          localStoragePrefix: "acopay-jup-usdt-sol",
+          containerStyles: {
+            width: "100%",
+            height: `${JUPITER_HEIGHT_PX}px`,
+            maxHeight: `${JUPITER_HEIGHT_PX}px`,
+            overflow: "hidden",
+            borderRadius: "0",
+          },
           formProps: {
             initialInputMint: USDT_MINT,
-            initialOutputMint: TOKEN.mintAddress,
+            initialOutputMint: SOL_MINT,
           },
         });
         booted = true;
@@ -143,8 +162,11 @@ export function SwapMarketPanel() {
           )}
         </div>
       ) : (
-        <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0c1017]">
-          <div id={targetId} className="min-h-[520px] w-full [&_iframe]:!max-w-full" />
+        <div
+          className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0c1017]"
+          style={{ height: JUPITER_HEIGHT_PX }}
+        >
+          <div id={targetId} className="h-full w-full [&_iframe]:!max-w-full" />
           {!ready && (
             <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-[#0c1017] px-4 text-sm text-[#9ca3af]">
               <span
