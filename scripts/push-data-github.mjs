@@ -15,7 +15,29 @@ import { fetch as undiciFetch } from "undici";
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 const REPO = process.env.GITHUB_REPO || "acopayio/acopay-landing";
 const BRANCH = process.env.GITHUB_BRANCH || "main";
-const TOKEN = (process.env.GITHUB_TOKEN || process.env.GH_TOKEN || "").trim();
+
+function loadDotEnv() {
+  const envPath = path.join(ROOT, ".env");
+  if (!fs.existsSync(envPath)) return;
+  for (const line of fs.readFileSync(envPath, "utf8").split(/\r?\n/)) {
+    const t = line.trim();
+    if (!t || t.startsWith("#")) continue;
+    const i = t.indexOf("=");
+    if (i < 1) continue;
+    const k = t.slice(0, i).trim();
+    let v = t.slice(i + 1).trim();
+    if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) {
+      v = v.slice(1, -1);
+    }
+    if (process.env[k] === undefined) process.env[k] = v;
+  }
+}
+
+loadDotEnv();
+
+function githubToken() {
+  return (process.env.GITHUB_TOKEN || process.env.GH_TOKEN || "").trim();
+}
 
 const DEFAULT_FILES = [
   "public/data/binance-markets.json",
@@ -27,6 +49,7 @@ function log(...args) {
 }
 
 async function gh(pathname, init = {}) {
+  const TOKEN = githubToken();
   if (!TOKEN) throw new Error("GITHUB_TOKEN missing");
   const res = await undiciFetch(`https://api.github.com${pathname}`, {
     ...init,
