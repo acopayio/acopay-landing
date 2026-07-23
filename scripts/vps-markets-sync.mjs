@@ -77,6 +77,7 @@ async function cycle() {
 }
 
 async function main() {
+  loadDotEnv();
   if (!process.env.WEBSHARE_API_KEY) {
     log("[warn] WEBSHARE_API_KEY empty");
   }
