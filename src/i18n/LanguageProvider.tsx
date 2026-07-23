@@ -9,7 +9,6 @@ import {
 } from "react";
 import {
   COOKIE_COUNTRY,
-  LOCALE_NATIVE_NAME,
   STORAGE_MODE,
   localeFromCountry,
 } from "./countries";
@@ -142,8 +141,4 @@ export function useI18n() {
 
 export function useT() {
   return useI18n().t;
-}
-
-export function localLanguageLabel(localLocale: string): string {
-  return LOCALE_NATIVE_NAME[localLocale] || LOCALE_NATIVE_NAME.en;
 }

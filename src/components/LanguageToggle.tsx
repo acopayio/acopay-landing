@@ -1,16 +1,18 @@
-import { localLanguageLabel, useI18n } from "../i18n/LanguageProvider";
+import { useI18n } from "../i18n/LanguageProvider";
 
-/** Sidebar / mobile control: Local language ↔ English (Original). */
+/**
+ * Sidebar / mobile: while English is active, never show a country-native
+ * language name (e.g. "Tiếng Việt") — that reads as a Vietnam-only site.
+ * English mode → "Language for your country"; local mode → "English".
+ */
 export function LanguageToggle({ compact = false }: { compact?: boolean }) {
-  const { mode, localLocale, toggleLanguage, ready, t } = useI18n();
+  const { mode, toggleLanguage, ready, t } = useI18n();
   const isLocal = mode === "local";
   const label = !ready
     ? t("lang.detecting")
     : isLocal
       ? t("lang.original")
-      : localLanguageLabel(localLocale) === "English"
-        ? t("lang.switchLocal")
-        : localLanguageLabel(localLocale);
+      : t("lang.switchLocal");
 
   return (
     <button

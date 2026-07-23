@@ -16,8 +16,8 @@ export const en = {
     english: "English",
     original: "English",
     detecting: "Detecting…",
-    switchLocal: "Local language",
-    aria: "Switch language by your country",
+    switchLocal: "Language for your country",
+    aria: "Translate to the language for your country",
   },
   hero: {
     eyebrow: "Solana · Token-2022",
