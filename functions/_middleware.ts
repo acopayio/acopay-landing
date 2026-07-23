@@ -44,10 +44,11 @@ export async function onRequest(context: PagesContext): Promise<Response> {
   }
 
   const path = url.pathname;
-  const isHashedAsset =
-    path.startsWith("/assets/") && /\.(css|js|map|woff2?|png|jpe?g|svg|webp|ico)$/i.test(path);
+  const isStaticAsset =
+    (path.startsWith("/assets/") || path.startsWith("/flags/")) &&
+    /\.(css|js|map|woff2?|png|jpe?g|svg|webp|ico)$/i.test(path);
 
-  if (isHashedAsset) {
+  if (isStaticAsset) {
     return withCountryCookie(context.request, response);
   }
 

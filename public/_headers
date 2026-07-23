@@ -37,7 +37,7 @@
   X-Content-Type-Options: nosniff
 
 # Language flag icons
-/flags/*
+/assets/flags/*
   Cache-Control: public, max-age=604800
   X-Content-Type-Options: nosniff
 

@@ -247,7 +247,7 @@ export const LOCALE_FLAG_CC: Record<string, string> = {
 
 export function flagSrc(localeOrCc: string): string {
   const cc = (LOCALE_FLAG_CC[localeOrCc] || localeOrCc).toLowerCase();
-  return `/flags/${cc}.png`;
+  return `/assets/flags/${cc}.png`;
 }
 
 export type LanguageOption = {
