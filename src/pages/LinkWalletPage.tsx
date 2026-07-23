@@ -20,6 +20,17 @@ function toSigBase58(sig: unknown): string {
   throw new Error("Unexpected signature format");
 }
 
+/** IE / old Edge / no Phantom-capable browser. */
+function isUnsupportedDesktopBrowser(): boolean {
+  if (typeof navigator === "undefined") return false;
+  if (isMobileUa()) return false;
+  const ua = navigator.userAgent;
+  if (/MSIE |Trident\//i.test(ua)) return true;
+  // EdgeHTML legacy (not Chromium Edge)
+  if (/Edge\//i.test(ua) && !/Edg\//i.test(ua)) return true;
+  return false;
+}
+
 /**
  * Prove Phantom ownership → paste /linkok into @AcopayNetwork_bot.
  * No VPS call from the site; verification happens inside Telegram.
@@ -36,11 +47,26 @@ export function LinkWalletPage() {
   }, [tg, nonce, exp]);
 
   const expired = exp ? Math.floor(Date.now() / 1000) > Number(exp) : false;
+  const badBrowser = isUnsupportedDesktopBrowser();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [pubkey, setPubkey] = useState<string | null>(null);
   const [linkOk, setLinkOk] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [copiedUrl, setCopiedUrl] = useState(false);
+
+  const pageUrl = typeof window !== "undefined" ? window.location.href : "";
+
+  async function copyPageUrl() {
+    if (!pageUrl) return;
+    try {
+      await navigator.clipboard.writeText(pageUrl);
+      setCopiedUrl(true);
+      window.setTimeout(() => setCopiedUrl(false), 2000);
+    } catch {
+      setError("Could not copy URL — select the address bar manually.");
+    }
+  }
 
   const sign = useCallback(async () => {
     setError(null);
@@ -53,16 +79,16 @@ export function LinkWalletPage() {
       setError("This link expired. Run /linkwallet in Telegram again.");
       return;
     }
-    const provider = getPhantomProvider() as
-      | (ReturnType<typeof getPhantomProvider> & {
-          signMessage?: (msg: Uint8Array, display?: string) => Promise<{ signature: Uint8Array }>;
-        })
-      | null;
+    if (badBrowser) {
+      setError("This browser cannot run Phantom. Open this page in Google Chrome.");
+      return;
+    }
+    const provider = getPhantomProvider();
     if (!provider?.signMessage) {
       setError(
         isMobileUa()
           ? "Open this page in a browser with Phantom, or use Phantom’s in-app browser. Mobile Telegram in-app browser may not inject Phantom."
-          : "Phantom extension not found. Install Phantom, then retry.",
+          : "Phantom extension not found. Install Phantom in Chrome, then retry.",
       );
       return;
     }
@@ -82,7 +108,7 @@ export function LinkWalletPage() {
     } finally {
       setBusy(false);
     }
-  }, [message, expired]);
+  }, [message, expired, badBrowser]);
 
   async function copyLine() {
     if (!linkOk) return;
@@ -113,6 +139,25 @@ export function LinkWalletPage() {
           . We never ask for your private key.
         </p>
 
+        {badBrowser && (
+          <div className="mt-6 space-y-3 rounded-2xl border border-amber-500/40 bg-amber-500/10 p-4 text-sm text-amber-50">
+            <p className="font-semibold text-amber-100">Wrong browser (IE / old Edge)</p>
+            <p className="text-amber-50/90 leading-relaxed">
+              Phantom only works in <b>Google Chrome</b> (or Brave). Telegram opens your{" "}
+              <b>Windows default</b> browser — we cannot force Chrome from the bot.
+            </p>
+            <ol className="list-decimal space-y-1 pl-5 text-amber-50/90">
+              <li>
+                Windows: Settings → Apps → Default apps → <b>Google Chrome</b> → Set default
+              </li>
+              <li>Or: Copy this page URL → open Chrome → paste into the address bar</li>
+            </ol>
+            <button type="button" onClick={() => void copyPageUrl()} className="btn-orca-secondary !text-xs">
+              {copiedUrl ? "URL copied" : "Copy page URL for Chrome"}
+            </button>
+          </div>
+        )}
+
         {!message ? (
           <p className="mt-8 rounded-2xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-100">
             Open this page from the bot: send <code className="text-white">/linkwallet</code> and tap
@@ -136,14 +181,14 @@ export function LinkWalletPage() {
 
             <button
               type="button"
-              disabled={busy || expired || !hasPhantomExtension()}
+              disabled={busy || expired || badBrowser || !hasPhantomExtension()}
               onClick={() => void sign()}
               className="btn-orca-primary w-full !rounded-xl disabled:opacity-50"
             >
               {busy ? "Waiting for Phantom…" : "Connect Phantom & sign"}
             </button>
 
-            {!hasPhantomExtension() && (
+            {!badBrowser && !hasPhantomExtension() && (
               <p className="text-xs text-[#9ca3af]">
                 Need Phantom?{" "}
                 <a
@@ -152,7 +197,7 @@ export function LinkWalletPage() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Install ↗
+                  Install for Chrome ↗
                 </a>
               </p>
             )}
@@ -161,7 +206,10 @@ export function LinkWalletPage() {
 
             {linkOk && (
               <div className="space-y-3 rounded-2xl border border-[#00E5FF]/25 bg-[#00E5FF]/05 p-4">
-                <p className="text-sm font-semibold text-white">Signed{pubkey ? ` · ${pubkey.slice(0, 4)}…${pubkey.slice(-4)}` : ""}</p>
+                <p className="text-sm font-semibold text-white">
+                  Signed
+                  {pubkey ? ` · ${pubkey.slice(0, 4)}…${pubkey.slice(-4)}` : ""}
+                </p>
                 <p className="text-xs text-[#9ca3af]">
                   Copy this line and paste it into the Telegram bot chat:
                 </p>
@@ -169,7 +217,11 @@ export function LinkWalletPage() {
                   {linkOk}
                 </code>
                 <div className="flex flex-wrap gap-2">
-                  <button type="button" onClick={() => void copyLine()} className="btn-orca-secondary !text-xs">
+                  <button
+                    type="button"
+                    onClick={() => void copyLine()}
+                    className="btn-orca-secondary !text-xs"
+                  >
                     {copied ? "Copied" : "Copy /linkok"}
                   </button>
                   <a
