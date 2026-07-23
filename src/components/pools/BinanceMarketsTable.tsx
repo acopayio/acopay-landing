@@ -3,6 +3,59 @@ import { Link } from "react-router-dom";
 import { useBinanceMarkets } from "../../hooks/useBinanceMarkets";
 import type { BinanceMarketRow } from "../../api/binanceMarkets";
 
+type SortKey = "name" | "price" | "change24h" | "volume24h" | "marketCap";
+type SortDir = "asc" | "desc";
+
+/** Binance-style dual triangle: inactive gray, active gold. */
+function SortCaret({ active, dir }: { active: boolean; dir: SortDir | null }) {
+  const idle = "#848E9C";
+  const on = "#F0B90B";
+  const up = active && dir === "asc" ? on : idle;
+  const down = active && dir === "desc" ? on : idle;
+  return (
+    <span className="ml-1 inline-flex flex-col gap-px" aria-hidden>
+      <svg width="8" height="5" viewBox="0 0 8 5" className="block">
+        <path d="M4 0 L8 5 H0 Z" fill={up} />
+      </svg>
+      <svg width="8" height="5" viewBox="0 0 8 5" className="block">
+        <path d="M0 0 H8 L4 5 Z" fill={down} />
+      </svg>
+    </span>
+  );
+}
+
+function SortTh({
+  label,
+  col,
+  sortKey,
+  sortDir,
+  onSort,
+  align = "left",
+}: {
+  label: string;
+  col: SortKey;
+  sortKey: SortKey;
+  sortDir: SortDir;
+  onSort: (col: SortKey) => void;
+  align?: "left" | "right";
+}) {
+  const active = sortKey === col;
+  return (
+    <th className={`px-5 py-4 ${align === "right" ? "text-right" : "text-left"}`}>
+      <button
+        type="button"
+        onClick={() => onSort(col)}
+        className={`inline-flex items-center gap-0.5 font-semibold uppercase tracking-wider transition hover:text-white ${
+          active ? "text-[#F0B90B]" : "text-[#9ca3af]"
+        }`}
+      >
+        {label}
+        <SortCaret active={active} dir={active ? sortDir : null} />
+      </button>
+    </th>
+  );
+}
+
 function fmtUsd(n: number, digits = 2): string {
   if (!Number.isFinite(n) || n <= 0) return "—";
   if (n >= 1e12) return `$${(n / 1e12).toFixed(2)}T`;
@@ -44,6 +97,21 @@ function CoinIcon({ row }: { row: BinanceMarketRow }) {
   );
 }
 
+function sortValue(row: BinanceMarketRow, key: SortKey): string | number {
+  switch (key) {
+    case "name":
+      return row.name.toLowerCase();
+    case "price":
+      return row.price;
+    case "change24h":
+      return row.change24h;
+    case "volume24h":
+      return row.volume24h;
+    case "marketCap":
+      return row.marketCap;
+  }
+}
+
 type Props = {
   variant?: "home" | "full";
   limit?: number;
@@ -53,6 +121,17 @@ type Props = {
 export function BinanceMarketsTable({ variant = "full", limit, embedded = false }: Props) {
   const { rows, updatedAt, loading, error, refresh } = useBinanceMarkets(3000);
   const [search, setSearch] = useState("");
+  const [sortKey, setSortKey] = useState<SortKey>("volume24h");
+  const [sortDir, setSortDir] = useState<SortDir>("desc");
+
+  const onSort = (col: SortKey) => {
+    if (sortKey === col) {
+      setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    } else {
+      setSortKey(col);
+      setSortDir(col === "name" ? "asc" : "desc");
+    }
+  };
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -65,10 +144,21 @@ export function BinanceMarketsTable({ variant = "full", limit, embedded = false 
           r.symbol.toLowerCase().includes(q),
       );
     }
+    list = [...list].sort((a, b) => {
+      const va = sortValue(a, sortKey);
+      const vb = sortValue(b, sortKey);
+      let cmp = 0;
+      if (typeof va === "string" && typeof vb === "string") {
+        cmp = va.localeCompare(vb);
+      } else {
+        cmp = Number(va) - Number(vb);
+      }
+      return sortDir === "asc" ? cmp : -cmp;
+    });
     const max = limit ?? (variant === "home" ? 12 : undefined);
     if (max) list = list.slice(0, max);
     return list;
-  }, [rows, search, limit, variant]);
+  }, [rows, search, limit, variant, sortKey, sortDir]);
 
   const updated = updatedAt ? new Date(updatedAt).toLocaleTimeString() : "—";
 
@@ -120,13 +210,33 @@ export function BinanceMarketsTable({ variant = "full", limit, embedded = false 
       <div className="orca-table-wrap mt-6 hidden overflow-x-auto rounded-2xl border border-white/[0.07] bg-[#0c1017]/60 md:block">
         <table className="pools-table w-full min-w-[820px]">
           <thead>
-            <tr className="border-b border-white/[0.06] text-left text-[11px] font-semibold uppercase tracking-wider text-[#9ca3af]">
-              <th className="px-5 py-4">Name</th>
-              <th className="px-5 py-4">Price</th>
-              <th className="px-5 py-4">24h Change</th>
-              <th className="px-5 py-4">24h Volume</th>
-              <th className="px-5 py-4">Market Cap</th>
-              <th className="px-5 py-4 text-right">Action</th>
+            <tr className="border-b border-white/[0.06] text-[11px]">
+              <SortTh label="Name" col="name" sortKey={sortKey} sortDir={sortDir} onSort={onSort} />
+              <SortTh label="Price" col="price" sortKey={sortKey} sortDir={sortDir} onSort={onSort} />
+              <SortTh
+                label="24h Change"
+                col="change24h"
+                sortKey={sortKey}
+                sortDir={sortDir}
+                onSort={onSort}
+              />
+              <SortTh
+                label="24h Volume"
+                col="volume24h"
+                sortKey={sortKey}
+                sortDir={sortDir}
+                onSort={onSort}
+              />
+              <SortTh
+                label="Market Cap"
+                col="marketCap"
+                sortKey={sortKey}
+                sortDir={sortDir}
+                onSort={onSort}
+              />
+              <th className="px-5 py-4 text-right text-[11px] font-semibold uppercase tracking-wider text-[#9ca3af]">
+                Action
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -194,7 +304,37 @@ export function BinanceMarketsTable({ variant = "full", limit, embedded = false 
         </table>
       </div>
 
-      <div className="mt-6 space-y-3 md:hidden">
+      {/* Mobile: sort chips + cards */}
+      <div className="mt-4 flex flex-wrap gap-2 md:hidden">
+        {(
+          [
+            ["volume24h", "Vol"],
+            ["price", "Price"],
+            ["change24h", "24h"],
+            ["marketCap", "Cap"],
+            ["name", "Name"],
+          ] as const
+        ).map(([col, label]) => {
+          const active = sortKey === col;
+          return (
+            <button
+              key={col}
+              type="button"
+              onClick={() => onSort(col)}
+              className={`inline-flex items-center rounded-lg border px-2.5 py-1.5 text-xs font-medium ${
+                active
+                  ? "border-[#F0B90B]/50 bg-[#F0B90B]/10 text-[#F0B90B]"
+                  : "border-white/[0.08] text-[#9ca3af]"
+              }`}
+            >
+              {label}
+              <SortCaret active={active} dir={active ? sortDir : null} />
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="mt-4 space-y-3 md:hidden">
         {loading && rows.length === 0
           ? Array.from({ length: 4 }).map((_, i) => (
               <div key={i} className="h-24 animate-pulse rounded-2xl bg-white/[0.04]" />
