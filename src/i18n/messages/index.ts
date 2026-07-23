@@ -200,7 +200,7 @@ const partials: Record<string, DeepPartialMessages> = {
       q6: "Mạng và cung?",
       a6: "Solana Mainnet. {standard}, {decimals} số thập phân, cung {supply} ACOPAY.",
       q7: "Phí là bao nhiêu?",
-      a7: "Phí chuyển on-chain 0.01% (1 bps), do người gửi trả. Gas mạng trả bằng SOL.",
+      a7: "Có hai phần: (1) Phí chuyển 0.01% (1 bps) mỗi lần gửi — người gửi trả. (2) Lần đầu ví nhận ACOPAY, trừ một lần 1 ACOPAY để mở tài khoản token (khởi tạo ví ACOPAY). Chỉ tạo ví Solana mà chưa nhận ACOPAY thì không bị trừ 1 ACOPAY đó. Gas mạng trả bằng SOL.",
       q8: "Ví có bị đóng băng không?",
       a8: "Không. Quyền freeze đã thu hồi — ví không thể bị đóng băng.",
       q9: "Pool thanh khoản ở đâu?",

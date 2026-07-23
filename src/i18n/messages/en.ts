@@ -183,7 +183,7 @@ export const en = {
     q6: "Network and supply?",
     a6: "Solana Mainnet. {standard}, {decimals} decimals, supply {supply} ACOPAY.",
     q7: "What are the fees?",
-    a7: "On-chain transfer fee is 0.01% (1 bps), paid by the sender. Network gas is paid in SOL.",
+    a7: "Two parts: (1) Transfer fee 0.01% (1 bps) on each send — paid by the sender. (2) First time a wallet receives ACOPAY, 1 ACOPAY is charged once to open that wallet’s ACOPAY account. If you only create a Solana wallet and never receive ACOPAY, you are not charged that 1 ACOPAY. Network gas is paid in SOL.",
     q8: "Can wallets be frozen?",
     a8: "No. Freeze authority is revoked — wallets cannot be frozen.",
     q9: "Where is the liquidity pool?",
