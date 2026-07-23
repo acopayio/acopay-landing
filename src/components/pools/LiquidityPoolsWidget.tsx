@@ -87,7 +87,7 @@ type Props = {
 
 export function LiquidityPoolsWidget({ variant = "full", embedded = false }: Props) {
   const t = useT();
-  const { pools, summary, loading, error, warning, refresh } = useLivePools();
+  const { pools, summary, loading, refreshing, error, warning, refresh } = useLivePools();
   const [search, setSearch] = useState("");
   const { sortKey, sortDir, onSort } = useColumnSort<PoolSortKey>("volume24h", "desc", ["pair"]);
 
@@ -112,6 +112,8 @@ export function LiquidityPoolsWidget({ variant = "full", embedded = false }: Pro
     ? new Date(summary.updatedAt).toLocaleTimeString()
     : "—";
 
+  const busy = refreshing || (loading && pools.length === 0);
+
   const body = (
         <div className={embedded ? "" : "orca-card p-4 sm:p-6"}>
           <div className="space-y-5">
@@ -133,10 +135,10 @@ export function LiquidityPoolsWidget({ variant = "full", embedded = false }: Pro
                 <button
                   type="button"
                   onClick={() => refresh()}
-                  disabled={loading}
+                  disabled={busy}
                   className="ml-2 font-medium text-[#00E5FF] hover:underline disabled:opacity-50"
                 >
-                  {loading ? t("markets.refreshing") : t("markets.refresh")}
+                  {busy ? t("markets.refreshing") : t("markets.refresh")}
                 </button>
               </p>
             </div>
@@ -151,10 +153,10 @@ export function LiquidityPoolsWidget({ variant = "full", embedded = false }: Pro
                 <button
                   type="button"
                   onClick={() => refresh()}
-                  disabled={loading}
+                  disabled={busy}
                   className="ml-2 font-medium text-[#00E5FF] hover:underline disabled:opacity-50"
                 >
-                  {loading ? t("markets.refreshing") : t("markets.refresh")}
+                  {busy ? t("markets.refreshing") : t("markets.refresh")}
                 </button>
               </p>
             )}
@@ -162,16 +164,16 @@ export function LiquidityPoolsWidget({ variant = "full", embedded = false }: Pro
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
               <StatCard
                 label={t("markets.raydiumTvl")}
-                value={loading && !summary ? "…" : fmtUsd(summary?.tvl ?? 0)}
+                value={busy && !summary ? "…" : fmtUsd(summary?.tvl ?? 0)}
               />
               <StatCard
                 label={t("markets.raydiumVol")}
-                value={loading && !summary ? "…" : fmtUsd(summary?.volume24h ?? 0)}
+                value={busy && !summary ? "…" : fmtUsd(summary?.volume24h ?? 0)}
                 accent
               />
               <StatCard
                 label={t("markets.fees24h")}
-                value={loading && !summary ? "…" : fmtUsd(summary?.fees24h ?? 0)}
+                value={busy && !summary ? "…" : fmtUsd(summary?.fees24h ?? 0)}
               />
             </div>
           </div>

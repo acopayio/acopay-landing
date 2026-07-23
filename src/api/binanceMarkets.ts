@@ -24,7 +24,7 @@ export type BinanceMarketsResponse = {
 async function fetchJson(url: string, signal: AbortSignal): Promise<BinanceMarketsResponse> {
   const res = await fetch(withCacheBust(url), {
     signal,
-    headers: { Accept: "application/json" },
+    headers: { Accept: "application/json", "Cache-Control": "no-cache" },
     cache: "no-store",
   });
   const text = await res.text();
@@ -50,20 +50,28 @@ async function fetchJson(url: string, signal: AbortSignal): Promise<BinanceMarke
   };
 }
 
-/** Raw GitHub first (fast after VPS push). Fallback CF /data. Never VPS. */
+function newer(a: BinanceMarketsResponse, b: BinanceMarketsResponse): BinanceMarketsResponse {
+  const ta = Date.parse(a.updatedAt) || 0;
+  const tb = Date.parse(b.updatedAt) || 0;
+  return ta >= tb ? a : b;
+}
+
+/** Raw GitHub + CF /data in parallel; keep newest payload. Never VPS. */
 export async function fetchBinanceMarkets(): Promise<BinanceMarketsResponse> {
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), 12_000);
-  let lastErr: unknown;
   try {
-    for (const url of BINANCE_MARKETS_URLS) {
-      try {
-        return await fetchJson(url, ctrl.signal);
-      } catch (e) {
-        lastErr = e;
-      }
+    const settled = await Promise.allSettled(
+      BINANCE_MARKETS_URLS.map((url) => fetchJson(url, ctrl.signal)),
+    );
+    const ok = settled
+      .filter((r): r is PromiseFulfilledResult<BinanceMarketsResponse> => r.status === "fulfilled")
+      .map((r) => r.value);
+    if (!ok.length) {
+      const err = settled.find((r) => r.status === "rejected") as PromiseRejectedResult | undefined;
+      throw err?.reason instanceof Error ? err.reason : new Error("Failed to load Binance markets");
     }
-    throw lastErr instanceof Error ? lastErr : new Error("Failed to load Binance markets");
+    return ok.reduce(newer);
   } finally {
     clearTimeout(timer);
   }

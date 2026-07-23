@@ -115,7 +115,7 @@ type ViewOpts = {
 };
 
 export function TransfersExplorer() {
-  const { rows, updatedAt, total, backfillComplete, loading, error, refresh } =
+  const { rows, updatedAt, fetchedAt, total, backfillComplete, loading, refreshing, error, refresh } =
     useAcopayTransfers(10_000);
   const t = useT();
   const { sortKey, sortDir, onSort } = useColumnSort<TransferSort>("time", "desc", [
@@ -165,8 +165,10 @@ export function TransfersExplorer() {
   const safePage = Math.min(page, totalPages);
   const pageRows = sorted.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
 
-  const updated = updatedAt ? new Date(updatedAt).toLocaleString() : "—";
+  const stamp = fetchedAt || updatedAt;
+  const updated = stamp ? new Date(stamp).toLocaleString() : "—";
   const colCount = 5 + (opts.showAge ? 1 : 0) + (opts.showBlock ? 1 : 0) + 1;
+  const busy = refreshing || (loading && rows.length === 0);
 
   const toggle = (key: keyof ViewOpts) => setOpts((o) => ({ ...o, [key]: !o[key] }));
 
@@ -182,10 +184,10 @@ export function TransfersExplorer() {
           <button
             type="button"
             onClick={() => refresh()}
-            disabled={loading}
+            disabled={busy}
             className="ml-2 font-medium text-[#00E5FF] hover:underline disabled:opacity-50"
           >
-            {loading && rows.length === 0 ? t("markets.refreshing") : t("markets.refresh")}
+            {busy ? t("markets.refreshing") : t("markets.refresh")}
           </button>
           <a
             href={solscanUrl()}

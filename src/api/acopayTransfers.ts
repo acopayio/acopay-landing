@@ -31,7 +31,7 @@ export type AcopayTransfersResponse = {
 async function fetchJson(url: string, signal: AbortSignal): Promise<AcopayTransfersResponse> {
   const res = await fetch(withCacheBust(url), {
     signal,
-    headers: { Accept: "application/json" },
+    headers: { Accept: "application/json", "Cache-Control": "no-cache" },
     cache: "no-store",
   });
   const text = await res.text();
@@ -60,20 +60,28 @@ async function fetchJson(url: string, signal: AbortSignal): Promise<AcopayTransf
   };
 }
 
-/** Raw GitHub first (fast after VPS push). Fallback CF /data. Never VPS / never Helius. */
+function newer(a: AcopayTransfersResponse, b: AcopayTransfersResponse): AcopayTransfersResponse {
+  const ta = Date.parse(a.updatedAt) || 0;
+  const tb = Date.parse(b.updatedAt) || 0;
+  return ta >= tb ? a : b;
+}
+
+/** Raw GitHub + CF /data in parallel; keep newest. Never VPS / never Helius. */
 export async function fetchAcopayTransfers(): Promise<AcopayTransfersResponse> {
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), 15_000);
-  let lastErr: unknown;
   try {
-    for (const url of TRANSFERS_24H_URLS) {
-      try {
-        return await fetchJson(url, ctrl.signal);
-      } catch (e) {
-        lastErr = e;
-      }
+    const settled = await Promise.allSettled(
+      TRANSFERS_24H_URLS.map((url) => fetchJson(url, ctrl.signal)),
+    );
+    const ok = settled
+      .filter((r): r is PromiseFulfilledResult<AcopayTransfersResponse> => r.status === "fulfilled")
+      .map((r) => r.value);
+    if (!ok.length) {
+      const err = settled.find((r) => r.status === "rejected") as PromiseRejectedResult | undefined;
+      throw err?.reason instanceof Error ? err.reason : new Error("Failed to load transfers");
     }
-    throw lastErr instanceof Error ? lastErr : new Error("Failed to load transfers");
+    return ok.reduce(newer);
   } finally {
     clearTimeout(timer);
   }

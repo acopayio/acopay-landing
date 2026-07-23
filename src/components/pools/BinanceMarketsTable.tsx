@@ -71,7 +71,7 @@ type Props = {
 
 export function BinanceMarketsTable({ variant = "full", limit, embedded = false }: Props) {
   const t = useT();
-  const { rows, updatedAt, loading, error, refresh } = useBinanceMarkets(10_000);
+  const { rows, updatedAt, fetchedAt, loading, refreshing, error, refresh } = useBinanceMarkets(10_000);
   const [search, setSearch] = useState("");
   const { sortKey, sortDir, onSort } = useColumnSort<SortKey>("volume24h", "desc", ["name"]);
 
@@ -94,7 +94,8 @@ export function BinanceMarketsTable({ variant = "full", limit, embedded = false 
     return list;
   }, [rows, search, limit, variant, sortKey, sortDir]);
 
-  const updated = updatedAt ? new Date(updatedAt).toLocaleTimeString() : "—";
+  const stamp = fetchedAt || updatedAt;
+  const updated = stamp ? new Date(stamp).toLocaleTimeString() : "—";
 
   const body = (
     <div className={embedded ? "" : "orca-card p-4 sm:p-6"}>
@@ -110,10 +111,10 @@ export function BinanceMarketsTable({ variant = "full", limit, embedded = false 
         <button
           type="button"
           onClick={() => refresh()}
-          disabled={loading}
+          disabled={refreshing || (loading && rows.length === 0)}
           className="ml-2 font-medium text-[#00E5FF] hover:underline disabled:opacity-50"
         >
-          {loading && rows.length === 0 ? t("markets.refreshing") : t("markets.refresh")}
+          {refreshing || (loading && rows.length === 0) ? t("markets.refreshing") : t("markets.refresh")}
         </button>
       </p>
 
