@@ -50,7 +50,7 @@ export async function fetchAcopayTransfers(): Promise<AcopayTransfersResponse> {
     }
     return {
       updatedAt: data.updatedAt || new Date().toISOString(),
-      source: data.source || "helius",
+      source: data.source || "solana-public-rpc+webshare",
       pollMs: data.pollMs || 30_000,
       mint: data.mint || "",
       rows: Array.isArray(data.rows) ? data.rows : [],
