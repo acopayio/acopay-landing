@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useT } from "../i18n/LanguageProvider";
 
 type Props = {
   className?: string;
@@ -6,10 +7,11 @@ type Props = {
 };
 
 /** Primary buy CTA → OTC desk with Solana Pay QR. */
-export function BuyButton({ className = "btn-orca-primary", label = "Buy ACOPAY" }: Props) {
+export function BuyButton({ className = "btn-orca-primary", label }: Props) {
+  const t = useT();
   return (
     <Link to="/buy" className={className}>
-      {label}
+      {label ?? t("markets.buyAcopay")}
     </Link>
   );
 }

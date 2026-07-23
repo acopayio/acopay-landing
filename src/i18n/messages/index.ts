@@ -53,7 +53,7 @@ const partials: Record<string, DeepPartialMessages> = {
     hero: {
       eyebrow: "Solana · Token-2022",
       desc: "Tiện ích thanh toán Solana cho chuyển khoản ví-sang-ví. Giao dịch ACOPAY/USDT trên Raydium và Jupiter. Phí on-chain {fee}. Đã thu hồi quyền đóng băng.",
-      explorer: "Explorer ↗",
+      explorer: "Khám phá ↗",
       solscan: "Solscan ↗",
       contractAddress: "Địa chỉ hợp đồng",
       details: "Chi tiết →",
@@ -186,6 +186,8 @@ const partials: Record<string, DeepPartialMessages> = {
       aria: "按国家切换语言",
     },
     hero: {
+      explorer: "区块浏览器 ↗",
+      solscan: "Solscan ↗",
       desc: "Solana 钱包到钱包支付工具。在 Raydium 与 Jupiter 交易 ACOPAY/USDT。链上手续费 {fee}。冻结权限已撤销。",
       contractAddress: "合约地址",
       details: "详情 →",
@@ -276,6 +278,8 @@ const partials: Record<string, DeepPartialMessages> = {
       aria: "国に応じて言語を切り替え",
     },
     hero: {
+      explorer: "エクスプローラー ↗",
+      solscan: "Solscan ↗",
       desc: "ウォレット間送金向け Solana 決済ユーティリティ。Raydium と Jupiter で ACOPAY/USDT を取引。オンチェーン手数料 {fee}。フリーズ権限は取り消済み。",
       contractAddress: "コントラクトアドレス",
       details: "詳細 →",
@@ -366,6 +370,8 @@ const partials: Record<string, DeepPartialMessages> = {
       aria: "국가별 언어 전환",
     },
     hero: {
+      explorer: "탐색기 ↗",
+      solscan: "Solscan ↗",
       desc: "지갑 간 송금을 위한 Solana 결제 유틸리티. Raydium·Jupiter에서 ACOPAY/USDT 거래. 온체인 수수료 {fee}. 동결 권한 철회됨.",
       contractAddress: "컨트랙트 주소",
       details: "자세히 →",
@@ -456,6 +462,8 @@ const partials: Record<string, DeepPartialMessages> = {
       aria: "Cambiar idioma según tu país",
     },
     hero: {
+      explorer: "Explorador ↗",
+      solscan: "Solscan ↗",
       desc: "Utilidad de pago en Solana para transferencias entre billeteras. Opera ACOPAY/USDT en Raydium y Jupiter. Comisión on-chain {fee}. Freeze revocado.",
       contractAddress: "Dirección del contrato",
       details: "Detalles →",
@@ -546,6 +554,8 @@ const partials: Record<string, DeepPartialMessages> = {
       aria: "Trocar idioma conforme o país",
     },
     hero: {
+      explorer: "Explorador ↗",
+      solscan: "Solscan ↗",
       desc: "Utilitário de pagamento Solana para transferências entre carteiras. Negocie ACOPAY/USDT na Raydium e Jupiter. Taxa on-chain {fee}. Freeze revogado.",
       contractAddress: "Endereço do contrato",
       details: "Detalhes →",
@@ -636,6 +646,8 @@ const partials: Record<string, DeepPartialMessages> = {
       aria: "Changer de langue selon le pays",
     },
     hero: {
+      explorer: "Explorateur ↗",
+      solscan: "Solscan ↗",
       desc: "Utilitaire de paiement Solana pour les transferts portefeuille à portefeuille. Échangez ACOPAY/USDT sur Raydium et Jupiter. Frais on-chain {fee}. Freeze révoqué.",
       contractAddress: "Adresse du contrat",
       details: "Détails →",
@@ -726,6 +738,8 @@ const partials: Record<string, DeepPartialMessages> = {
       aria: "Sprache nach Land wechseln",
     },
     hero: {
+      explorer: "Explorer ↗",
+      solscan: "Solscan ↗",
       desc: "Solana-Zahlungs-Utility für Wallet-zu-Wallet-Transfers. Handle ACOPAY/USDT auf Raydium und Jupiter. On-Chain-Gebühr {fee}. Freeze widerrufen.",
       contractAddress: "Vertragsadresse",
       details: "Details →",
@@ -816,6 +830,8 @@ const partials: Record<string, DeepPartialMessages> = {
       aria: "Сменить язык по стране",
     },
     hero: {
+      explorer: "Обозреватель ↗",
+      solscan: "Solscan ↗",
       desc: "Платёжная утилита Solana для переводов между кошельками. Торгуйте ACOPAY/USDT на Raydium и Jupiter. Комиссия on-chain {fee}. Freeze отозван.",
       contractAddress: "Адрес контракта",
       details: "Подробнее →",
@@ -906,6 +922,8 @@ const partials: Record<string, DeepPartialMessages> = {
       aria: "تغيير اللغة حسب البلد",
     },
     hero: {
+      explorer: "المستكشف ↗",
+      solscan: "Solscan ↗",
       desc: "أداة دفع على Solana للتحويلات بين المحافظ. تداول ACOPAY/USDT على Raydium و Jupiter. رسوم على السلسلة {fee}. تم إلغاء صلاحية التجميد.",
       contractAddress: "عنوان العقد",
       details: "التفاصيل ←",
@@ -996,6 +1014,8 @@ const partials: Record<string, DeepPartialMessages> = {
       aria: "เปลี่ยนภาษาตามประเทศ",
     },
     hero: {
+      explorer: "สำรวจ ↗",
+      solscan: "Solscan ↗",
       desc: "ยูทิลิตี้ชำระเงินบน Solana สำหรับโอนกระเป๋าถึงกระเป๋า เทรด ACOPAY/USDT บน Raydium และ Jupiter ค่าธรรมเนียมบนเชน {fee} ยกเลิกสิทธิ์แช่แข็งแล้ว",
       contractAddress: "ที่อยู่สัญญา",
       details: "รายละเอียด →",
@@ -1086,6 +1106,8 @@ const partials: Record<string, DeepPartialMessages> = {
       aria: "Ganti bahasa menurut negara",
     },
     hero: {
+      explorer: "Jelajahi ↗",
+      solscan: "Solscan ↗",
       desc: "Utilitas pembayaran Solana untuk transfer dompet-ke-dompet. Perdagangkan ACOPAY/USDT di Raydium dan Jupiter. Biaya on-chain {fee}. Freeze dicabut.",
       contractAddress: "Alamat kontrak",
       details: "Detail →",

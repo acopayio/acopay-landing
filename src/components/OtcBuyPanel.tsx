@@ -3,6 +3,7 @@ import QRCode from "qrcode";
 import { OTC, OTC_SESSION_MS, buildSolanaPayUrl, formatSessionClock, otcAcopayForUsdt } from "../config/otc";
 import { solscanUrl, TOKEN } from "../config/token";
 import { useCopy } from "../hooks/useCopy";
+import { useT } from "../i18n/LanguageProvider";
 
 const PRESETS = [10, 50, 100, 250, 500] as const;
 
@@ -31,6 +32,7 @@ function useIsNarrow(maxPx = 899) {
 }
 
 export function OtcBuyPanel() {
+  const t = useT();
   const isNarrow = useIsNarrow();
   const payAnchorRef = useRef<HTMLDivElement>(null);
   const [amountStr, setAmountStr] = useState("50");
@@ -467,7 +469,7 @@ export function OtcBuyPanel() {
               <span className="otc-live-pill">Live</span>
             </div>
             <h1 className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-[2.15rem]">
-              Buy ACOPAY
+              {t("markets.buyAcopay")}
             </h1>
             {phase === "setup" && (
               <div className="otc-header-desc">
