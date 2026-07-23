@@ -8,8 +8,8 @@ type State = {
   error: string | null;
 };
 
-/** Re-read GitHub/CF JSON (VPS sync ~30s). Never VPS HTTP. */
-export function useBinanceMarkets(refreshMs = 15_000) {
+/** Re-read raw GitHub JSON (VPS push ~cycle+5s). Never VPS HTTP. */
+export function useBinanceMarkets(refreshMs = 10_000) {
   const [state, setState] = useState<State>({
     rows: [],
     updatedAt: null,

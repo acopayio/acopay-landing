@@ -1,3 +1,5 @@
+import { TRANSFERS_24H_URLS, withCacheBust } from "../config/marketsData";
+
 export type AcopayTransferRow = {
   id: string;
   time: string;
@@ -26,42 +28,52 @@ export type AcopayTransfersResponse = {
   error?: string;
 };
 
-/** Static JSON from GitHub → Cloudflare Pages. Never VPS HTTP / never Helius. */
-const ENDPOINT = "/data/transfers-24h.json";
+async function fetchJson(url: string, signal: AbortSignal): Promise<AcopayTransfersResponse> {
+  const res = await fetch(withCacheBust(url), {
+    signal,
+    headers: { Accept: "application/json" },
+    cache: "no-store",
+  });
+  const text = await res.text();
+  if (!text || text.trimStart().startsWith("<!")) {
+    throw new Error(`Transfers HTTP ${res.status}`);
+  }
+  let data: AcopayTransfersResponse & { error?: string };
+  try {
+    data = JSON.parse(text) as AcopayTransfersResponse & { error?: string };
+  } catch {
+    throw new Error("Transfers response was not JSON");
+  }
+  if (!res.ok) {
+    throw new Error(data.error || `Transfers HTTP ${res.status}`);
+  }
+  const rows = Array.isArray(data.rows) ? data.rows : [];
+  return {
+    updatedAt: data.updatedAt || new Date().toISOString(),
+    source: data.source || "github+solana-public-rpc",
+    mint: data.mint || "",
+    historyDays: data.historyDays || 1,
+    backfillComplete: data.backfillComplete,
+    total: typeof data.total === "number" ? data.total : rows.length,
+    rows,
+    error: data.error,
+  };
+}
 
+/** Raw GitHub first (fast after VPS push). Fallback CF /data. Never VPS / never Helius. */
 export async function fetchAcopayTransfers(): Promise<AcopayTransfersResponse> {
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), 15_000);
+  let lastErr: unknown;
   try {
-    const res = await fetch(ENDPOINT, {
-      signal: ctrl.signal,
-      headers: { Accept: "application/json" },
-      cache: "no-store",
-    });
-    const text = await res.text();
-    if (!text || text.trimStart().startsWith("<!")) {
-      throw new Error(`Transfers HTTP ${res.status}`);
+    for (const url of TRANSFERS_24H_URLS) {
+      try {
+        return await fetchJson(url, ctrl.signal);
+      } catch (e) {
+        lastErr = e;
+      }
     }
-    let data: AcopayTransfersResponse & { error?: string; pollMs?: number };
-    try {
-      data = JSON.parse(text) as AcopayTransfersResponse & { error?: string };
-    } catch {
-      throw new Error("Transfers response was not JSON");
-    }
-    if (!res.ok) {
-      throw new Error(data.error || `Transfers HTTP ${res.status}`);
-    }
-    const rows = Array.isArray(data.rows) ? data.rows : [];
-    return {
-      updatedAt: data.updatedAt || new Date().toISOString(),
-      source: data.source || "github+solana-public-rpc",
-      mint: data.mint || "",
-      historyDays: data.historyDays || 1,
-      backfillComplete: data.backfillComplete,
-      total: typeof data.total === "number" ? data.total : rows.length,
-      rows,
-      error: data.error,
-    };
+    throw lastErr instanceof Error ? lastErr : new Error("Failed to load transfers");
   } finally {
     clearTimeout(timer);
   }
