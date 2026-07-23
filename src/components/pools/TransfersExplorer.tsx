@@ -11,7 +11,10 @@ const PAGE_SIZE = 20;
 
 function fmtAmount(n: number): string {
   if (!Number.isFinite(n)) return "—";
-  return n.toLocaleString("en-US", { maximumFractionDigits: 9 });
+  return n.toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 9,
+  });
 }
 
 function fmtAge(ts: number): string {
