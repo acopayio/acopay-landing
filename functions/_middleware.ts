@@ -1,9 +1,12 @@
 /**
  * Cloudflare Pages middleware:
- * 0) Proxy Binance markets → VPS (Webshare stays server-side)
+ * 0) Proxy Binance markets → upstream (Tunnel or nginx)
  * 1) www → apex
  * 2) SPA fallback for React Router
  * 3) Real 404 for missing /assets/*
+ *
+ * NOTE: CF Workers often cannot fetch Softlayer IP:80/8080 (error 502).
+ * Prefer MARKETS_UPSTREAM env = https://….trycloudflare.com or named tunnel hostname.
  */
 type PagesContext = {
   request: Request;
@@ -14,30 +17,41 @@ type PagesContext = {
   };
 };
 
-/** Port 80 preferred (CF allowlist). Fallback 8080 if nginx not yet up. */
-const DEFAULT_UPSTREAM = "http://169.58.56.156";
+/** Quick tunnel (pm2 acopay-markets-tunnel). Replace with named tunnel when ready. */
+const DEFAULT_UPSTREAM = "https://mask-rachel-nylon-hired.trycloudflare.com";
 
 async function proxyMarkets(env: PagesContext["env"]): Promise<Response> {
   const base = (env.MARKETS_UPSTREAM || DEFAULT_UPSTREAM).replace(/\/$/, "");
-  const candidates = [`${base}/api/markets`, `${base}:8080/api/markets`];
-  // If MARKETS_UPSTREAM already has :port, only try that once
-  const urls =
-    /:\d+$/.test(base) || base.includes(":8080") || base.includes(":80")
-      ? [`${base.replace(/\/$/, "")}/api/markets`]
-      : candidates;
+  const urls = [
+    `${base}/api/markets`,
+    "https://mask-rachel-nylon-hired.trycloudflare.com/api/markets",
+    "http://169.58.56.156/api/markets",
+    "http://169.58.56.156:8080/api/markets",
+  ];
+  const seen = new Set<string>();
+  const list = urls.filter((u) => {
+    if (seen.has(u)) return false;
+    seen.add(u);
+    return true;
+  });
 
   let lastErr = "upstream unreachable";
-  for (const url of urls) {
+  for (const url of list) {
     try {
-      const res = await fetch(url, { headers: { Accept: "application/json" } });
+      const res = await fetch(url, {
+        headers: { Accept: "application/json" },
+      });
       const text = await res.text();
-      // CF error pages are short — skip and try next
-      if (text.startsWith("error code:")) {
-        lastErr = text.trim();
+      if (!text || text.startsWith("error code:") || text.trimStart().startsWith("<!")) {
+        lastErr = text.slice(0, 80) || `bad body from ${url}`;
+        continue;
+      }
+      if (!text.includes('"rows"') && !text.includes('"updatedAt"')) {
+        lastErr = `unexpected body from ${url}`;
         continue;
       }
       return new Response(text, {
-        status: res.status,
+        status: res.ok ? 200 : res.status,
         headers: {
           "Content-Type": "application/json; charset=utf-8",
           "Cache-Control": "public, max-age=2",
