@@ -159,28 +159,46 @@ export function Footer() {
           </div>
           <div>
             <h4 className="label-orca">{t("footer.contact")}</h4>
-            <a
-              href={`mailto:${TOKEN.email}`}
-              className="mt-4 inline-flex items-center gap-2 text-sm text-[#9ca3af] hover:text-[#00E5FF]"
-            >
-              <span aria-hidden="true">✉️</span>
-              {TOKEN.email}
-            </a>
-            <a
-              href={TOKEN.telegramUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-3 inline-flex items-center gap-2 text-sm text-[#9ca3af] hover:text-[#00E5FF]"
-            >
-              <TelegramGlyph />
-              <span>
-                Telegram · @{TOKEN.telegramBot}
-              </span>
-            </a>
+            <ul className="mt-4 space-y-3">
+              <li>
+                <a
+                  href={`mailto:${TOKEN.email}`}
+                  className="inline-flex max-w-full items-center gap-2.5 text-sm text-white/85 transition hover:text-white"
+                >
+                  <MailGlyph />
+                  <span className="truncate">{TOKEN.email}</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href={TOKEN.telegramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex max-w-full items-center gap-2.5 text-sm text-white/85 transition hover:text-white"
+                  title="Telegram"
+                >
+                  <TelegramGlyph />
+                  <span className="truncate">@{TOKEN.telegramBot}</span>
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
     </footer>
+  );
+}
+
+function MailGlyph() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="h-4 w-4 shrink-0 fill-none stroke-current stroke-[1.8]"
+      aria-hidden="true"
+    >
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <path d="m4 7 8 6 8-6" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   );
 }
 
