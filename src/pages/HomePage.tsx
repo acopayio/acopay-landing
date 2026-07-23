@@ -3,7 +3,7 @@ import { Hero } from "../components/Hero";
 import { LaunchStatus } from "../components/LaunchStatus";
 import { Roadmap } from "../components/Roadmap";
 import { isMintLive } from "../config/token";
-import { LiquidityPoolsWidget } from "../components/pools/LiquidityPoolsWidget";
+import { BinanceMarketsTable } from "../components/pools/BinanceMarketsTable";
 
 export function HomePage() {
   const live = isMintLive();
@@ -11,8 +11,7 @@ export function HomePage() {
   return (
     <>
       <Hero />
-      {/* Pre-launch: only real ACOPAY facts. Live Raydium TVL is not ACOPAY — keep it on /pools. */}
-      {live ? <LiquidityPoolsWidget variant="home" /> : <LaunchStatus />}
+      {live ? <BinanceMarketsTable variant="home" /> : <LaunchStatus />}
       <About />
       <Roadmap />
     </>

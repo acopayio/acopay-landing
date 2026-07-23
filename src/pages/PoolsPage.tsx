@@ -1,5 +1,5 @@
-import { LiquidityPoolsWidget } from "../components/pools/LiquidityPoolsWidget";
+import { BinanceMarketsTable } from "../components/pools/BinanceMarketsTable";
 
 export function PoolsPage() {
-  return <LiquidityPoolsWidget variant="full" />;
+  return <BinanceMarketsTable variant="full" />;
 }
