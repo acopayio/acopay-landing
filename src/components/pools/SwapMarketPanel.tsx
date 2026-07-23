@@ -45,12 +45,15 @@ export function SwapMarketPanel() {
   const targetId = `acopay-jupiter-${reactId}`;
   const mounted = useRef(true);
   const [error, setError] = useState<string | null>(null);
+  const [ready, setReady] = useState(false);
   const jup = jupiterSwapUrl();
   const ray = raydiumSwapUrl();
   const poolOk = isPoolLive();
 
   useEffect(() => {
     mounted.current = true;
+    setReady(false);
+    setError(null);
     if (!poolOk) return;
 
     let booted = false;
@@ -69,6 +72,7 @@ export function SwapMarketPanel() {
           },
         });
         booted = true;
+        if (mounted.current) setReady(true);
       } catch (e) {
         if (mounted.current) {
           setError(e instanceof Error ? e.message : "Failed to load swap widget");
@@ -139,8 +143,17 @@ export function SwapMarketPanel() {
           )}
         </div>
       ) : (
-        <div className="overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0c1017]">
-          <div id={targetId} className="min-h-[560px] w-full [&_iframe]:!max-w-full" />
+        <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0c1017]">
+          <div id={targetId} className="min-h-[520px] w-full [&_iframe]:!max-w-full" />
+          {!ready && (
+            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-[#0c1017] px-4 text-sm text-[#9ca3af]">
+              <span
+                className="h-5 w-5 animate-spin rounded-full border-2 border-[#00E5FF]/30 border-t-[#00E5FF]"
+                aria-hidden
+              />
+              Loading Jupiter…
+            </div>
+          )}
         </div>
       )}
 
