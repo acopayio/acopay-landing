@@ -6,7 +6,8 @@
  * Env (file /root/acopay-markets/.env or process env):
  *   WEBSHARE_API_KEY
  *   GITHUB_TOKEN
- *   MARKETS_SYNC_MS   (default 30000 — near-live; more GitHub/CF rebuilds)
+ *   MARKETS_GAP_MS    (default 5000 — nghỉ ngắn sau mỗi cycle, rồi chạy lại ngay)
+ *   MARKETS_SYNC_MS   (deprecated alias; nếu set và > GAP thì dùng làm gap)
  */
 import fs from "node:fs";
 import { spawn } from "node:child_process";
@@ -36,7 +37,8 @@ function loadDotEnv() {
 
 loadDotEnv();
 
-const SYNC_MS = Math.max(30_000, Number(process.env.MARKETS_SYNC_MS || 30_000));
+/** After a cycle finishes, wait this long then start the next (no padded interval). */
+const GAP_MS = Math.max(2_000, Number(process.env.MARKETS_GAP_MS || 5_000));
 
 function log(...args) {
   console.log(new Date().toISOString(), ...args);
@@ -67,7 +69,7 @@ function runNode(script, extraEnv = {}) {
 }
 
 async function cycle() {
-  log(`[sync] start cycle (interval ${SYNC_MS}ms)`);
+  log(`[sync] start cycle (gap after done ${GAP_MS}ms)`);
   await runNode(path.join(ROOT, "scripts", "sync-binance-markets.mjs"));
   await runNode(path.join(ROOT, "scripts", "sync-transfers.mjs"), {
     TRANSFERS_HISTORY_DAYS: process.env.TRANSFERS_HISTORY_DAYS || "1",
@@ -85,14 +87,12 @@ async function main() {
     throw new Error("GITHUB_TOKEN required to push markets JSON");
   }
   for (;;) {
-    const t0 = Date.now();
     try {
       await cycle();
     } catch (e) {
       log(`[sync] fail ${e instanceof Error ? e.message : e}`);
     }
-    const wait = Math.max(5_000, SYNC_MS - (Date.now() - t0));
-    await new Promise((r) => setTimeout(r, wait));
+    await new Promise((r) => setTimeout(r, GAP_MS));
   }
 }
 

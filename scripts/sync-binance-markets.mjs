@@ -86,7 +86,7 @@ async function main() {
   const payload = {
     updatedAt: new Date().toISOString(),
     source: "binance",
-    pollMs: Number(process.env.MARKETS_SYNC_MS || 30_000),
+    pollMs: Number(process.env.MARKETS_GAP_MS || process.env.MARKETS_SYNC_MS || 5_000),
     rows,
   };
 
