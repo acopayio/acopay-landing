@@ -36,9 +36,6 @@ export function Hero() {
 
           <div className="mt-4 flex flex-wrap items-center gap-3">
             <BuyButton />
-            <Link to="/contract" className="btn-orca-secondary">
-              Contract
-            </Link>
             {live ? (
               <>
                 <a
