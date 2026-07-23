@@ -1,19 +1,11 @@
 ﻿import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { POOL_FILTERS, type PoolFilterId } from "../../config/pools";
 import { TOKEN } from "../../config/token";
 import { useLivePools } from "../../hooks/useLivePools";
 import type { PoolRow } from "../../types/pool";
 import { HOME_POOL_ROWS, fmtPct, fmtUsd } from "../../types/pool";
 import { SortCaret, SortTh, compareSortValues, useColumnSort } from "../ui/SortTh";
 import { useT } from "../../i18n/LanguageProvider";
-
-const FILTER_LABEL_KEY: Record<PoolFilterId, string> = {
-  all: "markets.allPools",
-  payment: "markets.payment",
-  stablecoins: "markets.stablecoins",
-  utility: "markets.utility",
-};
 
 type PoolSortKey = "pair" | "change24h" | "yieldPct" | "volume24h" | "tvl" | "fees24h";
 
@@ -96,17 +88,13 @@ type Props = {
 export function LiquidityPoolsWidget({ variant = "full", embedded = false }: Props) {
   const t = useT();
   const { pools, summary, loading, error, warning, refresh } = useLivePools();
-  const [filter, setFilter] = useState<PoolFilterId>("all");
   const [search, setSearch] = useState("");
   const { sortKey, sortDir, onSort } = useColumnSort<PoolSortKey>("volume24h", "desc", ["pair"]);
 
   const liveCount = pools.filter((p) => !p.isAcopay).length;
 
   const filtered = useMemo(() => {
-    let list = pools.filter((p) => {
-      if (filter === "all") return true;
-      return p.category === filter;
-    });
+    let list = pools;
     const q = search.trim().toLowerCase();
     if (q) {
       list = list.filter(
@@ -118,7 +106,7 @@ export function LiquidityPoolsWidget({ variant = "full", embedded = false }: Pro
     );
     if (variant === "home") list = list.slice(0, HOME_POOL_ROWS);
     return list;
-  }, [pools, filter, search, variant, sortKey, sortDir]);
+  }, [pools, search, variant, sortKey, sortDir]);
 
   const updated = summary?.updatedAt
     ? new Date(summary.updatedAt).toLocaleTimeString()
@@ -188,23 +176,7 @@ export function LiquidityPoolsWidget({ variant = "full", embedded = false }: Pro
             </div>
           </div>
 
-          <div className="mt-6 space-y-3">
-            <div className="flex flex-wrap gap-1 rounded-2xl border border-white/[0.06] bg-[#0c1017]/50 p-1">
-              {POOL_FILTERS.map((f) => (
-                <button
-                  key={f.id}
-                  type="button"
-                  onClick={() => setFilter(f.id)}
-                  className={`rounded-xl px-3 py-2 text-sm font-medium transition ${
-                    filter === f.id
-                      ? "bg-[#00E5FF]/15 text-[#00E5FF] ring-1 ring-[#00E5FF]/30"
-                      : "text-[#9ca3af] hover:bg-white/[0.04] hover:text-white"
-                  }`}
-                >
-                  {t(FILTER_LABEL_KEY[f.id])}
-                </button>
-              ))}
-            </div>
+          <div className="mt-6">
             <input
               type="search"
               placeholder={t("markets.searchTokens")}
