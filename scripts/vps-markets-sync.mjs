@@ -3,17 +3,39 @@
  *   Webshare → Binance + Transfers(24h) → write public/data/*.json → push GitHub
  * Website reads CF /data/*.json only — NEVER calls VPS.
  *
- * Env:
+ * Env (file /root/acopay-markets/.env or process env):
  *   WEBSHARE_API_KEY
  *   GITHUB_TOKEN
  *   MARKETS_SYNC_MS   (default 180000 = 3 min — avoid CF rebuild spam)
  */
+import fs from "node:fs";
 import { spawn } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { pushMarketsData } from "./push-data-github.mjs";
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
+
+/** Load .env into process.env if keys are unset (pm2 does not auto-load). */
+function loadDotEnv() {
+  const envPath = path.join(ROOT, ".env");
+  if (!fs.existsSync(envPath)) return;
+  for (const line of fs.readFileSync(envPath, "utf8").split(/\r?\n/)) {
+    const t = line.trim();
+    if (!t || t.startsWith("#")) continue;
+    const i = t.indexOf("=");
+    if (i < 1) continue;
+    const k = t.slice(0, i).trim();
+    let v = t.slice(i + 1).trim();
+    if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) {
+      v = v.slice(1, -1);
+    }
+    if (process.env[k] === undefined) process.env[k] = v;
+  }
+}
+
+loadDotEnv();
+
 const SYNC_MS = Math.max(60_000, Number(process.env.MARKETS_SYNC_MS || 180_000));
 
 function log(...args) {
