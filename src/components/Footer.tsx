@@ -88,9 +88,6 @@ export function Footer() {
               <img src="/assets/logo.png" alt="" className="h-9 w-9 object-contain" />
               ACOPAY
             </Link>
-            <p className="mt-3 max-w-xs text-sm leading-relaxed text-[#9ca3af]">
-              Solana payment utility.
-            </p>
             <p className="mt-6 text-xs text-[#6b7280] md:mt-auto md:pt-2">
               © {TOKEN.founded} ACOPAY
             </p>
