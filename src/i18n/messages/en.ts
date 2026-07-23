@@ -18,7 +18,6 @@ export const en = {
     detecting: "Detecting…",
     menu: "Language",
     choose: "Choose language",
-    suggested: "Suggested",
     hint: "Default is English. Current: {lang}.",
     switchLocal: "Language",
     aria: "Choose language",
