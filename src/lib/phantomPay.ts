@@ -35,6 +35,10 @@ type PhantomProvider = {
   isPhantom?: boolean;
   publicKey: PublicKey | null;
   connect: (opts?: { onlyIfTrusted?: boolean }) => Promise<{ publicKey: PublicKey }>;
+  signMessage?: (
+    message: Uint8Array,
+    display?: string
+  ) => Promise<{ signature: Uint8Array }>;
   signAndSendTransaction: (
     tx: Transaction,
     opts?: { skipPreflight?: boolean; maxRetries?: number }

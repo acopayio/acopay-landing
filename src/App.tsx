@@ -9,6 +9,7 @@ import { RoadmapPage } from "./pages/RoadmapPage";
 import { TokenPage } from "./pages/TokenPage";
 import { BuyPage } from "./pages/BuyPage";
 import { TradePage } from "./pages/TradePage";
+import { LinkWalletPage } from "./pages/LinkWalletPage";
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
         <Route element={<OrcaLayout />}>
           <Route index element={<HomePage />} />
           <Route path="buy" element={<BuyPage />} />
+          <Route path="link-wallet" element={<LinkWalletPage />} />
           <Route path="token" element={<TokenPage />} />
           <Route path="markets" element={<PoolsPage />} />
           <Route path="pools" element={<Navigate to="/markets" replace />} />

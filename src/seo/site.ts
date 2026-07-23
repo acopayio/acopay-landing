@@ -100,6 +100,12 @@ export const PAGE_SEO: Record<string, PageSeo> = {
       "Frequently asked questions about ACOPAY: how to buy, transfer fees, freeze authority, Raydium pool, and contract address.",
     path: "/faq",
   },
+  "/link-wallet": {
+    title: "Link Phantom to ACOPAY Telegram Pay",
+    description:
+      "Prove ownership of your Solana address and receive ACOPAY into Phantom via @AcopayNetwork_bot.",
+    path: "/link-wallet",
+  },
 };
 
 export function absoluteUrl(path: string): string {
