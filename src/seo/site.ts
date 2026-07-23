@@ -10,17 +10,16 @@ export const SITE = {
   themeColor: "#0c1017",
   twitterHandle: "", // add @handle when official X account exists
   ogImage: "https://acopay.net/assets/og-image.png",
-  ogImageAlt: "ACOPAY — Pay your way. Solana payment utility token.",
-  defaultTitle: "ACOPAY — Pay your way | Solana Payment Utility",
+  ogImageAlt: "ACOPAY — Pay your way",
+  defaultTitle: "ACOPAY — Pay your way",
   defaultDescription:
-    "ACOPAY is a Solana payment utility token (Token-2022). Pay your way — wallet-to-wallet transfers with a 0.01% on-chain fee. Trade ACOPAY/USDT on Raydium and Jupiter.",
+    "Token-2022 for wallet-to-wallet transfers with a 0.01% on-chain fee. Trade ACOPAY/USDT on Raydium and Jupiter.",
   keywords: [
     "ACOPAY",
     "Pay your way",
     "Solana",
     "Token-2022",
     "payment token",
-    "Solana payment utility",
     "ACOPAY USDT",
     "Raydium",
     "Jupiter",
@@ -62,37 +61,37 @@ export const PAGE_SEO: Record<string, PageSeo> = {
   "/trade": {
     title: "How to Buy ACOPAY | OTC Desk & DEX Swap",
     description:
-      "Buy ACOPAY via official OTC (USDT 1:1) or swap on Jupiter and Raydium. Match the official contract on acopay.net. Pay your way on Solana.",
+      "Buy ACOPAY via official OTC (USDT 1:1) or swap on Jupiter and Raydium. Match the official contract on acopay.net.",
     path: "/trade",
   },
   "/pools": {
     title: "ACOPAY Pools | ACOPAY/USDT on Raydium",
     description:
-      "Explore the live ACOPAY/USDT liquidity pool on Raydium and Solana market data. Official ACOPAY — Pay your way.",
+      "Explore the live ACOPAY/USDT liquidity pool on Raydium and Solana market data.",
     path: "/pools",
   },
   "/token": {
     title: "ACOPAY Token Overview | Supply, Fee & Authorities",
     description:
-      "ACOPAY token details: 200M supply, Token-2022, 0.01% transfer fee, freeze revoked. Official Solana payment utility — Pay your way.",
+      "ACOPAY token details: 200M supply, Token-2022, 0.01% transfer fee, freeze revoked.",
     path: "/token",
   },
   "/contract": {
     title: "ACOPAY Contract Address | Official Solana Mint",
     description:
-      "Official ACOPAY contract address on Solana Mainnet. Verify on Solscan and Explorer before you trade. Pay your way.",
+      "Official ACOPAY contract address on Solana Mainnet. Verify on Solscan and Explorer before you trade.",
     path: "/contract",
   },
   "/roadmap": {
     title: "ACOPAY Roadmap | 2026–2030 Milestones",
     description:
-      "ACOPAY product roadmap: Raydium pool live, web and mobile payments, CoinGecko, Binance, and payment gateway. Pay your way.",
+      "ACOPAY product roadmap: Raydium pool live, web and mobile payments, CoinGecko, Binance, and payment gateway.",
     path: "/roadmap",
   },
   "/faq": {
     title: "ACOPAY FAQ | Fees, Pool, Buying & Transfers",
     description:
-      "Frequently asked questions about ACOPAY: how to buy, transfer fees, freeze authority, Raydium pool, and contract address. Pay your way.",
+      "Frequently asked questions about ACOPAY: how to buy, transfer fees, freeze authority, Raydium pool, and contract address.",
     path: "/faq",
   },
 };
