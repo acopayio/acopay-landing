@@ -1,5 +1,5 @@
 ﻿import { NavLink, Outlet, Link } from "react-router-dom";
-import { BuyButton } from "../components/BuyButton";
+import { TelegramPayButton } from "../components/TelegramPayButton";
 import { Footer } from "../components/Footer";
 import { TOKEN } from "../config/token";
 
