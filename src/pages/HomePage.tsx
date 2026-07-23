@@ -3,7 +3,7 @@ import { Hero } from "../components/Hero";
 import { LaunchStatus } from "../components/LaunchStatus";
 import { Roadmap } from "../components/Roadmap";
 import { isMintLive } from "../config/token";
-import { BinanceMarketsTable } from "../components/pools/BinanceMarketsTable";
+import { MarketsHub } from "../components/pools/MarketsHub";
 
 export function HomePage() {
   const live = isMintLive();
@@ -11,7 +11,7 @@ export function HomePage() {
   return (
     <>
       <Hero />
-      {live ? <BinanceMarketsTable variant="home" /> : <LaunchStatus />}
+      {live ? <MarketsHub variant="home" /> : <LaunchStatus />}
       <About />
       <Roadmap />
     </>

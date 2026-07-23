@@ -29,7 +29,20 @@ export async function fetchBinanceMarkets(): Promise<BinanceMarketsResponse> {
       signal: ctrl.signal,
       headers: { Accept: "application/json" },
     });
-    const data = (await res.json()) as BinanceMarketsResponse & { error?: string };
+    const text = await res.text();
+    if (!text || text.startsWith("error code:") || text.trimStart().startsWith("<!")) {
+      throw new Error(
+        text.startsWith("error code:")
+          ? `Upstream blocked (${text.trim()}). Retry in a moment.`
+          : `Markets HTTP ${res.status}`,
+      );
+    }
+    let data: BinanceMarketsResponse & { error?: string };
+    try {
+      data = JSON.parse(text) as BinanceMarketsResponse & { error?: string };
+    } catch {
+      throw new Error("Markets response was not JSON");
+    }
     if (!res.ok) {
       throw new Error(data.error || `Markets HTTP ${res.status}`);
     }

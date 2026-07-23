@@ -1,5 +1,5 @@
-import { BinanceMarketsTable } from "../components/pools/BinanceMarketsTable";
+import { MarketsHub } from "../components/pools/MarketsHub";
 
 export function PoolsPage() {
-  return <BinanceMarketsTable variant="full" />;
+  return <MarketsHub variant="full" />;
 }

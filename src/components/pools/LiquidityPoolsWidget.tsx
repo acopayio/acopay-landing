@@ -61,9 +61,11 @@ function PoolIcon({ row }: { row: PoolRow }) {
 
 type Props = {
   variant?: "home" | "full";
+  /** Inside MarketsHub — no outer section / Markets title / home footer link */
+  embedded?: boolean;
 };
 
-export function LiquidityPoolsWidget({ variant = "full" }: Props) {
+export function LiquidityPoolsWidget({ variant = "full", embedded = false }: Props) {
   const { pools, summary, loading, error, warning, refresh } = useLivePools();
   const [filter, setFilter] = useState<PoolFilterId>("all");
   const [search, setSearch] = useState("");
@@ -89,11 +91,10 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
     ? new Date(summary.updatedAt).toLocaleTimeString()
     : "—";
 
-  return (
-    <section className={variant === "home" ? "border-t border-white/[0.06] bg-[#090b0e]/50 py-5 md:py-6" : ""}>
-      <div className={`page-wrap ${variant === "full" ? "pb-20 pt-6 md:pb-24 md:pt-8" : ""}`}>
-        <div className="orca-card p-4 sm:p-6">
+  const body = (
+        <div className={embedded ? "" : "orca-card p-4 sm:p-6"}>
           <div className="space-y-5">
+            {!embedded && (
             <div>
               <p className="label-orca">Raydium</p>
               <h2 className="mt-2 text-2xl font-bold text-white sm:text-3xl">
@@ -114,6 +115,20 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
                 </button>
               </p>
             </div>
+            )}
+            {embedded && (
+              <p className="text-xs text-[#6b7280]">
+                {summary?.source ?? "Raydium"} · {liveCount} pools · Updated {updated}
+                <button
+                  type="button"
+                  onClick={() => refresh()}
+                  disabled={loading}
+                  className="ml-2 font-medium text-[#00E5FF] hover:underline disabled:opacity-50"
+                >
+                  {loading ? "Refreshing…" : "Refresh"}
+                </button>
+              </p>
+            )}
 
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
               <StatCard
@@ -336,7 +351,7 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
                   ))}
           </div>
 
-          {variant === "full" && (
+          {variant === "full" && !embedded && (
             <div className="mt-6 flex justify-stretch sm:justify-end">
               <a
                 href={TOKEN.links.raydium}
@@ -349,7 +364,14 @@ export function LiquidityPoolsWidget({ variant = "full" }: Props) {
             </div>
           )}
         </div>
+  );
 
+  if (embedded) return body;
+
+  return (
+    <section className={variant === "home" ? "border-t border-white/[0.06] bg-[#090b0e]/50 py-5 md:py-6" : ""}>
+      <div className={`page-wrap ${variant === "full" ? "pb-20 pt-6 md:pb-24 md:pt-8" : ""}`}>
+        {body}
         {variant === "home" && (
           <div className="mt-6 flex justify-center">
             <Link to="/pools" className="btn-orca-secondary w-full sm:w-auto">
