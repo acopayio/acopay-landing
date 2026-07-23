@@ -43,7 +43,7 @@ export function MarketsHub({ variant = "full" }: Props) {
             ))}
           </div>
 
-          <div className="mt-6">
+          <div className={`mt-6 ${tab === "swap" ? "flex justify-center py-2 sm:py-4" : ""}`}>
             {tab === "pools" && <LiquidityPoolsWidget variant={variant} embedded />}
             {tab === "binance" && <BinanceMarketsTable variant={variant} embedded />}
             {tab === "transfers" && <TransfersExplorer />}

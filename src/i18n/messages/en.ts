@@ -71,7 +71,7 @@ export const en = {
     transfersUnavailable: "Transfers unavailable.",
     retry: "Retry",
     swapTitle: "Swap ACOPAY",
-    swapSubtitle: "Trade USDT ↔ ACOPAY with Jupiter. Open Raydium if you prefer their swap UI.",
+    swapSubtitle: "Swap USDT ↔ ACOPAY on this page via Jupiter, or open Raydium in a new tab.",
     openJupiter: "Open Jupiter",
     openRaydium: "Open Raydium",
     swapUnavailable: "Swap is unavailable until the Raydium pool is live.",

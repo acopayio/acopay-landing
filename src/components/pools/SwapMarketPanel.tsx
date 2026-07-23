@@ -34,6 +34,10 @@ function loadJupiterScript(): Promise<void> {
   });
 }
 
+function shortMint(mint: string): string {
+  return `${mint.slice(0, 4)}…${mint.slice(-4)}`;
+}
+
 /** Jupiter Plugin + Raydium deep links — never VPS. */
 export function SwapMarketPanel() {
   const t = useT();
@@ -85,19 +89,19 @@ export function SwapMarketPanel() {
   }, [poolOk, targetId]);
 
   return (
-    <div className="mx-auto w-full max-w-[440px] space-y-5">
-      <div className="space-y-3 text-center sm:text-left">
+    <div className="mx-auto flex w-full max-w-[400px] flex-col gap-5">
+      <header className="space-y-3 text-center">
         <div className="space-y-1.5">
-          <h3 className="text-lg font-semibold text-white">{t("markets.swapTitle")}</h3>
+          <h3 className="text-xl font-semibold tracking-tight text-white">{t("markets.swapTitle")}</h3>
           <p className="text-sm leading-relaxed text-[#9ca3af]">{t("markets.swapSubtitle")}</p>
         </div>
-        <div className="flex flex-wrap items-center justify-center gap-2 sm:justify-start">
+        <div className="flex flex-wrap items-center justify-center gap-2">
           {jup && (
             <a
               href={jup}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-orca-secondary !inline-flex !px-3.5 !py-2 !text-xs sm:!text-sm"
+              className="btn-orca-secondary !inline-flex !h-9 !px-3.5 !text-xs sm:!text-sm"
             >
               {t("markets.openJupiter")} ↗
             </a>
@@ -107,13 +111,16 @@ export function SwapMarketPanel() {
               href={ray}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-orca-secondary !inline-flex !px-3.5 !py-2 !text-xs sm:!text-sm"
+              className="btn-orca-secondary !inline-flex !h-9 !px-3.5 !text-xs sm:!text-sm"
             >
               {t("markets.openRaydium")} ↗
             </a>
           )}
         </div>
-      </div>
+        <p className="font-mono text-[11px] text-[#6b7280]">
+          Mint {shortMint(TOKEN.mintAddress)}
+        </p>
+      </header>
 
       {!poolOk ? (
         <p className="rounded-2xl border border-white/[0.07] bg-[#0c1017]/60 px-4 py-10 text-center text-sm text-[#9ca3af]">
@@ -132,8 +139,8 @@ export function SwapMarketPanel() {
           )}
         </div>
       ) : (
-        <div className="overflow-hidden rounded-2xl border border-white/[0.08] bg-[#11141b] shadow-[0_0_0_1px_rgba(255,255,255,0.02)]">
-          <div id={targetId} className="min-h-[520px] w-full [&_iframe]:!max-w-full" />
+        <div className="overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0c1017]">
+          <div id={targetId} className="min-h-[560px] w-full [&_iframe]:!max-w-full" />
         </div>
       )}
 

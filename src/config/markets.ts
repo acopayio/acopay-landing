@@ -8,4 +8,4 @@ export const MARKET_TABS = [
 export type MarketTabId = (typeof MARKET_TABS)[number]["id"];
 
 /** Bump to force Cloudflare Pages rebuild when needed. */
-export const MARKETS_UI_BUILD = 3;
+export const MARKETS_UI_BUILD = 4;
