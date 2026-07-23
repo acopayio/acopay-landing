@@ -11,7 +11,6 @@ const FAQ_KEYS = [
   ["faq.q7", "faq.a7"],
   ["faq.q8", "faq.a8"],
   ["faq.q9", "faq.a9"],
-  ["faq.q10", "faq.a10"],
   ["faq.q11", "faq.a11"],
 ] as const;
 
