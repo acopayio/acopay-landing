@@ -13,9 +13,9 @@ export function LaunchStatus() {
     { label: t("launch.decimals"), value: String(TOKEN.decimals) },
     { label: t("launch.supply"), value: `${TOKEN.totalSupply} ACOPAY` },
     { label: t("launch.transferFee"), value: TOKEN.transferFee },
-    { label: t("launch.freezeAuthority"), value: TOKEN.freezeAuthority },
-    { label: t("launch.mintAuthority"), value: TOKEN.mintAuthority },
-    { label: t("launch.dexPair"), value: `${TOKEN.dex.pair} · ${TOKEN.dex.status}` },
+    { label: t("launch.freezeAuthority"), value: t("contractPage.freezeRevoked") },
+    { label: t("launch.mintAuthority"), value: t("contractPage.mintActive") },
+    { label: t("launch.dexPair"), value: `${TOKEN.dex.pair} · ${t("common.live")}` },
   ];
 
   const next = [

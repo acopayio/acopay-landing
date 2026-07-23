@@ -10,11 +10,11 @@ export function Tokenomics() {
     { label: t("tokenPage.ticker"), value: TOKEN.symbol },
     { label: t("tokenPage.decimals"), value: String(TOKEN.decimals) },
     { label: t("tokenPage.transferFee"), value: TOKEN.transferFee },
-    { label: t("tokenPage.freezeAuthority"), value: TOKEN.freezeAuthority },
-    { label: t("tokenPage.mintAuthority"), value: TOKEN.mintAuthority },
+    { label: t("tokenPage.freezeAuthority"), value: t("contractPage.freezeRevoked") },
+    { label: t("tokenPage.mintAuthority"), value: t("contractPage.mintActive") },
     { label: t("tokenPage.tokenStandard"), value: TOKEN.tokenStandard },
     { label: t("tokenPage.network"), value: TOKEN.network },
-    { label: t("tokenPage.dexPair"), value: `${TOKEN.dex.pair} · ${TOKEN.dex.status}` },
+    { label: t("tokenPage.dexPair"), value: `${TOKEN.dex.pair} · ${t("common.live")}` },
   ];
 
   return (

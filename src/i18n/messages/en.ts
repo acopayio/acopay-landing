@@ -145,6 +145,7 @@ export const en = {
     value: "Value",
     metric: "Metric",
     pending: "Pending",
+    live: "Live",
   },
   roadmap: {
     title: "Roadmap",
@@ -225,8 +226,8 @@ export const en = {
     website: "Website",
     contact: "Contact",
     freezeNote: "Freeze: {freeze} — wallets cannot be frozen. Mint: {mint} — supply can still increase.",
-    freezeRevoked: "revoked",
-    mintActive: "active",
+    freezeRevoked: "Revoked",
+    mintActive: "Active",
     solanaExplorer: "Solana Explorer ↗",
     howToBuy: "How to buy →",
     checkLabel: "Check",
