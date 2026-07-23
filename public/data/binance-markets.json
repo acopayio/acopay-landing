@@ -1,13 +1,7 @@
 {
   "updatedAt": "2026-07-23T11:58:05.905Z",
-  "source": "github-actions+binance+webshare",
+  "source": "binance",
   "pollMs": 600000,
-  "historyNote": "Static JSON on GitHub/CF Pages — website never calls VPS",
-  "proxy": {
-    "index": 2,
-    "total": 100,
-    "host": "145.223.40.166"
-  },
   "rows": [
     {
       "symbol": "USDCUSDT",

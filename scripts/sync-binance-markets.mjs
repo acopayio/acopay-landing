@@ -84,10 +84,8 @@ async function main() {
 
   const payload = {
     updatedAt: new Date().toISOString(),
-    source: "github-actions+binance+webshare",
+    source: "binance",
     pollMs: 600_000,
-    historyNote: "Static JSON on GitHub/CF Pages — website never calls VPS",
-    proxy: info,
     rows,
   };
 

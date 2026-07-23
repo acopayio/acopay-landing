@@ -172,12 +172,12 @@ export function TransfersExplorer() {
       <div className="space-y-2">
         <h3 className="text-lg font-semibold text-white">Token Transfers</h3>
         <p className="text-sm leading-relaxed text-[#9ca3af]">
-          ACOPAY transfers — last {historyDays} days (Solscan-style). Data from GitHub Actions →
-          Cloudflare Pages. Website never contacts VPS. No Helius.
+          Recent ACOPAY wallet transfers on Solana. Updated regularly — explore on Solscan for full
+          details.
         </p>
         <p className="text-xs text-[#6b7280]">
           {total.toLocaleString("en-US")} transfers
-          {!backfillComplete ? " · backfill in progress" : ""} · Updated {updated}
+          {!backfillComplete ? " · loading history…" : ""} · Updated {updated}
           <button
             type="button"
             onClick={() => refresh()}
@@ -289,7 +289,7 @@ export function TransfersExplorer() {
                 ? (
                     <tr>
                       <td colSpan={colCount} className="px-5 py-12 text-center text-sm text-[#9ca3af]">
-                        No ACOPAY transfers in ledger yet — GitHub Action will backfill (~10 min).
+                        No ACOPAY transfers found yet. Check back shortly.
                       </td>
                     </tr>
                   )

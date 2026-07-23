@@ -73,8 +73,7 @@ function OtcDeskPanel() {
       <div className="space-y-2">
         <h3 className="text-lg font-semibold text-white">OTC desk</h3>
         <p className="text-sm leading-relaxed text-[#9ca3af]">
-          Recent USDT → ACOPAY settles from the OTC bot ledger (Helius only for OTC buy settle —
-          separate from Transfers tab). Live rows coming next.
+          Recent USDT → ACOPAY settles from the official OTC desk. Live rows coming next.
         </p>
         <div className="flex flex-wrap gap-3">
           <Link to="/buy" className="btn-orca-primary !inline-flex !px-4 !py-2 !text-sm">

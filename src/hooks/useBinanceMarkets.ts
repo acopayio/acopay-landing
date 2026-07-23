@@ -24,7 +24,7 @@ export function useBinanceMarkets(refreshMs = 60_000) {
         rows: data.rows,
         updatedAt: data.updatedAt,
         loading: false,
-        error: data.error || (data.rows.length ? null : "No market rows yet — waiting for GitHub sync"),
+        error: data.error || (data.rows.length ? null : "No market rows yet"),
       });
     } catch (e) {
       setState((s) => ({

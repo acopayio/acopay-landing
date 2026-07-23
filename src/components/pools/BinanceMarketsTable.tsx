@@ -101,13 +101,12 @@ export function BinanceMarketsTable({ variant = "full", limit, embedded = false 
           <p className="label-orca">Spot</p>
           <h2 className="text-2xl font-bold text-white sm:text-3xl">Markets</h2>
           <p className="text-sm leading-relaxed text-[#9ca3af]">
-            Binance spot reference from GitHub-synced JSON (Cloudflare Pages). ACOPAY trades OTC —
-            see Buy / Telegram Pay. Website never contacts VPS.
+            Live Binance spot prices for reference. ACOPAY trades OTC — see Buy or Telegram Pay.
           </p>
         </div>
       )}
       <p className={`text-xs text-[#6b7280] ${embedded ? "" : "mt-2"}`}>
-        Binance · GitHub ledger · Updated {updated}
+        Binance · Updated {updated}
         <button
           type="button"
           onClick={() => refresh()}

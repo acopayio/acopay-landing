@@ -315,10 +315,10 @@ async function main() {
 
   const payload = {
     updatedAt: new Date().toISOString(),
-    source: "github-actions+solana-public-rpc+webshare",
+    source: "solana",
     mint: ACOPAY_MINT,
     historyDays: HISTORY_DAYS,
-    historyNote: "Static JSON on GitHub/CF Pages — website never calls VPS; Helius not used",
+    historyNote: "ACOPAY transfers ledger",
     backfillComplete,
     backfillBefore: backfillComplete ? null : backfillBefore,
     total: rows.length,
