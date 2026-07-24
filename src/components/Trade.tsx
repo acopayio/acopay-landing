@@ -48,7 +48,8 @@ export function Trade() {
               Raydium ↗
             </a>
           )}
-          <Link to="/contract" className="btn-orca-ghost">
+          {/* Contract: desktop only — mobile đã có trong footer / nav */}
+          <Link to="/contract" className="btn-orca-ghost hidden sm:inline-flex">
             {t("tradePage.contract")}
           </Link>
         </div>
