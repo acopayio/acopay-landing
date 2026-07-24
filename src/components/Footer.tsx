@@ -97,14 +97,7 @@ export function Footer() {
 
             <p className="text-[11px] leading-6 text-[#6b7280]">© {TOKEN.founded} ACOPAY</p>
             <span className="select-none" aria-hidden="true" />
-            <a
-              href={TOKEN.telegramPayUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="min-w-0 break-words text-[13px] leading-6 hover:text-[#00E5FF]"
-            >
-              {t("nav.telegramPay")} ↗
-            </a>
+            <span className="select-none" aria-hidden="true" />
           </div>
         </div>
 
