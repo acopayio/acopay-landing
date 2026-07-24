@@ -178,9 +178,8 @@ export function TransfersExplorer() {
         <h3 className="text-lg font-semibold text-white">{t("markets.transfersTitle")}</h3>
         <p className="text-sm leading-relaxed text-[#9ca3af]">{t("markets.transfersSubtitle")}</p>
         <p className="text-xs text-[#6b7280]">
-          {t("markets.transfersCount", { n: total.toLocaleString("en-US") })}
-          {!backfillComplete ? ` · ${t("markets.loadingHistory")}` : ""} · {t("markets.updated")}{" "}
-          {updated}
+          {!backfillComplete ? `${t("markets.loadingHistory")} · ` : ""}
+          {t("markets.updated")} {updated}
           <button
             type="button"
             onClick={() => refresh()}
