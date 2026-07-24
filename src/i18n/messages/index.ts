@@ -174,8 +174,12 @@ const partials: Record<string, DeepPartialMessages> = {
     roadmap: {
       title: "Lộ trình",
       subtitle: "Các cột mốc đến năm 2030.",
-      m2026Title: "Thanh khoản",
+      m2026Title: "Ra mắt",
       m2026Item0: "Pool ACOPAY/USDT live trên Raydium",
+      m2026Item1: "Mua ACOPAY trực tiếp trên website",
+      m2026Item2: "Mua ACOPAY qua Telegram Pay",
+      m2026Item3: "Liên kết ACOPAY với Telegram",
+      m2026Item4: "Liên kết ACOPAY với Phantom",
       m2026Alt: "Minh họa 3D pool thanh khoản ACOPAY",
       m2027Title: "Ứng dụng Pay",
       m2027Item0: "Ra mắt app mobile ACOPAY — thanh toán ngang hàng giữa người dùng trong hệ thống ACOPAY",
@@ -453,6 +457,12 @@ const partials: Record<string, DeepPartialMessages> = {
   },
   zh: {
     roadmap: {
+      m2026Title: "启航",
+      m2026Item0: "ACOPAY/USDT 池已在 Raydium 上线",
+      m2026Item1: "在官网直接购买 ACOPAY",
+      m2026Item2: "通过 Telegram Pay 购买 ACOPAY",
+      m2026Item3: "ACOPAY 已与 Telegram 关联",
+      m2026Item4: "ACOPAY 已与 Phantom 关联",
       m2027Title: "支付应用",
       m2027Item0: "推出 ACOPAY 手机应用 — 在 ACOPAY 网络内用户之间点对点支付",
       m2027Item1: "应用内钱包到钱包支付 — 在 Solana 上于 ACOPAY 体系内结算",
@@ -569,6 +579,12 @@ const partials: Record<string, DeepPartialMessages> = {
   },
   ja: {
     roadmap: {
+      m2026Title: "ローンチ",
+      m2026Item0: "RaydiumでACOPAY/USDTプール公開",
+      m2026Item1: "公式サイトでACOPAYを直接購入",
+      m2026Item2: "Telegram PayでACOPAYを購入",
+      m2026Item3: "ACOPAYとTelegramを連携",
+      m2026Item4: "ACOPAYとPhantomを連携",,
       m2027Title: "Payアプリ",
       m2027Item0: "ACOPAYモバイルアプリを公開 — ACOPAYネットワーク内でユーザー同士のP2P決済",
       m2027Item1: "アプリ内ウォレット間送金 — Solana上でACOPAYシステム内決済",
@@ -680,6 +696,12 @@ const partials: Record<string, DeepPartialMessages> = {
   },
   ko: {
     roadmap: {
+      m2026Title: "런칭",
+      m2026Item0: "Raydium ACOPAY/USDT 풀 라이브",
+      m2026Item1: "웹사이트에서 ACOPAY 직접 구매",
+      m2026Item2: "Telegram Pay로 ACOPAY 구매",
+      m2026Item3: "ACOPAY–Telegram 연동",
+      m2026Item4: "ACOPAY–Phantom 연동",,
       m2027Title: "Pay 앱",
       m2027Item0: "ACOPAY 모바일 앱 출시 — ACOPAY 네트워크 내 사용자 간 P2P 결제",
       m2027Item1: "앱 내 지갑 간 결제 — Solana에서 ACOPAY 시스템 내 정산",
@@ -791,6 +813,12 @@ const partials: Record<string, DeepPartialMessages> = {
   },
   es: {
     roadmap: {
+      m2026Title: "Lanzamiento",
+      m2026Item0: "Pool ACOPAY/USDT en vivo en Raydium",
+      m2026Item1: "Comprar ACOPAY directamente en la web",
+      m2026Item2: "Comprar ACOPAY vía Telegram Pay",
+      m2026Item3: "ACOPAY vinculado con Telegram",
+      m2026Item4: "ACOPAY vinculado con Phantom",,
       m2027Title: "App Pay",
       m2027Item0: "Lanzar la app móvil ACOPAY — pagos entre usuarios dentro de la red ACOPAY",
       m2027Item1: "Pago billetera a billetera en la app — liquidación en Solana dentro del sistema ACOPAY",
@@ -902,6 +930,12 @@ const partials: Record<string, DeepPartialMessages> = {
   },
   pt: {
     roadmap: {
+      m2026Title: "Lançamento",
+      m2026Item0: "Pool ACOPAY/USDT ao vivo na Raydium",
+      m2026Item1: "Comprar ACOPAY diretamente no site",
+      m2026Item2: "Comprar ACOPAY via Telegram Pay",
+      m2026Item3: "ACOPAY vinculado ao Telegram",
+      m2026Item4: "ACOPAY vinculado ao Phantom",,
       m2027Title: "App Pay",
       m2027Item0: "Lançar o app móvel ACOPAY — pagamentos entre usuários na rede ACOPAY",
       m2027Item1: "Pagamento carteira a carteira no app — liquidação na Solana dentro do sistema ACOPAY",
@@ -1013,6 +1047,12 @@ const partials: Record<string, DeepPartialMessages> = {
   },
   fr: {
     roadmap: {
+      m2026Title: "Lancement",
+      m2026Item0: "Pool ACOPAY/USDT en direct sur Raydium",
+      m2026Item1: "Acheter ACOPAY directement sur le site",
+      m2026Item2: "Acheter ACOPAY via Telegram Pay",
+      m2026Item3: "ACOPAY lié à Telegram",
+      m2026Item4: "ACOPAY lié à Phantom",,
       m2027Title: "App Pay",
       m2027Item0: "Lancer l’app mobile ACOPAY — paiements entre utilisateurs dans le réseau ACOPAY",
       m2027Item1: "Paiement portefeuille à portefeuille dans l’app — règlement sur Solana dans le système ACOPAY",
@@ -1124,6 +1164,12 @@ const partials: Record<string, DeepPartialMessages> = {
   },
   de: {
     roadmap: {
+      m2026Title: "Launch",
+      m2026Item0: "ACOPAY/USDT-Pool live auf Raydium",
+      m2026Item1: "ACOPAY direkt auf der Website kaufen",
+      m2026Item2: "ACOPAY über Telegram Pay kaufen",
+      m2026Item3: "ACOPAY mit Telegram verknüpft",
+      m2026Item4: "ACOPAY mit Phantom verknüpft",,
       m2027Title: "Pay-App",
       m2027Item0: "ACOPAY-Mobile-App starten — Peer-to-Peer-Zahlungen zwischen Nutzern im ACOPAY-Netzwerk",
       m2027Item1: "Wallet-zu-Wallet-Pay in der App — Abwicklung auf Solana im ACOPAY-System",
@@ -1235,6 +1281,12 @@ const partials: Record<string, DeepPartialMessages> = {
   },
   ru: {
     roadmap: {
+      m2026Title: "Запуск",
+      m2026Item0: "Пул ACOPAY/USDT live на Raydium",
+      m2026Item1: "Покупка ACOPAY прямо на сайте",
+      m2026Item2: "Покупка ACOPAY через Telegram Pay",
+      m2026Item3: "ACOPAY связан с Telegram",
+      m2026Item4: "ACOPAY связан с Phantom",,
       m2027Title: "Pay-приложение",
       m2027Item0: "Запуск мобильного приложения ACOPAY — P2P-платежи между пользователями в сети ACOPAY",
       m2027Item1: "Оплата кошелёк–кошелёк в приложении — расчёт в Solana внутри системы ACOPAY",
@@ -1346,6 +1398,12 @@ const partials: Record<string, DeepPartialMessages> = {
   },
   ar: {
     roadmap: {
+      m2026Title: "الإطلاق",
+      m2026Item0: "مجمع ACOPAY/USDT مباشر على Raydium",
+      m2026Item1: "شراء ACOPAY مباشرة من الموقع",
+      m2026Item2: "شراء ACOPAY عبر Telegram Pay",
+      m2026Item3: "ربط ACOPAY مع Telegram",
+      m2026Item4: "ربط ACOPAY مع Phantom",,
       m2027Title: "تطبيق الدفع",
       m2027Item0: "إطلاق تطبيق ACOPAY للجوال — مدفوعات بين المستخدمين داخل شبكة ACOPAY",
       m2027Item1: "دفع محفظة إلى محفظة داخل التطبيق — تسوية على Solana ضمن نظام ACOPAY",
@@ -1457,6 +1515,12 @@ const partials: Record<string, DeepPartialMessages> = {
   },
   th: {
     roadmap: {
+      m2026Title: "เปิดตัว",
+      m2026Item0: "พูล ACOPAY/USDT บน Raydium แล้ว",
+      m2026Item1: "ซื้อ ACOPAY โดยตรงบนเว็บไซต์",
+      m2026Item2: "ซื้อ ACOPAY ผ่าน Telegram Pay",
+      m2026Item3: "เชื่อม ACOPAY กับ Telegram",
+      m2026Item4: "เชื่อม ACOPAY กับ Phantom",,
       m2027Title: "แอป Pay",
       m2027Item0: "เปิดตัวแอปมือถือ ACOPAY — ชำระเงินระหว่างผู้ใช้ในเครือข่าย ACOPAY",
       m2027Item1: "จ่ายกระเป๋าถึงกระเป๋าในแอป — ชำระบน Solana ภายในระบบ ACOPAY",
@@ -1568,6 +1632,12 @@ const partials: Record<string, DeepPartialMessages> = {
   },
   id: {
     roadmap: {
+      m2026Title: "Peluncuran",
+      m2026Item0: "Pool ACOPAY/USDT live di Raydium",
+      m2026Item1: "Beli ACOPAY langsung di website",
+      m2026Item2: "Beli ACOPAY via Telegram Pay",
+      m2026Item3: "ACOPAY terhubung dengan Telegram",
+      m2026Item4: "ACOPAY terhubung dengan Phantom",,
       m2027Title: "Aplikasi Pay",
       m2027Item0: "Luncurkan aplikasi seluler ACOPAY — pembayaran peer-to-peer antar pengguna di jaringan ACOPAY",
       m2027Item1: "Bayar dompet-ke-dompet di aplikasi — settlement di Solana dalam sistem ACOPAY",

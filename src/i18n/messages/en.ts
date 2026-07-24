@@ -157,8 +157,12 @@ export const en = {
   roadmap: {
     title: "Roadmap",
     subtitle: "Milestones through 2030.",
-    m2026Title: "Liquidity",
+    m2026Title: "Launch",
     m2026Item0: "ACOPAY/USDT pool live on Raydium",
+    m2026Item1: "Buy ACOPAY directly on the website",
+    m2026Item2: "Buy ACOPAY via Telegram Pay",
+    m2026Item3: "ACOPAY linked with Telegram",
+    m2026Item4: "ACOPAY linked with Phantom",
     m2026Alt: "3D illustration of ACOPAY liquidity pool",
     m2027Title: "Pay App",
     m2027Item0: "Launch the ACOPAY mobile app for peer-to-peer payments between users inside the ACOPAY network",

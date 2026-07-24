@@ -4,7 +4,13 @@ const MILESTONES = [
   {
     year: "2026",
     titleKey: "roadmap.m2026Title",
-    itemKeys: ["roadmap.m2026Item0"],
+    itemKeys: [
+      "roadmap.m2026Item0",
+      "roadmap.m2026Item1",
+      "roadmap.m2026Item2",
+      "roadmap.m2026Item3",
+      "roadmap.m2026Item4",
+    ],
     art: "/assets/roadmap/2026-pool.png",
     altKey: "roadmap.m2026Alt",
     done: true,
