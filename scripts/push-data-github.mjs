@@ -111,10 +111,32 @@ async function putFile(relPath) {
 }
 
 export async function pushMarketsData(files = DEFAULT_FILES) {
+  // Cloudflare Pages cannot keep up if we commit every ~15s — throttle pushes.
+  const minInterval = Math.max(
+    30_000,
+    Number(process.env.MARKETS_PUSH_MIN_MS || process.env.PUSH_MIN_INTERVAL_MS || 120_000),
+  );
+  const stampPath = path.join(ROOT, ".markets-last-push");
+  let last = 0;
+  try {
+    last = Number(fs.readFileSync(stampPath, "utf8")) || 0;
+  } catch {
+    /* first run */
+  }
+  const now = Date.now();
+  if (last && now - last < minInterval) {
+    const waitSec = Math.ceil((minInterval - (now - last)) / 1000);
+    log(`[push] throttle skip (next in ~${waitSec}s, min=${Math.round(minInterval / 1000)}s)`);
+    return { pushed: 0, throttled: true };
+  }
+
   let pushed = 0;
   for (const f of files) {
     const r = await putFile(f);
     if (r.ok) pushed += 1;
+  }
+  if (pushed > 0 || !last) {
+    fs.writeFileSync(stampPath, String(now));
   }
   return { pushed };
 }
