@@ -289,7 +289,7 @@ export const en = {
     before2:
       "Do not withdraw USDT from Binance, OKX, Bybit, or other exchanges directly to this Buy page payment address. On-chain, the sender is the exchange wallet — so ACOPAY would go to the exchange, not to you.",
     before3:
-      "Send USDT the right way: exchange → your own wallet → then pay on the Buy page at acopay.net. Keep a little SOL for fees.",
+      "Send USDT the right way (if from an exchange): exchange → your own wallet → then pay on the Buy page at acopay.net. Keep a little SOL for fees.",
     before4: "Official site is acopay.net only. Confirm the mint on Solscan before you trust any other link or message.",
     before5: "Phantom may mark new tokens as spam. Your ACOPAY is still on-chain — open Manage tokens / spam settings and show ACOPAY, or check the balance on Solscan.",
     mintPrefix: "Official mint:",

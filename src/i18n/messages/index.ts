@@ -306,7 +306,7 @@ const partials: Record<string, DeepPartialMessages> = {
       before2:
         "Không rút USDT từ Binance, OKX, Bybit hay sàn khác thẳng vào địa chỉ thanh toán trên trang Mua này. On-chain, người gửi là ví của sàn — nên ACOPAY sẽ về ví sàn, không về ví của bạn.",
       before3:
-        "Gửi USDT đúng cách: sàn → ví của bạn → rồi thanh toán trên trang Mua acopay.net. Giữ một ít SOL cho phí.",
+        "Gửi USDT đúng cách (nếu từ sàn): sàn → ví của bạn → rồi thanh toán trên trang Mua acopay.net. Giữ một ít SOL cho phí.",
       before4: "Site chính thức chỉ là acopay.net. Đối chiếu mint trên Solscan trước khi tin link hay tin nhắn khác.",
       before5: "Phantom có thể gắn spam cho token mới. ACOPAY vẫn on-chain — mở Manage tokens / spam và hiện ACOPAY, hoặc xem số dư trên Solscan.",
       mintPrefix: "Mint chính thức:",
