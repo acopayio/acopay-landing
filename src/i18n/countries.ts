@@ -250,6 +250,11 @@ export function flagSrc(localeOrCc: string): string {
   return `/assets/flags/${cc}.png`;
 }
 
+/** Short country code for language trigger (e.g. vi → VN, en → US). */
+export function localeShortCode(locale: string): string {
+  return (LOCALE_FLAG_CC[locale] || locale).toUpperCase();
+}
+
 export type LanguageOption = {
   code: string;
   flagCc: string;

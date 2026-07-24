@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { TOKEN, explorerUrl, jupiterSwapUrl, solscanUrl } from "../config/token";
 import { useT } from "../i18n/LanguageProvider";
 import { BrandLogo } from "./BrandLogo";
+import { TELEGRAM_PAY_LABEL } from "./TelegramPayButton";
 
 const PRODUCT_LINKS = [
   { to: "/token", labelKey: "nav.token" },
@@ -185,7 +186,7 @@ export function Footer() {
                   rel="noopener noreferrer"
                   className="text-[var(--acopay-muted)] hover:text-[var(--acopay-brand)]"
                 >
-                  {t("nav.telegramPay")} ↗
+                  {TELEGRAM_PAY_LABEL} ↗
                 </a>
               </li>
             </ul>

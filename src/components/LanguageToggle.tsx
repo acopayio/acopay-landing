@@ -1,5 +1,5 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
-import { LANGUAGE_OPTIONS, LOCALE_ENGLISH_NAME } from "../i18n/countries";
+import { LANGUAGE_OPTIONS, LOCALE_ENGLISH_NAME, localeShortCode } from "../i18n/countries";
 import { useI18n } from "../i18n/LanguageProvider";
 import { FlagImg } from "./FlagImg";
 
@@ -15,6 +15,7 @@ export function LanguageToggle({ compact = false }: { compact?: boolean }) {
   const listId = useId();
 
   const englishName = LOCALE_ENGLISH_NAME[locale] || "English";
+  const shortCode = localeShortCode(locale);
 
   const updatePos = () => {
     const btn = btnRef.current;
@@ -77,7 +78,7 @@ export function LanguageToggle({ compact = false }: { compact?: boolean }) {
   }, [open, compact]);
 
   const triggerClass = compact
-    ? "inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-hover)] text-xs font-medium text-[var(--acopay-muted)] transition hover:border-[color:var(--acopay-border-strong)] hover:text-[var(--acopay-fg)]"
+    ? "inline-flex h-9 shrink-0 items-center gap-1.5 rounded-xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-hover)] px-2 text-xs font-semibold tracking-wide text-[var(--acopay-fg)] transition hover:border-[color:var(--acopay-border-strong)]"
     : `jup-sidebar-link w-full text-left ${open ? "jup-sidebar-link-active" : ""}`;
 
   return (
@@ -87,11 +88,11 @@ export function LanguageToggle({ compact = false }: { compact?: boolean }) {
         type="button"
         onClick={() => setOpen((v) => !v)}
         disabled={!ready}
-        aria-label={t("lang.aria")}
+        aria-label={ready ? `${t("lang.aria")}: ${englishName}` : t("lang.detecting")}
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-controls={listId}
-        title={t("lang.aria")}
+        title={ready ? englishName : t("lang.detecting")}
         className={triggerClass}
       >
         {ready ? (
@@ -99,8 +100,8 @@ export function LanguageToggle({ compact = false }: { compact?: boolean }) {
         ) : (
           <span className="inline-block h-[14px] w-[18px] rounded-[2px] bg-[var(--acopay-hover)]" aria-hidden />
         )}
-        <span className={compact ? "sr-only" : "truncate"}>
-          {ready ? t("lang.menu") : t("lang.detecting")}
+        <span className={compact ? "tabular-nums" : "truncate font-semibold tracking-wide"}>
+          {ready ? shortCode : "…"}
         </span>
       </button>
 

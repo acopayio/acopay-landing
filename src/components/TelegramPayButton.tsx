@@ -1,16 +1,20 @@
 import { TOKEN } from "../config/token";
 
+/** Brand label — same in every UI language. */
+export const TELEGRAM_PAY_LABEL = "Telegram Pay";
+
 type Props = {
   className?: string;
+  /** Defaults to "Telegram Pay" (not translated). */
   label?: string;
-  /** Show Telegram brand icon (mobile header / CTAs). */
+  /** Show Telegram brand icon next to the label. */
   showIcon?: boolean;
 };
 
 /** Opens official ACOPAY Telegram Pay bot. */
 export function TelegramPayButton({
   className = "btn-orca-secondary",
-  label = "Telegram Pay",
+  label = TELEGRAM_PAY_LABEL,
   showIcon = false,
 }: Props) {
   return (
@@ -23,8 +27,7 @@ export function TelegramPayButton({
       title={label}
     >
       {showIcon ? <TelegramGlyph /> : null}
-      {/* Mobile header: icon only — long i18n labels (e.g. VI) overflow the bar */}
-      <span className={showIcon ? "sr-only" : undefined}>{label}</span>
+      <span>{label}</span>
     </a>
   );
 }

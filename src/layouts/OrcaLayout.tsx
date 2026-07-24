@@ -1,6 +1,6 @@
 ﻿import { NavLink, Outlet, Link } from "react-router-dom";
 import type { ReactElement } from "react";
-import { TelegramPayButton } from "../components/TelegramPayButton";
+import { TELEGRAM_PAY_LABEL, TelegramPayButton } from "../components/TelegramPayButton";
 import { LanguageToggle } from "../components/LanguageToggle";
 import { ThemeToggle } from "../components/ThemeToggle";
 import { BrandLogo } from "../components/BrandLogo";
@@ -71,7 +71,7 @@ export function OrcaLayout() {
         <div className="mt-auto border-t border-[color:var(--acopay-border)] p-3">
           <TelegramPayButton
             className="btn-orca-primary w-full !rounded-xl !px-3"
-            label={t("nav.telegramPay")}
+            label={TELEGRAM_PAY_LABEL}
           />
         </div>
       </aside>
@@ -92,8 +92,8 @@ export function OrcaLayout() {
               </div>
               <TelegramPayButton
                 showIcon
-                label={t("nav.telegramPay")}
-                className="inline-flex !h-9 !w-9 shrink-0 items-center justify-center !rounded-lg !border !border-[color:var(--acopay-brand)]/45 !bg-[var(--acopay-brand-soft)] !p-0 !text-[var(--acopay-brand)] hover:!opacity-90"
+                label={TELEGRAM_PAY_LABEL}
+                className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-lg border border-[color:var(--acopay-brand)]/45 bg-[var(--acopay-brand-soft)] px-2.5 text-[11px] font-semibold leading-none text-[var(--acopay-brand)] hover:opacity-90"
               />
             </div>
           </div>
