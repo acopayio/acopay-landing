@@ -537,7 +537,7 @@ const partials: Record<string, DeepPartialMessages> = {
       contract: "コントラクト",
       roadmap: "ロードマップ",
       faq: "FAQ",
-      telegramPay: "Telegram Pay",
+      telegramPay: "Telegram決済",
       telegram: "Telegram",
     },
     lang: {
@@ -629,7 +629,7 @@ const partials: Record<string, DeepPartialMessages> = {
       contract: "컨트랙트",
       roadmap: "로드맵",
       faq: "FAQ",
-      telegramPay: "Telegram Pay",
+      telegramPay: "텔레그램 결제",
       telegram: "Telegram",
     },
     lang: {
@@ -721,7 +721,7 @@ const partials: Record<string, DeepPartialMessages> = {
       contract: "Contrato",
       roadmap: "Hoja de ruta",
       faq: "FAQ",
-      telegramPay: "Telegram Pay",
+      telegramPay: "Pago Telegram",
       telegram: "Telegram",
     },
     lang: {
@@ -813,7 +813,7 @@ const partials: Record<string, DeepPartialMessages> = {
       contract: "Contrato",
       roadmap: "Roadmap",
       faq: "FAQ",
-      telegramPay: "Telegram Pay",
+      telegramPay: "Pagamento Telegram",
       telegram: "Telegram",
     },
     lang: {
@@ -905,7 +905,7 @@ const partials: Record<string, DeepPartialMessages> = {
       contract: "Contrat",
       roadmap: "Feuille de route",
       faq: "FAQ",
-      telegramPay: "Telegram Pay",
+      telegramPay: "Paiement Telegram",
       telegram: "Telegram",
     },
     lang: {
@@ -997,7 +997,7 @@ const partials: Record<string, DeepPartialMessages> = {
       contract: "Vertrag",
       roadmap: "Roadmap",
       faq: "FAQ",
-      telegramPay: "Telegram Pay",
+      telegramPay: "Telegram-Zahlung",
       telegram: "Telegram",
     },
     lang: {
@@ -1089,7 +1089,7 @@ const partials: Record<string, DeepPartialMessages> = {
       contract: "Контракт",
       roadmap: "Roadmap",
       faq: "FAQ",
-      telegramPay: "Telegram Pay",
+      telegramPay: "Оплата Telegram",
       telegram: "Telegram",
     },
     lang: {
@@ -1181,7 +1181,7 @@ const partials: Record<string, DeepPartialMessages> = {
       contract: "العقد",
       roadmap: "الخطة",
       faq: "الأسئلة",
-      telegramPay: "Telegram Pay",
+      telegramPay: "دفع Telegram",
       telegram: "Telegram",
     },
     lang: {
@@ -1273,7 +1273,7 @@ const partials: Record<string, DeepPartialMessages> = {
       contract: "สัญญา",
       roadmap: "โรดแมป",
       faq: "FAQ",
-      telegramPay: "Telegram Pay",
+      telegramPay: "ชำระผ่าน Telegram",
       telegram: "Telegram",
     },
     lang: {
@@ -1365,7 +1365,7 @@ const partials: Record<string, DeepPartialMessages> = {
       contract: "Kontrak",
       roadmap: "Roadmap",
       faq: "FAQ",
-      telegramPay: "Telegram Pay",
+      telegramPay: "Bayar Telegram",
       telegram: "Telegram",
     },
     lang: {
