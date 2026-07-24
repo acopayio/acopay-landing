@@ -33,11 +33,13 @@ export function SortTh<K extends string>({
   sortKey: K;
   sortDir: SortDir;
   onSort: (col: K) => void;
-  align?: "left" | "right";
+  align?: "left" | "right" | "center";
 }) {
   const active = sortKey === col;
+  const alignCls =
+    align === "right" ? "text-right" : align === "center" ? "text-center" : "text-left";
   return (
-    <th className={`px-5 py-4 ${align === "right" ? "text-right" : "text-left"}`}>
+    <th className={`px-5 py-4 ${alignCls}`}>
       <button
         type="button"
         onClick={() => onSort(col)}

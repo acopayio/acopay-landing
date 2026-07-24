@@ -91,7 +91,7 @@ function ExtLink({ href }: { href: string }) {
 function AddrCell({ addr, full }: { addr: string; full: boolean }) {
   if (!addr) return <span className="text-[#6b7280]">—</span>;
   return (
-    <span className="inline-flex max-w-full items-center gap-1">
+    <span className="inline-flex max-w-full items-center justify-center gap-1">
       <CopyIconBtn text={addr} label="address" />
       <a
         href={solscanAccount(addr)}
@@ -244,6 +244,7 @@ export function TransfersExplorer() {
                 sortKey={sortKey}
                 sortDir={sortDir}
                 onSort={onSort}
+                align="center"
               />
               {opts.showAge && (
                 <SortTh
@@ -252,6 +253,7 @@ export function TransfersExplorer() {
                   sortKey={sortKey}
                   sortDir={sortDir}
                   onSort={onSort}
+                  align="center"
                 />
               )}
               {opts.showBlock && (
@@ -261,6 +263,7 @@ export function TransfersExplorer() {
                   sortKey={sortKey}
                   sortDir={sortDir}
                   onSort={onSort}
+                  align="center"
                 />
               )}
               <SortTh
@@ -269,6 +272,7 @@ export function TransfersExplorer() {
                 sortKey={sortKey}
                 sortDir={sortDir}
                 onSort={onSort}
+                align="center"
               />
               <SortTh
                 label={t("markets.destination")}
@@ -276,6 +280,7 @@ export function TransfersExplorer() {
                 sortKey={sortKey}
                 sortDir={sortDir}
                 onSort={onSort}
+                align="center"
               />
               <SortTh
                 label={t("markets.amount")}
@@ -283,8 +288,9 @@ export function TransfersExplorer() {
                 sortKey={sortKey}
                 sortDir={sortDir}
                 onSort={onSort}
+                align="center"
               />
-              <th className="px-5 py-4 text-left text-[11px] font-semibold uppercase tracking-wider text-[#9ca3af]">
+              <th className="px-5 py-4 text-center text-[11px] font-semibold uppercase tracking-wider text-[#9ca3af]">
                 {t("markets.result")}
               </th>
             </tr>
@@ -346,8 +352,8 @@ function TransferRow({ row, opts }: { row: AcopayTransferRow; opts: ViewOpts }) 
   const ok = (row.status || "success") === "success";
   return (
     <tr className="border-b border-white/[0.04] transition hover:bg-white/[0.03]">
-      <td className="px-5 py-3.5">
-        <span className="inline-flex max-w-full items-center gap-1">
+      <td className="px-5 py-3.5 text-center">
+        <span className="inline-flex max-w-full items-center justify-center gap-1">
           <CopyIconBtn text={row.signature} label="signature" />
           <a
             href={row.href}
@@ -362,14 +368,14 @@ function TransferRow({ row, opts }: { row: AcopayTransferRow; opts: ViewOpts }) 
         </span>
       </td>
       {opts.showAge && (
-        <td className="px-5 py-3.5 text-sm text-[#9ca3af]" title={row.time}>
+        <td className="px-5 py-3.5 text-center text-sm text-[#9ca3af]" title={row.time}>
           {fmtAge(row.timestamp)}
         </td>
       )}
       {opts.showBlock && (
-        <td className="px-5 py-3.5">
+        <td className="px-5 py-3.5 text-center">
           {row.slot && row.slot > 0 ? (
-            <span className="inline-flex items-center gap-1">
+            <span className="inline-flex items-center justify-center gap-1">
               <a
                 href={solscanBlock(row.slot)}
                 target="_blank"
@@ -385,14 +391,14 @@ function TransferRow({ row, opts }: { row: AcopayTransferRow; opts: ViewOpts }) 
           )}
         </td>
       )}
-      <td className="px-5 py-3.5">
+      <td className="px-5 py-3.5 text-center">
         <AddrCell addr={row.from} full={opts.fullAddress} />
       </td>
-      <td className="px-5 py-3.5">
+      <td className="px-5 py-3.5 text-center">
         <AddrCell addr={row.to} full={opts.fullAddress} />
       </td>
-      <td className="px-5 py-3.5">
-        <span className="inline-flex items-center gap-2 text-sm text-white">
+      <td className="px-5 py-3.5 text-center">
+        <span className="inline-flex items-center justify-center gap-2 text-sm text-white">
           <img
             src="/assets/logo.png"
             alt=""
@@ -407,7 +413,7 @@ function TransferRow({ row, opts }: { row: AcopayTransferRow; opts: ViewOpts }) 
           </span>
         </span>
       </td>
-      <td className="px-5 py-3.5">
+      <td className="px-5 py-3.5 text-center">
         <span
           className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${
             ok
