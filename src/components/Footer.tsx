@@ -43,55 +43,68 @@ export function Footer() {
             </Link>
           </div>
 
-          <div className="mt-5 grid grid-cols-2 gap-x-6 gap-y-4">
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#00E5FF]">
-                {t("footer.product")}
-              </p>
-              <ul className="mt-2 columns-2 gap-x-4 text-sm leading-7 text-[#9ca3af]">
-                {PRODUCT_LINKS.map((l) => (
-                  <li key={l.to}>
-                    <Link to={l.to} className="hover:text-[#00E5FF]">
-                      {t(l.labelKey)}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-3 text-[11px] text-[#6b7280]">© {TOKEN.founded} ACOPAY</p>
-            </div>
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#00E5FF]">
-                {t("footer.onChain")}
-              </p>
-              <ul className="mt-2 space-y-1.5 text-sm text-[#9ca3af]">
-                <li>
-                  <a href={explorerUrl()} target="_blank" rel="noopener noreferrer" className="hover:text-[#00E5FF]">
-                    {t("hero.explorer")}
-                  </a>
-                </li>
-                <li>
-                  <a href={solscanUrl()} target="_blank" rel="noopener noreferrer" className="hover:text-[#00E5FF]">
-                    {t("hero.solscan")}
-                  </a>
-                </li>
-                <li>
-                  {jup ? (
-                    <a href={jup} target="_blank" rel="noopener noreferrer" className="hover:text-[#00E5FF]">
-                      Jupiter ↗
-                    </a>
-                  ) : (
-                    <Link to="/trade" className="hover:text-[#00E5FF]">
-                      {t("nav.trade")}
-                    </Link>
-                  )}
-                </li>
-                <li>
-                  <a href={TOKEN.telegramPayUrl} target="_blank" rel="noopener noreferrer" className="hover:text-[#00E5FF]">
-                    {t("nav.telegramPay")} ↗
-                  </a>
-                </li>
-              </ul>
-            </div>
+          <div className="mt-5 grid grid-cols-3 gap-x-3 gap-y-2.5 text-sm leading-6 text-[#9ca3af]">
+            <Link to="/token" className="hover:text-[#00E5FF]">
+              {t("nav.token")}
+            </Link>
+            <Link to="/contract" className="hover:text-[#00E5FF]">
+              {t("nav.contract")}
+            </Link>
+            <a
+              href={explorerUrl()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[#00E5FF]"
+            >
+              {t("hero.explorer")}
+            </a>
+
+            <Link to="/markets" className="hover:text-[#00E5FF]">
+              {t("nav.markets")}
+            </Link>
+            <Link to="/roadmap" className="hover:text-[#00E5FF]">
+              {t("nav.roadmap")}
+            </Link>
+            <a
+              href={solscanUrl()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[#00E5FF]"
+            >
+              {t("hero.solscan")}
+            </a>
+
+            <Link to="/trade" className="hover:text-[#00E5FF]">
+              {t("nav.trade")}
+            </Link>
+            <Link to="/faq" className="hover:text-[#00E5FF]">
+              {t("nav.faq")}
+            </Link>
+            {jup ? (
+              <a
+                href={jup}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[#00E5FF]"
+              >
+                Jupiter ↗
+              </a>
+            ) : (
+              <Link to="/trade" className="hover:text-[#00E5FF]">
+                {t("nav.trade")}
+              </Link>
+            )}
+
+            <p className="text-[11px] leading-6 text-[#6b7280]">© {TOKEN.founded} ACOPAY</p>
+            <span className="select-none" aria-hidden="true" />
+            <a
+              href={TOKEN.telegramPayUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="min-w-0 break-words text-[13px] leading-6 hover:text-[#00E5FF]"
+            >
+              {t("nav.telegramPay")} ↗
+            </a>
           </div>
         </div>
 
