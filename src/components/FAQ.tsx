@@ -1,4 +1,4 @@
-﻿import { TOKEN } from "../config/token";
+import { TOKEN } from "../config/token";
 import { useT } from "../i18n/LanguageProvider";
 
 const FAQ_KEYS = [
@@ -33,22 +33,22 @@ export function FAQ() {
   return (
     <section id="faq" className="section-pad">
       <div className="page-wrap">
-        <h2 className="text-3xl font-bold text-white sm:text-4xl">{t("faq.title")}</h2>
+        <h2 className="text-3xl font-bold text-[var(--acopay-fg)] sm:text-4xl">{t("faq.title")}</h2>
 
         <div className="mt-10 space-y-2">
           {FAQ_KEYS.map(([qKey, aKey], i) => (
             <details
               key={qKey}
-              className="orca-card group overflow-hidden !rounded-2xl open:ring-1 open:ring-[#00E5FF]/20"
+              className="orca-card group overflow-hidden !rounded-2xl open:ring-1 open:ring-[color:var(--acopay-brand)]/20"
               open={i === 0}
             >
-              <summary className="cursor-pointer list-none px-5 py-4 font-semibold text-white [&::-webkit-details-marker]:hidden">
+              <summary className="cursor-pointer list-none px-5 py-4 font-semibold text-[var(--acopay-fg)] [&::-webkit-details-marker]:hidden">
                 <span className="flex items-center justify-between gap-4">
                   {t(qKey)}
-                  <span className="text-[#00E5FF] transition group-open:rotate-45">+</span>
+                  <span className="text-[var(--acopay-brand)] transition group-open:rotate-45">+</span>
                 </span>
               </summary>
-              <p className="border-t border-white/[0.06] px-5 py-4 text-sm leading-relaxed text-[#9ca3af]">
+              <p className="border-t border-[color:var(--acopay-border)] px-5 py-4 text-sm leading-relaxed text-[var(--acopay-muted)]">
                 {t(aKey, answerVars(aKey))}
               </p>
             </details>

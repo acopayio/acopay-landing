@@ -129,8 +129,8 @@ export function LinkWalletPage() {
     <section className="section-pad">
       <div className="page-wrap mx-auto max-w-lg">
         <p className="label-orca">{t("linkWallet.kicker")}</p>
-        <h1 className="mt-2 text-3xl font-bold text-white">{t("linkWallet.title")}</h1>
-        <p className="mt-3 text-sm leading-relaxed text-[#9ca3af]">{t("linkWallet.intro")}</p>
+        <h1 className="mt-2 text-3xl font-bold text-[var(--acopay-fg)]">{t("linkWallet.title")}</h1>
+        <p className="mt-3 text-sm leading-relaxed text-[var(--acopay-muted)]">{t("linkWallet.intro")}</p>
 
         {badBrowser && (
           <div className="mt-6 space-y-3 rounded-2xl border border-amber-500/40 bg-amber-500/10 p-4 text-sm text-amber-50">
@@ -147,9 +147,9 @@ export function LinkWalletPage() {
         )}
 
         {needsOpenInPhantom && message && !expired && (
-          <div className="mt-6 space-y-3 rounded-2xl border border-[#00E5FF]/30 bg-[#00E5FF]/5 p-4 text-sm text-[#e5e7eb]">
-            <p className="font-semibold text-white">{t("linkWallet.mobileTitle")}</p>
-            <p className="leading-relaxed text-[#9ca3af]">{t("linkWallet.mobileBody")}</p>
+          <div className="mt-6 space-y-3 rounded-2xl border border-[color:var(--acopay-brand)]/30 bg-[#00E5FF]/5 p-4 text-sm text-[var(--acopay-fg)]">
+            <p className="font-semibold text-[var(--acopay-fg)]">{t("linkWallet.mobileTitle")}</p>
+            <p className="leading-relaxed text-[var(--acopay-muted)]">{t("linkWallet.mobileBody")}</p>
           </div>
         )}
 
@@ -159,14 +159,14 @@ export function LinkWalletPage() {
           </p>
         ) : (
           <div className="mt-8 space-y-4">
-            <div className="rounded-2xl border border-white/[0.08] bg-[#0c1017]/80 p-4">
-              <p className="text-xs font-semibold uppercase tracking-wider text-[#6b7280]">
+            <div className="rounded-2xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-bg)]/80 p-4">
+              <p className="text-xs font-semibold uppercase tracking-wider text-[var(--acopay-faint)]">
                 {t("linkWallet.messageLabel")}
               </p>
-              <pre className="mt-2 whitespace-pre-wrap break-all font-mono text-xs text-[#e5e7eb]">
+              <pre className="mt-2 whitespace-pre-wrap break-all font-mono text-xs text-[var(--acopay-fg)]">
                 {message}
               </pre>
-              <p className="mt-2 text-[11px] text-[#6b7280]">{t("linkWallet.telegramId", { tg })}</p>
+              <p className="mt-2 text-[11px] text-[var(--acopay-faint)]">{t("linkWallet.telegramId", { tg })}</p>
             </div>
 
             {expired && <p className="text-sm text-amber-300">{t("linkWallet.expired")}</p>}
@@ -180,11 +180,11 @@ export function LinkWalletPage() {
                 >
                   {t("linkWallet.openInPhantom")}
                 </a>
-                <p className="text-xs text-[#9ca3af]">
+                <p className="text-xs text-[var(--acopay-muted)]">
                   {t("linkWallet.noApp")}{" "}
                   <a
                     href="https://phantom.com/download"
-                    className="text-[#00E5FF] hover:underline"
+                    className="text-[var(--acopay-brand)] hover:underline"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -204,11 +204,11 @@ export function LinkWalletPage() {
                 </button>
 
                 {!badBrowser && !hasProvider && (
-                  <p className="text-xs text-[#9ca3af]">
+                  <p className="text-xs text-[var(--acopay-muted)]">
                     {t("linkWallet.needPhantom")}{" "}
                     <a
                       href="https://phantom.com/download"
-                      className="text-[#00E5FF] hover:underline"
+                      className="text-[var(--acopay-brand)] hover:underline"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -222,13 +222,13 @@ export function LinkWalletPage() {
             {error && <p className="text-sm text-amber-300">{error}</p>}
 
             {linkOk && (
-              <div className="space-y-3 rounded-2xl border border-[#00E5FF]/25 bg-[#00E5FF]/05 p-4">
-                <p className="text-sm font-semibold text-white">
+              <div className="space-y-3 rounded-2xl border border-[color:var(--acopay-brand)]/25 bg-[#00E5FF]/05 p-4">
+                <p className="text-sm font-semibold text-[var(--acopay-fg)]">
                   {t("linkWallet.signed")}
                   {pubkey ? ` · ${pubkey.slice(0, 4)}…${pubkey.slice(-4)}` : ""}
                 </p>
-                <p className="text-xs text-[#9ca3af]">{t("linkWallet.pasteHint")}</p>
-                <code className="block break-all rounded-xl bg-[#0c1017] px-3 py-3 font-mono text-[11px] text-[#e5e7eb]">
+                <p className="text-xs text-[var(--acopay-muted)]">{t("linkWallet.pasteHint")}</p>
+                <code className="block break-all rounded-xl bg-[var(--acopay-bg)] px-3 py-3 font-mono text-[11px] text-[var(--acopay-fg)]">
                   {linkOk}
                 </code>
                 <div className="flex flex-wrap gap-2">

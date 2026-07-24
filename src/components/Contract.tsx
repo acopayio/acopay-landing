@@ -1,4 +1,4 @@
-﻿import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { TOKEN, explorerUrl, isMintLive, mintDisplay, solscanUrl } from "../config/token";
 import { useCopy } from "../hooks/useCopy";
 import { useT } from "../i18n/LanguageProvider";
@@ -34,8 +34,8 @@ export function Contract() {
   return (
     <section id="contract" className="section-pad">
       <div className="page-wrap">
-        <h2 className="text-3xl font-bold text-white sm:text-4xl">{t("contractPage.title")}</h2>
-        <p className="mt-3 max-w-xl text-[#9ca3af]">{t("contractPage.subtitle")}</p>
+        <h2 className="text-3xl font-bold text-[var(--acopay-fg)] sm:text-4xl">{t("contractPage.title")}</h2>
+        <p className="mt-3 max-w-xl text-[var(--acopay-muted)]">{t("contractPage.subtitle")}</p>
 
         <div className="mt-8 grid gap-4 lg:grid-cols-[1.4fr_1fr]">
           <div className="pools-table">
@@ -47,11 +47,11 @@ export function Contract() {
                 </tr>
               </thead>
               <tbody>
-                <tr className="bg-[#00E5FF]/[0.04]">
-                  <td className="font-medium text-[#9ca3af]">{t("contractPage.contractAddress")}</td>
+                <tr className="bg-[var(--acopay-brand-soft)]">
+                  <td className="font-medium text-[var(--acopay-muted)]">{t("contractPage.contractAddress")}</td>
                   <td>
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-                      <code className="break-all font-mono text-xs text-[#00E5FF] sm:text-sm">
+                      <code className="break-all font-mono text-xs text-[var(--acopay-brand)] sm:text-sm">
                         {mint}
                       </code>
                       <button
@@ -67,19 +67,19 @@ export function Contract() {
                 </tr>
                 {rows.map(([key, val]) => (
                   <tr key={key}>
-                    <td className="font-medium text-[#9ca3af]">{key}</td>
-                    <td className="font-semibold text-white">{val}</td>
+                    <td className="font-medium text-[var(--acopay-muted)]">{key}</td>
+                    <td className="font-semibold text-[var(--acopay-fg)]">{val}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
-            <p className="border-t border-white/[0.06] px-5 py-3 text-xs leading-relaxed text-[#9ca3af]">
+            <p className="border-t border-[color:var(--acopay-border)] px-5 py-3 text-xs leading-relaxed text-[var(--acopay-muted)]">
               {t("contractPage.freezeNote", {
                 freeze: t("contractPage.freezeRevoked"),
                 mint: t("contractPage.mintActive"),
               })}
             </p>
-            <div className="flex flex-wrap gap-2 border-t border-white/[0.06] px-5 py-4">
+            <div className="flex flex-wrap gap-2 border-t border-[color:var(--acopay-border)] px-5 py-4">
               <a
                 href={explorerUrl()}
                 target="_blank"
@@ -104,20 +104,20 @@ export function Contract() {
 
           <div className="orca-card h-fit p-6">
             <p className="label-orca">{t("contractPage.checkLabel")}</p>
-            <h3 className="mt-2 text-lg font-bold text-white">{t("contractPage.confirmTitle")}</h3>
+            <h3 className="mt-2 text-lg font-bold text-[var(--acopay-fg)]">{t("contractPage.confirmTitle")}</h3>
             <ol className="mt-5 space-y-4">
               {verifySteps.map((step, i) => (
-                <li key={step} className="flex gap-3 text-sm leading-relaxed text-[#9ca3af]">
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#00E5FF]/15 text-xs font-bold text-[#00E5FF]">
+                <li key={step} className="flex gap-3 text-sm leading-relaxed text-[var(--acopay-muted)]">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--acopay-brand-soft)] text-xs font-bold text-[var(--acopay-brand)]">
                     {i + 1}
                   </span>
                   {step}
                 </li>
               ))}
             </ol>
-            <p className="mt-6 text-xs text-[#6b7280]">
+            <p className="mt-6 text-xs text-[var(--acopay-faint)]">
               {t("contractPage.contactPrefix")}{" "}
-              <a href={`mailto:${TOKEN.email}`} className="text-[#00E5FF] hover:underline">
+              <a href={`mailto:${TOKEN.email}`} className="text-[var(--acopay-brand)] hover:underline">
                 {TOKEN.email}
               </a>
             </p>

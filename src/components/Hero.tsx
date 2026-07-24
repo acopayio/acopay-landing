@@ -1,4 +1,4 @@
-﻿import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { TOKEN, explorerUrl, isMintLive, mintDisplay, solscanUrl } from "../config/token";
 import { BuyButton } from "./BuyButton";
 import { useCopy } from "../hooks/useCopy";
@@ -17,11 +17,11 @@ export function Hero() {
         <div>
           <p className="label-orca">{t("hero.eyebrow")}</p>
           <div className="mt-2 w-fit max-w-full">
-            <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">
+            <h1 className="text-4xl font-bold tracking-tight text-[var(--acopay-fg)] sm:text-5xl md:text-6xl">
               {TOKEN.name}
             </h1>
             <p
-              className="mt-2 flex w-full justify-between text-[0.95rem] font-semibold leading-none text-[#00E5FF] sm:text-[1.2rem] md:text-[1.45rem]"
+              className="mt-2 flex w-full justify-between text-[0.95rem] font-semibold leading-none text-[var(--acopay-brand)] sm:text-[1.2rem] md:text-[1.45rem]"
               aria-label={TOKEN.tagline}
             >
               {Array.from(TOKEN.tagline).map((ch, i) => (
@@ -31,17 +31,17 @@ export function Hero() {
               ))}
             </p>
           </div>
-          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[#9ca3af] sm:text-base">
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[var(--acopay-muted)] sm:text-base">
             {t("hero.desc")}{" "}
-            <span className="inline-flex flex-wrap items-center gap-x-1 gap-y-0.5 text-[#c4c9d4]">
+            <span className="inline-flex flex-wrap items-center gap-x-1 gap-y-0.5 text-[var(--acopay-muted)]">
               <span>{t("hero.feeLabel")}</span>
-              <span className="font-semibold tabular-nums text-white">{TOKEN.transferFee}</span>
+              <span className="font-semibold tabular-nums text-[var(--acopay-fg)]">{TOKEN.transferFee}</span>
               <img
                 src="/assets/logo.png"
                 alt=""
                 className="inline-block h-3.5 w-3.5 shrink-0 object-contain sm:h-4 sm:w-4"
               />
-              <span className="font-semibold tracking-tight text-white">ACOPAY</span>
+              <span className="font-semibold tracking-tight text-[var(--acopay-fg)]">ACOPAY</span>
             </span>
           </p>
 
@@ -76,15 +76,15 @@ export function Hero() {
 
         <div className="orca-card p-4 sm:p-5">
           <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-            <p className="text-xs font-semibold uppercase tracking-wider text-[#00E5FF]">
+            <p className="text-xs font-semibold uppercase tracking-wider text-[var(--acopay-brand)]">
               {t("hero.contractAddress")}
             </p>
-            <Link to="/contract" className="text-xs font-medium text-[#9ca3af] hover:text-white">
+            <Link to="/contract" className="text-xs font-medium text-[var(--acopay-muted)] hover:text-[var(--acopay-fg)]">
               {t("hero.details")}
             </Link>
           </div>
           <div className="flex flex-col gap-3 sm:flex-row sm:items-stretch">
-            <code className="flex min-w-0 flex-1 items-center break-all rounded-xl bg-[#0c1017] px-3 py-3 font-mono text-xs text-[#e5e7eb] ring-1 ring-white/[0.06] sm:px-4 sm:text-sm">
+            <code className="flex min-w-0 flex-1 items-center break-all rounded-xl bg-[var(--acopay-bg)] px-3 py-3 font-mono text-xs text-[var(--acopay-fg)] ring-1 ring-[color:var(--acopay-border)] sm:px-4 sm:text-sm">
               {mint}
             </code>
             <button

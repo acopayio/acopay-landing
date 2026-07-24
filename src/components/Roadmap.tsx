@@ -47,7 +47,7 @@ export function Roadmap() {
   const t = useT();
 
   return (
-    <section id="roadmap" className="section-pad relative overflow-hidden border-t border-white/[0.05]">
+    <section id="roadmap" className="section-pad relative overflow-hidden border-t border-[color:var(--acopay-border)]">
       <div
         className="pointer-events-none absolute inset-0 opacity-40"
         aria-hidden
@@ -58,8 +58,8 @@ export function Roadmap() {
       />
 
       <div className="page-wrap relative">
-        <h2 className="text-3xl font-bold text-white sm:text-4xl">{t("roadmap.title")}</h2>
-        <p className="mt-3 max-w-xl text-[#9ca3af]">{t("roadmap.subtitle")}</p>
+        <h2 className="text-3xl font-bold text-[var(--acopay-fg)] sm:text-4xl">{t("roadmap.title")}</h2>
+        <p className="mt-3 max-w-xl text-[var(--acopay-muted)]">{t("roadmap.subtitle")}</p>
 
         <ol className="roadmap-rail mt-10">
           {MILESTONES.map((m, i) => (
@@ -75,14 +75,14 @@ export function Roadmap() {
 
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                    <span className="text-2xl font-bold tabular-nums tracking-tight text-[#00E5FF]">
+                    <span className="text-2xl font-bold tabular-nums tracking-tight text-[var(--acopay-brand)]">
                       {m.year}
                     </span>
-                    <span className="text-xs font-semibold uppercase tracking-[0.14em] text-[#6b7280]">
+                    <span className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--acopay-faint)]">
                       {t(m.titleKey)}
                     </span>
                     {m.done && (
-                      <span className="rounded-md bg-[#00E5FF]/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[#00E5FF]">
+                      <span className="rounded-md bg-[var(--acopay-brand-soft)] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[var(--acopay-brand)]">
                         {t("common.done")}
                       </span>
                     )}
@@ -91,7 +91,7 @@ export function Roadmap() {
                     {m.itemKeys.map((key) => (
                       <li
                         key={key}
-                        className="flex gap-2 text-sm leading-relaxed text-[#e5e7eb] sm:text-base"
+                        className="flex gap-2 text-sm leading-relaxed text-[var(--acopay-fg)] sm:text-base"
                       >
                         <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-[#00E5FF]" aria-hidden />
                         <span>{t(key)}</span>

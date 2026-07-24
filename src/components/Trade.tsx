@@ -1,4 +1,4 @@
-﻿import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { jupiterSwapUrl, raydiumSwapUrl } from "../config/token";
 import { useT } from "../i18n/LanguageProvider";
 
@@ -17,8 +17,8 @@ export function Trade() {
     <section className="section-pad">
       <div className="page-wrap">
         <p className="label-orca">{t("tradePage.label")}</p>
-        <h2 className="mt-2 text-3xl font-bold text-white sm:text-4xl">{t("tradePage.title")}</h2>
-        <p className="mt-3 max-w-xl text-[#9ca3af]">{t("tradePage.subtitle")}</p>
+        <h2 className="mt-2 text-3xl font-bold text-[var(--acopay-fg)] sm:text-4xl">{t("tradePage.title")}</h2>
+        <p className="mt-3 max-w-xl text-[var(--acopay-muted)]">{t("tradePage.subtitle")}</p>
 
         <ol className="mt-10 space-y-3">
           {steps.map((step, i) => (
@@ -27,8 +27,8 @@ export function Trade() {
                 {i + 1}
               </span>
               <div>
-                <h3 className="font-semibold text-white">{step.title}</h3>
-                <p className="mt-1 text-sm leading-relaxed text-[#9ca3af]">{step.desc}</p>
+                <h3 className="font-semibold text-[var(--acopay-fg)]">{step.title}</h3>
+                <p className="mt-1 text-sm leading-relaxed text-[var(--acopay-muted)]">{step.desc}</p>
               </div>
             </li>
           ))}

@@ -36,13 +36,13 @@ function CoinIcon({ row }: { row: BinanceMarketRow }) {
       <img
         src={row.imageUrl}
         alt=""
-        className="h-9 w-9 rounded-full object-cover ring-2 ring-[#191c22]"
+        className="h-9 w-9 rounded-full object-cover ring-2 ring-[color:var(--acopay-surface)]"
         loading="lazy"
       />
     );
   }
   return (
-    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#0c1017] text-[10px] font-bold text-[#00E5FF] ring-2 ring-[#191c22]">
+    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--acopay-bg)] text-[10px] font-bold text-[var(--acopay-brand)] ring-2 ring-[color:var(--acopay-surface)]">
       {row.base.slice(0, 3)}
     </div>
   );
@@ -102,17 +102,17 @@ export function BinanceMarketsTable({ variant = "full", limit, embedded = false 
       {!embedded && (
         <div className="space-y-3">
           <p className="label-orca">{t("markets.spot")}</p>
-          <h2 className="text-2xl font-bold text-white sm:text-3xl">{t("markets.title")}</h2>
-          <p className="text-sm leading-relaxed text-[#9ca3af]">{t("markets.spotSubtitle")}</p>
+          <h2 className="text-2xl font-bold text-[var(--acopay-fg)] sm:text-3xl">{t("markets.title")}</h2>
+          <p className="text-sm leading-relaxed text-[var(--acopay-muted)]">{t("markets.spotSubtitle")}</p>
         </div>
       )}
-      <p className={`text-xs text-[#6b7280] ${embedded ? "" : "mt-2"}`}>
+      <p className={`text-xs text-[var(--acopay-faint)] ${embedded ? "" : "mt-2"}`}>
         {t("markets.spot")} · {t("markets.updated")} {updated}
         <button
           type="button"
           onClick={() => refresh()}
           disabled={refreshing || (loading && rows.length === 0)}
-          className="ml-2 font-medium text-[#00E5FF] hover:underline disabled:opacity-50"
+          className="ml-2 font-medium text-[var(--acopay-brand)] hover:underline disabled:opacity-50"
         >
           {refreshing || (loading && rows.length === 0) ? t("markets.refreshing") : t("markets.refresh")}
         </button>
@@ -124,7 +124,7 @@ export function BinanceMarketsTable({ variant = "full", limit, embedded = false 
           placeholder={t("markets.searchCoins")}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full rounded-2xl border border-white/[0.08] bg-[#0c1017] py-2.5 px-4 text-sm text-white placeholder:text-[#6b7280] focus:border-[#00E5FF]/40 focus:outline-none"
+          className="w-full rounded-2xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-bg)] py-2.5 px-4 text-sm text-[var(--acopay-fg)] placeholder:text-[var(--acopay-faint)] focus:border-[color:var(--acopay-brand)]/40 focus:outline-none"
         />
       </div>
 
@@ -140,10 +140,10 @@ export function BinanceMarketsTable({ variant = "full", limit, embedded = false 
         </div>
       )}
 
-      <div className="orca-table-wrap mt-6 hidden overflow-x-auto rounded-2xl border border-white/[0.07] bg-[#0c1017]/60 md:block">
+      <div className="orca-table-wrap mt-6 hidden overflow-x-auto rounded-2xl border border-[color:var(--acopay-border)] bg-[var(--acopay-bg)]/60 md:block">
         <table className="pools-table w-full min-w-[820px]">
           <thead>
-            <tr className="border-b border-white/[0.06] text-[11px]">
+            <tr className="border-b border-[color:var(--acopay-border)] text-[11px]">
               <SortTh label={t("markets.name")} col="name" sortKey={sortKey} sortDir={sortDir} onSort={onSort} />
               <SortTh label={t("markets.price")} col="price" sortKey={sortKey} sortDir={sortDir} onSort={onSort} />
               <SortTh
@@ -167,7 +167,7 @@ export function BinanceMarketsTable({ variant = "full", limit, embedded = false 
                 sortDir={sortDir}
                 onSort={onSort}
               />
-              <th className="px-5 py-4 text-right text-[11px] font-semibold uppercase tracking-wider text-[#9ca3af]">
+              <th className="px-5 py-4 text-right text-[11px] font-semibold uppercase tracking-wider text-[var(--acopay-muted)]">
                 {t("markets.action")}
               </th>
             </tr>
@@ -175,16 +175,16 @@ export function BinanceMarketsTable({ variant = "full", limit, embedded = false 
           <tbody>
             {loading && rows.length === 0
               ? Array.from({ length: 8 }).map((_, i) => (
-                  <tr key={i} className="border-b border-white/[0.04]">
+                  <tr key={i} className="border-b border-[color:var(--acopay-border)]">
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="h-9 w-9 animate-pulse rounded-full bg-white/10" />
-                        <div className="h-4 w-28 animate-pulse rounded bg-white/10" />
+                        <div className="h-9 w-9 animate-pulse rounded-full bg-[var(--acopay-hover)]" />
+                        <div className="h-4 w-28 animate-pulse rounded bg-[var(--acopay-hover)]" />
                       </div>
                     </td>
                     {Array.from({ length: 5 }).map((__, j) => (
                       <td key={j} className="px-5 py-4">
-                        <div className="h-4 animate-pulse rounded bg-white/10" />
+                        <div className="h-4 animate-pulse rounded bg-[var(--acopay-hover)]" />
                       </td>
                     ))}
                   </tr>
@@ -192,7 +192,7 @@ export function BinanceMarketsTable({ variant = "full", limit, embedded = false 
               : filtered.length === 0
                 ? (
                     <tr>
-                      <td colSpan={6} className="px-5 py-12 text-center text-[#9ca3af]">
+                      <td colSpan={6} className="px-5 py-12 text-center text-[var(--acopay-muted)]">
                         {t("markets.noCoins")}
                       </td>
                     </tr>
@@ -200,27 +200,27 @@ export function BinanceMarketsTable({ variant = "full", limit, embedded = false 
                 : filtered.map((row) => (
                     <tr
                       key={row.symbol}
-                      className="border-b border-white/[0.04] transition hover:bg-white/[0.03]"
+                      className="border-b border-[color:var(--acopay-border)] transition hover:bg-[var(--acopay-hover)]"
                     >
                       <td className="px-5 py-4">
                         <div className="flex items-center gap-3">
                           <CoinIcon row={row} />
                           <div>
-                            <div className="font-semibold text-white">{row.name}</div>
-                            <div className="text-xs text-[#9ca3af]">{row.base}</div>
+                            <div className="font-semibold text-[var(--acopay-fg)]">{row.name}</div>
+                            <div className="text-xs text-[var(--acopay-muted)]">{row.base}</div>
                           </div>
                         </div>
                       </td>
-                      <td className="px-5 py-4 font-medium text-white">{fmtPrice(row.price)}</td>
+                      <td className="px-5 py-4 font-medium text-[var(--acopay-fg)]">{fmtPrice(row.price)}</td>
                       <td
                         className={`px-5 py-4 font-medium ${
-                          row.change24h >= 0 ? "text-[#00E5FF]" : "text-red-400"
+                          row.change24h >= 0 ? "text-[var(--acopay-brand)]" : "text-red-400"
                         }`}
                       >
                         {fmtPct(row.change24h)}
                       </td>
-                      <td className="px-5 py-4 font-medium text-white">{fmtUsd(row.volume24h)}</td>
-                      <td className="px-5 py-4 font-medium text-white">{fmtUsd(row.marketCap)}</td>
+                      <td className="px-5 py-4 font-medium text-[var(--acopay-fg)]">{fmtUsd(row.volume24h)}</td>
+                      <td className="px-5 py-4 font-medium text-[var(--acopay-fg)]">{fmtUsd(row.marketCap)}</td>
                       <td className="px-5 py-4 text-right">
                         <a
                           href={row.href}
@@ -256,7 +256,7 @@ export function BinanceMarketsTable({ variant = "full", limit, embedded = false 
               className={`inline-flex items-center rounded-lg border px-2.5 py-1.5 text-xs font-medium ${
                 active
                   ? "border-[#F0B90B]/50 bg-[#F0B90B]/10 text-[#F0B90B]"
-                  : "border-white/[0.08] text-[#9ca3af]"
+                  : "border-[color:var(--acopay-border-strong)] text-[var(--acopay-muted)]"
               }`}
             >
               {label}
@@ -269,23 +269,23 @@ export function BinanceMarketsTable({ variant = "full", limit, embedded = false 
       <div className="mt-4 space-y-3 md:hidden">
         {loading && rows.length === 0
           ? Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="h-24 animate-pulse rounded-2xl bg-white/[0.04]" />
+              <div key={i} className="h-24 animate-pulse rounded-2xl bg-[var(--acopay-hover)]" />
             ))
           : filtered.length === 0
             ? (
-                <p className="py-8 text-center text-sm text-[#9ca3af]">{t("markets.noCoins")}</p>
+                <p className="py-8 text-center text-sm text-[var(--acopay-muted)]">{t("markets.noCoins")}</p>
               )
             : filtered.map((row) => (
                 <div
                   key={row.symbol}
-                  className="rounded-2xl border border-white/[0.06] bg-[#0c1017]/70 p-4"
+                  className="rounded-2xl border border-[color:var(--acopay-border)] bg-[var(--acopay-bg)]/70 p-4"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex min-w-0 items-center gap-3">
                       <CoinIcon row={row} />
                       <div className="min-w-0">
-                        <div className="truncate font-semibold text-white">{row.name}</div>
-                        <div className="text-xs text-[#9ca3af]">{row.base}</div>
+                        <div className="truncate font-semibold text-[var(--acopay-fg)]">{row.name}</div>
+                        <div className="text-xs text-[var(--acopay-muted)]">{row.base}</div>
                       </div>
                     </div>
                     <a
@@ -299,26 +299,26 @@ export function BinanceMarketsTable({ variant = "full", limit, embedded = false 
                   </div>
                   <div className="mt-3 grid grid-cols-2 gap-2 text-center text-xs sm:grid-cols-4">
                     <div>
-                      <div className="text-[#6b7280]">{t("markets.price")}</div>
-                      <div className="mt-0.5 font-semibold text-white">{fmtPrice(row.price)}</div>
+                      <div className="text-[var(--acopay-faint)]">{t("markets.price")}</div>
+                      <div className="mt-0.5 font-semibold text-[var(--acopay-fg)]">{fmtPrice(row.price)}</div>
                     </div>
                     <div>
-                      <div className="text-[#6b7280]">24h</div>
+                      <div className="text-[var(--acopay-faint)]">24h</div>
                       <div
                         className={`mt-0.5 font-semibold ${
-                          row.change24h >= 0 ? "text-[#00E5FF]" : "text-red-400"
+                          row.change24h >= 0 ? "text-[var(--acopay-brand)]" : "text-red-400"
                         }`}
                       >
                         {fmtPct(row.change24h)}
                       </div>
                     </div>
                     <div>
-                      <div className="text-[#6b7280]">{t("markets.volShort")}</div>
-                      <div className="mt-0.5 font-semibold text-white">{fmtUsd(row.volume24h)}</div>
+                      <div className="text-[var(--acopay-faint)]">{t("markets.volShort")}</div>
+                      <div className="mt-0.5 font-semibold text-[var(--acopay-fg)]">{fmtUsd(row.volume24h)}</div>
                     </div>
                     <div>
-                      <div className="text-[#6b7280]">{t("markets.capShort")}</div>
-                      <div className="mt-0.5 font-semibold text-white">{fmtUsd(row.marketCap)}</div>
+                      <div className="text-[var(--acopay-faint)]">{t("markets.capShort")}</div>
+                      <div className="mt-0.5 font-semibold text-[var(--acopay-fg)]">{fmtUsd(row.marketCap)}</div>
                     </div>
                   </div>
                 </div>
@@ -330,7 +330,7 @@ export function BinanceMarketsTable({ variant = "full", limit, embedded = false 
   if (embedded) return body;
 
   return (
-    <section className={variant === "home" ? "border-t border-white/[0.06] bg-[#090b0e]/50 py-5 md:py-6" : ""}>
+    <section className={variant === "home" ? "border-t border-[color:var(--acopay-border)] bg-[var(--acopay-bg-2)]/50 py-5 md:py-6" : ""}>
       <div className={`page-wrap ${variant === "full" ? "pb-20 pt-6 md:pb-24 md:pt-8" : ""}`}>
         {body}
         {variant === "home" && (

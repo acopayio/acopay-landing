@@ -2,6 +2,7 @@
 import type { ReactElement } from "react";
 import { TelegramPayButton } from "../components/TelegramPayButton";
 import { LanguageToggle } from "../components/LanguageToggle";
+import { ThemeToggle } from "../components/ThemeToggle";
 import { Footer } from "../components/Footer";
 import { useT } from "../i18n/LanguageProvider";
 
@@ -42,10 +43,10 @@ export function OrcaLayout() {
 
   return (
     <div className="jup-shell flex">
-      <aside className="sticky top-0 z-40 hidden h-[100dvh] w-[220px] shrink-0 flex-col overflow-x-hidden border-r border-white/[0.06] bg-[#090b0e] lg:flex">
+      <aside className="sticky top-0 z-40 hidden h-[100dvh] w-[220px] shrink-0 flex-col overflow-x-hidden border-r border-[color:var(--acopay-border)] bg-[var(--acopay-bg-2)] lg:flex">
         <Link to="/" className="flex items-center gap-2.5 px-4 py-5">
           <img src="/assets/logo.png" alt="" className="h-9 w-9 shrink-0 object-contain" />
-          <span className="text-base font-bold tracking-tight text-white">ACOPAY</span>
+          <span className="text-base font-bold tracking-tight text-[var(--acopay-fg)]">ACOPAY</span>
         </Link>
 
         <nav className="flex-1 space-y-0.5 overflow-y-auto px-3 pb-4">
@@ -60,12 +61,13 @@ export function OrcaLayout() {
               {t(item.labelKey)}
             </NavLink>
           ))}
-              <div className="mt-3 overflow-visible border-t border-white/[0.06] pt-3">
+              <div className="mt-3 space-y-2 overflow-visible border-t border-[color:var(--acopay-border)] pt-3">
+                <ThemeToggle />
                 <LanguageToggle />
               </div>
         </nav>
 
-        <div className="mt-auto border-t border-white/[0.06] p-3">
+        <div className="mt-auto border-t border-[color:var(--acopay-border)] p-3">
           <TelegramPayButton
             className="btn-orca-primary w-full !rounded-xl !px-3"
             label={t("nav.telegramPay")}
@@ -74,20 +76,23 @@ export function OrcaLayout() {
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col pb-[4.25rem] lg:pb-0">
-        <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-[#0c1017]/95 backdrop-blur-xl lg:hidden">
+        <header className="sticky top-0 z-50 border-b border-[color:var(--acopay-border)] bg-[color-mix(in_srgb,var(--acopay-bg)_95%,transparent)] backdrop-blur-xl lg:hidden">
           <div className="page-wrap flex h-14 items-center justify-between gap-3">
             <Link to="/" className="flex min-w-0 items-center gap-2">
               <img src="/assets/logo.png" alt="" className="h-8 w-8 object-contain" />
-              <span className="truncate font-bold tracking-tight text-white">ACOPAY</span>
+              <span className="truncate font-bold tracking-tight text-[var(--acopay-fg)]">ACOPAY</span>
             </Link>
             <div className="flex shrink-0 items-center gap-2 overflow-visible">
+              <div className="relative overflow-visible">
+                <ThemeToggle compact />
+              </div>
               <div className="relative overflow-visible">
                 <LanguageToggle compact />
               </div>
               <TelegramPayButton
                 showIcon
                 label={t("nav.telegramPay")}
-                className="inline-flex !h-9 max-w-[11.5rem] items-center gap-1.5 !rounded-lg !border !border-[#00E5FF]/45 !bg-[#00E5FF]/10 !px-2.5 !text-xs !font-semibold !text-[#00E5FF] hover:!bg-[#00E5FF]/18 hover:!text-[#7af0ff]"
+                className="inline-flex !h-9 max-w-[11.5rem] items-center gap-1.5 !rounded-lg !border !border-[color:var(--acopay-brand)]/45 !bg-[var(--acopay-brand-soft)] !px-2.5 !text-xs !font-semibold !text-[var(--acopay-brand)] hover:!opacity-90"
               />
             </div>
           </div>
@@ -100,7 +105,7 @@ export function OrcaLayout() {
         <Footer />
       </div>
 
-      <nav className="fixed inset-x-0 bottom-0 z-50 flex border-t border-white/[0.08] bg-[#090b0e]/95 backdrop-blur-xl lg:hidden safe-bottom">
+      <nav className="fixed inset-x-0 bottom-0 z-50 flex border-t border-[color:var(--acopay-border-strong)] bg-[color-mix(in_srgb,var(--acopay-bg-2)_95%,transparent)] backdrop-blur-xl lg:hidden safe-bottom">
         {MOBILE_NAV.map((item) => (
           <NavLink
             key={item.to}

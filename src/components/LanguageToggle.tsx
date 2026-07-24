@@ -77,7 +77,7 @@ export function LanguageToggle({ compact = false }: { compact?: boolean }) {
   }, [open, compact]);
 
   const triggerClass = compact
-    ? "inline-flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/[0.04] px-2.5 py-1.5 text-xs font-medium text-[#d1d5db] transition hover:border-white/20 hover:text-white"
+    ? "inline-flex items-center gap-1.5 rounded-xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-hover)] px-2.5 py-1.5 text-xs font-medium text-[var(--acopay-muted)] transition hover:border-[color:var(--acopay-border-strong)] hover:text-[var(--acopay-fg)]"
     : `jup-sidebar-link w-full text-left ${open ? "jup-sidebar-link-active" : ""}`;
 
   return (
@@ -97,7 +97,7 @@ export function LanguageToggle({ compact = false }: { compact?: boolean }) {
         {ready ? (
           <FlagImg locale={locale} className="!h-[14px] !w-[18px]" />
         ) : (
-          <span className="inline-block h-[14px] w-[18px] rounded-[2px] bg-white/10" aria-hidden />
+          <span className="inline-block h-[14px] w-[18px] rounded-[2px] bg-[var(--acopay-hover)]" aria-hidden />
         )}
         <span className="truncate">{ready ? t("lang.menu") : t("lang.detecting")}</span>
       </button>
@@ -114,9 +114,9 @@ export function LanguageToggle({ compact = false }: { compact?: boolean }) {
             width: pos.width,
             maxHeight: pos.maxHeight,
           }}
-          className="z-[200] overflow-y-auto rounded-2xl border border-white/[0.1] bg-[#12151c] p-1.5 shadow-2xl shadow-black/60"
+          className="z-[200] overflow-y-auto rounded-2xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-surface)] p-1.5 shadow-2xl shadow-black/40"
         >
-          <p className="px-2.5 pb-1.5 pt-1 text-[11px] font-medium uppercase tracking-wide text-[#6b7280]">
+          <p className="px-2.5 pb-1.5 pt-1 text-[11px] font-medium uppercase tracking-wide text-[var(--acopay-faint)]">
             {t("lang.choose")}
           </p>
           {LANGUAGE_OPTIONS.map((opt) => {
@@ -133,26 +133,26 @@ export function LanguageToggle({ compact = false }: { compact?: boolean }) {
                 }}
                 className={`flex w-full items-center gap-2.5 rounded-xl px-2.5 py-2 text-left transition ${
                   selected
-                    ? "bg-[#00E5FF]/15 text-white ring-1 ring-[#00E5FF]/35"
-                    : "text-[#d1d5db] hover:bg-white/[0.05] hover:text-white"
+                    ? "bg-[var(--acopay-brand-soft)] text-[var(--acopay-fg)] ring-1 ring-[color:var(--acopay-brand)]/35"
+                    : "text-[var(--acopay-muted)] hover:bg-[var(--acopay-hover)] hover:text-[var(--acopay-fg)]"
                 }`}
               >
                 <FlagImg locale={opt.code} className="!h-4 !w-[22px]" title={opt.english} />
                 <span className="min-w-0 flex-1">
-                  <span className="block truncate text-sm font-medium text-white">{opt.english}</span>
+                  <span className="block truncate text-sm font-medium text-[var(--acopay-fg)]">{opt.english}</span>
                   {opt.native !== opt.english && (
-                    <span className="block truncate text-[11px] text-[#9ca3af]">{opt.native}</span>
+                    <span className="block truncate text-[11px] text-[var(--acopay-muted)]">{opt.native}</span>
                   )}
                 </span>
                 {selected && (
-                  <span className="shrink-0 text-xs text-[#00E5FF]" aria-hidden>
+                  <span className="shrink-0 text-xs text-[var(--acopay-brand)]" aria-hidden>
                     ✓
                   </span>
                 )}
               </button>
             );
           })}
-          <p className="px-2.5 pb-1 pt-2 text-[10px] leading-relaxed text-[#6b7280]">
+          <p className="px-2.5 pb-1 pt-2 text-[10px] leading-relaxed text-[var(--acopay-faint)]">
             {t("lang.hint", { lang: englishName })}
           </p>
         </div>

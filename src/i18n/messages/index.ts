@@ -50,6 +50,12 @@ const partials: Record<string, DeepPartialMessages> = {
       switchLocal: "Ngôn ngữ",
       aria: "Chọn ngôn ngữ",
     },
+    theme: {
+      menu: "Giao diện",
+      dark: "Tối",
+      light: "Sáng",
+      aria: "Chọn giao diện",
+    },
     hero: {
       eyebrow: "Solana · Token-2022",
       desc: "Tiện ích thanh toán Solana cho chuyển khoản ví-sang-ví. Giao dịch ACOPAY/USDT trên Raydium và Jupiter.",

@@ -295,8 +295,8 @@ export function OtcBuyPanel() {
       ) : settleStatus === "settling" ? (
         <div className="otc-settling" role="status" aria-live="polite">
           <div className="otc-settling-ring" aria-hidden />
-          <p className="mt-6 text-sm font-semibold tracking-wide text-white">{t("otc.settlingTitle")}</p>
-          <p className="mt-2 max-w-[16rem] text-center text-xs leading-relaxed text-[#6b7280]">
+          <p className="mt-6 text-sm font-semibold tracking-wide text-[var(--acopay-fg)]">{t("otc.settlingTitle")}</p>
+          <p className="mt-2 max-w-[16rem] text-center text-xs leading-relaxed text-[var(--acopay-faint)]">
             {t("otc.settlingHint")}
           </p>
           {paidSig && (
@@ -304,7 +304,7 @@ export function OtcBuyPanel() {
               href={`https://solscan.io/tx/${paidSig}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-5 text-xs font-medium text-[#00E5FF] hover:underline"
+              className="mt-5 text-xs font-medium text-[var(--acopay-brand)] hover:underline"
             >
               {t("otc.viewUsdtTx")}
             </a>
@@ -315,8 +315,8 @@ export function OtcBuyPanel() {
           <div className="otc-qr-preview-frame" aria-hidden>
             <img src="/assets/logo.png" alt="" className="h-12 w-12 opacity-90" />
           </div>
-          <p className="mt-5 text-sm font-semibold text-white">{t("otc.paymentCode")}</p>
-          <p className="mt-1.5 max-w-[15rem] text-center text-xs leading-relaxed text-[#6b7280]">
+          <p className="mt-5 text-sm font-semibold text-[var(--acopay-fg)]">{t("otc.paymentCode")}</p>
+          <p className="mt-1.5 max-w-[15rem] text-center text-xs leading-relaxed text-[var(--acopay-faint)]">
             {t("otc.chooseAmount")}
           </p>
           <dl className="otc-preview-meta">
@@ -344,16 +344,16 @@ export function OtcBuyPanel() {
               }}
             >
               <div className="otc-timer-core">
-                <p className="text-[10px] font-semibold uppercase tracking-wider text-[#6b7280]">
+                <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--acopay-faint)]">
                   {phase === "expired" ? t("otc.ended") : t("otc.session")}
                 </p>
                 <p
                   className={`font-mono text-2xl font-bold tabular-nums tracking-tight ${
                     phase === "expired"
-                      ? "text-[#9ca3af]"
+                      ? "text-[var(--acopay-muted)]"
                       : msLeft < 60_000
                         ? "text-amber-300"
-                        : "text-white"
+                        : "text-[var(--acopay-fg)]"
                   }`}
                 >
                   {phase === "expired" ? "00:00" : formatSessionClock(msLeft)}
@@ -374,7 +374,7 @@ export function OtcBuyPanel() {
               </div>
             ) : (
               <div className="flex h-[220px] w-[220px] flex-col items-center justify-center gap-2 sm:h-[240px] sm:w-[240px]">
-                <p className="text-sm font-medium text-[#9ca3af]">
+                <p className="text-sm font-medium text-[var(--acopay-muted)]">
                   {qrError || (phase === "expired" ? t("otc.codeExpired") : t("otc.preparing"))}
                 </p>
               </div>
@@ -384,18 +384,18 @@ export function OtcBuyPanel() {
           <div className="mt-4 max-w-[17rem] text-center">
             {phase === "paying" ? (
               <>
-                <p className="text-sm font-semibold text-white">
+                <p className="text-sm font-semibold text-[var(--acopay-fg)]">
                   {t("otc.scanToPay", { amount: activeValid ? formatUsdt(activeAmount) : "" })}
                 </p>
-                <p className="mt-1.5 text-xs font-medium tracking-wide text-[#00E5FF]">
+                <p className="mt-1.5 text-xs font-medium tracking-wide text-[var(--acopay-brand)]">
                   {t("otc.networkUsdt")}
                 </p>
-                <p className="mt-1 text-[11px] leading-relaxed text-[#6b7280]">
+                <p className="mt-1 text-[11px] leading-relaxed text-[var(--acopay-faint)]">
                   {t("otc.wrongNetwork")}
                 </p>
               </>
             ) : (
-              <p className="text-xs leading-relaxed text-[#6b7280]">{t("otc.requestNew")}</p>
+              <p className="text-xs leading-relaxed text-[var(--acopay-faint)]">{t("otc.requestNew")}</p>
             )}
           </div>
         </>
@@ -407,52 +407,52 @@ export function OtcBuyPanel() {
     settleStatus === "idle" && phase !== "setup" ? (
       <div className="otc-address-block">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <p className="text-xs font-medium uppercase tracking-wider text-[#6b7280]">
+          <p className="text-xs font-medium uppercase tracking-wider text-[var(--acopay-faint)]">
             {t("otc.depositAddress")}
           </p>
-          <p className="rounded-md border border-[#00E5FF]/25 bg-[#00E5FF]/08 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[#00E5FF]">
+          <p className="rounded-md border border-[color:var(--acopay-brand)]/25 bg-[var(--acopay-brand-soft)] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[var(--acopay-brand)]">
             {t("otc.solanaUsdtBadge")}
           </p>
         </div>
         <button
           type="button"
           onClick={() => copy(OTC.address)}
-          className="group mt-2 flex w-full items-center gap-2 rounded-xl border border-white/[0.08] bg-[#0c1017]/60 px-3 py-3 text-left transition hover:border-[#00E5FF]/35"
+          className="group mt-2 flex w-full items-center gap-2 rounded-xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-bg)]/60 px-3 py-3 text-left transition hover:border-[color:var(--acopay-brand)]/35"
         >
-          <code className="min-w-0 flex-1 truncate font-mono text-xs text-[#e5e7eb] sm:text-[13px]">
+          <code className="min-w-0 flex-1 truncate font-mono text-xs text-[var(--acopay-fg)] sm:text-[13px]">
             {OTC.address}
           </code>
-          <span className="shrink-0 text-xs font-semibold text-[#00E5FF]">
+          <span className="shrink-0 text-xs font-semibold text-[var(--acopay-brand)]">
             {copied ? t("otc.copied") : t("otc.copy")}
           </span>
         </button>
-        <p className="mt-2 text-[11px] leading-relaxed text-[#6b7280]">
+        <p className="mt-2 text-[11px] leading-relaxed text-[var(--acopay-faint)]">
           {t("otc.depositHint", { mint: shortAddr(OTC.usdtMint) })}
         </p>
       </div>
     ) : settleStatus === "idle" && phase === "setup" && showSidePay ? (
       <div className="otc-address-block opacity-70">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <p className="text-xs font-medium uppercase tracking-wider text-[#6b7280]">
+          <p className="text-xs font-medium uppercase tracking-wider text-[var(--acopay-faint)]">
             {t("otc.depositAddress")}
           </p>
-          <p className="rounded-md border border-[#00E5FF]/25 bg-[#00E5FF]/08 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[#00E5FF]">
+          <p className="rounded-md border border-[color:var(--acopay-brand)]/25 bg-[var(--acopay-brand-soft)] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[var(--acopay-brand)]">
             {t("otc.solanaUsdtBadge")}
           </p>
         </div>
         <button
           type="button"
           onClick={() => copy(OTC.address)}
-          className="group mt-2 flex w-full items-center gap-2 rounded-xl border border-white/[0.08] bg-[#0c1017]/60 px-3 py-3 text-left transition hover:border-[#00E5FF]/35"
+          className="group mt-2 flex w-full items-center gap-2 rounded-xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-bg)]/60 px-3 py-3 text-left transition hover:border-[color:var(--acopay-brand)]/35"
         >
-          <code className="min-w-0 flex-1 truncate font-mono text-xs text-[#e5e7eb] sm:text-[13px]">
+          <code className="min-w-0 flex-1 truncate font-mono text-xs text-[var(--acopay-fg)] sm:text-[13px]">
             {OTC.address}
           </code>
-          <span className="shrink-0 text-xs font-semibold text-[#00E5FF]">
+          <span className="shrink-0 text-xs font-semibold text-[var(--acopay-brand)]">
             {copied ? t("otc.copied") : t("otc.copy")}
           </span>
         </button>
-        <p className="mt-2 text-[11px] leading-relaxed text-[#6b7280]">{t("otc.continuesAfter")}</p>
+        <p className="mt-2 text-[11px] leading-relaxed text-[var(--acopay-faint)]">{t("otc.continuesAfter")}</p>
       </div>
     ) : null;
 
@@ -465,19 +465,19 @@ export function OtcBuyPanel() {
               <p className="label-orca">{t("otc.deskLabel")}</p>
               <span className="otc-live-pill">{t("otc.live")}</span>
             </div>
-            <h1 className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-[2.15rem]">
+            <h1 className="mt-2 text-3xl font-bold tracking-tight text-[var(--acopay-fg)] sm:text-[2.15rem]">
               {t("markets.buyAcopay")}
             </h1>
             {phase === "setup" && (
               <div className="otc-header-desc">
-                <p className="mt-2 max-w-md text-sm leading-relaxed text-[#9ca3af]">{t("otc.intro")}</p>
-                <p className="mt-2 text-sm text-[#6b7280]">
+                <p className="mt-2 max-w-md text-sm leading-relaxed text-[var(--acopay-muted)]">{t("otc.intro")}</p>
+                <p className="mt-2 text-sm text-[var(--acopay-faint)]">
                   {t("otc.alreadyHold")}{" "}
                   <a
                     href={TOKEN.telegramPayUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="font-medium text-[#00E5FF] hover:underline"
+                    className="font-medium text-[var(--acopay-brand)] hover:underline"
                   >
                     {t("otc.payTelegram")}
                   </a>
@@ -489,20 +489,20 @@ export function OtcBuyPanel() {
           {phase === "setup" ? (
             <div className="otc-field-block">
               <label className="block">
-                <span className="text-xs font-medium uppercase tracking-wider text-[#6b7280]">
+                <span className="text-xs font-medium uppercase tracking-wider text-[var(--acopay-faint)]">
                   {t("otc.amount")}
                 </span>
-                <div className="mt-2 flex items-center gap-2 rounded-2xl border border-white/[0.08] bg-[#0c1017]/80 px-4 py-3.5 focus-within:border-[#00E5FF]/45">
+                <div className="mt-2 flex items-center gap-2 rounded-2xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-bg)]/80 px-4 py-3.5 focus-within:border-[#00E5FF]/45">
                   <input
                     type="text"
                     inputMode="decimal"
                     value={amountStr}
                     onChange={(e) => setAmountStr(e.target.value.replace(/[^\d.,]/g, ""))}
-                    className="w-full bg-transparent text-3xl font-semibold tracking-tight text-white outline-none placeholder:text-[#4b5563]"
+                    className="w-full bg-transparent text-3xl font-semibold tracking-tight text-[var(--acopay-fg)] outline-none placeholder:text-[#4b5563]"
                     placeholder="0"
                     aria-label={t("otc.usdtAmountAria")}
                   />
-                  <span className="shrink-0 rounded-lg bg-white/[0.06] px-2.5 py-1 text-sm font-semibold text-[#9ca3af]">
+                  <span className="shrink-0 rounded-lg bg-[var(--acopay-hover)] px-2.5 py-1 text-sm font-semibold text-[var(--acopay-muted)]">
                     USDT
                   </span>
                 </div>
@@ -517,7 +517,7 @@ export function OtcBuyPanel() {
                     className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
                       draftAmount === p
                         ? "bg-[#00E5FF] text-[#0c1017]"
-                        : "border border-white/10 text-[#9ca3af] hover:border-[#00E5FF]/35 hover:text-white"
+                        : "border border-[color:var(--acopay-border-strong)] text-[var(--acopay-muted)] hover:border-[color:var(--acopay-brand)]/35 hover:text-[var(--acopay-fg)]"
                     }`}
                   >
                     {p}
@@ -532,24 +532,24 @@ export function OtcBuyPanel() {
           ) : (
             <div className="otc-order-summary">
               <div className="flex items-center justify-between gap-3">
-                <span className="text-xs font-medium uppercase tracking-wider text-[#6b7280]">
+                <span className="text-xs font-medium uppercase tracking-wider text-[var(--acopay-faint)]">
                   {t("otc.youPay")}
                 </span>
                 {settleStatus !== "complete" && (
                   <button
                     type="button"
                     onClick={changeAmount}
-                    className="text-xs font-medium text-[#00E5FF]/90 hover:text-[#00E5FF]"
+                    className="text-xs font-medium text-[var(--acopay-brand)]/90 hover:text-[var(--acopay-brand)]"
                   >
                     {t("otc.editAmount")}
                   </button>
                 )}
               </div>
-              <p className="mt-2 text-2xl font-bold tracking-tight text-white sm:text-3xl">
+              <p className="mt-2 text-2xl font-bold tracking-tight text-[var(--acopay-fg)] sm:text-3xl">
                 {formatUsdt(activeAmount)}{" "}
-                <span className="text-base font-semibold text-[#9ca3af]">USDT</span>
-                <span className="mx-2 text-sm font-medium text-[#6b7280]">→</span>
-                <span className="text-[#00E5FF]">
+                <span className="text-base font-semibold text-[var(--acopay-muted)]">USDT</span>
+                <span className="mx-2 text-sm font-medium text-[var(--acopay-faint)]">→</span>
+                <span className="text-[var(--acopay-brand)]">
                   {formatUsdt(creditedAcopay ?? receive)} ACOPAY
                 </span>
               </p>
@@ -567,13 +567,13 @@ export function OtcBuyPanel() {
             <>
               <div className="otc-receive">
                 <div className="flex items-center justify-between gap-3">
-                  <span className="text-sm text-[#9ca3af]">{t("otc.youReceive")}</span>
-                  <span className="text-right text-xl font-bold text-white">
+                  <span className="text-sm text-[var(--acopay-muted)]">{t("otc.youReceive")}</span>
+                  <span className="text-right text-xl font-bold text-[var(--acopay-fg)]">
                     {draftValid ? formatUsdt(receive) : "—"}{" "}
-                    <span className="text-sm font-semibold text-[#00E5FF]">ACOPAY</span>
+                    <span className="text-sm font-semibold text-[var(--acopay-brand)]">ACOPAY</span>
                   </span>
                 </div>
-                <p className="mt-1 text-[11px] text-[#6b7280]">{t("otc.fixedConversion")}</p>
+                <p className="mt-1 text-[11px] text-[var(--acopay-faint)]">{t("otc.fixedConversion")}</p>
               </div>
               <button
                 type="button"
@@ -593,24 +593,24 @@ export function OtcBuyPanel() {
                   <>
                     <span className="otc-status-dot otc-status-dot-expired" aria-hidden />
                     <div>
-                      <p className="text-sm font-semibold text-white">{t("otc.sessionEnded")}</p>
-                      <p className="text-xs leading-relaxed text-[#6b7280]">{t("otc.sessionEndedHint")}</p>
+                      <p className="text-sm font-semibold text-[var(--acopay-fg)]">{t("otc.sessionEnded")}</p>
+                      <p className="text-xs leading-relaxed text-[var(--acopay-faint)]">{t("otc.sessionEndedHint")}</p>
                     </div>
                   </>
                 ) : settleStatus === "settling" ? (
                   <>
                     <span className="otc-status-dot" aria-hidden />
                     <div>
-                      <p className="text-sm font-semibold text-white">{t("otc.usdtReceived")}</p>
-                      <p className="text-xs leading-relaxed text-[#6b7280]">{t("otc.crediting")}</p>
+                      <p className="text-sm font-semibold text-[var(--acopay-fg)]">{t("otc.usdtReceived")}</p>
+                      <p className="text-xs leading-relaxed text-[var(--acopay-faint)]">{t("otc.crediting")}</p>
                     </div>
                   </>
                 ) : (
                   <>
                     <span className="otc-status-dot" aria-hidden />
                     <div>
-                      <p className="text-sm font-semibold text-white">{t("otc.awaiting")}</p>
-                      <p className="text-xs leading-relaxed text-[#6b7280]">
+                      <p className="text-sm font-semibold text-[var(--acopay-fg)]">{t("otc.awaiting")}</p>
+                      <p className="text-xs leading-relaxed text-[var(--acopay-faint)]">
                         {isNarrow ? t("otc.awaitHintNarrow") : t("otc.awaitHintWide")}
                       </p>
                     </div>
@@ -633,13 +633,13 @@ export function OtcBuyPanel() {
                         : t("otc.payPhantom")}
                   </button>
                   {paidSig && (
-                    <p className="text-xs leading-relaxed text-[#00E5FF]/90">
+                    <p className="text-xs leading-relaxed text-[var(--acopay-brand)]/90">
                       {t("otc.usdtSubmitted")}{" "}
                       <a
                         href={`https://solscan.io/tx/${paidSig}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="underline hover:text-[#00E5FF]"
+                        className="underline hover:text-[var(--acopay-brand)]"
                       >
                         {t("otc.viewTx")}
                       </a>
@@ -665,7 +665,7 @@ export function OtcBuyPanel() {
 
           {settleStatus === "complete" && (
             <div className="mt-auto space-y-3 pt-2">
-              <p className="text-xs leading-relaxed text-[#6b7280]">{t("otc.settleNote")}</p>
+              <p className="text-xs leading-relaxed text-[var(--acopay-faint)]">{t("otc.settleNote")}</p>
               <button
                 type="button"
                 onClick={changeAmount}

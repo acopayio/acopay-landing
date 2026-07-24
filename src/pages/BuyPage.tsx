@@ -22,21 +22,21 @@ export function BuyPage() {
         <OtcBuyPanel />
 
         <aside className="otc-notice mx-auto max-w-5xl" data-buy-copy="2026-07-24b">
-          <h2 className="text-sm font-semibold text-white">{t("buyPage.beforeTitle")}</h2>
-          <ul className="mt-2 space-y-1.5 text-xs leading-relaxed text-[#9ca3af]">
+          <h2 className="text-sm font-semibold text-[var(--acopay-fg)]">{t("buyPage.beforeTitle")}</h2>
+          <ul className="mt-2 space-y-1.5 text-xs leading-relaxed text-[var(--acopay-muted)]">
             <li>{t("buyPage.before1")}</li>
             <li>{t("buyPage.before2")}</li>
             <li>{t("buyPage.before3")}</li>
             <li>{t("buyPage.before4")}</li>
             <li>{t("buyPage.before5")}</li>
           </ul>
-          <p className="mt-3 text-[11px] leading-relaxed text-[#6b7280]">
+          <p className="mt-3 text-[11px] leading-relaxed text-[var(--acopay-faint)]">
             {t("buyPage.mintPrefix")}{" "}
             <a
               href={solscan}
               target="_blank"
               rel="noopener noreferrer"
-              className="break-all font-mono text-[#00E5FF]/90 hover:text-[#00E5FF]"
+              className="break-all font-mono text-[var(--acopay-brand)]/90 hover:text-[var(--acopay-brand)]"
             >
               {TOKEN.mintAddress}
             </a>
@@ -44,7 +44,7 @@ export function BuyPage() {
           <p className="mt-2">
             <Link
               to="/faq"
-              className="text-[11px] font-medium text-white underline-offset-2 hover:text-white/85 hover:underline"
+              className="text-[11px] font-medium text-[var(--acopay-fg)] underline-offset-2 hover:text-[var(--acopay-fg)]/85 hover:underline"
             >
               {t("buyPage.phantomFaq")}
             </Link>
@@ -54,14 +54,14 @@ export function BuyPage() {
         <div className="mx-auto grid max-w-5xl gap-4 sm:grid-cols-3">
           {features.map((item) => (
             <div key={item.title} className="otc-feature">
-              <h3 className="text-sm font-semibold text-white">{item.title}</h3>
-              <p className="mt-1.5 text-xs leading-relaxed text-[#6b7280]">{item.body}</p>
+              <h3 className="text-sm font-semibold text-[var(--acopay-fg)]">{item.title}</h3>
+              <p className="mt-1.5 text-xs leading-relaxed text-[var(--acopay-faint)]">{item.body}</p>
             </div>
           ))}
         </div>
 
-        <div className="mx-auto max-w-5xl border-t border-white/[0.06] pt-8 text-center">
-          <p className="text-xs tracking-wide text-[#6b7280]">{t("buyPage.preferDex")}</p>
+        <div className="mx-auto max-w-5xl border-t border-[color:var(--acopay-border)] pt-8 text-center">
+          <p className="text-xs tracking-wide text-[var(--acopay-faint)]">{t("buyPage.preferDex")}</p>
           <div className="mt-3 flex flex-wrap justify-center gap-2">
             {jup && (
               <a href={jup} target="_blank" rel="noopener noreferrer" className="btn-orca-ghost !text-xs">

@@ -1,4 +1,4 @@
-﻿import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { TOKEN, isMintLive } from "../config/token";
 import { useT } from "../i18n/LanguageProvider";
 
@@ -26,11 +26,11 @@ export function LaunchStatus() {
   ];
 
   return (
-    <section className="border-t border-white/[0.06] bg-[#090b0e]/50 py-12 md:py-16">
+    <section className="border-t border-[color:var(--acopay-border)] bg-[var(--acopay-bg-2)]/50 py-12 md:py-16">
       <div className="page-wrap">
         <p className="label-orca">{t("launch.label")}</p>
-        <h2 className="mt-2 text-2xl font-bold text-white sm:text-3xl">{t("launch.title")}</h2>
-        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[#9ca3af]">{t("launch.subtitle")}</p>
+        <h2 className="mt-2 text-2xl font-bold text-[var(--acopay-fg)] sm:text-3xl">{t("launch.title")}</h2>
+        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[var(--acopay-muted)]">{t("launch.subtitle")}</p>
 
         <div className="mt-8 grid gap-4 lg:grid-cols-2">
           <div className="pools-table">
@@ -42,30 +42,30 @@ export function LaunchStatus() {
                 </tr>
               </thead>
               <tbody>
-                <tr className="bg-[#00E5FF]/[0.04]">
-                  <td className="font-medium text-[#9ca3af]">{t("launch.contract")}</td>
-                  <td className="font-semibold text-white">
+                <tr className="bg-[var(--acopay-brand-soft)]">
+                  <td className="font-medium text-[var(--acopay-muted)]">{t("launch.contract")}</td>
+                  <td className="font-semibold text-[var(--acopay-fg)]">
                     {live ? (
-                      <code className="break-all font-mono text-xs text-[#00E5FF] sm:text-sm">
+                      <code className="break-all font-mono text-xs text-[var(--acopay-brand)] sm:text-sm">
                         {TOKEN.mintAddress}
                       </code>
                     ) : (
-                      <span className="text-[#9ca3af]">{t("common.pending")}</span>
+                      <span className="text-[var(--acopay-muted)]">{t("common.pending")}</span>
                     )}
                   </td>
                 </tr>
                 {facts.map((f) => (
                   <tr key={f.label}>
-                    <td className="font-medium text-[#9ca3af]">{f.label}</td>
-                    <td className="font-semibold text-white">{f.value}</td>
+                    <td className="font-medium text-[var(--acopay-muted)]">{f.label}</td>
+                    <td className="font-semibold text-[var(--acopay-fg)]">{f.value}</td>
                   </tr>
                 ))}
                 <tr>
-                  <td className="font-medium text-[#9ca3af]">{t("launch.contact")}</td>
+                  <td className="font-medium text-[var(--acopay-muted)]">{t("launch.contact")}</td>
                   <td>
                     <a
                       href={`mailto:${TOKEN.email}`}
-                      className="font-semibold text-[#00E5FF] hover:underline"
+                      className="font-semibold text-[var(--acopay-brand)] hover:underline"
                     >
                       {TOKEN.email}
                     </a>
@@ -79,12 +79,12 @@ export function LaunchStatus() {
             <p className="label-orca">{t("launch.status")}</p>
             <ul className="mt-4 space-y-3">
               {next.map((item) => (
-                <li key={item.text} className="flex gap-3 text-sm text-[#9ca3af]">
+                <li key={item.text} className="flex gap-3 text-sm text-[var(--acopay-muted)]">
                   <span
                     className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px] font-bold ${
                       item.done
-                        ? "bg-[#00E5FF]/20 text-[#00E5FF]"
-                        : "bg-white/[0.06] text-[#6b7280]"
+                        ? "bg-[var(--acopay-brand-soft)] text-[var(--acopay-brand)]"
+                        : "bg-[var(--acopay-hover)] text-[var(--acopay-faint)]"
                     }`}
                   >
                     {item.done ? "✓" : "·"}

@@ -69,6 +69,19 @@
         );
       }
     </script>
+    <!-- Theme before paint — avoid flash -->
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem("acopay_theme");
+          if (t !== "light" && t !== "dark") t = "dark";
+          document.documentElement.setAttribute("data-theme", t);
+          document.documentElement.style.colorScheme = t;
+        } catch (e) {
+          document.documentElement.setAttribute("data-theme", "dark");
+        }
+      })();
+    </script>
     <style>
       html,
       body {
@@ -77,9 +90,17 @@
         background: #0c1017;
         color: #f3f4f6;
       }
+      html[data-theme="light"],
+      html[data-theme="light"] body {
+        background: #f5f8fa;
+        color: #0b1220;
+      }
       a {
         color: #00e5ff;
         text-decoration: none;
+      }
+      html[data-theme="light"] a {
+        color: #008ba8;
       }
       #root {
         min-height: 100vh;

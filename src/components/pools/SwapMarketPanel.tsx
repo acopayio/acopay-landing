@@ -115,8 +115,8 @@ export function SwapMarketPanel() {
     <div className="mx-auto flex w-full max-w-[400px] flex-col gap-5">
       <header className="space-y-3 text-center">
         <div className="space-y-1.5">
-          <h3 className="text-xl font-semibold tracking-tight text-white">{t("markets.swapTitle")}</h3>
-          <p className="text-sm leading-relaxed text-[#9ca3af]">{t("markets.swapSubtitle")}</p>
+          <h3 className="text-xl font-semibold tracking-tight text-[var(--acopay-fg)]">{t("markets.swapTitle")}</h3>
+          <p className="text-sm leading-relaxed text-[var(--acopay-muted)]">{t("markets.swapSubtitle")}</p>
         </div>
         <div className="flex flex-wrap items-center justify-center gap-2">
           {jup && (
@@ -140,13 +140,13 @@ export function SwapMarketPanel() {
             </a>
           )}
         </div>
-        <p className="font-mono text-[11px] text-[#6b7280]">
+        <p className="font-mono text-[11px] text-[var(--acopay-faint)]">
           Mint {shortMint(TOKEN.mintAddress)}
         </p>
       </header>
 
       {!poolOk ? (
-        <p className="rounded-2xl border border-white/[0.07] bg-[#0c1017]/60 px-4 py-10 text-center text-sm text-[#9ca3af]">
+        <p className="rounded-2xl border border-[color:var(--acopay-border)] bg-[var(--acopay-bg)]/60 px-4 py-10 text-center text-sm text-[var(--acopay-muted)]">
           {t("markets.swapUnavailable")}
         </p>
       ) : error ? (
@@ -163,14 +163,14 @@ export function SwapMarketPanel() {
         </div>
       ) : (
         <div
-          className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0c1017]"
+          className="relative overflow-hidden rounded-2xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-bg)]"
           style={{ height: JUPITER_HEIGHT_PX }}
         >
           <div id={targetId} className="h-full w-full [&_iframe]:!max-w-full" />
           {!ready && (
-            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-[#0c1017] px-4 text-sm text-[#9ca3af]">
+            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-[var(--acopay-bg)] px-4 text-sm text-[var(--acopay-muted)]">
               <span
-                className="h-5 w-5 animate-spin rounded-full border-2 border-[#00E5FF]/30 border-t-[#00E5FF]"
+                className="h-5 w-5 animate-spin rounded-full border-2 border-[color:var(--acopay-brand)]/30 border-t-[var(--acopay-brand)]"
                 aria-hidden
               />
               {t("swap.loadingJupiter")}
@@ -179,7 +179,7 @@ export function SwapMarketPanel() {
         </div>
       )}
 
-      <p className="text-center text-[11px] leading-relaxed text-[#6b7280]">
+      <p className="text-center text-[11px] leading-relaxed text-[var(--acopay-faint)]">
         {t("markets.swapFootnote")}
       </p>
     </div>

@@ -22,6 +22,12 @@ export const en = {
     switchLocal: "Language",
     aria: "Choose language",
   },
+  theme: {
+    menu: "Theme",
+    dark: "Dark",
+    light: "Light",
+    aria: "Choose theme",
+  },
   hero: {
     eyebrow: "Solana · Token-2022",
     desc: "Solana payment utility for wallet-to-wallet transfers. Trade ACOPAY/USDT on Raydium and Jupiter.",

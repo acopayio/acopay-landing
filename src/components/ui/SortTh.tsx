@@ -43,8 +43,8 @@ export function SortTh<K extends string>({
       <button
         type="button"
         onClick={() => onSort(col)}
-        className={`inline-flex items-center gap-0.5 text-[11px] font-semibold uppercase tracking-wider transition hover:text-white ${
-          active ? "text-[#F0B90B]" : "text-[#9ca3af]"
+        className={`inline-flex items-center gap-0.5 text-[11px] font-semibold uppercase tracking-wider transition hover:text-[var(--acopay-fg)] ${
+          active ? "text-[#F0B90B]" : "text-[var(--acopay-muted)]"
         }`}
       >
         {label}

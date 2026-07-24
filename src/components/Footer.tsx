@@ -1,4 +1,4 @@
-﻿import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { TOKEN, explorerUrl, jupiterSwapUrl, solscanUrl } from "../config/token";
 import { useT } from "../i18n/LanguageProvider";
 
@@ -16,7 +16,7 @@ export function Footer() {
   const t = useT();
 
   return (
-    <footer className="border-t border-white/[0.06] bg-[#090b0e]/80 py-8 md:py-14">
+    <footer className="border-t border-[color:var(--acopay-border)] bg-[var(--acopay-bg-2)]/80 py-8 md:py-14">
       <div className="page-wrap">
         {/* Mobile — compact */}
         <div className="md:hidden">
@@ -25,11 +25,11 @@ export function Footer() {
               <img src="/assets/logo.png" alt="" className="h-8 w-8 shrink-0 object-contain" />
               <div className="flex h-8 flex-col justify-center">
                 <div className="w-fit">
-                  <div className="text-[13px] font-bold leading-none tracking-tight text-white">
+                  <div className="text-[13px] font-bold leading-none tracking-tight text-[var(--acopay-fg)]">
                     ACOPAY
                   </div>
                   <p
-                    className="mt-px flex w-full justify-between text-[7px] font-semibold leading-none text-[#00E5FF]"
+                    className="mt-px flex w-full justify-between text-[7px] font-semibold leading-none text-[var(--acopay-brand)]"
                     aria-label={TOKEN.tagline}
                   >
                     {Array.from(TOKEN.tagline).map((ch, i) => (
@@ -43,38 +43,38 @@ export function Footer() {
             </Link>
           </div>
 
-          <div className="mt-5 grid grid-cols-3 gap-x-3 gap-y-2.5 text-sm leading-6 text-[#9ca3af]">
-            <Link to="/token" className="hover:text-[#00E5FF]">
+          <div className="mt-5 grid grid-cols-3 gap-x-3 gap-y-2.5 text-sm leading-6 text-[var(--acopay-muted)]">
+            <Link to="/token" className="hover:text-[var(--acopay-brand)]">
               {t("nav.token")}
             </Link>
-            <Link to="/roadmap" className="hover:text-[#00E5FF]">
+            <Link to="/roadmap" className="hover:text-[var(--acopay-brand)]">
               {t("nav.roadmap")}
             </Link>
             <a
               href={explorerUrl()}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-[#00E5FF]"
+              className="hover:text-[var(--acopay-brand)]"
             >
               {t("hero.explorer")}
             </a>
 
-            <Link to="/markets" className="hover:text-[#00E5FF]">
+            <Link to="/markets" className="hover:text-[var(--acopay-brand)]">
               {t("nav.markets")}
             </Link>
-            <Link to="/faq" className="hover:text-[#00E5FF]">
+            <Link to="/faq" className="hover:text-[var(--acopay-brand)]">
               {t("nav.faq")}
             </Link>
             <a
               href={solscanUrl()}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-[#00E5FF]"
+              className="hover:text-[var(--acopay-brand)]"
             >
               {t("hero.solscan")}
             </a>
 
-            <Link to="/trade" className="hover:text-[#00E5FF]">
+            <Link to="/trade" className="hover:text-[var(--acopay-brand)]">
               {t("nav.trade")}
             </Link>
             <span className="select-none" aria-hidden="true" />
@@ -83,17 +83,17 @@ export function Footer() {
                 href={jup}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-[#00E5FF]"
+                className="hover:text-[var(--acopay-brand)]"
               >
                 Jupiter ↗
               </a>
             ) : (
-              <Link to="/trade" className="hover:text-[#00E5FF]">
+              <Link to="/trade" className="hover:text-[var(--acopay-brand)]">
                 {t("nav.trade")}
               </Link>
             )}
 
-            <p className="text-[11px] leading-6 text-[#6b7280]">© {TOKEN.founded} ACOPAY</p>
+            <p className="text-[11px] leading-6 text-[var(--acopay-faint)]">© {TOKEN.founded} ACOPAY</p>
             <span className="select-none" aria-hidden="true" />
             <span className="select-none" aria-hidden="true" />
           </div>
@@ -106,11 +106,11 @@ export function Footer() {
               <img src="/assets/logo.png" alt="" className="h-9 w-9 shrink-0 object-contain" />
               <div className="flex h-9 flex-col justify-center">
                 <div className="w-fit">
-                  <div className="text-[15px] font-bold leading-none tracking-tight text-white">
+                  <div className="text-[15px] font-bold leading-none tracking-tight text-[var(--acopay-fg)]">
                     ACOPAY
                   </div>
                   <p
-                    className="mt-px flex w-full justify-between text-[8px] font-semibold leading-none text-[#00E5FF]"
+                    className="mt-px flex w-full justify-between text-[8px] font-semibold leading-none text-[var(--acopay-brand)]"
                     aria-label={TOKEN.tagline}
                   >
                     {Array.from(TOKEN.tagline).map((ch, i) => (
@@ -122,7 +122,7 @@ export function Footer() {
                 </div>
               </div>
             </Link>
-            <p className="mt-6 text-xs text-[#6b7280] md:mt-auto md:pt-2">
+            <p className="mt-6 text-xs text-[var(--acopay-faint)] md:mt-auto md:pt-2">
               © {TOKEN.founded} ACOPAY
             </p>
           </div>
@@ -131,7 +131,7 @@ export function Footer() {
             <ul className="mt-4 space-y-2 text-sm">
               {PRODUCT_LINKS.map((l) => (
                 <li key={l.to}>
-                  <Link to={l.to} className="text-[#9ca3af] hover:text-[#00E5FF]">
+                  <Link to={l.to} className="text-[var(--acopay-muted)] hover:text-[var(--acopay-brand)]">
                     {t(l.labelKey)}
                   </Link>
                 </li>
@@ -146,7 +146,7 @@ export function Footer() {
                   href={explorerUrl()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[#9ca3af] hover:text-[#00E5FF]"
+                  className="text-[var(--acopay-muted)] hover:text-[var(--acopay-brand)]"
                 >
                   {t("hero.explorer")}
                 </a>
@@ -156,7 +156,7 @@ export function Footer() {
                   href={solscanUrl()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[#9ca3af] hover:text-[#00E5FF]"
+                  className="text-[var(--acopay-muted)] hover:text-[var(--acopay-brand)]"
                 >
                   {t("hero.solscan")}
                 </a>
@@ -167,12 +167,12 @@ export function Footer() {
                     href={jup}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[#9ca3af] hover:text-[#00E5FF]"
+                    className="text-[var(--acopay-muted)] hover:text-[var(--acopay-brand)]"
                   >
                     Jupiter ↗
                   </a>
                 ) : (
-                  <Link to="/trade" className="text-[#9ca3af] hover:text-[#00E5FF]">
+                  <Link to="/trade" className="text-[var(--acopay-muted)] hover:text-[var(--acopay-brand)]">
                     {t("nav.trade")}
                   </Link>
                 )}
@@ -182,7 +182,7 @@ export function Footer() {
                   href={TOKEN.telegramPayUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[#9ca3af] hover:text-[#00E5FF]"
+                  className="text-[var(--acopay-muted)] hover:text-[var(--acopay-brand)]"
                 >
                   {t("nav.telegramPay")} ↗
                 </a>
@@ -195,7 +195,7 @@ export function Footer() {
               <li>
                 <a
                   href={`mailto:${TOKEN.email}`}
-                  className="inline-flex max-w-full items-center gap-2.5 text-sm text-white/85 transition hover:text-white"
+                  className="inline-flex max-w-full items-center gap-2.5 text-sm text-[var(--acopay-fg)]/85 transition hover:text-[var(--acopay-fg)]"
                 >
                   <MailGlyph />
                   <span className="truncate">{TOKEN.email}</span>
@@ -206,7 +206,7 @@ export function Footer() {
                   href={TOKEN.telegramUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex max-w-full items-center gap-2.5 text-sm text-white/85 transition hover:text-white"
+                  className="inline-flex max-w-full items-center gap-2.5 text-sm text-[var(--acopay-fg)]/85 transition hover:text-[var(--acopay-fg)]"
                   title="Telegram"
                 >
                   <TelegramGlyph />

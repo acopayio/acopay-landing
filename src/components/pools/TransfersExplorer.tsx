@@ -57,7 +57,7 @@ function CopyIconBtn({ text, label }: { text: string; label: string }) {
       title={copied ? "Copied" : `Copy ${label}`}
       aria-label={`Copy ${label}`}
       onClick={() => void copy(text)}
-      className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded text-[#6b7280] hover:bg-white/10 hover:text-[#00E5FF]"
+      className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded text-[var(--acopay-faint)] hover:bg-[var(--acopay-hover)] hover:text-[var(--acopay-brand)]"
     >
       {copied ? (
         <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="currentColor" aria-hidden>
@@ -79,7 +79,7 @@ function ExtLink({ href }: { href: string }) {
       target="_blank"
       rel="noopener noreferrer"
       title="Open on Solscan"
-      className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded text-[#6b7280] hover:bg-white/10 hover:text-[#00E5FF]"
+      className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded text-[var(--acopay-faint)] hover:bg-[var(--acopay-hover)] hover:text-[var(--acopay-brand)]"
     >
       <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="currentColor" aria-hidden>
         <path d="M6 3h7v7h-1.5V5.56L4.03 13 3 11.97 10.44 4.5H6V3Z" />
@@ -89,7 +89,7 @@ function ExtLink({ href }: { href: string }) {
 }
 
 function AddrCell({ addr, full }: { addr: string; full: boolean }) {
-  if (!addr) return <span className="text-[#6b7280]">—</span>;
+  if (!addr) return <span className="text-[var(--acopay-faint)]">—</span>;
   return (
     <span className="inline-flex max-w-full items-center justify-center gap-1">
       <CopyIconBtn text={addr} label="address" />
@@ -97,7 +97,7 @@ function AddrCell({ addr, full }: { addr: string; full: boolean }) {
         href={solscanAccount(addr)}
         target="_blank"
         rel="noopener noreferrer"
-        className={`font-mono text-xs text-[#00E5FF] hover:underline ${full ? "break-all" : ""}`}
+        className={`font-mono text-xs text-[var(--acopay-brand)] hover:underline ${full ? "break-all" : ""}`}
         title={addr}
       >
         {shortWallet(addr, full)}
@@ -175,16 +175,16 @@ export function TransfersExplorer() {
   return (
     <div className="space-y-4">
       <div className="space-y-2">
-        <h3 className="text-lg font-semibold text-white">{t("markets.transfersTitle")}</h3>
-        <p className="text-sm leading-relaxed text-[#9ca3af]">{t("markets.transfersSubtitle")}</p>
-        <p className="text-xs text-[#6b7280]">
+        <h3 className="text-lg font-semibold text-[var(--acopay-fg)]">{t("markets.transfersTitle")}</h3>
+        <p className="text-sm leading-relaxed text-[var(--acopay-muted)]">{t("markets.transfersSubtitle")}</p>
+        <p className="text-xs text-[var(--acopay-faint)]">
           {!backfillComplete ? `${t("markets.loadingHistory")} · ` : ""}
           {t("markets.updated")} {updated}
           <button
             type="button"
             onClick={() => refresh()}
             disabled={busy}
-            className="ml-2 font-medium text-[#00E5FF] hover:underline disabled:opacity-50"
+            className="ml-2 font-medium text-[var(--acopay-brand)] hover:underline disabled:opacity-50"
           >
             {busy ? t("markets.refreshing") : t("markets.refresh")}
           </button>
@@ -192,14 +192,14 @@ export function TransfersExplorer() {
             href={solscanUrl()}
             target="_blank"
             rel="noopener noreferrer"
-            className="ml-3 font-medium text-[#00E5FF] hover:underline"
+            className="ml-3 font-medium text-[var(--acopay-brand)] hover:underline"
           >
             {t("markets.solscanToken")}
           </a>
         </p>
       </div>
 
-      <fieldset className="flex flex-wrap gap-x-4 gap-y-2 rounded-xl border border-white/[0.07] bg-[#0c1017]/50 px-3 py-2.5 text-xs text-[#9ca3af]">
+      <fieldset className="flex flex-wrap gap-x-4 gap-y-2 rounded-xl border border-[color:var(--acopay-border)] bg-[var(--acopay-bg)]/50 px-3 py-2.5 text-xs text-[var(--acopay-muted)]">
         <legend className="sr-only">Display options</legend>
         {(
           [
@@ -214,7 +214,7 @@ export function TransfersExplorer() {
               type="checkbox"
               checked={opts[key]}
               onChange={() => toggle(key)}
-              className="h-3.5 w-3.5 rounded border-white/20 bg-[#0c1017] text-[#00E5FF] focus:ring-[#00E5FF]/40"
+              className="h-3.5 w-3.5 rounded border-[color:var(--acopay-border-strong)] bg-[var(--acopay-bg)] text-[var(--acopay-brand)] focus:ring-[color:var(--acopay-brand)]/40"
             />
             <span>{t(labelKey)}</span>
           </label>
@@ -233,10 +233,10 @@ export function TransfersExplorer() {
         </div>
       )}
 
-      <div className="orca-table-wrap overflow-x-auto rounded-2xl border border-white/[0.07] bg-[#0c1017]/60">
+      <div className="orca-table-wrap overflow-x-auto rounded-2xl border border-[color:var(--acopay-border)] bg-[var(--acopay-bg)]/60">
         <table className="pools-table w-full min-w-[960px]">
           <thead>
-            <tr className="border-b border-white/[0.06] text-[11px]">
+            <tr className="border-b border-[color:var(--acopay-border)] text-[11px]">
               <SortTh
                 label={t("markets.signature")}
                 col="signature"
@@ -289,7 +289,7 @@ export function TransfersExplorer() {
                 onSort={onSort}
                 align="center"
               />
-              <th className="px-5 py-4 text-center text-[11px] font-semibold uppercase tracking-wider text-[#9ca3af]">
+              <th className="px-5 py-4 text-center text-[11px] font-semibold uppercase tracking-wider text-[var(--acopay-muted)]">
                 {t("markets.result")}
               </th>
             </tr>
@@ -297,10 +297,10 @@ export function TransfersExplorer() {
           <tbody>
             {loading && rows.length === 0
               ? Array.from({ length: 6 }).map((_, i) => (
-                  <tr key={i} className="border-b border-white/[0.04]">
+                  <tr key={i} className="border-b border-[color:var(--acopay-border)]">
                     {Array.from({ length: colCount }).map((__, j) => (
                       <td key={j} className="px-5 py-4">
-                        <div className="h-4 animate-pulse rounded bg-white/10" />
+                        <div className="h-4 animate-pulse rounded bg-[var(--acopay-hover)]" />
                       </td>
                     ))}
                   </tr>
@@ -308,7 +308,7 @@ export function TransfersExplorer() {
               : pageRows.length === 0
                 ? (
                     <tr>
-                      <td colSpan={colCount} className="px-5 py-12 text-center text-sm text-[#9ca3af]">
+                      <td colSpan={colCount} className="px-5 py-12 text-center text-sm text-[var(--acopay-muted)]">
                         {t("markets.noTransfers")}
                       </td>
                     </tr>
@@ -318,7 +318,7 @@ export function TransfersExplorer() {
         </table>
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-[#9ca3af]">
+      <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-[var(--acopay-muted)]">
         <p>
           {t("markets.pageOf", { page: safePage, total: totalPages })}
           <span className="ml-2 text-xs">{t("markets.perPage", { n: PAGE_SIZE })}</span>
@@ -328,7 +328,7 @@ export function TransfersExplorer() {
             type="button"
             disabled={safePage <= 1}
             onClick={() => setPage((p) => Math.max(1, p - 1))}
-            className="rounded-lg border border-white/10 px-3 py-1.5 text-xs font-medium text-white hover:bg-white/5 disabled:cursor-not-allowed disabled:opacity-40"
+            className="rounded-lg border border-[color:var(--acopay-border-strong)] px-3 py-1.5 text-xs font-medium text-[var(--acopay-fg)] hover:bg-[var(--acopay-hover)] disabled:cursor-not-allowed disabled:opacity-40"
           >
             {t("markets.previous")}
           </button>
@@ -336,7 +336,7 @@ export function TransfersExplorer() {
             type="button"
             disabled={safePage >= totalPages}
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-            className="rounded-lg border border-white/10 px-3 py-1.5 text-xs font-medium text-white hover:bg-white/5 disabled:cursor-not-allowed disabled:opacity-40"
+            className="rounded-lg border border-[color:var(--acopay-border-strong)] px-3 py-1.5 text-xs font-medium text-[var(--acopay-fg)] hover:bg-[var(--acopay-hover)] disabled:cursor-not-allowed disabled:opacity-40"
           >
             {t("markets.next")}
           </button>
@@ -350,7 +350,7 @@ function TransferRow({ row, opts }: { row: AcopayTransferRow; opts: ViewOpts }) 
   const t = useT();
   const ok = (row.status || "success") === "success";
   return (
-    <tr className="border-b border-white/[0.04] transition hover:bg-white/[0.03]">
+    <tr className="border-b border-[color:var(--acopay-border)] transition hover:bg-[var(--acopay-hover)]">
       <td className="px-5 py-3.5 text-center">
         <span className="inline-flex max-w-full items-center justify-center gap-1">
           <CopyIconBtn text={row.signature} label="signature" />
@@ -358,7 +358,7 @@ function TransferRow({ row, opts }: { row: AcopayTransferRow; opts: ViewOpts }) 
             href={row.href}
             target="_blank"
             rel="noopener noreferrer"
-            className={`font-mono text-xs text-[#00E5FF] hover:underline ${opts.fullSignature ? "break-all" : ""}`}
+            className={`font-mono text-xs text-[var(--acopay-brand)] hover:underline ${opts.fullSignature ? "break-all" : ""}`}
             title={row.signature}
           >
             {shortSig(row.signature, opts.fullSignature)}
@@ -367,7 +367,7 @@ function TransferRow({ row, opts }: { row: AcopayTransferRow; opts: ViewOpts }) 
         </span>
       </td>
       {opts.showAge && (
-        <td className="px-5 py-3.5 text-center text-sm text-[#9ca3af]" title={row.time}>
+        <td className="px-5 py-3.5 text-center text-sm text-[var(--acopay-muted)]" title={row.time}>
           {fmtAge(row.timestamp)}
         </td>
       )}
@@ -379,14 +379,14 @@ function TransferRow({ row, opts }: { row: AcopayTransferRow; opts: ViewOpts }) 
                 href={solscanBlock(row.slot)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-mono text-xs text-[#00E5FF] hover:underline"
+                className="font-mono text-xs text-[var(--acopay-brand)] hover:underline"
               >
                 {row.slot.toLocaleString("en-US")}
               </a>
               <ExtLink href={solscanBlock(row.slot)} />
             </span>
           ) : (
-            <span className="text-[#6b7280]">—</span>
+            <span className="text-[var(--acopay-faint)]">—</span>
           )}
         </td>
       )}
@@ -398,7 +398,7 @@ function TransferRow({ row, opts }: { row: AcopayTransferRow; opts: ViewOpts }) 
       </td>
       <td className="px-5 py-3.5 text-center">
         {/* Fixed-width row so logos stack on one vertical line when the column is centered */}
-        <span className="mx-auto grid w-[12.5rem] grid-cols-[1.25rem_minmax(0,1fr)] items-center gap-2 text-left text-sm text-white sm:w-[13.5rem]">
+        <span className="mx-auto grid w-[12.5rem] grid-cols-[1.25rem_minmax(0,1fr)] items-center gap-2 text-left text-sm text-[var(--acopay-fg)] sm:w-[13.5rem]">
           <img
             src="/assets/logo.png"
             alt=""
@@ -409,7 +409,7 @@ function TransferRow({ row, opts }: { row: AcopayTransferRow; opts: ViewOpts }) 
           />
           <span className="min-w-0 truncate">
             <span className="font-medium tabular-nums">{fmtAmount(row.amount)}</span>{" "}
-            <span className="font-normal text-[#9ca3af]">ACOPAY</span>
+            <span className="font-normal text-[var(--acopay-muted)]">ACOPAY</span>
           </span>
         </span>
       </td>
