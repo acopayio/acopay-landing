@@ -115,7 +115,7 @@ type ViewOpts = {
 };
 
 export function TransfersExplorer() {
-  const { rows, updatedAt, fetchedAt, total, backfillComplete, loading, refreshing, error, refresh } =
+  const { rows, updatedAt, fetchedAt, backfillComplete, loading, refreshing, error, refresh } =
     useAcopayTransfers(10_000);
   const t = useT();
   const { sortKey, sortDir, onSort } = useColumnSort<TransferSort>("time", "desc", [
