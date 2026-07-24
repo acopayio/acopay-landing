@@ -391,8 +391,21 @@ function TransferRow({ row, opts }: { row: AcopayTransferRow; opts: ViewOpts }) 
       <td className="px-5 py-3.5">
         <AddrCell addr={row.to} full={opts.fullAddress} />
       </td>
-      <td className="px-5 py-3.5 text-sm text-white">
-        {fmtAmount(row.amount)} <span className="text-[#9ca3af]">ACOPAY</span>
+      <td className="px-5 py-3.5">
+        <span className="inline-flex items-center gap-2 text-sm text-white">
+          <img
+            src="/assets/logo.png"
+            alt=""
+            width={20}
+            height={20}
+            className="h-5 w-5 shrink-0 rounded-full object-contain ring-1 ring-white/10"
+            loading="lazy"
+          />
+          <span>
+            <span className="font-medium tabular-nums">{fmtAmount(row.amount)}</span>{" "}
+            <span className="font-normal text-[#9ca3af]">ACOPAY</span>
+          </span>
+        </span>
       </td>
       <td className="px-5 py-3.5">
         <span
