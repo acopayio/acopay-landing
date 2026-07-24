@@ -37,7 +37,7 @@ const partials: Record<string, DeepPartialMessages> = {
       contract: "Hợp đồng",
       roadmap: "Lộ trình",
       faq: "Hỏi đáp",
-      telegramPay: "Telegram Pay",
+      telegramPay: "Thanh toán Telegram",
       telegram: "Telegram",
     },
     lang: {
