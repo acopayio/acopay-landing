@@ -77,7 +77,7 @@ export function LanguageToggle({ compact = false }: { compact?: boolean }) {
   }, [open, compact]);
 
   const triggerClass = compact
-    ? "inline-flex items-center gap-1.5 rounded-xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-hover)] px-2.5 py-1.5 text-xs font-medium text-[var(--acopay-muted)] transition hover:border-[color:var(--acopay-border-strong)] hover:text-[var(--acopay-fg)]"
+    ? "inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-hover)] text-xs font-medium text-[var(--acopay-muted)] transition hover:border-[color:var(--acopay-border-strong)] hover:text-[var(--acopay-fg)]"
     : `jup-sidebar-link w-full text-left ${open ? "jup-sidebar-link-active" : ""}`;
 
   return (
@@ -99,7 +99,7 @@ export function LanguageToggle({ compact = false }: { compact?: boolean }) {
         ) : (
           <span className="inline-block h-[14px] w-[18px] rounded-[2px] bg-[var(--acopay-hover)]" aria-hidden />
         )}
-        <span className={compact ? "max-w-[4.25rem] truncate" : "truncate"}>
+        <span className={compact ? "sr-only" : "truncate"}>
           {ready ? t("lang.menu") : t("lang.detecting")}
         </span>
       </button>

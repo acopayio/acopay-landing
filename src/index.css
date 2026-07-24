@@ -513,6 +513,23 @@ a.btn-orca-primary:disabled:hover {
     padding: 0.9rem 0.85rem 1rem;
     overflow-wrap: anywhere;
   }
+
+  .otc-header-top .label-orca {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .otc-receive,
+  .otc-order-summary {
+    padding: 0.85rem 0.75rem;
+  }
+
+  .otc-order-summary .text-xl {
+    font-size: 1.15rem;
+    line-height: 1.35;
+  }
 }
 
 .otc-panel-grid {
@@ -599,11 +616,14 @@ a.btn-orca-primary:disabled:hover {
   height: 100%;
 }
 
-@media (max-width: 899px) {
+/* Tablet only — do not override tighter phone padding (≤639px) */
+@media (min-width: 640px) and (max-width: 899px) {
   .otc-panel-inner {
     padding: 1.1rem 1rem 1.25rem;
   }
+}
 
+@media (max-width: 899px) {
   .otc-inline-pay .otc-qr-stage {
     min-height: 0;
   }
