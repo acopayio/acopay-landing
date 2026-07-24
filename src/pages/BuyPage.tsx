@@ -21,7 +21,7 @@ export function BuyPage() {
       <div className="page-wrap relative space-y-10">
         <OtcBuyPanel />
 
-        <aside className="otc-notice mx-auto max-w-5xl">
+        <aside className="otc-notice mx-auto max-w-5xl" data-buy-copy="2026-07-24b">
           <h2 className="text-sm font-semibold text-white">{t("buyPage.beforeTitle")}</h2>
           <ul className="mt-2 space-y-1.5 text-xs leading-relaxed text-[#9ca3af]">
             <li>{t("buyPage.before1")}</li>

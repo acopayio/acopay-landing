@@ -158,7 +158,9 @@ async function putFile(relPath) {
   }
 
   const body = {
-    message: `chore: sync markets data ${path.basename(relPath)}`,
+    // Prefix [Skip CI] so Cloudflare Pages does NOT rebuild the whole site on every JSON sync.
+    // UI/code commits without this tag still deploy normally.
+    message: `[Skip CI] chore: sync markets data ${path.basename(relPath)}`,
     content: raw.toString("base64"),
     branch: BRANCH,
   };
