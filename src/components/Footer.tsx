@@ -53,6 +53,7 @@ export function Footer() {
                   </li>
                 ))}
               </ul>
+              <p className="mt-3 text-[11px] text-[#6b7280]">© {TOKEN.founded} ACOPAY</p>
             </div>
             <div>
               <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#00E5FF]">
@@ -88,8 +89,6 @@ export function Footer() {
               </ul>
             </div>
           </div>
-
-          <p className="mt-6 text-center text-[11px] text-[#6b7280]">© {TOKEN.founded} ACOPAY</p>
         </div>
 
         {/* Desktop */}
