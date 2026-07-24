@@ -16,12 +16,12 @@ export function BuyPage() {
   ];
 
   return (
-    <section className="section-pad relative overflow-hidden pb-12 md:pb-16">
+    <section className="section-pad relative overflow-x-clip pb-12 md:pb-16">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(0,229,255,0.09),_transparent_52%)]" />
-      <div className="page-wrap relative space-y-10">
+      <div className="page-wrap relative min-w-0 space-y-10">
         <OtcBuyPanel />
 
-        <aside className="otc-notice mx-auto max-w-5xl" data-buy-copy="2026-07-24b">
+        <aside className="otc-notice mx-auto max-w-5xl min-w-0" data-buy-copy="2026-07-24b">
           <h2 className="text-sm font-semibold text-[var(--acopay-fg)]">{t("buyPage.beforeTitle")}</h2>
           <ul className="mt-2 space-y-1.5 text-xs leading-relaxed text-[var(--acopay-muted)]">
             <li>{t("buyPage.before1")}</li>

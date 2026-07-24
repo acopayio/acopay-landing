@@ -427,7 +427,7 @@ export function OtcBuyPanel() {
             {copied ? t("otc.copied") : t("otc.copy")}
           </span>
         </button>
-        <p className="mt-2 text-[11px] leading-relaxed text-[var(--acopay-faint)]">
+        <p className="mt-2 break-words text-[11px] leading-relaxed text-[var(--acopay-faint)]">
           {t("otc.depositHint", { mint: shortAddr(OTC.usdtMint) })}
         </p>
       </div>
@@ -458,9 +458,9 @@ export function OtcBuyPanel() {
     ) : null;
 
   return (
-    <div className="otc-panel mx-auto w-full max-w-5xl">
-      <div className={`otc-panel-inner otc-panel-grid ${phaseClass}`}>
-        <div className="otc-col otc-col-main">
+    <div className="otc-panel mx-auto w-full min-w-0 max-w-5xl">
+      <div className={`otc-panel-inner otc-panel-grid min-w-0 ${phaseClass}`}>
+        <div className="otc-col otc-col-main min-w-0">
           <header className="otc-header">
             <div className="otc-header-top">
               <p className="label-orca">{t("otc.deskLabel")}</p>
@@ -546,10 +546,12 @@ export function OtcBuyPanel() {
                   </button>
                 )}
               </div>
-              <p className="mt-2 text-2xl font-bold tracking-tight text-[var(--acopay-fg)] sm:text-3xl">
-                {formatUsdt(activeAmount)}{" "}
-                <span className="text-base font-semibold text-[var(--acopay-muted)]">USDT</span>
-                <span className="mx-2 text-sm font-medium text-[var(--acopay-faint)]">→</span>
+              <p className="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-1 text-xl font-bold tracking-tight text-[var(--acopay-fg)] sm:text-3xl">
+                <span className="whitespace-nowrap">
+                  {formatUsdt(activeAmount)}{" "}
+                  <span className="text-base font-semibold text-[var(--acopay-muted)]">USDT</span>
+                </span>
+                <span className="text-sm font-medium text-[var(--acopay-faint)]">→</span>
                 <span className="text-[var(--acopay-brand)]">
                   {formatUsdt(creditedAcopay ?? receive)} ACOPAY
                 </span>

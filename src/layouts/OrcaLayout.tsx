@@ -43,7 +43,7 @@ export function OrcaLayout() {
   const t = useT();
 
   return (
-    <div className="jup-shell flex">
+    <div className="jup-shell flex min-w-0 overflow-x-clip">
       <aside className="sticky top-0 z-40 hidden h-[100dvh] w-[220px] shrink-0 flex-col overflow-x-hidden border-r border-[color:var(--acopay-border)] bg-[var(--acopay-bg-2)] lg:flex">
         <Link to="/" className="flex items-center gap-2.5 px-4 py-5">
           <BrandLogo className="h-9 w-9 shrink-0 object-contain" />
@@ -78,28 +78,28 @@ export function OrcaLayout() {
 
       <div className="flex min-w-0 flex-1 flex-col pb-[4.25rem] lg:pb-0">
         <header className="sticky top-0 z-50 border-b border-[color:var(--acopay-border)] bg-[color-mix(in_srgb,var(--acopay-bg)_95%,transparent)] backdrop-blur-xl lg:hidden">
-          <div className="page-wrap flex h-14 items-center justify-between gap-3">
-            <Link to="/" className="flex shrink-0 items-center gap-2">
+          <div className="page-wrap flex h-14 min-w-0 items-center justify-between gap-2">
+            <Link to="/" className="flex min-w-0 shrink items-center gap-2">
               <BrandLogo className="h-8 w-8 shrink-0 object-contain" />
-              <span className="font-bold tracking-tight text-[var(--acopay-fg)]">ACOPAY</span>
+              <span className="truncate font-bold tracking-tight text-[var(--acopay-fg)]">ACOPAY</span>
             </Link>
-            <div className="flex min-w-0 shrink items-center gap-1.5 overflow-visible">
-              <div className="relative overflow-visible">
+            <div className="flex shrink-0 items-center gap-1.5">
+              <div className="relative">
                 <ThemeToggle compact />
               </div>
-              <div className="relative overflow-visible">
+              <div className="relative">
                 <LanguageToggle compact />
               </div>
               <TelegramPayButton
                 showIcon
                 label={t("nav.telegramPay")}
-                className="inline-flex !h-9 max-w-[11.5rem] items-center gap-1.5 !rounded-lg !border !border-[color:var(--acopay-brand)]/45 !bg-[var(--acopay-brand-soft)] !px-2.5 !text-xs !font-semibold !text-[var(--acopay-brand)] hover:!opacity-90"
+                className="inline-flex !h-9 !w-9 shrink-0 items-center justify-center !rounded-lg !border !border-[color:var(--acopay-brand)]/45 !bg-[var(--acopay-brand-soft)] !p-0 !text-[var(--acopay-brand)] hover:!opacity-90"
               />
             </div>
           </div>
         </header>
 
-        <main className="flex-1">
+        <main className="min-w-0 flex-1 overflow-x-clip">
           <Outlet />
         </main>
 

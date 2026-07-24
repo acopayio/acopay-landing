@@ -19,9 +19,12 @@ export function TelegramPayButton({
       target="_blank"
       rel="noopener noreferrer"
       className={className}
+      aria-label={label}
+      title={label}
     >
       {showIcon ? <TelegramGlyph /> : null}
-      <span>{label}</span>
+      {/* Mobile header: icon only — long i18n labels (e.g. VI) overflow the bar */}
+      <span className={showIcon ? "sr-only" : undefined}>{label}</span>
     </a>
   );
 }

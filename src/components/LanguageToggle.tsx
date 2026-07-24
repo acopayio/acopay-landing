@@ -99,7 +99,9 @@ export function LanguageToggle({ compact = false }: { compact?: boolean }) {
         ) : (
           <span className="inline-block h-[14px] w-[18px] rounded-[2px] bg-[var(--acopay-hover)]" aria-hidden />
         )}
-        <span className="truncate">{ready ? t("lang.menu") : t("lang.detecting")}</span>
+        <span className={compact ? "max-w-[4.25rem] truncate" : "truncate"}>
+          {ready ? t("lang.menu") : t("lang.detecting")}
+        </span>
       </button>
 
       {open && pos && (
