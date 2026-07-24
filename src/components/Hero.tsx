@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { TOKEN, explorerUrl, isMintLive, mintDisplay, solscanUrl } from "../config/token";
 import { BuyButton } from "./BuyButton";
+import { BrandLogo } from "./BrandLogo";
 import { useCopy } from "../hooks/useCopy";
 import { useT } from "../i18n/LanguageProvider";
 
@@ -36,11 +37,7 @@ export function Hero() {
             <span className="inline-flex flex-wrap items-center gap-x-1 gap-y-0.5 text-[var(--acopay-muted)]">
               <span>{t("hero.feeLabel")}</span>
               <span className="font-semibold tabular-nums text-[var(--acopay-fg)]">{TOKEN.transferFee}</span>
-              <img
-                src="/assets/logo.png"
-                alt=""
-                className="inline-block h-3.5 w-3.5 shrink-0 object-contain sm:h-4 sm:w-4"
-              />
+              <BrandLogo className="inline-block h-3.5 w-3.5 shrink-0 object-contain sm:h-4 sm:w-4" />
               <span className="font-semibold tracking-tight text-[var(--acopay-fg)]">ACOPAY</span>
             </span>
           </p>

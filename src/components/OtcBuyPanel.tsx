@@ -4,6 +4,7 @@ import { OTC, OTC_SESSION_MS, buildSolanaPayUrl, formatSessionClock, otcAcopayFo
 import { solscanUrl, TOKEN } from "../config/token";
 import { useCopy } from "../hooks/useCopy";
 import { useT } from "../i18n/LanguageProvider";
+import { BrandLogo } from "./BrandLogo";
 
 const PRESETS = [10, 50, 100, 250, 500] as const;
 
@@ -313,7 +314,7 @@ export function OtcBuyPanel() {
       ) : phase === "setup" ? (
         <div className="otc-qr-placeholder">
           <div className="otc-qr-preview-frame" aria-hidden>
-            <img src="/assets/logo.png" alt="" className="h-12 w-12 opacity-90" />
+            <BrandLogo className="h-12 w-12 opacity-90" />
           </div>
           <p className="mt-5 text-sm font-semibold text-[var(--acopay-fg)]">{t("otc.paymentCode")}</p>
           <p className="mt-1.5 max-w-[15rem] text-center text-xs leading-relaxed text-[var(--acopay-faint)]">

@@ -3,6 +3,7 @@ import type { ReactElement } from "react";
 import { TelegramPayButton } from "../components/TelegramPayButton";
 import { LanguageToggle } from "../components/LanguageToggle";
 import { ThemeToggle } from "../components/ThemeToggle";
+import { BrandLogo } from "../components/BrandLogo";
 import { Footer } from "../components/Footer";
 import { useT } from "../i18n/LanguageProvider";
 
@@ -45,7 +46,7 @@ export function OrcaLayout() {
     <div className="jup-shell flex">
       <aside className="sticky top-0 z-40 hidden h-[100dvh] w-[220px] shrink-0 flex-col overflow-x-hidden border-r border-[color:var(--acopay-border)] bg-[var(--acopay-bg-2)] lg:flex">
         <Link to="/" className="flex items-center gap-2.5 px-4 py-5">
-          <img src="/assets/logo.png" alt="" className="h-9 w-9 shrink-0 object-contain" />
+          <BrandLogo className="h-9 w-9 shrink-0 object-contain" />
           <span className="text-base font-bold tracking-tight text-[var(--acopay-fg)]">ACOPAY</span>
         </Link>
 
@@ -79,7 +80,7 @@ export function OrcaLayout() {
         <header className="sticky top-0 z-50 border-b border-[color:var(--acopay-border)] bg-[color-mix(in_srgb,var(--acopay-bg)_95%,transparent)] backdrop-blur-xl lg:hidden">
           <div className="page-wrap flex h-14 items-center justify-between gap-3">
             <Link to="/" className="flex shrink-0 items-center gap-2">
-              <img src="/assets/logo.png" alt="" className="h-8 w-8 shrink-0 object-contain" />
+              <BrandLogo className="h-8 w-8 shrink-0 object-contain" />
               <span className="font-bold tracking-tight text-[var(--acopay-fg)]">ACOPAY</span>
             </Link>
             <div className="flex min-w-0 shrink items-center gap-1.5 overflow-visible">

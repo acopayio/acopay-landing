@@ -6,6 +6,7 @@ import type { PoolRow } from "../../types/pool";
 import { HOME_POOL_ROWS, fmtPct, fmtUsd } from "../../types/pool";
 import { SortCaret, SortTh, compareSortValues, useColumnSort } from "../ui/SortTh";
 import { useT } from "../../i18n/LanguageProvider";
+import { BrandLogo } from "../BrandLogo";
 
 type PoolSortKey = "pair" | "change24h" | "yieldPct" | "volume24h" | "tvl" | "fees24h";
 
@@ -54,7 +55,7 @@ function PoolIcon({ row }: { row: PoolRow }) {
     return (
       <div className="flex -space-x-2">
         <span className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-[var(--acopay-bg)] ring-2 ring-[color:var(--acopay-surface)]">
-          <img src="/assets/logo.png" alt="" className="h-7 w-7 object-contain" />
+          <BrandLogo className="h-7 w-7 object-contain" />
         </span>
         <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--acopay-bg)] text-[9px] font-bold text-[var(--acopay-muted)] ring-2 ring-[color:var(--acopay-surface)]">
           USD

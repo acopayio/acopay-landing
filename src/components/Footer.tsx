@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { TOKEN, explorerUrl, jupiterSwapUrl, solscanUrl } from "../config/token";
 import { useT } from "../i18n/LanguageProvider";
+import { BrandLogo } from "./BrandLogo";
 
 const PRODUCT_LINKS = [
   { to: "/token", labelKey: "nav.token" },
@@ -22,7 +23,7 @@ export function Footer() {
         <div className="md:hidden">
           <div className="flex items-center gap-2.5">
             <Link to="/" className="flex items-center gap-2.5">
-              <img src="/assets/logo.png" alt="" className="h-8 w-8 shrink-0 object-contain" />
+              <BrandLogo className="h-8 w-8 shrink-0 object-contain" />
               <div className="flex h-8 flex-col justify-center">
                 <div className="w-fit">
                   <div className="text-[13px] font-bold leading-none tracking-tight text-[var(--acopay-fg)]">
@@ -103,7 +104,7 @@ export function Footer() {
         <div className="hidden gap-10 md:grid md:grid-cols-[1.4fr_1fr_1fr_1fr] md:items-stretch">
           <div className="flex flex-col">
             <Link to="/" className="inline-flex w-fit items-center gap-2.5">
-              <img src="/assets/logo.png" alt="" className="h-9 w-9 shrink-0 object-contain" />
+              <BrandLogo className="h-9 w-9 shrink-0 object-contain" />
               <div className="flex h-9 flex-col justify-center">
                 <div className="w-fit">
                   <div className="text-[15px] font-bold leading-none tracking-tight text-[var(--acopay-fg)]">
