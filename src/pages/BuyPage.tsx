@@ -41,7 +41,7 @@ export function BuyPage() {
               {TOKEN.mintAddress}
             </a>
             {" · "}
-            <Link to="/faq" className="text-[#00E5FF]/90 hover:text-[#00E5FF]">
+            <Link to="/faq" className="text-white hover:text-white/80">
               {t("buyPage.phantomFaq")}
             </Link>
           </p>

@@ -286,14 +286,16 @@ export const en = {
   buyPage: {
     beforeTitle: "Before you pay",
     before1: "Send from a wallet you control (Phantom, Solflare, Backpack, etc.). ACOPAY is credited to that same Solana address.",
-    before2: "Do not withdraw USDT from Binance, OKX, Bybit, or other exchanges straight to this desk. The chain sees the exchange hot wallet as the sender — ACOPAY would go there, not to you.",
-    before3: "Correct path: exchange to your wallet, then Buy on acopay.net. Keep a little SOL for fees.",
+    before2:
+      "Do not withdraw USDT from Binance, OKX, Bybit, or other exchanges directly to this Buy page payment address. On-chain, the sender is the exchange wallet — so ACOPAY would go to the exchange, not to you.",
+    before3:
+      "Send USDT the right way: exchange → your own wallet → then pay on the Buy page at acopay.net. Keep a little SOL for fees.",
     before4: "Official site is acopay.net only. Confirm the mint on Solscan before you trust any other link or message.",
     before5: "Phantom may mark new tokens as spam. Your ACOPAY is still on-chain — open Manage tokens / spam settings and show ACOPAY, or check the balance on Solscan.",
     mintPrefix: "Official mint:",
-    phantomFaq: "Phantom warning FAQ",
+    phantomFaq: "FAQ: ACOPAY warning in Phantom wallet",
     feat1Title: "Fixed rate",
-    feat1Body: "One USDT converts to one ACOPAY at the desk — no pool slippage.",
+    feat1Body: "One USDT converts to one ACOPAY on this Buy page — no pool slippage.",
     feat2Title: "Same-wallet settle",
     feat2Body: "ACOPAY is sent to the Solana wallet that paid USDT — not to an exchange account.",
     feat3Title: "USDT on Solana only",

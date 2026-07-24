@@ -303,14 +303,16 @@ const partials: Record<string, DeepPartialMessages> = {
     buyPage: {
       beforeTitle: "Trước khi thanh toán",
       before1: "Gửi từ ví bạn kiểm soát (Phantom, Solflare, Backpack…). ACOPAY được ghi có về cùng địa chỉ Solana đó.",
-      before2: "Không rút USDT từ Binance, OKX, Bybit hay sàn khác thẳng vào bàn này. Chain thấy ví nóng của sàn là người gửi — ACOPAY sẽ về đó, không về bạn.",
-      before3: "Đúng cách: sàn → ví của bạn → trang Mua trên acopay.net. Giữ một ít SOL cho phí.",
+      before2:
+        "Không rút USDT từ Binance, OKX, Bybit hay sàn khác thẳng vào địa chỉ thanh toán trên trang Mua này. On-chain, người gửi là ví của sàn — nên ACOPAY sẽ về ví sàn, không về ví của bạn.",
+      before3:
+        "Gửi USDT đúng cách: sàn → ví của bạn → rồi thanh toán trên trang Mua acopay.net. Giữ một ít SOL cho phí.",
       before4: "Site chính thức chỉ là acopay.net. Đối chiếu mint trên Solscan trước khi tin link hay tin nhắn khác.",
       before5: "Phantom có thể gắn spam cho token mới. ACOPAY vẫn on-chain — mở Manage tokens / spam và hiện ACOPAY, hoặc xem số dư trên Solscan.",
       mintPrefix: "Mint chính thức:",
-      phantomFaq: "FAQ cảnh báo Phantom",
+      phantomFaq: "FAQ: cảnh báo ACOPAY trong ví Phantom",
       feat1Title: "Tỷ giá cố định",
-      feat1Body: "Một USDT đổi một ACOPAY tại bàn — không slippage pool.",
+      feat1Body: "Một USDT đổi một ACOPAY trên trang Mua — không slippage pool.",
       feat2Title: "Settle cùng ví",
       feat2Body: "ACOPAY gửi về ví Solana đã trả USDT — không về tài khoản sàn.",
       feat3Title: "Chỉ USDT trên Solana",
