@@ -398,7 +398,8 @@ function TransferRow({ row, opts }: { row: AcopayTransferRow; opts: ViewOpts }) 
         <AddrCell addr={row.to} full={opts.fullAddress} />
       </td>
       <td className="px-5 py-3.5 text-center">
-        <span className="inline-flex items-center justify-center gap-2 text-sm text-white">
+        {/* Fixed-width row so logos stack on one vertical line when the column is centered */}
+        <span className="mx-auto grid w-[12.5rem] grid-cols-[1.25rem_minmax(0,1fr)] items-center gap-2 text-left text-sm text-white sm:w-[13.5rem]">
           <img
             src="/assets/logo.png"
             alt=""
@@ -407,7 +408,7 @@ function TransferRow({ row, opts }: { row: AcopayTransferRow; opts: ViewOpts }) 
             className="h-5 w-5 shrink-0 rounded-full object-contain ring-1 ring-white/10"
             loading="lazy"
           />
-          <span>
+          <span className="min-w-0 truncate">
             <span className="font-medium tabular-nums">{fmtAmount(row.amount)}</span>{" "}
             <span className="font-normal text-[#9ca3af]">ACOPAY</span>
           </span>
