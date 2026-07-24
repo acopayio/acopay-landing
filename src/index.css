@@ -47,6 +47,12 @@ html[data-theme="light"] {
   --acopay-btn-fg: #0c1017;
   --acopay-glow-a: rgba(0, 229, 255, 0.12);
   --acopay-glow-b: rgba(0, 139, 168, 0.06);
+  --acopay-success: #047857;
+  --acopay-success-bg: rgba(4, 120, 87, 0.12);
+  --acopay-success-ring: rgba(4, 120, 87, 0.28);
+  --acopay-danger: #b91c1c;
+  --acopay-danger-bg: rgba(185, 28, 28, 0.1);
+  --acopay-danger-ring: rgba(185, 28, 28, 0.25);
   color-scheme: light;
 }
 
@@ -70,6 +76,12 @@ html[data-theme="dark"] {
   --acopay-btn-fg: #0c1017;
   --acopay-glow-a: rgba(0, 229, 255, 0.09);
   --acopay-glow-b: rgba(0, 229, 255, 0.04);
+  --acopay-success: #6ee7b7;
+  --acopay-success-bg: rgba(16, 185, 129, 0.15);
+  --acopay-success-ring: rgba(16, 185, 129, 0.3);
+  --acopay-danger: #fca5a5;
+  --acopay-danger-bg: rgba(239, 68, 68, 0.15);
+  --acopay-danger-ring: rgba(239, 68, 68, 0.3);
   color-scheme: dark;
 }
 

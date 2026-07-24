@@ -409,10 +409,10 @@ function TransferRow({ row, opts }: { row: AcopayTransferRow; opts: ViewOpts }) 
       </td>
       <td className="px-5 py-3.5 text-center">
         <span
-          className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${
+          className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ${
             ok
-              ? "bg-emerald-500/15 text-emerald-300 ring-1 ring-emerald-500/30"
-              : "bg-red-500/15 text-red-300 ring-1 ring-red-500/30"
+              ? "bg-[var(--acopay-success-bg)] text-[var(--acopay-success)] ring-1 ring-[color:var(--acopay-success-ring)]"
+              : "bg-[var(--acopay-danger-bg)] text-[var(--acopay-danger)] ring-1 ring-[color:var(--acopay-danger-ring)]"
           }`}
         >
           {ok ? t("markets.success") : t("markets.failed")}
