@@ -17,9 +17,10 @@ export function FlagImg({
       title={title}
       width={20}
       height={15}
-      loading="lazy"
+      /* Eager: iOS Safari skips lazy imgs inside fixed + overflow menus */
+      loading="eager"
       decoding="async"
-      className={`inline-block shrink-0 rounded-[2px] object-cover shadow-[0_0_0_1px_rgba(255,255,255,0.12)] ${className}`}
+      className={`inline-block h-[15px] w-5 shrink-0 rounded-[2px] object-cover shadow-[0_0_0_1px_var(--acopay-border-strong)] ${className}`}
     />
   );
 }
