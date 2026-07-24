@@ -39,11 +39,11 @@ type ThemeContextValue = {
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<ThemeId>("dark");
+  const [theme, setThemeState] = useState<ThemeId>("light");
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    let next: ThemeId = "dark";
+    let next: ThemeId = "light";
     try {
       const raw = localStorage.getItem(THEME_STORAGE_KEY);
       if (isThemeId(raw)) next = raw;

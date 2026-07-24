@@ -1,6 +1,6 @@
 ﻿@import "tailwindcss";
 
-/* ACOPAY theme — dark (default) + light; accent cyan from logo */
+/* ACOPAY theme — light (default) + dark; accent cyan from logo */
 @theme {
   --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
   --color-jup-bg: #0c1017;
@@ -26,31 +26,8 @@
   --color-orca-muted: #9ca3af;
 }
 
-/* Semantic tokens — Dark (default) */
+/* Semantic tokens — Light (default) */
 html,
-html[data-theme="dark"] {
-  --acopay-bg: #0c1017;
-  --acopay-bg-2: #090b0e;
-  --acopay-surface: #191c22;
-  --acopay-surface-2: #13161a;
-  --acopay-surface-hover: #1e2229;
-  --acopay-fg: #f3f4f6;
-  --acopay-muted: #9ca3af;
-  --acopay-faint: #6b7280;
-  --acopay-brand: #00e5ff;
-  --acopay-brand-hover: #5eefff;
-  --acopay-brand-dim: #00b8d4;
-  --acopay-brand-soft: rgba(0, 229, 255, 0.1);
-  --acopay-border: rgba(255, 255, 255, 0.06);
-  --acopay-border-strong: rgba(255, 255, 255, 0.12);
-  --acopay-hover: rgba(255, 255, 255, 0.04);
-  --acopay-btn-fg: #0c1017;
-  --acopay-glow-a: rgba(0, 229, 255, 0.09);
-  --acopay-glow-b: rgba(0, 229, 255, 0.04);
-  color-scheme: dark;
-}
-
-/* Semantic tokens — Light */
 html[data-theme="light"] {
   --acopay-bg: #f5f8fa;
   --acopay-bg-2: #eef2f6;
@@ -71,6 +48,29 @@ html[data-theme="light"] {
   --acopay-glow-a: rgba(0, 229, 255, 0.12);
   --acopay-glow-b: rgba(0, 139, 168, 0.06);
   color-scheme: light;
+}
+
+/* Semantic tokens — Dark */
+html[data-theme="dark"] {
+  --acopay-bg: #0c1017;
+  --acopay-bg-2: #090b0e;
+  --acopay-surface: #191c22;
+  --acopay-surface-2: #13161a;
+  --acopay-surface-hover: #1e2229;
+  --acopay-fg: #f3f4f6;
+  --acopay-muted: #9ca3af;
+  --acopay-faint: #6b7280;
+  --acopay-brand: #00e5ff;
+  --acopay-brand-hover: #5eefff;
+  --acopay-brand-dim: #00b8d4;
+  --acopay-brand-soft: rgba(0, 229, 255, 0.1);
+  --acopay-border: rgba(255, 255, 255, 0.06);
+  --acopay-border-strong: rgba(255, 255, 255, 0.12);
+  --acopay-hover: rgba(255, 255, 255, 0.04);
+  --acopay-btn-fg: #0c1017;
+  --acopay-glow-a: rgba(0, 229, 255, 0.09);
+  --acopay-glow-b: rgba(0, 229, 255, 0.04);
+  color-scheme: dark;
 }
 
 html {
@@ -109,7 +109,8 @@ body {
   background: var(--acopay-surface-hover);
 }
 
-.btn-orca-primary {
+.btn-orca-primary,
+a.btn-orca-primary {
   display: inline-flex;
   height: 2.75rem;
   align-items: center;
@@ -119,23 +120,31 @@ body {
   padding: 0 1.25rem;
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--acopay-btn-fg);
+  /* Near-black on cyan — never inherit link brand color (#008ba8 in Light) */
+  color: #0c1017 !important;
   transition: background-color 0.15s, transform 0.1s;
+  text-decoration: none;
 }
-.btn-orca-primary:hover {
+.btn-orca-primary:hover,
+a.btn-orca-primary:hover {
   background: #5eefff;
+  color: #0c1017 !important;
 }
-.btn-orca-primary:active {
+.btn-orca-primary:active,
+a.btn-orca-primary:active {
   transform: scale(0.98);
 }
 
-.btn-orca-primary:disabled {
+.btn-orca-primary:disabled,
+a.btn-orca-primary:disabled {
   cursor: not-allowed;
   opacity: 0.45;
   box-shadow: none;
 }
-.btn-orca-primary:disabled:hover {
+.btn-orca-primary:disabled:hover,
+a.btn-orca-primary:disabled:hover {
   background: #00e5ff;
+  color: #0c1017 !important;
 }
 .btn-orca-primary:disabled:active {
   transform: none;

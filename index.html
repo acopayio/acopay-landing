@@ -18,8 +18,8 @@
     <meta name="author" content="ACOPAY" />
     <meta name="application-name" content="ACOPAY" />
     <meta name="apple-mobile-web-app-title" content="ACOPAY" />
-    <meta name="theme-color" content="#0c1017" />
-    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#F5F8FA" />
+    <meta name="color-scheme" content="light" />
     <meta name="format-detection" content="telephone=no" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta name="language" content="en-US" />
@@ -69,16 +69,16 @@
         );
       }
     </script>
-    <!-- Theme before paint — avoid flash -->
+    <!-- Theme before paint — avoid flash; default Light -->
     <script>
       (function () {
         try {
           var t = localStorage.getItem("acopay_theme");
-          if (t !== "light" && t !== "dark") t = "dark";
+          if (t !== "light" && t !== "dark") t = "light";
           document.documentElement.setAttribute("data-theme", t);
           document.documentElement.style.colorScheme = t;
         } catch (e) {
-          document.documentElement.setAttribute("data-theme", "dark");
+          document.documentElement.setAttribute("data-theme", "light");
         }
       })();
     </script>
@@ -87,20 +87,25 @@
       body {
         margin: 0;
         min-height: 100%;
-        background: #0c1017;
-        color: #f3f4f6;
-      }
-      html[data-theme="light"],
-      html[data-theme="light"] body {
         background: #f5f8fa;
         color: #0b1220;
       }
+      html[data-theme="dark"],
+      html[data-theme="dark"] body {
+        background: #0c1017;
+        color: #f3f4f6;
+      }
       a {
-        color: #00e5ff;
+        color: #008ba8;
         text-decoration: none;
       }
-      html[data-theme="light"] a {
-        color: #008ba8;
+      html[data-theme="dark"] a {
+        color: #00e5ff;
+      }
+      /* Primary CTAs: near-black on neon cyan (not link brand color) */
+      a.btn-orca-primary,
+      .btn-orca-primary {
+        color: #0c1017 !important;
       }
       #root {
         min-height: 100vh;
