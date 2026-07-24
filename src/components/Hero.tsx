@@ -32,7 +32,17 @@ export function Hero() {
             </p>
           </div>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[#9ca3af] sm:text-base">
-            {t("hero.desc", { fee: TOKEN.transferFee })}
+            {t("hero.desc")}{" "}
+            <span className="inline-flex flex-wrap items-center gap-x-1 gap-y-0.5 text-[#c4c9d4]">
+              <span>{t("hero.feeLabel")}</span>
+              <span className="font-semibold tabular-nums text-white">{TOKEN.transferFee}</span>
+              <img
+                src="/assets/logo.png"
+                alt=""
+                className="inline-block h-3.5 w-3.5 shrink-0 object-contain sm:h-4 sm:w-4"
+              />
+              <span className="font-semibold tracking-tight text-white">ACOPAY</span>
+            </span>
           </p>
 
           <div className="mt-4 flex flex-wrap items-center gap-3">

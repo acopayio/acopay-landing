@@ -24,7 +24,8 @@ export const en = {
   },
   hero: {
     eyebrow: "Solana · Token-2022",
-    desc: "Solana payment utility for wallet-to-wallet transfers. Trade ACOPAY/USDT on Raydium and Jupiter. On-chain fee {fee}.",
+    desc: "Solana payment utility for wallet-to-wallet transfers. Trade ACOPAY/USDT on Raydium and Jupiter.",
+    feeLabel: "On-chain transfer fee:",
     explorer: "Explorer ↗",
     solscan: "Solscan ↗",
     contractAddress: "Contract address",

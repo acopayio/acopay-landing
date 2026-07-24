@@ -52,7 +52,8 @@ const partials: Record<string, DeepPartialMessages> = {
     },
     hero: {
       eyebrow: "Solana · Token-2022",
-      desc: "Tiện ích thanh toán Solana cho chuyển khoản ví-sang-ví. Giao dịch ACOPAY/USDT trên Raydium và Jupiter. Phí on-chain {fee}.",
+      desc: "Tiện ích thanh toán Solana cho chuyển khoản ví-sang-ví. Giao dịch ACOPAY/USDT trên Raydium và Jupiter.",
+      feeLabel: "Phí giao dịch on-chain:",
       explorer: "Khám phá ↗",
       solscan: "Solscan ↗",
       contractAddress: "Địa chỉ hợp đồng",
@@ -455,7 +456,7 @@ const partials: Record<string, DeepPartialMessages> = {
     hero: {
       explorer: "区块浏览器 ↗",
       solscan: "Solscan ↗",
-      desc: "Solana 钱包到钱包支付工具。在 Raydium 与 Jupiter 交易 ACOPAY/USDT。链上手续费 {fee}。",
+      desc: "Solana 钱包到钱包支付工具。在 Raydium 与 Jupiter 交易 ACOPAY/USDT。",
       contractAddress: "合约地址",
       details: "详情 →",
       copy: "复制",
@@ -547,7 +548,7 @@ const partials: Record<string, DeepPartialMessages> = {
     hero: {
       explorer: "エクスプローラー ↗",
       solscan: "Solscan ↗",
-      desc: "ウォレット間送金向け Solana 決済ユーティリティ。Raydium と Jupiter で ACOPAY/USDT を取引。オンチェーン手数料 {fee}。",
+      desc: "ウォレット間送金向け Solana 決済ユーティリティ。Raydium と Jupiter で ACOPAY/USDT を取引。",
       contractAddress: "コントラクトアドレス",
       details: "詳細 →",
       copy: "コピー",
@@ -639,7 +640,7 @@ const partials: Record<string, DeepPartialMessages> = {
     hero: {
       explorer: "탐색기 ↗",
       solscan: "Solscan ↗",
-      desc: "지갑 간 송금을 위한 Solana 결제 유틸리티. Raydium·Jupiter에서 ACOPAY/USDT 거래. 온체인 수수료 {fee}.",
+      desc: "지갑 간 송금을 위한 Solana 결제 유틸리티. Raydium·Jupiter에서 ACOPAY/USDT 거래.",
       contractAddress: "컨트랙트 주소",
       details: "자세히 →",
       copy: "복사",
@@ -731,7 +732,7 @@ const partials: Record<string, DeepPartialMessages> = {
     hero: {
       explorer: "Explorador ↗",
       solscan: "Solscan ↗",
-      desc: "Utilidad de pago en Solana para transferencias entre billeteras. Opera ACOPAY/USDT en Raydium y Jupiter. Comisión on-chain {fee}.",
+      desc: "Utilidad de pago en Solana para transferencias entre billeteras. Opera ACOPAY/USDT en Raydium y Jupiter.",
       contractAddress: "Dirección del contrato",
       details: "Detalles →",
       copy: "Copiar",
@@ -823,7 +824,7 @@ const partials: Record<string, DeepPartialMessages> = {
     hero: {
       explorer: "Explorador ↗",
       solscan: "Solscan ↗",
-      desc: "Utilitário de pagamento Solana para transferências entre carteiras. Negocie ACOPAY/USDT na Raydium e Jupiter. Taxa on-chain {fee}.",
+      desc: "Utilitário de pagamento Solana para transferências entre carteiras. Negocie ACOPAY/USDT na Raydium e Jupiter.",
       contractAddress: "Endereço do contrato",
       details: "Detalhes →",
       copy: "Copiar",
@@ -915,7 +916,7 @@ const partials: Record<string, DeepPartialMessages> = {
     hero: {
       explorer: "Explorateur ↗",
       solscan: "Solscan ↗",
-      desc: "Utilitaire de paiement Solana pour les transferts portefeuille à portefeuille. Échangez ACOPAY/USDT sur Raydium et Jupiter. Frais on-chain {fee}.",
+      desc: "Utilitaire de paiement Solana pour les transferts portefeuille à portefeuille. Échangez ACOPAY/USDT sur Raydium et Jupiter.",
       contractAddress: "Adresse du contrat",
       details: "Détails →",
       copy: "Copier",
@@ -1007,7 +1008,7 @@ const partials: Record<string, DeepPartialMessages> = {
     hero: {
       explorer: "Explorer ↗",
       solscan: "Solscan ↗",
-      desc: "Solana-Zahlungs-Utility für Wallet-zu-Wallet-Transfers. Handle ACOPAY/USDT auf Raydium und Jupiter. On-Chain-Gebühr {fee}.",
+      desc: "Solana-Zahlungs-Utility für Wallet-zu-Wallet-Transfers. Handle ACOPAY/USDT auf Raydium und Jupiter.",
       contractAddress: "Vertragsadresse",
       details: "Details →",
       copy: "Kopieren",
@@ -1099,7 +1100,7 @@ const partials: Record<string, DeepPartialMessages> = {
     hero: {
       explorer: "Обозреватель ↗",
       solscan: "Solscan ↗",
-      desc: "Платёжная утилита Solana для переводов между кошельками. Торгуйте ACOPAY/USDT на Raydium и Jupiter. Комиссия on-chain {fee}.",
+      desc: "Платёжная утилита Solana для переводов между кошельками. Торгуйте ACOPAY/USDT на Raydium и Jupiter.",
       contractAddress: "Адрес контракта",
       details: "Подробнее →",
       copy: "Копировать",
@@ -1191,7 +1192,7 @@ const partials: Record<string, DeepPartialMessages> = {
     hero: {
       explorer: "المستكشف ↗",
       solscan: "Solscan ↗",
-      desc: "أداة دفع على Solana للتحويلات بين المحافظ. تداول ACOPAY/USDT على Raydium و Jupiter. رسوم على السلسلة {fee}.",
+      desc: "أداة دفع على Solana للتحويلات بين المحافظ. تداول ACOPAY/USDT على Raydium و Jupiter.",
       contractAddress: "عنوان العقد",
       details: "التفاصيل ←",
       copy: "نسخ",
@@ -1283,7 +1284,7 @@ const partials: Record<string, DeepPartialMessages> = {
     hero: {
       explorer: "สำรวจ ↗",
       solscan: "Solscan ↗",
-      desc: "ยูทิลิตี้ชำระเงินบน Solana สำหรับโอนกระเป๋าถึงกระเป๋า เทรด ACOPAY/USDT บน Raydium และ Jupiter ค่าธรรมเนียมบนเชน {fee}",
+      desc: "ยูทิลิตี้ชำระเงินบน Solana สำหรับโอนกระเป๋าถึงกระเป๋า เทรด ACOPAY/USDT บน Raydium และ Jupiter.",
       contractAddress: "ที่อยู่สัญญา",
       details: "รายละเอียด →",
       copy: "คัดลอก",
@@ -1375,7 +1376,7 @@ const partials: Record<string, DeepPartialMessages> = {
     hero: {
       explorer: "Jelajahi ↗",
       solscan: "Solscan ↗",
-      desc: "Utilitas pembayaran Solana untuk transfer dompet-ke-dompet. Perdagangkan ACOPAY/USDT di Raydium dan Jupiter. Biaya on-chain {fee}.",
+      desc: "Utilitas pembayaran Solana untuk transfer dompet-ke-dompet. Perdagangkan ACOPAY/USDT di Raydium dan Jupiter.",
       contractAddress: "Alamat kontrak",
       details: "Detail →",
       copy: "Salin",
