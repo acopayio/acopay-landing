@@ -21,7 +21,6 @@ export function MarketsHub({ variant = "full" }: Props) {
       <div className={`page-wrap ${variant === "full" ? "pb-20 pt-6 md:pb-24 md:pt-8" : ""}`}>
         <div className="orca-card p-4 sm:p-6">
           <div className="space-y-3">
-            <p className="label-orca">{t("markets.label")}</p>
             <h2 className="text-2xl font-bold text-white sm:text-3xl">{t("markets.title")}</h2>
             <p className="text-sm leading-relaxed text-[#9ca3af]">{t("markets.subtitle")}</p>
           </div>
