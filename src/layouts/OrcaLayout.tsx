@@ -78,11 +78,11 @@ export function OrcaLayout() {
       <div className="flex min-w-0 flex-1 flex-col pb-[4.25rem] lg:pb-0">
         <header className="sticky top-0 z-50 border-b border-[color:var(--acopay-border)] bg-[color-mix(in_srgb,var(--acopay-bg)_95%,transparent)] backdrop-blur-xl lg:hidden">
           <div className="page-wrap flex h-14 items-center justify-between gap-3">
-            <Link to="/" className="flex min-w-0 items-center gap-2">
-              <img src="/assets/logo.png" alt="" className="h-8 w-8 object-contain" />
-              <span className="truncate font-bold tracking-tight text-[var(--acopay-fg)]">ACOPAY</span>
+            <Link to="/" className="flex shrink-0 items-center gap-2">
+              <img src="/assets/logo.png" alt="" className="h-8 w-8 shrink-0 object-contain" />
+              <span className="font-bold tracking-tight text-[var(--acopay-fg)]">ACOPAY</span>
             </Link>
-            <div className="flex shrink-0 items-center gap-2 overflow-visible">
+            <div className="flex min-w-0 shrink items-center gap-1.5 overflow-visible">
               <div className="relative overflow-visible">
                 <ThemeToggle compact />
               </div>

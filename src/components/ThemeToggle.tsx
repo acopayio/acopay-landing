@@ -40,7 +40,7 @@ export function ThemeToggle({ compact = false }: Props) {
   const current = options.find((o) => o.id === theme) || options[0];
 
   const triggerClass = compact
-    ? "inline-flex items-center gap-1.5 rounded-xl border border-[color:var(--acopay-border)] bg-[var(--acopay-surface-2)] px-2.5 py-1.5 text-xs font-medium text-[var(--acopay-muted)] transition hover:border-[color:var(--acopay-border-strong)] hover:text-[var(--acopay-fg)]"
+    ? "inline-flex h-9 w-9 items-center justify-center rounded-xl border border-[color:var(--acopay-border)] bg-[var(--acopay-surface-2)] text-[var(--acopay-muted)] transition hover:border-[color:var(--acopay-border-strong)] hover:text-[var(--acopay-fg)]"
     : "flex w-full items-center gap-2.5 rounded-xl border border-[color:var(--acopay-border)] bg-[var(--acopay-surface-2)] px-3 py-2.5 text-sm font-medium text-[var(--acopay-muted)] transition hover:border-[color:var(--acopay-border-strong)] hover:text-[var(--acopay-fg)]";
 
   return (
@@ -49,13 +49,14 @@ export function ThemeToggle({ compact = false }: Props) {
         type="button"
         className={triggerClass}
         aria-label={t("theme.aria")}
+        title={current.label}
         aria-expanded={open}
         aria-controls={listId}
         disabled={!ready}
         onClick={() => setOpen((v) => !v)}
       >
         {current.icon === "moon" ? <MoonIcon /> : <SunIcon />}
-        <span className={compact ? "max-w-[4.5rem] truncate" : ""}>{current.label}</span>
+        {!compact ? <span>{current.label}</span> : null}
       </button>
 
       {open ? (
