@@ -20,21 +20,25 @@ export function Footer() {
       <div className="page-wrap">
         {/* Mobile — compact */}
         <div className="md:hidden">
-          <div className="flex items-center gap-3">
-            <Link to="/" className="flex min-w-0 items-center gap-2">
-              <img src="/assets/logo.png" alt="" className="h-7 w-7 object-contain" />
-              <div className="w-fit max-w-full">
-                <div className="text-sm font-bold tracking-tight text-white">ACOPAY</div>
-                <p
-                  className="mt-0.5 flex w-full justify-between text-[0.62rem] font-semibold leading-none text-[#00E5FF]"
-                  aria-label={TOKEN.tagline}
-                >
-                  {Array.from(TOKEN.tagline).map((ch, i) => (
-                    <span key={i} className={ch === " " ? "select-none opacity-0" : undefined}>
-                      {ch === " " ? "·" : ch}
-                    </span>
-                  ))}
-                </p>
+          <div className="flex items-center gap-2.5">
+            <Link to="/" className="flex items-center gap-2.5">
+              <img src="/assets/logo.png" alt="" className="h-8 w-8 shrink-0 object-contain" />
+              <div className="flex h-8 flex-col justify-center">
+                <div className="w-fit">
+                  <div className="text-[13px] font-bold leading-none tracking-tight text-white">
+                    ACOPAY
+                  </div>
+                  <p
+                    className="mt-px flex w-full justify-between text-[7px] font-semibold leading-none text-[#00E5FF]"
+                    aria-label={TOKEN.tagline}
+                  >
+                    {Array.from(TOKEN.tagline).map((ch, i) => (
+                      <span key={i} className={ch === " " ? "select-none opacity-0" : undefined}>
+                        {ch === " " ? "·" : ch}
+                      </span>
+                    ))}
+                  </p>
+                </div>
               </div>
             </Link>
           </div>
@@ -94,20 +98,24 @@ export function Footer() {
         {/* Desktop */}
         <div className="hidden gap-10 md:grid md:grid-cols-[1.4fr_1fr_1fr_1fr] md:items-stretch">
           <div className="flex flex-col">
-            <Link to="/" className="inline-flex w-fit items-center gap-3">
-              <img src="/assets/logo.png" alt="" className="h-9 w-9 object-contain" />
-              <div className="w-fit">
-                <div className="text-base font-bold tracking-tight text-white">ACOPAY</div>
-                <p
-                  className="mt-1 flex w-full justify-between text-[0.72rem] font-semibold leading-none text-[#00E5FF]"
-                  aria-label={TOKEN.tagline}
-                >
-                  {Array.from(TOKEN.tagline).map((ch, i) => (
-                    <span key={i} className={ch === " " ? "select-none opacity-0" : undefined}>
-                      {ch === " " ? "·" : ch}
-                    </span>
-                  ))}
-                </p>
+            <Link to="/" className="inline-flex w-fit items-center gap-2.5">
+              <img src="/assets/logo.png" alt="" className="h-9 w-9 shrink-0 object-contain" />
+              <div className="flex h-9 flex-col justify-center">
+                <div className="w-fit">
+                  <div className="text-[15px] font-bold leading-none tracking-tight text-white">
+                    ACOPAY
+                  </div>
+                  <p
+                    className="mt-px flex w-full justify-between text-[8px] font-semibold leading-none text-[#00E5FF]"
+                    aria-label={TOKEN.tagline}
+                  >
+                    {Array.from(TOKEN.tagline).map((ch, i) => (
+                      <span key={i} className={ch === " " ? "select-none opacity-0" : undefined}>
+                        {ch === " " ? "·" : ch}
+                      </span>
+                    ))}
+                  </p>
+                </div>
               </div>
             </Link>
             <p className="mt-6 text-xs text-[#6b7280] md:mt-auto md:pt-2">
