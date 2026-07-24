@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { useState } from "react";
 import { MARKET_TABS, type MarketTabId } from "../../config/markets";
 import { useT } from "../../i18n/LanguageProvider";
