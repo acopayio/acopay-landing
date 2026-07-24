@@ -37,7 +37,7 @@ const partials: Record<string, DeepPartialMessages> = {
       contract: "Hợp đồng",
       roadmap: "Lộ trình",
       faq: "Hỏi đáp",
-      telegramPay: "Thanh toán Telegram",
+      telegramPay: "Telegram Pay",
       telegram: "Telegram",
     },
     lang: {
@@ -304,7 +304,7 @@ const partials: Record<string, DeepPartialMessages> = {
       beforeTitle: "Trước khi thanh toán",
       before1: "Gửi từ ví bạn kiểm soát (Phantom, Solflare, Backpack…). ACOPAY được ghi có về cùng địa chỉ Solana đó.",
       before2:
-        "Không rút USDT từ Binance, OKX, Bybit hay sàn khác thẳng vào địa chỉ thanh toán trên trang Mua này. On-chain, người gửi là ví của sàn — nên ACOPAY sẽ về ví sàn, không về ví của bạn.",
+        "Không chấp nhận ví sàn thanh toán mua ACOPAY trực tiếp. Rút từ Binance, OKX, Bybit… về ví của bạn trước — rồi thanh toán tại đây.",
       before3:
         "Gửi USDT đúng cách (nếu từ sàn): sàn → ví của bạn → rồi thanh toán trên trang Mua acopay.net. Giữ một ít SOL cho phí.",
       before4: "Site chính thức chỉ là acopay.net. Đối chiếu mint trên Solscan trước khi tin link hay tin nhắn khác.",
@@ -314,7 +314,7 @@ const partials: Record<string, DeepPartialMessages> = {
       feat1Title: "Tỷ giá cố định",
       feat1Body: "Một USDT đổi một ACOPAY trên trang Mua — không slippage pool.",
       feat2Title: "Settle cùng ví",
-      feat2Body: "ACOPAY gửi về ví Solana đã trả USDT — không về tài khoản sàn.",
+      feat2Body: "ACOPAY về ví Solana đã trả USDT. Không chấp nhận ví nạp của sàn.",
       feat3Title: "Chỉ USDT trên Solana",
       feat3Body: "Thanh toán USDT (SPL) trên Solana Mainnet tới địa chỉ hiển thị. Tài sản khác không thể khôi phục.",
       preferDex: "Muốn swap trên DEX?",
@@ -324,7 +324,7 @@ const partials: Record<string, DeepPartialMessages> = {
       deskLabel: "Bàn chính thức",
       live: "Trực tiếp",
       intro:
-        "Trả USDT từ ví Solana của bạn. ACOPAY hoàn 1:1 về cùng địa chỉ đó — không về sàn.",
+        "Trả USDT từ ví Solana của bạn. ACOPAY hoàn 1:1 về cùng địa chỉ. Không chấp nhận ví sàn mua trực tiếp.",
       alreadyHold: "Đã có ACOPAY?",
       payTelegram: "Thanh toán trên Telegram ↗",
       amount: "Số lượng",

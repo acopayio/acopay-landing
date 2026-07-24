@@ -40,8 +40,12 @@ export function BuyPage() {
             >
               {TOKEN.mintAddress}
             </a>
-            {" · "}
-            <Link to="/faq" className="text-white hover:text-white/80">
+          </p>
+          <p className="mt-2">
+            <Link
+              to="/faq"
+              className="text-[11px] font-medium text-white underline-offset-2 hover:text-white/85 hover:underline"
+            >
               {t("buyPage.phantomFaq")}
             </Link>
           </p>

@@ -287,7 +287,7 @@ export const en = {
     beforeTitle: "Before you pay",
     before1: "Send from a wallet you control (Phantom, Solflare, Backpack, etc.). ACOPAY is credited to that same Solana address.",
     before2:
-      "Do not withdraw USDT from Binance, OKX, Bybit, or other exchanges directly to this Buy page payment address. On-chain, the sender is the exchange wallet — so ACOPAY would go to the exchange, not to you.",
+      "Exchange wallets are not accepted for direct Buy payments. Withdraw from Binance, OKX, Bybit, etc. to your own wallet first — then pay here.",
     before3:
       "Send USDT the right way (if from an exchange): exchange → your own wallet → then pay on the Buy page at acopay.net. Keep a little SOL for fees.",
     before4: "Official site is acopay.net only. Confirm the mint on Solscan before you trust any other link or message.",
@@ -297,7 +297,7 @@ export const en = {
     feat1Title: "Fixed rate",
     feat1Body: "One USDT converts to one ACOPAY on this Buy page — no pool slippage.",
     feat2Title: "Same-wallet settle",
-    feat2Body: "ACOPAY is sent to the Solana wallet that paid USDT — not to an exchange account.",
+    feat2Body: "ACOPAY is credited to the Solana wallet that paid USDT. Exchange deposit wallets are not accepted.",
     feat3Title: "USDT on Solana only",
     feat3Body: "Pay USDT (SPL) on Solana Mainnet to the address shown. Other assets cannot be recovered.",
     preferDex: "Prefer to swap on a DEX?",
@@ -307,7 +307,7 @@ export const en = {
     deskLabel: "Official desk",
     live: "Live",
     intro:
-      "Pay USDT from your own Solana wallet. ACOPAY returns 1:1 to that same address — not to an exchange.",
+      "Pay USDT from your own Solana wallet. ACOPAY returns 1:1 to that same address. Exchange wallets are not accepted for direct purchase.",
     alreadyHold: "Already hold ACOPAY?",
     payTelegram: "Pay on Telegram ↗",
     amount: "Amount",

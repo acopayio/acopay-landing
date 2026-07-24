@@ -3,7 +3,6 @@ import type { ReactElement } from "react";
 import { TelegramPayButton } from "../components/TelegramPayButton";
 import { LanguageToggle } from "../components/LanguageToggle";
 import { Footer } from "../components/Footer";
-import { TOKEN } from "../config/token";
 import { useT } from "../i18n/LanguageProvider";
 
 type NavItem = {
@@ -85,14 +84,11 @@ export function OrcaLayout() {
               <div className="relative overflow-visible">
                 <LanguageToggle compact />
               </div>
-              <a
-                href={TOKEN.telegramPayUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-orca-secondary inline-flex !h-9 items-center !rounded-lg !px-3 !text-xs"
-              >
-                {t("nav.telegram")}
-              </a>
+              <TelegramPayButton
+                showIcon
+                label={t("nav.telegramPay")}
+                className="inline-flex !h-9 max-w-[11.5rem] items-center gap-1.5 !rounded-lg !border !border-[#00E5FF]/45 !bg-[#00E5FF]/10 !px-2.5 !text-xs !font-semibold !text-[#00E5FF] hover:!bg-[#00E5FF]/18 hover:!text-[#7af0ff]"
+              />
             </div>
           </div>
         </header>
