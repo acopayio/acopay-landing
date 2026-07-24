@@ -160,13 +160,13 @@ export const en = {
     m2026Title: "Liquidity",
     m2026Item0: "ACOPAY/USDT pool live on Raydium",
     m2026Alt: "3D illustration of ACOPAY liquidity pool",
-    m2027Title: "Web pay",
-    m2027Item0: "March — Launch ACOPAY payment on web",
-    m2027Item1: "September — Add more liquidity to the pool",
-    m2027Alt: "3D illustration of ACOPAY web payment",
-    m2028Title: "Mobile",
-    m2028Item0: "Launch ACOPAY payment on mobile",
-    m2028Alt: "3D illustration of ACOPAY mobile payment",
+    m2027Title: "Pay App",
+    m2027Item0: "Launch the ACOPAY mobile app for peer-to-peer payments between users inside the ACOPAY network",
+    m2027Item1: "In-app wallet-to-wallet pay — settle on Solana within the ACOPAY system",
+    m2027Alt: "3D illustration of ACOPAY mobile peer payments",
+    m2028Title: "Pay Network",
+    m2028Item0: "Open the ACOPAY payment network — merchants and partners worldwide settle with ACOPAY",
+    m2028Alt: "3D illustration of ACOPAY global payment network",
     m2029Title: "Markets",
     m2029Item0: "Listing on CoinGecko",
     m2029Alt: "3D illustration of market listing growth",
@@ -380,6 +380,18 @@ export const en = {
   },
   swap: {
     loadingJupiter: "Loading Jupiter…",
+    mobileTitle: "Connect with a wallet app",
+    mobileHint:
+      "Phones cannot use browser extensions. Open this page inside Phantom or Solflare — then Connect Wallet works and your session stays in the app browser.",
+    openPhantom: "Open in Phantom",
+    openSolflare: "Open in Solflare",
+    openJupiterApp: "Open Jupiter",
+    mobileFootnote:
+      "Mobile: open acopay.net in your wallet app to connect. Desktop: use a browser extension or desktop wallet.",
+    desktopFootnote:
+      "Desktop: connect a browser extension (Phantom, Solflare, …) or a desktop wallet app in the widget. Always verify the mint on acopay.net.",
+    inWalletFootnote:
+      "You are in a wallet in-app browser — tap Connect Wallet in the widget. Always verify the mint on acopay.net.",
   },
   linkWallet: {
     kicker: "Telegram",

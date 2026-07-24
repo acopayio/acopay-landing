@@ -177,13 +177,13 @@ const partials: Record<string, DeepPartialMessages> = {
       m2026Title: "Thanh khoản",
       m2026Item0: "Pool ACOPAY/USDT live trên Raydium",
       m2026Alt: "Minh họa 3D pool thanh khoản ACOPAY",
-      m2027Title: "Thanh toán web",
-      m2027Item0: "Tháng 3 — Ra mắt thanh toán ACOPAY trên web",
-      m2027Item1: "Tháng 9 — Bổ sung thêm thanh khoản cho pool",
-      m2027Alt: "Minh họa 3D thanh toán web ACOPAY",
-      m2028Title: "Di động",
-      m2028Item0: "Ra mắt thanh toán ACOPAY trên mobile",
-      m2028Alt: "Minh họa 3D thanh toán mobile ACOPAY",
+      m2027Title: "Ứng dụng Pay",
+      m2027Item0: "Ra mắt app mobile ACOPAY — thanh toán ngang hàng giữa người dùng trong hệ thống ACOPAY",
+      m2027Item1: "Pay ví-sang-ví trong app — settle on-chain Solana trong mạng ACOPAY",
+      m2027Alt: "Minh họa 3D thanh toán P2P mobile ACOPAY",
+      m2028Title: "Mạng thanh toán",
+      m2028Item0: "Mở mạng thanh toán ACOPAY — merchant và đối tác toàn cầu settle bằng ACOPAY",
+      m2028Alt: "Minh họa 3D mạng thanh toán toàn cầu ACOPAY",
       m2029Title: "Thị trường",
       m2029Item0: "Niêm yết trên CoinGecko",
       m2029Alt: "Minh họa 3D tăng trưởng niêm yết",
@@ -397,6 +397,18 @@ const partials: Record<string, DeepPartialMessages> = {
     },
     swap: {
       loadingJupiter: "Đang tải Jupiter…",
+      mobileTitle: "Kết nối bằng app ví",
+      mobileHint:
+        "Điện thoại không dùng được extension trình duyệt. Mở trang này trong Phantom hoặc Solflare — rồi Connect Wallet sẽ hoạt động và phiên được lưu trong trình duyệt trong app.",
+      openPhantom: "Mở trong Phantom",
+      openSolflare: "Mở trong Solflare",
+      openJupiterApp: "Mở Jupiter",
+      mobileFootnote:
+        "Mobile: mở acopay.net trong app ví để kết nối. Máy tính: dùng extension hoặc app ví desktop.",
+      desktopFootnote:
+        "Máy tính: kết nối extension (Phantom, Solflare, …) hoặc app ví desktop trong widget. Luôn đối chiếu mint trên acopay.net.",
+      inWalletFootnote:
+        "Bạn đang ở trình duyệt trong app ví — bấm Connect Wallet trong widget. Luôn đối chiếu mint trên acopay.net.",
     },
     linkWallet: {
       kicker: "Telegram",
@@ -440,6 +452,28 @@ const partials: Record<string, DeepPartialMessages> = {
     },
   },
   zh: {
+    roadmap: {
+      m2027Title: "支付应用",
+      m2027Item0: "推出 ACOPAY 手机应用 — 在 ACOPAY 网络内用户之间点对点支付",
+      m2027Item1: "应用内钱包到钱包支付 — 在 Solana 上于 ACOPAY 体系内结算",
+      m2027Alt: "ACOPAY 手机点对点支付 3D 示意图",
+      m2028Title: "支付网络",
+      m2028Item0: "开放 ACOPAY 支付网络 — 全球商户与合作伙伴用 ACOPAY 结算",
+      m2028Alt: "ACOPAY 全球支付网络 3D 示意图",
+    },
+    swap: {
+      mobileTitle: "用钱包 App 连接",
+      mobileHint:
+        "手机无法使用浏览器扩展。请在 Phantom 或 Solflare 应用内打开本页，然后 Connect Wallet 即可，会话保存在应用内浏览器。",
+      openPhantom: "在 Phantom 中打开",
+      openSolflare: "在 Solflare 中打开",
+      openJupiterApp: "打开 Jupiter",
+      mobileFootnote: "手机：在钱包 App 中打开 acopay.net。电脑：使用浏览器扩展或桌面钱包。",
+      desktopFootnote:
+        "电脑：在小组件中连接浏览器扩展（Phantom、Solflare 等）或桌面钱包。请始终在 acopay.net 核对 mint。",
+      inWalletFootnote:
+        "您已在钱包应用内浏览器 — 点击小组件中的 Connect Wallet。请始终在 acopay.net 核对 mint。",
+    },
     nav: {
       home: "首页",
       buy: "购买",
@@ -534,6 +568,25 @@ const partials: Record<string, DeepPartialMessages> = {
     common: { buy: "购买", learnMore: "了解更多" },
   },
   ja: {
+    roadmap: {
+      m2027Title: "Payアプリ",
+      m2027Item0: "ACOPAYモバイルアプリを公開 — ACOPAYネットワーク内でユーザー同士のP2P決済",
+      m2027Item1: "アプリ内ウォレット間送金 — Solana上でACOPAYシステム内決済",
+      m2027Alt: "ACOPAYモバイルP2P決済の3Dイラスト",
+      m2028Title: "決済ネットワーク",
+      m2028Item0: "ACOPAY決済ネットワークを開放 — 世界の加盟店・パートナーがACOPAYで決済",
+      m2028Alt: "ACOPAYグローバル決済ネットワークの3Dイラスト",
+    },
+    swap: {
+      mobileTitle: "ウォレットアプリで接続",
+      mobileHint: "スマホではブラウザ拡張は使えません。PhantomまたはSolflareアプリ内でこのページを開き、Connect Walletしてください。セッションはアプリ内ブラウザに保存されます。",
+      openPhantom: "Phantomで開く",
+      openSolflare: "Solflareで開く",
+      openJupiterApp: "Jupiterを開く",
+      mobileFootnote: "モバイル：ウォレットアプリ内でacopay.netを開いて接続。PC：拡張機能またはデスクトップウォレット。",
+      desktopFootnote: "PC：ウィジェットでブラウザ拡張（Phantom、Solflareなど）またはデスクトップウォレットを接続。必ずacopay.netでmintを確認。",
+      inWalletFootnote: "ウォレットのアプリ内ブラウザです — ウィジェットのConnect Walletをタップ。必ずacopay.netでmintを確認。",
+    },
     nav: {
       home: "ホーム",
       buy: "購入",
@@ -626,6 +679,25 @@ const partials: Record<string, DeepPartialMessages> = {
     common: { buy: "購入", learnMore: "詳しく見る" },
   },
   ko: {
+    roadmap: {
+      m2027Title: "Pay 앱",
+      m2027Item0: "ACOPAY 모바일 앱 출시 — ACOPAY 네트워크 내 사용자 간 P2P 결제",
+      m2027Item1: "앱 내 지갑 간 결제 — Solana에서 ACOPAY 시스템 내 정산",
+      m2027Alt: "ACOPAY 모바일 P2P 결제 3D 일러스트",
+      m2028Title: "결제 네트워크",
+      m2028Item0: "ACOPAY 결제 네트워크 개방 — 전 세계 가맹점·파트너가 ACOPAY로 정산",
+      m2028Alt: "ACOPAY 글로벌 결제 네트워크 3D 일러스트",
+    },
+    swap: {
+      mobileTitle: "지갑 앱으로 연결",
+      mobileHint: "휴대폰에서는 브라우저 확장을 쓸 수 없습니다. Phantom 또는 Solflare 앱에서 이 페이지를 연 뒤 Connect Wallet하세요. 세션은 인앱 브라우저에 저장됩니다.",
+      openPhantom: "Phantom에서 열기",
+      openSolflare: "Solflare에서 열기",
+      openJupiterApp: "Jupiter 열기",
+      mobileFootnote: "모바일: 지갑 앱에서 acopay.net을 열어 연결. PC: 브라우저 확장 또는 데스크톱 지갑.",
+      desktopFootnote: "PC: 위젯에서 브라우저 확장(Phantom, Solflare 등) 또는 데스크톱 지갑 연결. 항상 acopay.net에서 mint를 확인하세요.",
+      inWalletFootnote: "지갑 인앱 브라우저입니다 — 위젯에서 Connect Wallet을 탭하세요. 항상 acopay.net에서 mint를 확인하세요.",
+    },
     nav: {
       home: "홈",
       buy: "구매",
@@ -718,6 +790,25 @@ const partials: Record<string, DeepPartialMessages> = {
     common: { buy: "구매", learnMore: "더 알아보기" },
   },
   es: {
+    roadmap: {
+      m2027Title: "App Pay",
+      m2027Item0: "Lanzar la app móvil ACOPAY — pagos entre usuarios dentro de la red ACOPAY",
+      m2027Item1: "Pago billetera a billetera en la app — liquidación en Solana dentro del sistema ACOPAY",
+      m2027Alt: "Ilustración 3D de pagos P2P móviles ACOPAY",
+      m2028Title: "Red de pagos",
+      m2028Item0: "Abrir la red de pagos ACOPAY — comercios y socios globales liquidan con ACOPAY",
+      m2028Alt: "Ilustración 3D de la red global de pagos ACOPAY",
+    },
+    swap: {
+      mobileTitle: "Conectar con una app de billetera",
+      mobileHint: "En el móvil no hay extensiones de navegador. Abre esta página dentro de Phantom o Solflare; luego Connect Wallet funciona y la sesión queda en el navegador de la app.",
+      openPhantom: "Abrir en Phantom",
+      openSolflare: "Abrir en Solflare",
+      openJupiterApp: "Abrir Jupiter",
+      mobileFootnote: "Móvil: abre acopay.net en tu app de billetera. Escritorio: extensión o billetera de escritorio.",
+      desktopFootnote: "Escritorio: conecta una extensión (Phantom, Solflare…) o billetera de escritorio en el widget. Verifica siempre el mint en acopay.net.",
+      inWalletFootnote: "Estás en el navegador de la app de billetera — toca Connect Wallet en el widget. Verifica siempre el mint en acopay.net.",
+    },
     nav: {
       home: "Inicio",
       buy: "Comprar",
@@ -810,6 +901,25 @@ const partials: Record<string, DeepPartialMessages> = {
     common: { buy: "Comprar", learnMore: "Más información" },
   },
   pt: {
+    roadmap: {
+      m2027Title: "App Pay",
+      m2027Item0: "Lançar o app móvel ACOPAY — pagamentos entre usuários na rede ACOPAY",
+      m2027Item1: "Pagamento carteira a carteira no app — liquidação na Solana dentro do sistema ACOPAY",
+      m2027Alt: "Ilustração 3D de pagamentos P2P móveis ACOPAY",
+      m2028Title: "Rede de pagamentos",
+      m2028Item0: "Abrir a rede de pagamentos ACOPAY — comerciantes e parceiros globais liquidam com ACOPAY",
+      m2028Alt: "Ilustração 3D da rede global de pagamentos ACOPAY",
+    },
+    swap: {
+      mobileTitle: "Conectar com um app de carteira",
+      mobileHint: "No celular não há extensões de navegador. Abra esta página no Phantom ou Solflare; depois Connect Wallet funciona e a sessão fica no navegador do app.",
+      openPhantom: "Abrir no Phantom",
+      openSolflare: "Abrir no Solflare",
+      openJupiterApp: "Abrir Jupiter",
+      mobileFootnote: "Mobile: abra acopay.net no app da carteira. Desktop: extensão ou carteira de desktop.",
+      desktopFootnote: "Desktop: conecte uma extensão (Phantom, Solflare…) ou carteira de desktop no widget. Sempre confira o mint em acopay.net.",
+      inWalletFootnote: "Você está no navegador do app da carteira — toque Connect Wallet no widget. Sempre confira o mint em acopay.net.",
+    },
     nav: {
       home: "Início",
       buy: "Comprar",
@@ -902,6 +1012,25 @@ const partials: Record<string, DeepPartialMessages> = {
     common: { buy: "Comprar", learnMore: "Saiba mais" },
   },
   fr: {
+    roadmap: {
+      m2027Title: "App Pay",
+      m2027Item0: "Lancer l’app mobile ACOPAY — paiements entre utilisateurs dans le réseau ACOPAY",
+      m2027Item1: "Paiement portefeuille à portefeuille dans l’app — règlement sur Solana dans le système ACOPAY",
+      m2027Alt: "Illustration 3D des paiements P2P mobiles ACOPAY",
+      m2028Title: "Réseau de paiement",
+      m2028Item0: "Ouvrir le réseau de paiement ACOPAY — commerçants et partenaires mondiaux règlent en ACOPAY",
+      m2028Alt: "Illustration 3D du réseau de paiement mondial ACOPAY",
+    },
+    swap: {
+      mobileTitle: "Connecter avec une app portefeuille",
+      mobileHint: "Sur mobile, les extensions navigateur ne marchent pas. Ouvrez cette page dans Phantom ou Solflare — puis Connect Wallet fonctionne ; la session reste dans le navigateur de l’app.",
+      openPhantom: "Ouvrir dans Phantom",
+      openSolflare: "Ouvrir dans Solflare",
+      openJupiterApp: "Ouvrir Jupiter",
+      mobileFootnote: "Mobile : ouvrez acopay.net dans votre app portefeuille. Ordinateur : extension ou portefeuille bureau.",
+      desktopFootnote: "Ordinateur : connectez une extension (Phantom, Solflare…) ou un portefeuille bureau dans le widget. Vérifiez toujours le mint sur acopay.net.",
+      inWalletFootnote: "Vous êtes dans le navigateur de l’app portefeuille — touchez Connect Wallet dans le widget. Vérifiez toujours le mint sur acopay.net.",
+    },
     nav: {
       home: "Accueil",
       buy: "Acheter",
@@ -994,6 +1123,25 @@ const partials: Record<string, DeepPartialMessages> = {
     common: { buy: "Acheter", learnMore: "En savoir plus" },
   },
   de: {
+    roadmap: {
+      m2027Title: "Pay-App",
+      m2027Item0: "ACOPAY-Mobile-App starten — Peer-to-Peer-Zahlungen zwischen Nutzern im ACOPAY-Netzwerk",
+      m2027Item1: "Wallet-zu-Wallet-Pay in der App — Abwicklung auf Solana im ACOPAY-System",
+      m2027Alt: "3D-Illustration ACOPAY Mobile-P2P-Zahlungen",
+      m2028Title: "Zahlungsnetzwerk",
+      m2028Item0: "ACOPAY-Zahlungsnetz öffnen — Händler und Partner weltweit setteln mit ACOPAY",
+      m2028Alt: "3D-Illustration globales ACOPAY-Zahlungsnetz",
+    },
+    swap: {
+      mobileTitle: "Mit Wallet-App verbinden",
+      mobileHint: "Auf dem Handy gibt es keine Browser-Erweiterungen. Öffnen Sie diese Seite in Phantom oder Solflare — dann funktioniert Connect Wallet; die Sitzung bleibt im In-App-Browser.",
+      openPhantom: "In Phantom öffnen",
+      openSolflare: "In Solflare öffnen",
+      openJupiterApp: "Jupiter öffnen",
+      mobileFootnote: "Mobil: acopay.net in der Wallet-App öffnen. Desktop: Erweiterung oder Desktop-Wallet.",
+      desktopFootnote: "Desktop: Browser-Erweiterung (Phantom, Solflare …) oder Desktop-Wallet im Widget verbinden. Mint immer auf acopay.net prüfen.",
+      inWalletFootnote: "Sie sind im Wallet-In-App-Browser — tippen Sie Connect Wallet im Widget. Mint immer auf acopay.net prüfen.",
+    },
     nav: {
       home: "Start",
       buy: "Kaufen",
@@ -1086,6 +1234,25 @@ const partials: Record<string, DeepPartialMessages> = {
     common: { buy: "Kaufen", learnMore: "Mehr erfahren" },
   },
   ru: {
+    roadmap: {
+      m2027Title: "Pay-приложение",
+      m2027Item0: "Запуск мобильного приложения ACOPAY — P2P-платежи между пользователями в сети ACOPAY",
+      m2027Item1: "Оплата кошелёк–кошелёк в приложении — расчёт в Solana внутри системы ACOPAY",
+      m2027Alt: "3D-иллюстрация мобильных P2P-платежей ACOPAY",
+      m2028Title: "Платёжная сеть",
+      m2028Item0: "Открыть платёжную сеть ACOPAY — мерчанты и партнёры по миру рассчитываются в ACOPAY",
+      m2028Alt: "3D-иллюстрация глобальной платёжной сети ACOPAY",
+    },
+    swap: {
+      mobileTitle: "Подключить через приложение кошелька",
+      mobileHint: "На телефоне нет расширений браузера. Откройте эту страницу в Phantom или Solflare — затем Connect Wallet сработает, сессия сохранится во встроенном браузере.",
+      openPhantom: "Открыть в Phantom",
+      openSolflare: "Открыть в Solflare",
+      openJupiterApp: "Открыть Jupiter",
+      mobileFootnote: "Мобильный: откройте acopay.net в приложении кошелька. ПК: расширение или десктопный кошелёк.",
+      desktopFootnote: "ПК: подключите расширение (Phantom, Solflare…) или десктопный кошелёк в виджете. Всегда сверяйте mint на acopay.net.",
+      inWalletFootnote: "Вы во встроенном браузере кошелька — нажмите Connect Wallet в виджете. Всегда сверяйте mint на acopay.net.",
+    },
     nav: {
       home: "Главная",
       buy: "Купить",
@@ -1178,6 +1345,25 @@ const partials: Record<string, DeepPartialMessages> = {
     common: { buy: "Купить", learnMore: "Подробнее" },
   },
   ar: {
+    roadmap: {
+      m2027Title: "تطبيق الدفع",
+      m2027Item0: "إطلاق تطبيق ACOPAY للجوال — مدفوعات بين المستخدمين داخل شبكة ACOPAY",
+      m2027Item1: "دفع محفظة إلى محفظة داخل التطبيق — تسوية على Solana ضمن نظام ACOPAY",
+      m2027Alt: "رسم ثلاثي الأبعاد لمدفوعات ACOPAY بين المستخدمين على الجوال",
+      m2028Title: "شبكة الدفع",
+      m2028Item0: "فتح شبكة دفع ACOPAY — التجار والشركاء حول العالم يسوّون بـ ACOPAY",
+      m2028Alt: "رسم ثلاثي الأبعاد لشبكة دفع ACOPAY العالمية",
+    },
+    swap: {
+      mobileTitle: "الاتصال عبر تطبيق المحفظة",
+      mobileHint: "الهاتف لا يدعم إضافات المتصفح. افتح هذه الصفحة داخل Phantom أو Solflare ثم Connect Wallet؛ تُحفظ الجلسة في متصفح التطبيق.",
+      openPhantom: "فتح في Phantom",
+      openSolflare: "فتح في Solflare",
+      openJupiterApp: "فتح Jupiter",
+      mobileFootnote: "الجوال: افتح acopay.net داخل تطبيق المحفظة. الكمبيوتر: امتداد أو محفظة سطح المكتب.",
+      desktopFootnote: "الكمبيوتر: وصّل امتداد المتصفح (Phantom، Solflare…) أو محفظة سطح المكتب في الأداة. تحقق دائماً من mint على acopay.net.",
+      inWalletFootnote: "أنت في متصفح تطبيق المحفظة — اضغط Connect Wallet في الأداة. تحقق دائماً من mint على acopay.net.",
+    },
     nav: {
       home: "الرئيسية",
       buy: "شراء",
@@ -1270,6 +1456,25 @@ const partials: Record<string, DeepPartialMessages> = {
     common: { buy: "شراء", learnMore: "اعرف المزيد" },
   },
   th: {
+    roadmap: {
+      m2027Title: "แอป Pay",
+      m2027Item0: "เปิดตัวแอปมือถือ ACOPAY — ชำระเงินระหว่างผู้ใช้ในเครือข่าย ACOPAY",
+      m2027Item1: "จ่ายกระเป๋าถึงกระเป๋าในแอป — ชำระบน Solana ภายในระบบ ACOPAY",
+      m2027Alt: "ภาพประกอบ 3D การชำระ P2P บนมือถือ ACOPAY",
+      m2028Title: "เครือข่ายชำระเงิน",
+      m2028Item0: "เปิดเครือข่ายชำระเงิน ACOPAY — ร้านค้าและพาร์ทเนอร์ทั่วโลกชำระด้วย ACOPAY",
+      m2028Alt: "ภาพประกอบ 3D เครือข่ายชำระเงินทั่วโลก ACOPAY",
+    },
+    swap: {
+      mobileTitle: "เชื่อมต่อด้วยแอปกระเป๋า",
+      mobileHint: "มือถือใช้ส่วนขยายเบราว์เซอร์ไม่ได้ เปิดหน้านี้ใน Phantom หรือ Solflare แล้ว Connect Wallet จะใช้ได้ และเซสชันอยู่ในเบราว์เซอร์ในแอป",
+      openPhantom: "เปิดใน Phantom",
+      openSolflare: "เปิดใน Solflare",
+      openJupiterApp: "เปิด Jupiter",
+      mobileFootnote: "มือถือ: เปิด acopay.net ในแอปกระเป๋า คอมพิวเตอร์: ส่วนขยายหรือกระเป๋าเดสก์ท็อป",
+      desktopFootnote: "คอมพิวเตอร์: เชื่อมต่อส่วนขยาย (Phantom, Solflare…) หรือกระเป๋าเดสก์ท็อปในวิดเจ็ต ตรวจสอบ mint บน acopay.net เสมอ",
+      inWalletFootnote: "คุณอยู่ในเบราว์เซอร์ในแอปกระเป๋า — แตะ Connect Wallet ในวิดเจ็ต ตรวจสอบ mint บน acopay.net เสมอ",
+    },
     nav: {
       home: "หน้าแรก",
       buy: "ซื้อ",
@@ -1362,6 +1567,25 @@ const partials: Record<string, DeepPartialMessages> = {
     common: { buy: "ซื้อ", learnMore: "เรียนรู้เพิ่ม" },
   },
   id: {
+    roadmap: {
+      m2027Title: "Aplikasi Pay",
+      m2027Item0: "Luncurkan aplikasi seluler ACOPAY — pembayaran peer-to-peer antar pengguna di jaringan ACOPAY",
+      m2027Item1: "Bayar dompet-ke-dompet di aplikasi — settlement di Solana dalam sistem ACOPAY",
+      m2027Alt: "Ilustrasi 3D pembayaran P2P seluler ACOPAY",
+      m2028Title: "Jaringan pembayaran",
+      m2028Item0: "Buka jaringan pembayaran ACOPAY — merchant dan mitra global settle dengan ACOPAY",
+      m2028Alt: "Ilustrasi 3D jaringan pembayaran global ACOPAY",
+    },
+    swap: {
+      mobileTitle: "Hubungkan dengan aplikasi dompet",
+      mobileHint: "Di ponsel tidak ada ekstensi browser. Buka halaman ini di Phantom atau Solflare — lalu Connect Wallet berfungsi; sesi tersimpan di browser dalam aplikasi.",
+      openPhantom: "Buka di Phantom",
+      openSolflare: "Buka di Solflare",
+      openJupiterApp: "Buka Jupiter",
+      mobileFootnote: "Seluler: buka acopay.net di aplikasi dompet. Desktop: ekstensi atau dompet desktop.",
+      desktopFootnote: "Desktop: hubungkan ekstensi (Phantom, Solflare…) atau dompet desktop di widget. Selalu verifikasi mint di acopay.net.",
+      inWalletFootnote: "Anda di browser dalam aplikasi dompet — ketuk Connect Wallet di widget. Selalu verifikasi mint di acopay.net.",
+    },
     nav: {
       home: "Beranda",
       buy: "Beli",

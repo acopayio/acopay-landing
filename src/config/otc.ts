@@ -46,6 +46,11 @@ export function phantomBrowseUrl(targetUrl: string): string {
   return `https://phantom.app/ul/browse/${encodeURIComponent(targetUrl)}?ref=${encodeURIComponent("https://acopay.net")}`;
 }
 
+/** Open HTTPS page inside Solflare’s in-app browser (mobile). */
+export function solflareBrowseUrl(targetUrl: string): string {
+  return `https://solflare.com/ul/v1/browse/${encodeURIComponent(targetUrl)}`;
+}
+
 export function formatSessionClock(msLeft: number): string {
   const total = Math.max(0, Math.ceil(msLeft / 1000));
   const m = Math.floor(total / 60);
