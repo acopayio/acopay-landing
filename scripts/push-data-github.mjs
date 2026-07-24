@@ -6,6 +6,8 @@
  *   GITHUB_TOKEN   (required) — PAT with contents:write
  *   GITHUB_REPO    (default acopayio/acopay-landing)
  *   GITHUB_BRANCH  (default main)
+ *   MARKETS_PUSH_TRANSFERS_MIN_MS  (default 20000) — min gap when transfers rows change
+ *   MARKETS_PUSH_BINANCE_MIN_MS    (default 60000) — spot prices can wait longer
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -48,6 +50,58 @@ function log(...args) {
   console.log(new Date().toISOString(), ...args);
 }
 
+/** Stable fingerprint — ignore updatedAt so we don't flood CF for clock-only rewrites. */
+function dataFingerprint(relPath, buf) {
+  try {
+    const j = JSON.parse(buf.toString("utf8"));
+    if (relPath.includes("transfers")) {
+      const rows = Array.isArray(j.rows) ? j.rows : [];
+      return JSON.stringify({
+        total: rows.length,
+        ids: rows.map((r) => r.id || `${r.signature}:${r.amount}`),
+      });
+    }
+    if (relPath.includes("binance")) {
+      const rows = Array.isArray(j.rows) ? j.rows : Array.isArray(j.markets) ? j.markets : [];
+      return JSON.stringify({
+        n: rows.length,
+        // price snapshot — still changes often, but paired with time throttle below
+        sample: rows.slice(0, 20).map((r) => [r.symbol || r.s, r.price || r.lastPrice || r.p]),
+      });
+    }
+  } catch {
+    /* fall through */
+  }
+  return buf.toString("base64");
+}
+
+function minIntervalFor(relPath) {
+  if (relPath.includes("transfers")) {
+    return Math.max(10_000, Number(process.env.MARKETS_PUSH_TRANSFERS_MIN_MS || 20_000));
+  }
+  if (relPath.includes("binance")) {
+    return Math.max(30_000, Number(process.env.MARKETS_PUSH_BINANCE_MIN_MS || 60_000));
+  }
+  return 30_000;
+}
+
+function stampPathFor(relPath) {
+  const safe = path.basename(relPath).replace(/[^\w.-]+/g, "_");
+  return path.join(ROOT, `.markets-last-push-${safe}`);
+}
+
+function readStamp(relPath) {
+  try {
+    return Number(fs.readFileSync(stampPathFor(relPath), "utf8")) || 0;
+  } catch {
+    return 0;
+  }
+}
+
+function writeStamp(relPath, t = Date.now()) {
+  fs.writeFileSync(stampPathFor(relPath), String(t));
+}
+
 async function gh(pathname, init = {}) {
   const TOKEN = githubToken();
   if (!TOKEN) throw new Error("GITHUB_TOKEN missing");
@@ -78,22 +132,34 @@ async function putFile(relPath) {
     return { skipped: true };
   }
   const raw = fs.readFileSync(abs);
-  const contentB64 = raw.toString("base64");
+  const localFp = dataFingerprint(relPath, raw);
   const apiPath = `/repos/${REPO}/contents/${relPath.replace(/\\/g, "/")}`;
 
   const cur = await gh(`${apiPath}?ref=${encodeURIComponent(BRANCH)}`);
   const sha = cur.res.ok && cur.json?.sha ? String(cur.json.sha) : undefined;
   if (cur.res.ok && cur.json?.content) {
     const remote = Buffer.from(String(cur.json.content).replace(/\n/g, ""), "base64");
-    if (remote.equals(raw)) {
+    const remoteFp = dataFingerprint(relPath, remote);
+    if (remoteFp === localFp) {
       log(`[push] unchanged ${relPath}`);
       return { unchanged: true };
     }
   }
 
+  const minMs = minIntervalFor(relPath);
+  const last = readStamp(relPath);
+  const now = Date.now();
+  if (last && now - last < minMs) {
+    const waitSec = Math.ceil((minMs - (now - last)) / 1000);
+    log(
+      `[push] throttle ${path.basename(relPath)} (next ~${waitSec}s, min=${Math.round(minMs / 1000)}s)`,
+    );
+    return { throttled: true };
+  }
+
   const body = {
     message: `chore: sync markets data ${path.basename(relPath)}`,
-    content: contentB64,
+    content: raw.toString("base64"),
     branch: BRANCH,
   };
   if (sha) body.sha = sha;
@@ -106,37 +172,16 @@ async function putFile(relPath) {
   if (!put.res.ok) {
     throw new Error(`PUT ${relPath} HTTP ${put.res.status}: ${(put.text || "").slice(0, 200)}`);
   }
+  writeStamp(relPath, now);
   log(`[push] ok ${relPath} → ${BRANCH}`);
   return { ok: true };
 }
 
 export async function pushMarketsData(files = DEFAULT_FILES) {
-  // Cloudflare Pages cannot keep up if we commit every ~15s — throttle pushes.
-  const minInterval = Math.max(
-    30_000,
-    Number(process.env.MARKETS_PUSH_MIN_MS || process.env.PUSH_MIN_INTERVAL_MS || 120_000),
-  );
-  const stampPath = path.join(ROOT, ".markets-last-push");
-  let last = 0;
-  try {
-    last = Number(fs.readFileSync(stampPath, "utf8")) || 0;
-  } catch {
-    /* first run */
-  }
-  const now = Date.now();
-  if (last && now - last < minInterval) {
-    const waitSec = Math.ceil((minInterval - (now - last)) / 1000);
-    log(`[push] throttle skip (next in ~${waitSec}s, min=${Math.round(minInterval / 1000)}s)`);
-    return { pushed: 0, throttled: true };
-  }
-
   let pushed = 0;
   for (const f of files) {
     const r = await putFile(f);
     if (r.ok) pushed += 1;
-  }
-  if (pushed > 0 || !last) {
-    fs.writeFileSync(stampPath, String(now));
   }
   return { pushed };
 }
