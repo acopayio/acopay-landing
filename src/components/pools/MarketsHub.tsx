@@ -49,14 +49,6 @@ export function MarketsHub({ variant = "full" }: Props) {
             {tab === "swap" && <SwapMarketPanel />}
           </div>
         </div>
-
-        {variant === "home" && (
-          <div className="mt-6 flex justify-center">
-            <Link to="/markets" className="btn-orca-secondary w-full sm:w-auto">
-              {t("markets.viewAll")}
-            </Link>
-          </div>
-        )}
       </div>
     </section>
   );
