@@ -48,8 +48,9 @@ export function Trade() {
               Raydium ↗
             </a>
           )}
-          {/* Contract: desktop only — mobile đã có trong footer / nav */}
-          <Link to="/contract" className="btn-orca-ghost hidden sm:inline-flex">
+          {/* Contract CTA: desktop only. Do NOT rely on `hidden` alone —
+              `.btn-orca-ghost` sets display:inline-flex and overrides Tailwind `hidden`. */}
+          <Link to="/contract" className="btn-orca-ghost !hidden sm:!inline-flex">
             {t("tradePage.contract")}
           </Link>
         </div>

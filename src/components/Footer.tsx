@@ -47,8 +47,8 @@ export function Footer() {
             <Link to="/token" className="hover:text-[#00E5FF]">
               {t("nav.token")}
             </Link>
-            <Link to="/contract" className="hover:text-[#00E5FF]">
-              {t("nav.contract")}
+            <Link to="/roadmap" className="hover:text-[#00E5FF]">
+              {t("nav.roadmap")}
             </Link>
             <a
               href={explorerUrl()}
@@ -62,8 +62,8 @@ export function Footer() {
             <Link to="/markets" className="hover:text-[#00E5FF]">
               {t("nav.markets")}
             </Link>
-            <Link to="/roadmap" className="hover:text-[#00E5FF]">
-              {t("nav.roadmap")}
+            <Link to="/faq" className="hover:text-[#00E5FF]">
+              {t("nav.faq")}
             </Link>
             <a
               href={solscanUrl()}
@@ -77,9 +77,7 @@ export function Footer() {
             <Link to="/trade" className="hover:text-[#00E5FF]">
               {t("nav.trade")}
             </Link>
-            <Link to="/faq" className="hover:text-[#00E5FF]">
-              {t("nav.faq")}
-            </Link>
+            <span className="select-none" aria-hidden="true" />
             {jup ? (
               <a
                 href={jup}
