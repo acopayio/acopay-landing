@@ -126,7 +126,7 @@ export function TransfersExplorer() {
   ]);
   const [page, setPage] = useState(1);
   const [opts, setOpts] = useState<ViewOpts>({
-    fullAddress: false,
+    fullAddress: true,
     fullSignature: false,
     showBlock: true,
     showAge: true,
