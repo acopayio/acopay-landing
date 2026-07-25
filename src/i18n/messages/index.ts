@@ -1,5 +1,6 @@
 import { en } from "./en";
 import type { Messages } from "./en";
+import { BUY_DESK_PARTIALS } from "./buyDesk";
 
 export { en };
 export type { Messages } from "./en";
@@ -23,6 +24,26 @@ function deepMerge(base: Messages, over?: DeepPartialMessages): Messages {
     };
   }
   return out as unknown as Messages;
+}
+
+/** Shallow-merge partial message trees (clone sections so aliases do not share refs). */
+function mergePartial(
+  a?: DeepPartialMessages,
+  b?: DeepPartialMessages,
+): DeepPartialMessages {
+  const out: DeepPartialMessages = {};
+  for (const src of [a, b]) {
+    if (!src) continue;
+    for (const section of Object.keys(src) as (keyof Messages)[]) {
+      const sec = src[section];
+      if (!sec) continue;
+      out[section] = {
+        ...(out[section] as Record<string, string> | undefined),
+        ...(sec as Record<string, string>),
+      };
+    }
+  }
+  return out;
 }
 
 /** Partial overrides per locale — missing keys fall back to English. */
@@ -1737,13 +1758,18 @@ const partials: Record<string, DeepPartialMessages> = {
   },
 };
 
-// Alias similar locales
-partials.ms = partials.id;
-partials.uk = partials.ru;
-partials.pl = partials.de;
-partials.nl = partials.de;
-partials.it = partials.es;
-partials.tr = partials.de;
+// Alias similar locales — clone so later overlays (Buy desk) do not mutate the source
+partials.ms = mergePartial(partials.id);
+partials.uk = mergePartial(partials.ru);
+partials.pl = mergePartial(partials.de);
+partials.nl = mergePartial(partials.de);
+partials.it = mergePartial(partials.es);
+partials.tr = mergePartial(partials.de);
+
+// Full Buy desk (`buyPage` + `otc`) for every UI locale (vi already inline above)
+for (const [code, desk] of Object.entries(BUY_DESK_PARTIALS)) {
+  partials[code] = mergePartial(partials[code], desk as DeepPartialMessages);
+}
 
 export function getMessages(locale: string): Messages {
   if (locale === "en" || !partials[locale]) return en;
