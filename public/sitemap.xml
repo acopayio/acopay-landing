@@ -11,7 +11,7 @@
     <xhtml:link rel="alternate" hreflang="en-US" href="https://acopay.net/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://acopay.net/"/>
     <image:image>
-      <image:loc>https://acopay.net/assets/og-image.png</image:loc>
+      <image:loc>https://acopay.net/assets/og-card.png</image:loc>
       <image:title>ACOPAY — Pay your way</image:title>
       <image:caption>Official ACOPAY Solana payment utility token</image:caption>
     </image:image>
@@ -92,7 +92,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://acopay.net/assets/og-image.png</loc>
+    <loc>https://acopay.net/assets/og-card.png</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>

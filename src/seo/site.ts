@@ -9,7 +9,7 @@ export const SITE = {
   email: "contact@Acopay.net",
   themeColor: "#0c1017",
   twitterHandle: "", // add @handle when official X account exists
-  ogImage: "https://acopay.net/assets/og-image.png?v=20260725",
+  ogImage: "https://acopay.net/assets/og-card.png",
   ogImageAlt: "ACOPAY — Pay your way",
   defaultTitle: "ACOPAY — Pay your way",
   defaultDescription:
