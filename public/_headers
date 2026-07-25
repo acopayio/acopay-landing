@@ -41,9 +41,9 @@
   Cache-Control: public, max-age=604800
   X-Content-Type-Options: nosniff
 
-# Social preview image
+# Social preview image — short TTL so Telegram/Discord refresh new OG art
 /assets/og-image.png
-  Cache-Control: public, max-age=86400
+  Cache-Control: public, max-age=3600, must-revalidate
   X-Content-Type-Options: nosniff
 
 # Other public assets default

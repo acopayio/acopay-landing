@@ -9,11 +9,11 @@ export const SITE = {
   email: "contact@Acopay.net",
   themeColor: "#0c1017",
   twitterHandle: "", // add @handle when official X account exists
-  ogImage: "https://Acopay.net/assets/og-image.png",
+  ogImage: "https://acopay.net/assets/og-image.png?v=20260725",
   ogImageAlt: "ACOPAY — Pay your way",
   defaultTitle: "ACOPAY — Pay your way",
   defaultDescription:
-    "Token-2022 for wallet-to-wallet transfers with a 0.01% on-chain fee. Trade ACOPAY/USDT on Raydium and Jupiter.",
+    "Solana payment utility (Token-2022).\nTrade ACOPAY/USDT on Raydium and Jupiter.",
   keywords: [
     "ACOPAY",
     "Pay your way",
