@@ -5,7 +5,7 @@ export const USDT_MINT = "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB";
 export const SOL_MINT = "So11111111111111111111111111111111111111112";
 
 /**
- * Single source of truth for the official site (acopay.net).
+ * Single source of truth for the official site (Acopay.net).
  */
 export const TOKEN = {
   name: "ACOPAY",
@@ -24,8 +24,8 @@ export const TOKEN = {
   transferFeeNote: "1 bps on-chain",
   freezeAuthority: "Revoked",
   mintAuthority: "Active",
-  website: "https://acopay.net",
-  email: "contact@acopay.net",
+  website: "https://Acopay.net",
+  email: "contact@Acopay.net",
   founded: "2026",
   /** Official Telegram Pay bot (shared with volume admin). */
   telegramBot: "AcopayNetwork_bot",
@@ -44,7 +44,7 @@ export const TOKEN = {
     /** Official OTC desk on /buy (bot USDT→ACOPAY). Not unsolicited private OTC. */
     officialOtc: true,
     freezeRevoked: true,
-    officialDomainOnly: "acopay.net",
+    officialDomainOnly: "Acopay.net",
   },
   links: {
     explorer: "https://explorer.solana.com/",
@@ -66,7 +66,7 @@ export function isPoolLive(): boolean {
 }
 
 export function mintDisplay(): string {
-  return isMintLive() ? TOKEN.mintAddress : "Not published yet — check back on acopay.net";
+  return isMintLive() ? TOKEN.mintAddress : "Not published yet — check back on Acopay.net";
 }
 
 export function explorerUrl(): string {

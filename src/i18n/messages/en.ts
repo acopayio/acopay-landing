@@ -89,7 +89,7 @@ export const en = {
     openJupiter: "Open Jupiter",
     openRaydium: "Open Raydium",
     swapUnavailable: "Swap is unavailable until the Raydium pool is live.",
-    swapFootnote: "Connect a Solana wallet in the widget to swap. Always verify the mint on acopay.net.",
+    swapFootnote: "Connect a Solana wallet in the widget to swap. Always verify the mint on Acopay.net.",
     buyAcopay: "Buy ACOPAY",
     time: "Time",
     buyer: "Buyer",
@@ -189,11 +189,11 @@ export const en = {
     q1: "What is ACOPAY?",
     a1: "ACOPAY is a Solana payment utility token (Token-2022) for wallet-to-wallet transfers and settlement.",
     q2: "Where is the contract address?",
-    a2: "Official mint: {mint}. Always confirm it on acopay.net and Solscan before you send funds. Ignore DMs or sites that show a different mint.",
+    a2: "Official mint: {mint}. Always confirm it on Acopay.net and Solscan before you send funds. Ignore DMs or sites that show a different mint.",
     q3: "How do I buy?",
-    a3: "Buy on acopay.net at /buy (USDT → ACOPAY 1:1). You can also swap on Jupiter or Raydium — always match the mint published on acopay.net.",
+    a3: "Buy on Acopay.net at /buy (USDT → ACOPAY 1:1). You can also swap on Jupiter or Raydium — always match the mint published on Acopay.net.",
     q4: "Why does Phantom say ACOPAY is spam?",
-    a4: "Phantom often flags new tokens until they appear on trusted lists (such as Jupiter Verified). A spam or “junk” label does not mean your tokens are gone — they remain on Solana. In Phantom, open Manage tokens / spam settings and show ACOPAY, or verify the balance on Solscan with the official mint. Only use acopay.net.",
+    a4: "Phantom often flags new tokens until they appear on trusted lists (such as Jupiter Verified). A spam or “junk” label does not mean your tokens are gone — they remain on Solana. In Phantom, open Manage tokens / spam settings and show ACOPAY, or verify the balance on Solscan with the official mint. Only use Acopay.net.",
     q5: "Can I transfer ACOPAY peer-to-peer?",
     a5: "Yes. Send ACOPAY between wallets for payments. Market price comes from the Raydium ACOPAY/USDT pool.",
     q6: "Network and supply?",
@@ -213,7 +213,7 @@ export const en = {
     label: "Trade",
     title: "How to buy",
     subtitle: "Fastest path: buy at /buy — 1 USDT = 1 ACOPAY. DEX swaps remain available on Raydium / Jupiter.",
-    step1Title: "Buy on acopay.net (recommended)",
+    step1Title: "Buy on Acopay.net (recommended)",
     step1Desc: "Send USDT via Solana Pay QR on the Buy page — you receive ACOPAY 1:1 in your wallet.",
     step2Title: "Or swap on a DEX",
     step2Desc: "Use Jupiter or Raydium. Match the official mint on the Contract page before you swap.",
@@ -305,8 +305,8 @@ export const en = {
     before2:
       "Exchange wallets are not accepted for direct Buy payments. Withdraw from Binance, OKX, Bybit, etc. to your own wallet first — then pay here.",
     before3:
-      "Send USDT the right way (if from an exchange): exchange → your own wallet → then pay on the Buy page at acopay.net. Keep a little SOL for fees.",
-    before4: "Official site is acopay.net only. Confirm the mint on Solscan before you trust any other link or message.",
+      "Send USDT the right way (if from an exchange): exchange → your own wallet → then pay on the Buy page at Acopay.net. Keep a little SOL for fees.",
+    before4: "Official site is Acopay.net only. Confirm the mint on Solscan before you trust any other link or message.",
     before5: "Phantom may mark new tokens as spam. Your ACOPAY is still on-chain — open Manage tokens / spam settings and show ACOPAY, or check the balance on Solscan.",
     mintPrefix: "Official mint:",
     phantomFaq: "FAQ: ACOPAY warning in Phantom wallet",
@@ -396,11 +396,11 @@ export const en = {
     openSolflare: "Open in Solflare",
     openJupiterApp: "Open Jupiter",
     mobileFootnote:
-      "Mobile: open acopay.net in your wallet app to connect. Desktop: use a browser extension or desktop wallet.",
+      "Mobile: open Acopay.net in your wallet app to connect. Desktop: use a browser extension or desktop wallet.",
     desktopFootnote:
-      "Desktop: connect a browser extension (Phantom, Solflare, …) or a desktop wallet app in the widget. Always verify the mint on acopay.net.",
+      "Desktop: connect a browser extension (Phantom, Solflare, …) or a desktop wallet app in the widget. Always verify the mint on Acopay.net.",
     inWalletFootnote:
-      "You are in a wallet in-app browser — tap Connect Wallet in the widget. Always verify the mint on acopay.net.",
+      "You are in a wallet in-app browser — tap Connect Wallet in the widget. Always verify the mint on Acopay.net.",
   },
   linkWallet: {
     kicker: "Telegram",

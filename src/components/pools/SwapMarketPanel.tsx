@@ -60,7 +60,7 @@ function hasInjectedWallet(): boolean {
 }
 
 function swapPageUrl(): string {
-  if (typeof window === "undefined") return "https://acopay.net/markets";
+  if (typeof window === "undefined") return "https://Acopay.net/markets";
   const u = new URL(window.location.href);
   u.hash = "";
   // Keep user on Markets; Swap is a tab — open same path so in-app browser continues here.
@@ -83,7 +83,7 @@ export function SwapMarketPanel() {
   const ray = raydiumSwapUrl();
   const poolOk = isPoolLive();
 
-  const pageUrl = useMemo(() => (typeof window !== "undefined" ? swapPageUrl() : "https://acopay.net/markets"), []);
+  const pageUrl = useMemo(() => (typeof window !== "undefined" ? swapPageUrl() : "https://Acopay.net/markets"), []);
   const phantomHref = phantomBrowseUrl(pageUrl);
   const solflareHref = solflareBrowseUrl(pageUrl);
 

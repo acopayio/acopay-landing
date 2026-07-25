@@ -2,14 +2,14 @@
 export const SITE = {
   name: "ACOPAY",
   tagline: "Pay your way",
-  url: "https://acopay.net",
+  url: "https://Acopay.net",
   locale: "en_US",
   language: "en-US",
   region: "US",
-  email: "contact@acopay.net",
+  email: "contact@Acopay.net",
   themeColor: "#0c1017",
   twitterHandle: "", // add @handle when official X account exists
-  ogImage: "https://acopay.net/assets/og-image.png",
+  ogImage: "https://Acopay.net/assets/og-image.png",
   ogImageAlt: "ACOPAY — Pay your way",
   defaultTitle: "ACOPAY — Pay your way",
   defaultDescription:
@@ -26,7 +26,7 @@ export const SITE = {
     "crypto payments",
     "wallet to wallet",
     "SPL token",
-    "acopay.net",
+    "Acopay.net",
   ],
   hashtags: [
     "#ACOPAY",
@@ -61,7 +61,7 @@ export const PAGE_SEO: Record<string, PageSeo> = {
   "/trade": {
     title: "How to Buy ACOPAY | OTC Desk & DEX Swap",
     description:
-      "Buy ACOPAY via official OTC (USDT 1:1) or swap on Jupiter and Raydium. Match the official contract on acopay.net.",
+      "Buy ACOPAY via official OTC (USDT 1:1) or swap on Jupiter and Raydium. Match the official contract on Acopay.net.",
     path: "/trade",
   },
   "/markets": {
