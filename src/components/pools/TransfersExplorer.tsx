@@ -20,13 +20,13 @@ function fmtAmount(n: number): string {
   });
 }
 
-function fmtAge(ts: number): string {
+function fmtAge(ts: number, t: (path: string, vars?: Record<string, string | number>) => string): string {
   if (!ts) return "—";
   const sec = Math.max(0, Math.floor(Date.now() / 1000 - ts));
-  if (sec < 60) return `${sec}s ago`;
-  if (sec < 3600) return `${Math.floor(sec / 60)}m ago`;
-  if (sec < 86400) return `${Math.floor(sec / 3600)}h ago`;
-  return `${Math.floor(sec / 86400)}d ago`;
+  if (sec < 60) return t("markets.agoSeconds", { n: sec });
+  if (sec < 3600) return t("markets.agoMinutes", { n: Math.floor(sec / 60) });
+  if (sec < 86400) return t("markets.agoHours", { n: Math.floor(sec / 3600) });
+  return t("markets.agoDays", { n: Math.floor(sec / 86400) });
 }
 
 function shortSig(s: string, full: boolean): string {
@@ -201,7 +201,7 @@ export function TransfersExplorer() {
       </div>
 
       <fieldset className="flex flex-wrap gap-x-4 gap-y-2 rounded-xl border border-[color:var(--acopay-border)] bg-[var(--acopay-bg)]/50 px-3 py-2.5 text-xs text-[var(--acopay-muted)]">
-        <legend className="sr-only">Display options</legend>
+        <legend className="sr-only">{t("markets.displayOptions")}</legend>
         {(
           [
             ["fullAddress", "markets.showFullAddress"],
@@ -369,7 +369,7 @@ function TransferRow({ row, opts }: { row: AcopayTransferRow; opts: ViewOpts }) 
       </td>
       {opts.showAge && (
         <td className="px-5 py-3.5 text-center text-sm text-[var(--acopay-muted)]" title={row.time}>
-          {fmtAge(row.timestamp)}
+          {fmtAge(row.timestamp, t)}
         </td>
       )}
       {opts.showBlock && (

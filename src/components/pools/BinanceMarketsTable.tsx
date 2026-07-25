@@ -242,7 +242,7 @@ export function BinanceMarketsTable({ variant = "full", limit, embedded = false 
           [
             ["volume24h", t("markets.volShort")],
             ["price", t("markets.price")],
-            ["change24h", "24h"],
+            ["change24h", t("markets.change24h")],
             ["marketCap", t("markets.capShort")],
             ["name", t("markets.name")],
           ] as const

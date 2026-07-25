@@ -124,6 +124,11 @@ export const en = {
     feesShort: "Fees",
     yieldShort: "Yield",
     trendShort: "Trend",
+    agoSeconds: "{n}s ago",
+    agoMinutes: "{n}m ago",
+    agoHours: "{n}h ago",
+    agoDays: "{n}d ago",
+    displayOptions: "Display options",
   },
   about: {
     label: "About",

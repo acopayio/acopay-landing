@@ -1,6 +1,7 @@
 import { en } from "./en";
 import type { Messages } from "./en";
 import { BUY_DESK_PARTIALS } from "./buyDesk";
+import { SITE_CONTENT_PARTIALS } from "./siteContent";
 
 export { en };
 export type { Messages } from "./en";
@@ -1769,6 +1770,11 @@ partials.tr = mergePartial(partials.de);
 // Full Buy desk (`buyPage` + `otc`) for every UI locale (vi already inline above)
 for (const [code, desk] of Object.entries(BUY_DESK_PARTIALS)) {
   partials[code] = mergePartial(partials[code], desk as DeepPartialMessages);
+}
+
+// Site-wide pages/tabs (Trade, Token, Contract, FAQ, Roadmap gaps, Markets, theme…)
+for (const [code, content] of Object.entries(SITE_CONTENT_PARTIALS)) {
+  partials[code] = mergePartial(partials[code], content as DeepPartialMessages);
 }
 
 export function getMessages(locale: string): Messages {
