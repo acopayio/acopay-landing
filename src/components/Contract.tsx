@@ -94,7 +94,7 @@ export function Contract() {
                 rel="noopener noreferrer"
                 className="btn-orca-ghost"
               >
-                Solscan ↗
+                {t("hero.solscan")}
               </a>
               <Link to="/trade" className="btn-orca-secondary !py-2 !text-xs">
                 {t("contractPage.howToBuy")}

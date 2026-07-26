@@ -64,6 +64,7 @@ export const en = {
     transfersCount: "{n} transactions",
     loadingHistory: "loading history…",
     solscanToken: "Solscan token ↗",
+    openOnSolscan: "Open on Solscan",
     showFullAddress: "Show full address",
     showFullSignature: "Show full signature",
     showBlock: "Show block",
