@@ -409,7 +409,7 @@ function TransferRow({ row, opts }: { row: AcopayTransferRow; opts: ViewOpts }) 
       </td>
       <td className="px-5 py-3.5 text-center">
         <span
-          className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ${
+          className={`inline-flex shrink-0 whitespace-nowrap rounded-full px-2.5 py-0.5 text-xs font-semibold ${
             ok
               ? "bg-[var(--acopay-success-bg)] text-[var(--acopay-success)] ring-1 ring-[color:var(--acopay-success-ring)]"
               : "bg-[var(--acopay-danger-bg)] text-[var(--acopay-danger)] ring-1 ring-[color:var(--acopay-danger-ring)]"
