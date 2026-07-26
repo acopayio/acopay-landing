@@ -80,22 +80,23 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const [locale, setLocaleState] = useState("en");
   const [ready, setReady] = useState(false);
 
+  const applyUrlLang = useCallback(() => {
+    if (typeof window === "undefined") return null;
+    const urlLang = new URLSearchParams(window.location.search).get("lang");
+    if (!isSupportedLocale(urlLang)) return null;
+    localStorage.setItem(STORAGE_LOCALE, urlLang);
+    localStorage.removeItem(STORAGE_MODE);
+    setLocaleState(urlLang);
+    return urlLang;
+  }, []);
+
   useEffect(() => {
     let cancelled = false;
     (async () => {
       // Bot / deep-link: ?lang=vi forces locale (also persists)
-      const urlLang =
-        typeof window !== "undefined"
-          ? new URLSearchParams(window.location.search).get("lang")
-          : null;
-      const fromUrl = isSupportedLocale(urlLang) ? urlLang : null;
+      const fromUrl = applyUrlLang();
 
       const explicit = fromUrl || readSavedLocale();
-      if (fromUrl) {
-        localStorage.setItem(STORAGE_LOCALE, fromUrl);
-        localStorage.removeItem(STORAGE_MODE);
-      }
-
       let cc = readCookie(COOKIE_COUNTRY);
       if (!cc || cc === "XX" || cc === "T1") {
         cc = await detectCountryFallback();
@@ -109,14 +110,23 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
       if (!cancelled) {
         setCountry(cc);
-        setLocaleState(isSupportedLocale(next) ? next : "en");
+        if (!fromUrl) setLocaleState(isSupportedLocale(next) ? next : "en");
         setReady(true);
       }
     })();
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [applyUrlLang]);
+
+  // Keep locale in sync when bot deep-link ?lang= changes (SPA navigation / reload)
+  useEffect(() => {
+    const onNav = () => {
+      applyUrlLang();
+    };
+    window.addEventListener("popstate", onNav);
+    return () => window.removeEventListener("popstate", onNav);
+  }, [applyUrlLang]);
 
   const messages = useMemo(() => getMessages(locale), [locale]);
 
@@ -139,6 +149,14 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     localStorage.setItem(STORAGE_LOCALE, next);
     localStorage.removeItem(STORAGE_MODE);
     setLocaleState(next);
+    // Keep deep-link ?lang= in sync so refresh / share stays correct
+    if (typeof window !== "undefined") {
+      const url = new URL(window.location.href);
+      if (url.searchParams.has("lang") || url.pathname.includes("link-wallet")) {
+        url.searchParams.set("lang", next);
+        window.history.replaceState({}, "", url.toString());
+      }
+    }
   }, []);
 
   const value = useMemo(

@@ -1,8 +1,9 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import bs58 from "bs58";
 import { phantomBrowseUrl } from "../config/otc";
 import { useI18n } from "../i18n/LanguageProvider";
+import { isSupportedLocale } from "../i18n/countries";
 import { getPhantomProvider, hasPhantomExtension, isMobileUa } from "../lib/phantomPay";
 
 function buildLinkMessage(tg: string, nonce: string, exp: string) {
@@ -38,11 +39,19 @@ function isUnsupportedDesktopBrowser(): boolean {
  * Locale: ?lang= from bot (LanguageProvider) + full linkWallet i18n.
  */
 export function LinkWalletPage() {
-  const { t } = useI18n();
+  const { t, locale, setLocale } = useI18n();
   const [params] = useSearchParams();
   const tg = (params.get("tg") || "").trim();
   const nonce = (params.get("nonce") || "").trim();
   const exp = (params.get("exp") || "").trim();
+  const langParam = (params.get("lang") || "").trim();
+
+  // Bot deep-link ?lang= must win over a previously saved sidebar locale
+  useEffect(() => {
+    if (isSupportedLocale(langParam) && langParam !== locale) {
+      setLocale(langParam);
+    }
+  }, [langParam, locale, setLocale]);
 
   const message = useMemo(() => {
     if (!tg || !nonce || !exp) return "";
@@ -130,7 +139,9 @@ export function LinkWalletPage() {
       <div className="page-wrap mx-auto max-w-lg">
         <p className="label-orca">{t("linkWallet.kicker")}</p>
         <h1 className="mt-2 text-3xl font-bold text-[var(--acopay-fg)]">{t("linkWallet.title")}</h1>
-        <p className="mt-3 text-sm leading-relaxed text-[var(--acopay-muted)]">{t("linkWallet.intro")}</p>
+        <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-[var(--acopay-muted)]">
+          {t("linkWallet.intro")}
+        </p>
 
         {badBrowser && (
           <div className="mt-6 space-y-3 rounded-2xl border border-amber-500/40 bg-amber-500/10 p-4 text-sm text-amber-50">

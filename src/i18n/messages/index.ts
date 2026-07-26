@@ -2,6 +2,7 @@ import { en } from "./en";
 import type { Messages } from "./en";
 import { BUY_DESK_PARTIALS } from "./buyDesk";
 import { SITE_CONTENT_PARTIALS } from "./siteContent";
+import { LINK_WALLET_PARTIALS } from "./linkWallet";
 
 export { en };
 export type { Messages } from "./en";
@@ -1774,6 +1775,12 @@ for (const [code, desk] of Object.entries(BUY_DESK_PARTIALS)) {
 
 // Site-wide pages/tabs (Trade, Token, Contract, FAQ, Roadmap gaps, Markets, theme…)
 for (const [code, content] of Object.entries(SITE_CONTENT_PARTIALS)) {
+  partials[code] = mergePartial(partials[code], content as DeepPartialMessages);
+}
+
+// Link Phantom page — every UI locale (overrides older VI stub above)
+for (const [code, content] of Object.entries(LINK_WALLET_PARTIALS)) {
+  if (code === "en") continue;
   partials[code] = mergePartial(partials[code], content as DeepPartialMessages);
 }
 
