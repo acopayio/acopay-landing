@@ -233,20 +233,26 @@ export function LinkWalletPage() {
             {error && <p className="text-sm text-amber-300">{error}</p>}
 
             {linkOk && (
-              <div className="space-y-3 rounded-2xl border border-[color:var(--acopay-brand)]/25 bg-[#00E5FF]/05 p-4">
-                <p className="text-sm font-semibold text-[var(--acopay-fg)]">
-                  {t("linkWallet.signed")}
-                  {pubkey ? ` · ${pubkey.slice(0, 4)}…${pubkey.slice(-4)}` : ""}
+              <div className="mt-2 space-y-4 rounded-2xl border border-[color:var(--acopay-brand)]/30 bg-[#00E5FF]/08 p-4 sm:p-5">
+                <p className="break-all text-sm font-bold leading-snug text-[var(--acopay-fg)] sm:text-base">
+                  {t("linkWallet.signed", { addr: pubkey || "" })}
                 </p>
-                <p className="text-xs text-[var(--acopay-muted)]">{t("linkWallet.pasteHint")}</p>
-                <code className="block break-all rounded-xl bg-[var(--acopay-bg)] px-3 py-3 font-mono text-[11px] text-[var(--acopay-fg)]">
-                  {linkOk}
-                </code>
-                <div className="flex flex-wrap gap-2">
+                <p className="text-sm font-medium leading-relaxed text-[var(--acopay-brand)] sm:text-[15px]">
+                  {t("linkWallet.pasteHint")}
+                </p>
+                <div className="rounded-xl border border-[color:var(--acopay-brand)]/25 bg-[var(--acopay-bg)] px-3 py-3 sm:px-4">
+                  <p className="break-all font-mono text-[11px] leading-relaxed sm:text-xs">
+                    <span className="font-bold text-[var(--acopay-brand)]">/linkok</span>
+                    <span className="font-normal text-[var(--acopay-brand)]">
+                      {linkOk.replace(/^\/linkok\s*/, " ")}
+                    </span>
+                  </p>
+                </div>
+                <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
                   <button
                     type="button"
                     onClick={() => void copyLine()}
-                    className="btn-orca-secondary !text-xs"
+                    className="btn-orca-secondary w-full !text-xs sm:w-auto sm:!text-sm"
                   >
                     {copied ? t("linkWallet.copied") : t("linkWallet.copyLinkOk")}
                   </button>
@@ -254,7 +260,7 @@ export function LinkWalletPage() {
                     href="https://t.me/AcopayNetwork_bot"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="btn-orca-ghost !text-xs"
+                    className="btn-orca-ghost inline-flex w-full items-center justify-center !text-xs sm:w-auto sm:!text-sm"
                   >
                     {t("linkWallet.openTelegram")}
                   </a>
