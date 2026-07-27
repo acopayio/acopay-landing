@@ -354,7 +354,7 @@ const partials: Record<string, DeepPartialMessages> = {
       howToSwap: "Cách swap",
     },
     otc: {
-      deskLabel: "Bàn chính thức",
+      deskLabel: "Mua chính thức",
       live: "Trực tiếp",
       intro:
         "Trả USDT từ ví Solana của bạn. ACOPAY hoàn 1:1 về cùng địa chỉ. Không chấp nhận ví sàn mua trực tiếp.",
@@ -395,7 +395,7 @@ const partials: Record<string, DeepPartialMessages> = {
       sessionEnded: "Phiên đã kết thúc",
       sessionEndedHint: "Tạo mã thanh toán mới, hoặc sửa số lượng.",
       usdtReceived: "Đã nhận USDT",
-      crediting: "Bàn đang ghi có ACOPAY vào ví của bạn…",
+      crediting: "Đang ghi có ACOPAY vào ví của bạn…",
       awaiting: "Đang chờ thanh toán",
       awaitHintNarrow: "Quét QR, sao chép địa chỉ nạp, hoặc thanh toán bằng Phantom.",
       awaitHintWide: "Thanh toán bằng Phantom, quét QR, hoặc gửi USDT tới địa chỉ nạp.",
@@ -407,7 +407,7 @@ const partials: Record<string, DeepPartialMessages> = {
       newCode: "Mã thanh toán mới",
       settleNote: "Đã settle tỷ giá cố định 1:1. Nếu Phantom ẩn ACOPAY, hãy hiện lại trong Manage tokens.",
       buyAgain: "Mua tiếp",
-      successKicker: "Bàn ACOPAY",
+      successKicker: "Mua ACOPAY",
       paymentSuccessful: "Thanh toán thành công",
       paidLine: "Đã trả {amount} USDT · cố định 1:1 · Solana",
       usdtTx: "Giao dịch USDT ↗",

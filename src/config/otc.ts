@@ -1,4 +1,4 @@
-/** Official OTC desk — USDT → ACOPAY 1:1 (auto settle). */
+/** Official Buy page — USDT → ACOPAY 1:1 (auto settle). */
 import { USDT_MINT } from "./token";
 
 export const OTC = {

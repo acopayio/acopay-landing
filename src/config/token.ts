@@ -41,7 +41,7 @@ export const TOKEN = {
     poolLive: true as boolean,
   },
   safety: {
-    /** Official OTC desk on /buy (bot USDT→ACOPAY). Not unsolicited private OTC. */
+    /** Official Buy page on /buy (bot USDT→ACOPAY). Not unsolicited private OTC. */
     officialOtc: true,
     freezeRevoked: true,
     officialDomainOnly: "Acopay.net",

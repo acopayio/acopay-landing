@@ -6,7 +6,7 @@ type Props = {
   label?: string;
 };
 
-/** Primary buy CTA → OTC desk with Solana Pay QR. */
+/** Primary buy CTA → official Buy page with Solana Pay QR. */
 export function BuyButton({ className = "btn-orca-primary", label }: Props) {
   const t = useT();
   return (

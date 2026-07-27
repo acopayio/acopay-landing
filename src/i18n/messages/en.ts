@@ -321,7 +321,7 @@ export const en = {
     howToSwap: "How to swap",
   },
   otc: {
-    deskLabel: "Official desk",
+    deskLabel: "Official Buy",
     live: "Live",
     intro:
       "Pay USDT from your own Solana wallet. ACOPAY returns 1:1 to that same address. Exchange wallets are not accepted for direct purchase.",
@@ -362,7 +362,7 @@ export const en = {
     sessionEnded: "Session ended",
     sessionEndedHint: "Start a new payment code, or edit the amount.",
     usdtReceived: "USDT received",
-    crediting: "Desk is crediting ACOPAY to your wallet…",
+    crediting: "Crediting ACOPAY to your wallet…",
     awaiting: "Awaiting payment",
     awaitHintNarrow: "Scan the QR, copy the deposit address, or pay with Phantom.",
     awaitHintWide: "Pay with Phantom, scan the QR, or send USDT to the deposit address.",
@@ -374,7 +374,7 @@ export const en = {
     newCode: "New payment code",
     settleNote: "Settled at a fixed 1:1 rate. If Phantom hides ACOPAY, unhide it under Manage tokens.",
     buyAgain: "Buy again",
-    successKicker: "ACOPAY desk",
+    successKicker: "ACOPAY Buy",
     paymentSuccessful: "Payment successful",
     paidLine: "Paid {amount} USDT · fixed 1:1 · Solana",
     usdtTx: "USDT transaction ↗",
