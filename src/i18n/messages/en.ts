@@ -445,6 +445,44 @@ export const en = {
     errCopyLine: "Could not copy. Select the /linkok line manually.",
     errCopyUrl: "Could not copy URL. Select the address bar manually.",
   },
+  sendAcopay: {
+    kicker: "Telegram Pay",
+    title: "Send ACOPAY with Phantom",
+    intro:
+      "Confirm the transfer from Telegram Pay, then sign with your linked Phantom wallet.\n\n" +
+      "1. Connect the same Phantom address linked in the bot\n" +
+      "2. Approve the ACOPAY transfer\n" +
+      "3. Copy /paysok and paste it into @AcopayNetwork_bot",
+    wrongBrowserTitle: "Use Chrome or Brave",
+    wrongBrowserBody:
+      "Phantom needs Google Chrome or Brave. Open this page in Chrome, then continue.",
+    copyUrlChrome: "Copy page URL",
+    urlCopied: "URL copied",
+    mobileBody: "On mobile, open this page in the Phantom app to connect and sign.",
+    missingParams: "Open this page from Telegram: confirm Send, then tap Sign with Phantom.",
+    amountLabel: "Amount:",
+    fromLabel: "From:",
+    toLabel: "To:",
+    expired: "This link expired. Run Send again in Telegram.",
+    openInPhantom: "Continue in Phantom",
+    connectSend: "Connect Phantom & send",
+    waitingPhantom: "Waiting for Phantom…",
+    sent: "Sent on-chain. Finish in Telegram:",
+    viewTx: "View transaction ↗",
+    pasteHint: "Copy the command below and paste it into @AcopayNetwork_bot within 15 minutes.",
+    copyPaysok: "Copy /paysok command",
+    copied: "Copied",
+    openTelegram: "Open Telegram Pay ↗",
+    errMissing: "Missing send details. Confirm Send in Telegram first.",
+    errExpired: "This link expired. Run Send again in Telegram.",
+    errBadBrowser: "This browser cannot run Phantom. Open this page in Google Chrome.",
+    errNoProviderMobile: "Phantom is not available here. Tap “Continue in Phantom” below.",
+    errNoProviderDesktop: "Phantom extension not found. Install Phantom in Chrome, then try again.",
+    errWrongWallet: "Wrong Phantom wallet. Connect {addr} (the address linked in Telegram).",
+    errCancelled: "Transaction cancelled in Phantom.",
+    errCopyLine: "Could not copy. Select the /paysok line manually.",
+    errCopyUrl: "Could not copy URL. Select the address bar manually.",
+  },
 };
 
 export type Messages = {

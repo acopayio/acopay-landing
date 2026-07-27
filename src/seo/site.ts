@@ -97,6 +97,11 @@ export const PAGE_SEO: Record<string, PageSeo> = {
     description: SITE.defaultDescription,
     path: "/link-wallet",
   },
+  "/send": {
+    title: "Send ACOPAY with Phantom | Acopay.net",
+    description: SITE.defaultDescription,
+    path: "/send",
+  },
 };
 
 export function absoluteUrl(path: string): string {

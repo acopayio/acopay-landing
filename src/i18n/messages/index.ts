@@ -3,6 +3,7 @@ import type { Messages } from "./en";
 import { BUY_DESK_PARTIALS } from "./buyDesk";
 import { SITE_CONTENT_PARTIALS } from "./siteContent";
 import { LINK_WALLET_PARTIALS } from "./linkWallet";
+import { SEND_ACOPAY_PARTIALS } from "./sendAcopay";
 
 export { en };
 export type { Messages } from "./en";
@@ -1907,6 +1908,12 @@ for (const [code, content] of Object.entries(SITE_CONTENT_PARTIALS)) {
 
 // Link Phantom page — every UI locale (overrides older VI stub above)
 for (const [code, content] of Object.entries(LINK_WALLET_PARTIALS)) {
+  if (code === "en") continue;
+  partials[code] = mergePartial(partials[code], content as DeepPartialMessages);
+}
+
+// Send ACOPAY (Phantom sign) — EN+VI; other locales inherit EN
+for (const [code, content] of Object.entries(SEND_ACOPAY_PARTIALS)) {
   if (code === "en") continue;
   partials[code] = mergePartial(partials[code], content as DeepPartialMessages);
 }

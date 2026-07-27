@@ -152,7 +152,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     // Keep deep-link ?lang= in sync so refresh / share stays correct
     if (typeof window !== "undefined") {
       const url = new URL(window.location.href);
-      if (url.searchParams.has("lang") || url.pathname.includes("link-wallet")) {
+      if (url.searchParams.has("lang") || url.pathname.includes("link-wallet") || url.pathname.includes("/send")) {
         url.searchParams.set("lang", next);
         window.history.replaceState({}, "", url.toString());
       }
