@@ -30,8 +30,10 @@ function upsertLink(rel: string, href: string, extra?: Record<string, string>) {
 
 function applySeo(page: PageSeo) {
   const url = absoluteUrl(page.path);
+  // Browser tab can be page-specific; Telegram/social OG always matches homepage brand
   const title = page.title;
-  const description = page.description;
+  const ogTitle = SITE.defaultTitle;
+  const ogDescription = SITE.defaultDescription;
   const image = SITE.ogImage;
   const keywords = SITE.keywords.join(", ");
   const hashtags = SITE.hashtags.join(" ");
@@ -39,7 +41,7 @@ function applySeo(page: PageSeo) {
   document.title = title;
   document.documentElement.lang = SITE.language;
 
-  upsertMeta("name", "description", description);
+  upsertMeta("name", "description", ogDescription);
   upsertMeta("name", "keywords", keywords);
   upsertMeta("name", "author", SITE.name);
   upsertMeta("name", "robots", "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1");
@@ -55,10 +57,10 @@ function applySeo(page: PageSeo) {
   upsertMeta("name", "rating", "general");
   upsertMeta("name", "referrer", "strict-origin-when-cross-origin");
 
-  // Social / discovery helpers (not ranking signals, but brand consistency)
+  // Social / discovery — same card as https://acopay.net/ on every route
   upsertMeta("name", "twitter:card", "summary_large_image");
-  upsertMeta("name", "twitter:title", title);
-  upsertMeta("name", "twitter:description", description);
+  upsertMeta("name", "twitter:title", ogTitle);
+  upsertMeta("name", "twitter:description", ogDescription);
   upsertMeta("name", "twitter:image", image);
   upsertMeta("name", "twitter:image:alt", SITE.ogImageAlt);
   upsertMeta("name", "twitter:url", url);
@@ -70,8 +72,8 @@ function applySeo(page: PageSeo) {
   upsertMeta("property", "og:type", "website");
   upsertMeta("property", "og:site_name", SITE.name);
   upsertMeta("property", "og:locale", SITE.locale);
-  upsertMeta("property", "og:title", title);
-  upsertMeta("property", "og:description", description);
+  upsertMeta("property", "og:title", ogTitle);
+  upsertMeta("property", "og:description", ogDescription);
   upsertMeta("property", "og:url", url);
   upsertMeta("property", "og:image", image);
   upsertMeta("property", "og:image:secure_url", image);
