@@ -280,6 +280,18 @@ async function main() {
 
   let backfillComplete = Boolean(prev.backfillComplete);
   let backfillBefore = prev.backfillBefore || null;
+  const prevDays = Math.max(1, Number(prev.historyDays) || 1);
+  if (prevDays < HISTORY_DAYS) {
+    // Expanding retention (e.g. 1d → 3d): resume walking older sigs from oldest known row
+    log(`[transfers] window expanded ${prevDays}d → ${HISTORY_DAYS}d — resume backfill`);
+    backfillComplete = false;
+    if (!backfillBefore) {
+      const oldest = [...byId.values()]
+        .filter((r) => r?.signature)
+        .sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0))[0];
+      if (oldest?.signature) backfillBefore = oldest.signature;
+    }
+  }
 
   // Head
   const headRes = await solanaRpc(
