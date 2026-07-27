@@ -281,19 +281,12 @@ async function main() {
   let backfillComplete = Boolean(prev.backfillComplete);
   let backfillBefore = prev.backfillBefore || null;
   const prevDays = Math.max(1, Number(prev.historyDays) || 1);
-  const cutoff = cutoffTs();
-  const oldestTs = [...byId.values()]
-    .map((r) => Number(r.timestamp) || 0)
-    .filter((t) => t > 0)
-    .sort((a, b) => a - b)[0];
-  // Resume when window grew, or ledger claims complete but data doesn't reach ~cutoff yet
-  const needsDeeper =
-    prevDays < HISTORY_DAYS ||
-    (backfillComplete && oldestTs > 0 && oldestTs > cutoff + 6 * 3600);
-  if (needsDeeper) {
+  // Only reopen history walk when retention grew (or explicit force).
+  // Do NOT reopen just because the oldest *transfer* is recent — mint may have no older ACOPAY txs.
+  const force = String(process.env.TRANSFERS_FORCE_BACKFILL || "") === "1";
+  if (prevDays < HISTORY_DAYS || force) {
     log(
-      `[transfers] resume backfill (prevDays=${prevDays}→${HISTORY_DAYS}` +
-        `${oldestTs ? ` oldestAgeH=${((Date.now() / 1000 - oldestTs) / 3600).toFixed(1)}` : ""})`,
+      `[transfers] resume backfill (prevDays=${prevDays}→${HISTORY_DAYS}${force ? " force=1" : ""})`,
     );
     backfillComplete = false;
     if (!backfillBefore) {
@@ -303,6 +296,8 @@ async function main() {
       if (oldest?.signature) backfillBefore = oldest.signature;
     }
   }
+
+  const cutoff = cutoffTs();
 
   // Head
   const headRes = await solanaRpc(
