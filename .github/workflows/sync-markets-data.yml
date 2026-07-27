@@ -42,7 +42,7 @@ jobs:
         env:
           WEBSHARE_API_KEY: ${{ secrets.WEBSHARE_API_KEY }}
           ACOPAY_MINT: 6Pcq8xnkVYxR42FEehXrucvaMB1fZYuqoR8B9FGSAS8F
-          TRANSFERS_HISTORY_DAYS: "1"
+          TRANSFERS_HISTORY_DAYS: "3"
         run: node scripts/sync-transfers.mjs
 
       - name: Commit and push if changed

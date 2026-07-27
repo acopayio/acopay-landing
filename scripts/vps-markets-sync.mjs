@@ -1,6 +1,6 @@
 /**
  * VPS markets collector loop:
- *   Webshare → Binance + Transfers(24h) → write public/data/*.json → push GitHub
+ *   Webshare → Binance + Transfers(72h) → write public/data/*.json → push GitHub
  * Website reads CF /data/*.json only — NEVER calls VPS.
  *
  * Env (file /root/acopay-markets/.env or process env):
@@ -72,7 +72,7 @@ async function cycle() {
   log(`[sync] start cycle (gap after done ${GAP_MS}ms)`);
   await runNode(path.join(ROOT, "scripts", "sync-binance-markets.mjs"));
   await runNode(path.join(ROOT, "scripts", "sync-transfers.mjs"), {
-    TRANSFERS_HISTORY_DAYS: process.env.TRANSFERS_HISTORY_DAYS || "1",
+    TRANSFERS_HISTORY_DAYS: process.env.TRANSFERS_HISTORY_DAYS || "3",
   });
   const { pushed } = await pushMarketsData();
   log(`[sync] cycle done pushed=${pushed}`);

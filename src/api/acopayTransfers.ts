@@ -52,7 +52,7 @@ async function fetchJson(url: string, signal: AbortSignal): Promise<AcopayTransf
     updatedAt: data.updatedAt || new Date().toISOString(),
     source: data.source || "github+solana-public-rpc",
     mint: data.mint || "",
-    historyDays: data.historyDays || 1,
+    historyDays: data.historyDays || 3,
     backfillComplete: data.backfillComplete,
     total: typeof data.total === "number" ? data.total : rows.length,
     rows,

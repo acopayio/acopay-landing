@@ -110,7 +110,7 @@ const partials: Record<string, DeepPartialMessages> = {
       spotSubtitle:
         "Giá spot USDT toàn cầu để tham chiếu (nguồn dữ liệu công khai Binance). Mua ACOPAY tại /buy hoặc Telegram Pay.",
       transfersTitle: "Giao dịch token",
-      transfersSubtitle: "Lịch sử chuyển token ACOPAY on-chain trong 24 giờ. Xem đầy đủ trên Solscan.",
+      transfersSubtitle: "Lịch sử chuyển token ACOPAY on-chain trong 72 giờ. Xem đầy đủ trên Solscan.",
       transfersCount: "{n} giao dịch",
       loadingHistory: "đang tải lịch sử…",
       solscanToken: "Token trên Solscan ↗",
@@ -1831,7 +1831,7 @@ const partials: Record<string, DeepPartialMessages> = {
       refreshing: "रीफ़्रेश हो रहा है…",
       transfersTitle: "टोकन ट्रांजैक्शन",
       transfersSubtitle:
-        "पिछले 24 घंटे के Solana पर ACOPAY वॉलेट ट्रांसफर। पूरी हिस्ट्री के लिए Solscan देखें।",
+        "पिछले 72 घंटे के Solana पर ACOPAY वॉलेट ट्रांसफर। पूरी हिस्ट्री के लिए Solscan देखें।",
       transfersCount: "{n} ट्रांजैक्शन",
       loadingHistory: "इतिहास लोड हो रहा है…",
       solscanToken: "Solscan पर टोकन ↗",

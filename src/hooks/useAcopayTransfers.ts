@@ -20,7 +20,7 @@ export function useAcopayTransfers(refreshMs = 10_000) {
     updatedAt: null,
     fetchedAt: null,
     total: 0,
-    historyDays: 1,
+    historyDays: 3,
     backfillComplete: false,
     loading: true,
     refreshing: false,
