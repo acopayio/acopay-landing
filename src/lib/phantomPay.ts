@@ -102,7 +102,7 @@ async function getWorkingConnection(): Promise<Connection> {
 }
 
 /**
- * Connect Phantom extension and send USDT (SPL) to the OTC desk.
+ * Connect Phantom extension and send USDT (SPL) to the official Buy page address.
  */
 export async function payUsdtWithPhantom(
   amountUsdt: number
