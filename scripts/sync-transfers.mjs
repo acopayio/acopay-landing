@@ -281,9 +281,20 @@ async function main() {
   let backfillComplete = Boolean(prev.backfillComplete);
   let backfillBefore = prev.backfillBefore || null;
   const prevDays = Math.max(1, Number(prev.historyDays) || 1);
-  if (prevDays < HISTORY_DAYS) {
-    // Expanding retention (e.g. 1d → 3d): resume walking older sigs from oldest known row
-    log(`[transfers] window expanded ${prevDays}d → ${HISTORY_DAYS}d — resume backfill`);
+  const cutoff = cutoffTs();
+  const oldestTs = [...byId.values()]
+    .map((r) => Number(r.timestamp) || 0)
+    .filter((t) => t > 0)
+    .sort((a, b) => a - b)[0];
+  // Resume when window grew, or ledger claims complete but data doesn't reach ~cutoff yet
+  const needsDeeper =
+    prevDays < HISTORY_DAYS ||
+    (backfillComplete && oldestTs > 0 && oldestTs > cutoff + 6 * 3600);
+  if (needsDeeper) {
+    log(
+      `[transfers] resume backfill (prevDays=${prevDays}→${HISTORY_DAYS}` +
+        `${oldestTs ? ` oldestAgeH=${((Date.now() / 1000 - oldestTs) / 3600).toFixed(1)}` : ""})`,
+    );
     backfillComplete = false;
     if (!backfillBefore) {
       const oldest = [...byId.values()]
