@@ -371,9 +371,7 @@ async function main() {
     const gapSigs = [];
     let before = null;
     for (let page = 0; page < BACKFILL_MAX_PAGES; page++) {
-      const opts = before
-        ? { limit: BACKFILL_BATCH, before }
-        : { limit: Math.max(HEAD_LIMIT, BACKFILL_BATCH) };
+      const opts = before ? { limit: 1000, before } : { limit: 1000 };
       const res = await solanaRpc("getSignaturesForAddress", [ACOPAY_MINT, opts], rotator);
       const batch = Array.isArray(res.json.result) ? res.json.result : [];
       if (!batch.length) break;
@@ -389,16 +387,20 @@ async function main() {
         gapSigs.push(item);
       }
       before = batch[batch.length - 1]?.signature || null;
-      if (pastCutoff || batch.length < (opts.limit || BACKFILL_BATCH) || !before) break;
+      // Stop only after walking past the retention window (do not stop early on short pages).
+      if (pastCutoff || !before) break;
+      if (batch.length < 1000) break;
     }
     if (gapSigs.length) {
       log(`[transfers] gap-fill ${gapSigs.length} unseen sigs in ${HISTORY_DAYS}d window`);
       const gapDone = await processSigBatch(gapSigs, rotator, seen, byId);
       nullCount += gapDone.nullCount || 0;
-      if (gapDone.nullCount > 0) {
+      if ((gapDone.nullCount || 0) > 0) {
         backfillComplete = false;
         backfillBefore = headDone.lastSig || backfillBefore;
       }
+    } else {
+      log(`[transfers] gap-fill 0 unseen (seen=${seen.size})`);
     }
   }
 
