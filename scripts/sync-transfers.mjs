@@ -219,6 +219,7 @@ function cutoffTs() {
 async function processSigBatch(sigs, rotator, seen, byId) {
   const cutoff = cutoffTs();
   let hitCutoff = false;
+  let nullCount = 0;
   let rpcUrl = nextRpc();
   for (let i = 0; i < sigs.length; i++) {
     const item = sigs[i];
@@ -244,6 +245,7 @@ async function processSigBatch(sigs, rotator, seen, byId) {
       rpcUrl = used;
       // Never mark seen on null/missing result — public RPC often returns null under rate limit.
       if (!json.result) {
+        nullCount += 1;
         log(`[transfers] null tx ${sig.slice(0, 12)}… (will retry)`);
         continue;
       }
@@ -256,6 +258,7 @@ async function processSigBatch(sigs, rotator, seen, byId) {
       for (const r of parsed) byId.set(r.id, r);
       seen.add(sig);
     } catch (e) {
+      nullCount += 1;
       log(`[transfers] skip ${sig.slice(0, 12)}… ${e instanceof Error ? e.message : e}`);
     }
     if (i + 1 < sigs.length) await sleep(TX_GAP_MS);
@@ -264,7 +267,7 @@ async function processSigBatch(sigs, rotator, seen, byId) {
   const lastBt = sigs.length ? Number(sigs[sigs.length - 1]?.blockTime) || 0 : 0;
   if (lastBt > 0 && lastBt < cutoff) hitCutoff = true;
   if (!sigs.length) hitCutoff = true;
-  return { hitCutoff, lastSig };
+  return { hitCutoff, lastSig, nullCount };
 }
 
 async function main() {
@@ -320,6 +323,7 @@ async function main() {
   );
   const headSigs = Array.isArray(headRes.json.result) ? headRes.json.result : [];
   const headDone = await processSigBatch(headSigs, rotator, seen, byId);
+  let nullCount = headDone.nullCount || 0;
   if (!backfillBefore && headDone.lastSig) backfillBefore = headDone.lastSig;
 
   // Backfill until cutoff (one sync run fills the window; do not mark complete after a single page).
@@ -332,16 +336,69 @@ async function main() {
       );
       const olderSigs = Array.isArray(olderRes.json.result) ? olderRes.json.result : [];
       const olderDone = await processSigBatch(olderSigs, rotator, seen, byId);
+      nullCount += olderDone.nullCount || 0;
       if (olderDone.lastSig) backfillBefore = olderDone.lastSig;
       if (olderDone.hitCutoff || olderSigs.length === 0) {
-        backfillComplete = true;
-        log(`[transfers] backfill complete (${HISTORY_DAYS}d) pages=${page + 1}`);
+        // Only complete when every in-window sig was fetched (null RPC must retry next cycle).
+        if (nullCount > 0) {
+          backfillComplete = false;
+          backfillBefore = headDone.lastSig || backfillBefore;
+          log(
+            `[transfers] backfill reached ${HISTORY_DAYS}d but ${nullCount} null txs — will retry`,
+          );
+        } else {
+          backfillComplete = true;
+          log(`[transfers] backfill complete (${HISTORY_DAYS}d) pages=${page + 1}`);
+        }
         break;
       }
       log(`[transfers] backfill page ${page + 1} cursor ${String(backfillBefore).slice(0, 12)}…`);
     }
-    if (!backfillComplete) {
+    if (!backfillComplete && nullCount === 0) {
       log(`[transfers] backfill paused at cursor ${String(backfillBefore).slice(0, 12)}… (more pages next run)`);
+    }
+  }
+
+  // If marked complete earlier but head still hit nulls on new sigs, keep going next cycle.
+  if (backfillComplete && nullCount > 0) {
+    backfillComplete = false;
+    backfillBefore = headDone.lastSig || backfillBefore;
+    log(`[transfers] reopen backfill after ${nullCount} null txs`);
+  }
+
+  // Gap-fill: list mint sigs in window and fetch any not yet successfully seen (null-RPC leftovers).
+  {
+    const gapSigs = [];
+    let before = null;
+    for (let page = 0; page < BACKFILL_MAX_PAGES; page++) {
+      const opts = before
+        ? { limit: BACKFILL_BATCH, before }
+        : { limit: Math.max(HEAD_LIMIT, BACKFILL_BATCH) };
+      const res = await solanaRpc("getSignaturesForAddress", [ACOPAY_MINT, opts], rotator);
+      const batch = Array.isArray(res.json.result) ? res.json.result : [];
+      if (!batch.length) break;
+      let pastCutoff = false;
+      for (const item of batch) {
+        const bt = Number(item?.blockTime) || 0;
+        if (bt > 0 && bt < cutoff) {
+          pastCutoff = true;
+          continue;
+        }
+        const sig = item?.signature;
+        if (!sig || item.err || seen.has(sig)) continue;
+        gapSigs.push(item);
+      }
+      before = batch[batch.length - 1]?.signature || null;
+      if (pastCutoff || batch.length < (opts.limit || BACKFILL_BATCH) || !before) break;
+    }
+    if (gapSigs.length) {
+      log(`[transfers] gap-fill ${gapSigs.length} unseen sigs in ${HISTORY_DAYS}d window`);
+      const gapDone = await processSigBatch(gapSigs, rotator, seen, byId);
+      nullCount += gapDone.nullCount || 0;
+      if (gapDone.nullCount > 0) {
+        backfillComplete = false;
+        backfillBefore = headDone.lastSig || backfillBefore;
+      }
     }
   }
 
