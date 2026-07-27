@@ -332,7 +332,6 @@ async function main() {
     }
   }
 
-  const cutoff = cutoffTs();
   const rows = [...byId.values()]
     .filter((r) => (r.timestamp || 0) >= cutoff)
     .sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
