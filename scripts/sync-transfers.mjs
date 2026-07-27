@@ -22,7 +22,8 @@ const ACOPAY_MINT =
   process.env.ACOPAY_MINT || "6Pcq8xnkVYxR42FEehXrucvaMB1fZYuqoR8B9FGSAS8F";
 const HISTORY_DAYS = Math.max(1, Number(process.env.TRANSFERS_HISTORY_DAYS || 3));
 const HEAD_LIMIT = Math.max(5, Number(process.env.TRANSFERS_HEAD_LIMIT || 40));
-const BACKFILL_BATCH = Math.max(5, Number(process.env.TRANSFERS_BACKFILL_BATCH || 25));
+const BACKFILL_BATCH = Math.max(5, Number(process.env.TRANSFERS_BACKFILL_BATCH || 100));
+const BACKFILL_MAX_PAGES = Math.max(1, Number(process.env.TRANSFERS_BACKFILL_MAX_PAGES || 40));
 const TX_GAP_MS = Math.max(50, Number(process.env.TRANSFERS_TX_GAP_MS || 350));
 const MAX_RETRIES = Math.max(2, Number(process.env.MARKETS_MAX_RETRIES || 8));
 const RPCS = String(
@@ -241,15 +242,18 @@ async function processSigBatch(sigs, rotator, seen, byId) {
         rpcUrl,
       );
       rpcUrl = used;
-      if (json.result) {
-        const parsed = extractAcopayTransfersFromTx(
-          sig,
-          item.blockTime || json.result.blockTime,
-          json.result,
-          item.slot || json.result.slot,
-        );
-        for (const r of parsed) byId.set(r.id, r);
+      // Never mark seen on null/missing result — public RPC often returns null under rate limit.
+      if (!json.result) {
+        log(`[transfers] null tx ${sig.slice(0, 12)}… (will retry)`);
+        continue;
       }
+      const parsed = extractAcopayTransfersFromTx(
+        sig,
+        item.blockTime || json.result.blockTime,
+        json.result,
+        item.slot || json.result.slot,
+      );
+      for (const r of parsed) byId.set(r.id, r);
       seen.add(sig);
     } catch (e) {
       log(`[transfers] skip ${sig.slice(0, 12)}… ${e instanceof Error ? e.message : e}`);
@@ -281,20 +285,29 @@ async function main() {
   let backfillComplete = Boolean(prev.backfillComplete);
   let backfillBefore = prev.backfillBefore || null;
   const prevDays = Math.max(1, Number(prev.historyDays) || 1);
-  // Only reopen history walk when retention grew (or explicit force).
+  // Only reopen history walk when retention grew (or explicit force/rebuild).
   // Do NOT reopen just because the oldest *transfer* is recent — mint may have no older ACOPAY txs.
   const force = String(process.env.TRANSFERS_FORCE_BACKFILL || "") === "1";
-  if (prevDays < HISTORY_DAYS || force) {
+  const rebuild = String(process.env.TRANSFERS_REBUILD || "") === "1";
+  if (rebuild) {
+    log(`[transfers] REBUILD: clear rows/seen and rewalk ${HISTORY_DAYS}d`);
+    byId.clear();
+    seen.clear();
+    backfillComplete = false;
+    backfillBefore = null;
+  } else if (prevDays < HISTORY_DAYS || force) {
     log(
       `[transfers] resume backfill (prevDays=${prevDays}→${HISTORY_DAYS}${force ? " force=1" : ""})`,
     );
     backfillComplete = false;
-    if (!backfillBefore) {
-      const oldest = [...byId.values()]
-        .filter((r) => r?.signature)
-        .sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0))[0];
-      if (oldest?.signature) backfillBefore = oldest.signature;
+    // Drop seen entries with no row — they were often null-RPC false positives.
+    const rowSigs = new Set(
+      [...byId.values()].map((r) => String(r?.signature || "")).filter(Boolean),
+    );
+    for (const s of [...seen]) {
+      if (!rowSigs.has(s)) seen.delete(s);
     }
+    backfillBefore = null;
   }
 
   const cutoff = cutoffTs();
@@ -309,21 +322,26 @@ async function main() {
   const headDone = await processSigBatch(headSigs, rotator, seen, byId);
   if (!backfillBefore && headDone.lastSig) backfillBefore = headDone.lastSig;
 
-  // Backfill batch
+  // Backfill until cutoff (one sync run fills the window; do not mark complete after a single page).
   if (!backfillComplete && backfillBefore) {
-    const olderRes = await solanaRpc(
-      "getSignaturesForAddress",
-      [ACOPAY_MINT, { limit: BACKFILL_BATCH, before: backfillBefore }],
-      rotator,
-    );
-    const olderSigs = Array.isArray(olderRes.json.result) ? olderRes.json.result : [];
-    const olderDone = await processSigBatch(olderSigs, rotator, seen, byId);
-    if (olderDone.lastSig) backfillBefore = olderDone.lastSig;
-    if (olderDone.hitCutoff || olderSigs.length === 0) {
-      backfillComplete = true;
-      log(`[transfers] backfill complete (${HISTORY_DAYS}d)`);
-    } else {
-      log(`[transfers] backfill cursor ${String(backfillBefore).slice(0, 12)}…`);
+    for (let page = 0; page < BACKFILL_MAX_PAGES; page++) {
+      const olderRes = await solanaRpc(
+        "getSignaturesForAddress",
+        [ACOPAY_MINT, { limit: BACKFILL_BATCH, before: backfillBefore }],
+        rotator,
+      );
+      const olderSigs = Array.isArray(olderRes.json.result) ? olderRes.json.result : [];
+      const olderDone = await processSigBatch(olderSigs, rotator, seen, byId);
+      if (olderDone.lastSig) backfillBefore = olderDone.lastSig;
+      if (olderDone.hitCutoff || olderSigs.length === 0) {
+        backfillComplete = true;
+        log(`[transfers] backfill complete (${HISTORY_DAYS}d) pages=${page + 1}`);
+        break;
+      }
+      log(`[transfers] backfill page ${page + 1} cursor ${String(backfillBefore).slice(0, 12)}…`);
+    }
+    if (!backfillComplete) {
+      log(`[transfers] backfill paused at cursor ${String(backfillBefore).slice(0, 12)}… (more pages next run)`);
     }
   }
 
