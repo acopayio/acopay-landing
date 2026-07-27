@@ -28,7 +28,7 @@ const TX_GAP_MS = Math.max(50, Number(process.env.TRANSFERS_TX_GAP_MS || 350));
 const MAX_RETRIES = Math.max(2, Number(process.env.MARKETS_MAX_RETRIES || 8));
 const RPCS = String(
   process.env.SOLANA_PUBLIC_RPCS ||
-    "https://solana-rpc.publicnode.com,https://api.mainnet-beta.solana.com",
+    "https://api.mainnet-beta.solana.com,https://solana.drpc.org,https://solana-rpc.publicnode.com",
 )
   .split(",")
   .map((s) => s.trim())
@@ -367,12 +367,14 @@ async function main() {
   }
 
   // Gap-fill: list mint sigs in window and fetch any not yet successfully seen (null-RPC leftovers).
+  // Prefer Solana public RPC for signature history — some free RPCs truncate mint history.
   {
     const gapSigs = [];
     let before = null;
+    const listRpc = "https://api.mainnet-beta.solana.com";
     for (let page = 0; page < BACKFILL_MAX_PAGES; page++) {
       const opts = before ? { limit: 1000, before } : { limit: 1000 };
-      const res = await solanaRpc("getSignaturesForAddress", [ACOPAY_MINT, opts], rotator);
+      const res = await solanaRpc("getSignaturesForAddress", [ACOPAY_MINT, opts], rotator, listRpc);
       const batch = Array.isArray(res.json.result) ? res.json.result : [];
       if (!batch.length) break;
       let pastCutoff = false;
@@ -387,6 +389,10 @@ async function main() {
         gapSigs.push(item);
       }
       before = batch[batch.length - 1]?.signature || null;
+      const oldestBt = Number(batch[batch.length - 1]?.blockTime) || 0;
+      log(
+        `[transfers] gap-list page ${page + 1} got=${batch.length} unseenQueued=${gapSigs.length} oldestAgeH=${oldestBt ? ((Date.now() / 1000 - oldestBt) / 3600).toFixed(1) : "?"}`,
+      );
       // Stop only after walking past the retention window (do not stop early on short pages).
       if (pastCutoff || !before) break;
       if (batch.length < 1000) break;
