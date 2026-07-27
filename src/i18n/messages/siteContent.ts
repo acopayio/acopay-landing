@@ -1166,7 +1166,7 @@ export const SITE_CONTENT_PARTIALS: Record<string, object> = {
       refreshing: "रीफ़्रेश हो रहा है…",
       transfersTitle: "टोकन ट्रांजैक्शन",
       transfersSubtitle:
-        "पिछले 24 घंटे के Solana पर ACOPAY वॉलेट ट्रांसफर। पूरी हिस्ट्री के लिए Solscan देखें।",
+        "पिछले 72 घंटे के Solana पर ACOPAY वॉलेट ट्रांसफर। पूरी हिस्ट्री के लिए Solscan देखें।",
       transfersCount: "{n} ट्रांजैक्शन",
       loadingHistory: "इतिहास लोड हो रहा है…",
       signature: "सिग्नेचर",
