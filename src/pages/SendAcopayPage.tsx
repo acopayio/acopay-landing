@@ -25,7 +25,7 @@ function shortAddr(a: string): string {
  * Confirm Send from Telegram Pay (Phantom linked) → sign on Acopay.net → auto-confirm bot.
  */
 export function SendAcopayPage() {
-  const { t, locale, setLocale } = useI18n();
+  const { t, setLocale } = useI18n();
   const [params] = useSearchParams();
 
   const from = (params.get("from") || "").trim();
@@ -36,11 +36,14 @@ export function SendAcopayPage() {
   const exp = (params.get("exp") || "").trim();
   const langParam = (params.get("lang") || "").trim();
 
+  // Apply bot locale from URL once on open — do not re-lock when user changes language in the header.
   useEffect(() => {
-    if (isSupportedLocale(langParam) && langParam !== locale) {
+    if (isSupportedLocale(langParam)) {
       setLocale(langParam);
     }
-  }, [langParam, locale, setLocale]);
+    // Intentionally omit `locale`: re-running when locale changes would fight the language menu.
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- seed from URL only when langParam changes
+  }, [langParam, setLocale]);
 
   const expired = exp ? Math.floor(Date.now() / 1000) > Number(exp) : false;
   const missing = !from || !to || !amount || !tg || !pid;

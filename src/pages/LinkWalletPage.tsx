@@ -39,19 +39,21 @@ function isUnsupportedDesktopBrowser(): boolean {
  * Locale: ?lang= from bot (LanguageProvider) + full linkWallet i18n.
  */
 export function LinkWalletPage() {
-  const { t, locale, setLocale } = useI18n();
+  const { t, setLocale } = useI18n();
   const [params] = useSearchParams();
   const tg = (params.get("tg") || "").trim();
   const nonce = (params.get("nonce") || "").trim();
   const exp = (params.get("exp") || "").trim();
   const langParam = (params.get("lang") || "").trim();
 
-  // Bot deep-link ?lang= must win over a previously saved sidebar locale
+  // Bot deep-link ?lang= seeds locale once — do not re-lock when user changes language in the header.
   useEffect(() => {
-    if (isSupportedLocale(langParam) && langParam !== locale) {
+    if (isSupportedLocale(langParam)) {
       setLocale(langParam);
     }
-  }, [langParam, locale, setLocale]);
+    // Intentionally omit `locale`: re-running when locale changes would fight the language menu.
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- seed from URL only when langParam changes
+  }, [langParam, setLocale]);
 
   const message = useMemo(() => {
     if (!tg || !nonce || !exp) return "";
