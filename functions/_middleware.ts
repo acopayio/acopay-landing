@@ -7,6 +7,7 @@
  * 5) Real 404 for missing static assets
  *
  * Markets: never proxy to VPS HTTP.
+ * Pay gas sponsor: /api/pay/sponsor is a separate Pages Function → VPS (OPERATOR co-sign only).
  */
 type PagesContext = {
   request: Request;

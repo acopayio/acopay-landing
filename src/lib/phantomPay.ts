@@ -39,6 +39,7 @@ type PhantomProvider = {
     message: Uint8Array,
     display?: string
   ) => Promise<{ signature: Uint8Array }>;
+  signTransaction?: (tx: Transaction) => Promise<Transaction>;
   signAndSendTransaction: (
     tx: Transaction,
     opts?: { skipPreflight?: boolean; maxRetries?: number }

@@ -43,7 +43,7 @@ export function SendAcopayPage() {
   }, [langParam, locale, setLocale]);
 
   const expired = exp ? Math.floor(Date.now() / 1000) > Number(exp) : false;
-  const missing = !from || !to || !amount || !tg;
+  const missing = !from || !to || !amount || !tg || !pid;
   const badBrowser = isUnsupportedDesktopBrowser();
   const mobile = isMobileUa();
   const hasProvider = hasPhantomExtension();
@@ -101,6 +101,9 @@ export function SendAcopayPage() {
         fromBase58: from,
         toBase58: to,
         amountHuman: amount,
+        tg,
+        pid,
+        exp: exp || undefined,
       });
       setSignature(res.signature);
     } catch (e) {
@@ -117,7 +120,7 @@ export function SendAcopayPage() {
     } finally {
       setBusy(false);
     }
-  }, [missing, expired, badBrowser, from, to, amount, t]);
+  }, [missing, expired, badBrowser, from, to, amount, tg, pid, exp, t]);
 
   async function copyPaysok() {
     if (!paysokLine) return;

@@ -12,7 +12,7 @@ const enBase: SendSection = {
   intro:
     "Confirm the transfer from Telegram Pay, then sign with your linked Phantom wallet.\n\n" +
     "1. Connect the same Phantom address linked in the bot\n" +
-    "2. Approve the ACOPAY transfer\n" +
+    "2. Approve the ACOPAY transfer (SOL network fee is sponsored)\n" +
     "3. Copy /paysok and paste it into @AcopayNetwork_bot",
   wrongBrowserTitle: "Use Chrome or Brave",
   wrongBrowserBody:
@@ -59,7 +59,7 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     intro:
       "Xác nhận chuyển từ Telegram Pay, rồi ký bằng ví Phantom đã liên kết.\n\n" +
       "1. Kết nối đúng địa chỉ Phantom đã liên kết trong bot\n" +
-      "2. Duyệt giao dịch ACOPAY\n" +
+      "2. Duyệt giao dịch ACOPAY (phí mạng SOL do hệ thống trả)\n" +
       "3. Sao chép /paysok và dán vào @AcopayNetwork_bot",
     wrongBrowserTitle: "Dùng Chrome hoặc Brave",
     wrongBrowserBody:

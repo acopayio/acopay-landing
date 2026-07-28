@@ -1,6 +1,7 @@
 /**
  * Phantom-signed ACOPAY (Token-2022) send — same fee rules as Telegram bot Pay.
- * feePayer = Phantom owner (user pays SOL gas; not bot-sponsored).
+ * SOL gas: OPERATOR co-signs via /api/pay/sponsor (feePayer = OPERATOR).
+ * User Phantom only signs as token authority.
  */
 import {
   Connection,
@@ -9,8 +10,6 @@ import {
 } from "@solana/web3.js";
 import {
   TOKEN_2022_PROGRAM_ID,
-  createAssociatedTokenAccountIdempotentInstruction,
-  createTransferCheckedInstruction,
   getAccount,
   getAssociatedTokenAddressSync,
 } from "@solana/spl-token";
@@ -179,29 +178,76 @@ function getAta(mint: PublicKey, owner: PublicKey) {
   return getAssociatedTokenAddressSync(mint, owner, false, TOKEN_2022_PROGRAM_ID);
 }
 
-async function hasAcopayAta(connection: Connection, mint: PublicKey, owner: PublicKey): Promise<boolean> {
-  const ata = getAta(mint, owner);
-  const info = await connection.getAccountInfo(ata, "confirmed");
-  return info !== null;
+type SponsorResponse = {
+  tx?: string;
+  feePayer?: string;
+  plan?: { isFirstAtaOpen?: boolean; summary?: SendPlanSummary };
+  error?: string;
+};
+
+async function fetchSponsoredTx(opts: {
+  tg: string;
+  pid: string;
+  from: string;
+  to: string;
+  amount: string | number;
+  exp?: string;
+}): Promise<SponsorResponse> {
+  const res = await fetch("/api/pay/sponsor", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify({
+      tg: opts.tg,
+      pid: opts.pid,
+      from: opts.from,
+      to: opts.to,
+      amount: opts.amount,
+      exp: opts.exp || undefined,
+    }),
+  });
+  let data: SponsorResponse = {};
+  try {
+    data = (await res.json()) as SponsorResponse;
+  } catch {
+    throw new Error("Pay sponsor returned invalid JSON.");
+  }
+  if (!res.ok) {
+    throw new Error(data.error || `Pay sponsor failed (${res.status})`);
+  }
+  if (!data.tx) {
+    throw new Error(data.error || "Pay sponsor did not return a transaction.");
+  }
+  return data;
+}
+
+function b64ToUint8Array(b64: string): Uint8Array {
+  const bin = atob(b64);
+  const out = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+  return out;
 }
 
 /**
- * Connect Phantom (must match `fromBase58`), build Token-2022 transfer, signAndSend.
+ * Connect Phantom (must match `fromBase58`), get OPERATOR-sponsored tx, sign + send.
  */
 export async function sendAcopayWithPhantom(opts: {
   fromBase58: string;
   toBase58: string;
   amountHuman: string | number;
-}): Promise<{ signature: string; plan: SendPlan; from: string }> {
+  tg: string;
+  pid: string;
+  exp?: string;
+}): Promise<{ signature: string; plan: SendPlan | null; from: string; feePayer: string }> {
   const provider = getPhantomProvider();
   if (!provider) {
     throw new Error("PHANTOM_MISSING");
   }
+  if (typeof provider.signTransaction !== "function") {
+    throw new Error("This Phantom build cannot co-sign. Update Phantom and try again.");
+  }
 
   const expectedFrom = new PublicKey(opts.fromBase58);
-  const recipient = new PublicKey(opts.toBase58);
   const mint = new PublicKey(TOKEN.mintAddress);
-  const treasury = new PublicKey(ACOPAY_TREASURY);
 
   const connected = await provider.connect();
   const owner = connected.publicKey ?? provider.publicKey;
@@ -212,6 +258,10 @@ export async function sendAcopayWithPhantom(opts: {
     throw new Error("WRONG_WALLET");
   }
 
+  if (!opts.tg || !opts.pid) {
+    throw new Error("Missing Telegram pay session. Confirm Send in the bot first.");
+  }
+
   let connection: Connection;
   try {
     connection = await getWorkingConnection();
@@ -219,88 +269,70 @@ export async function sendAcopayWithPhantom(opts: {
     throw new Error(friendlyRpcError(e));
   }
 
-  const recipientHasAta = await hasAcopayAta(connection, mint, recipient);
-  const plan = planAcopayTransferInput(opts.amountHuman, recipientHasAta);
-
+  // Optional local balance check (UX); authoritative check is on sponsor API.
   const senderAta = getAta(mint, owner);
   try {
     const fromAccount = await getAccount(connection, senderAta, "confirmed", TOKEN_2022_PROGRAM_ID);
-    if (fromAccount.amount < plan.totalDebit) {
-      const have = Number(fromAccount.amount) / 10 ** DECIMALS;
-      throw new Error(
-        `Insufficient ACOPAY: wallet has ${have.toLocaleString("en-US", { maximumFractionDigits: 6 })}, need ${plan.summary.senderPays}.`,
-      );
+    if (fromAccount.amount === 0n) {
+      throw new Error("This Phantom wallet has no ACOPAY. Fund it first.");
     }
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
-    if (msg.startsWith("Insufficient ACOPAY")) throw e;
+    if (msg.startsWith("This Phantom wallet has no ACOPAY")) throw e;
     if (/could not find account|Account does not exist|Invalid param/i.test(msg)) {
       throw new Error("This Phantom wallet has no ACOPAY. Fund it first.");
     }
-    throw e;
+    // RPC flake — continue; sponsor API will re-check
   }
 
-  const recipientAta = getAta(mint, recipient);
-  const tx = new Transaction();
-  tx.add(
-    createAssociatedTokenAccountIdempotentInstruction(
-      owner,
-      recipientAta,
-      recipient,
-      mint,
-      TOKEN_2022_PROGRAM_ID,
-    ),
-    createTransferCheckedInstruction(
-      senderAta,
-      mint,
-      recipientAta,
-      owner,
-      plan.grossToRecipient,
-      DECIMALS,
-      [],
-      TOKEN_2022_PROGRAM_ID,
-    ),
-  );
-
-  if (plan.grossToTreasury > 0n) {
-    const treasuryAta = getAta(mint, treasury);
-    tx.add(
-      createAssociatedTokenAccountIdempotentInstruction(
-        owner,
-        treasuryAta,
-        treasury,
-        mint,
-        TOKEN_2022_PROGRAM_ID,
-      ),
-      createTransferCheckedInstruction(
-        senderAta,
-        mint,
-        treasuryAta,
-        owner,
-        plan.grossToTreasury,
-        DECIMALS,
-        [],
-        TOKEN_2022_PROGRAM_ID,
-      ),
-    );
-  }
-
-  let blockhash: string;
+  let sponsored: SponsorResponse;
   try {
-    ({ blockhash } = await connection.getLatestBlockhash("confirmed"));
+    sponsored = await fetchSponsoredTx({
+      tg: opts.tg,
+      pid: opts.pid,
+      from: opts.fromBase58,
+      to: opts.toBase58,
+      amount: opts.amountHuman,
+      exp: opts.exp,
+    });
   } catch (e) {
     throw new Error(friendlyRpcError(e));
   }
 
-  tx.feePayer = owner;
-  tx.recentBlockhash = blockhash;
+  const tx = Transaction.from(b64ToUint8Array(String(sponsored.tx)));
+  if (!tx.feePayer) {
+    throw new Error("Sponsored transaction missing fee payer.");
+  }
+
+  let signed: Transaction;
+  try {
+    signed = await provider.signTransaction(tx);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    if (/User rejected|rejected the request|4001/i.test(msg)) throw e;
+    throw new Error(friendlyRpcError(e));
+  }
 
   try {
-    const { signature } = await provider.signAndSendTransaction(tx, {
+    const signature = await connection.sendRawTransaction(signed.serialize(), {
       skipPreflight: true,
       maxRetries: 3,
     });
-    return { signature, plan, from: owner.toBase58() };
+    const plan: SendPlan | null = sponsored.plan?.summary
+      ? {
+          grossToRecipient: 0n,
+          grossToTreasury: 0n,
+          totalDebit: 0n,
+          isFirstAtaOpen: Boolean(sponsored.plan.isFirstAtaOpen),
+          summary: sponsored.plan.summary,
+        }
+      : null;
+    return {
+      signature,
+      plan,
+      from: owner.toBase58(),
+      feePayer: sponsored.feePayer || tx.feePayer.toBase58(),
+    };
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
     if (/User rejected|rejected the request|4001/i.test(msg)) throw e;

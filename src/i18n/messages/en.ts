@@ -448,11 +448,11 @@ export const en = {
   sendAcopay: {
     kicker: "Telegram Pay",
     title: "Send ACOPAY with Phantom",
-    intro:
-      "Confirm the transfer from Telegram Pay, then sign with your linked Phantom wallet.\n\n" +
-      "1. Connect the same Phantom address linked in the bot\n" +
-      "2. Approve the ACOPAY transfer\n" +
-      "3. Copy /paysok and paste it into @AcopayNetwork_bot",
+  intro:
+    "Confirm the transfer from Telegram Pay, then sign with your linked Phantom wallet.\n\n" +
+    "1. Connect the same Phantom address linked in the bot\n" +
+    "2. Approve the ACOPAY transfer (SOL network fee is sponsored)\n" +
+    "3. Copy /paysok and paste it into @AcopayNetwork_bot",
     wrongBrowserTitle: "Use Chrome or Brave",
     wrongBrowserBody:
       "Phantom needs Google Chrome or Brave. Open this page in Chrome, then continue.",
