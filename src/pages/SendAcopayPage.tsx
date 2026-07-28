@@ -1,11 +1,16 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { phantomBrowseUrl } from "../config/otc";
 import { TOKEN } from "../config/token";
 import { useI18n } from "../i18n/LanguageProvider";
 import { isSupportedLocale } from "../i18n/countries";
+import { estimateAcopayBill } from "../lib/estimateAcopayBill";
 import { hasPhantomExtension, isMobileUa } from "../lib/phantomPay";
-import { confirmPhantomPayInTelegram, sendAcopayWithPhantom } from "../lib/sendAcopay";
+import {
+  confirmPhantomPayInTelegram,
+  type SendPlanSummary,
+  sendAcopayWithPhantom,
+} from "../lib/sendAcopay";
 
 function isUnsupportedDesktopBrowser(): boolean {
   if (typeof navigator === "undefined") return false;
@@ -22,7 +27,7 @@ function shortAddr(a: string): string {
 }
 
 /**
- * Confirm Send from Telegram Pay (Phantom linked) → sign on Acopay.net → auto-confirm bot.
+ * Confirm Transfer from Telegram Pay (Phantom linked) → sign on Acopay.net → auto-confirm bot.
  */
 export function SendAcopayPage() {
   const { t, setLocale } = useI18n();
@@ -36,12 +41,10 @@ export function SendAcopayPage() {
   const exp = (params.get("exp") || "").trim();
   const langParam = (params.get("lang") || "").trim();
 
-  // Apply bot locale from URL once on open — do not re-lock when user changes language in the header.
   useEffect(() => {
     if (isSupportedLocale(langParam)) {
       setLocale(langParam);
     }
-    // Intentionally omit `locale`: re-running when locale changes would fight the language menu.
     // eslint-disable-next-line react-hooks/exhaustive-deps -- seed from URL only when langParam changes
   }, [langParam, setLocale]);
 
@@ -55,6 +58,7 @@ export function SendAcopayPage() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [signature, setSignature] = useState<string | null>(null);
+  const [planSummary, setPlanSummary] = useState<SendPlanSummary | null>(null);
   const [tgConfirmed, setTgConfirmed] = useState(false);
   const [confirming, setConfirming] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -70,6 +74,27 @@ export function SendAcopayPage() {
   const botUrl = `https://t.me/${TOKEN.telegramBot}`;
   const explorerUrl = signature ? `https://explorer.solana.com/tx/${signature}` : null;
 
+  const bill = useMemo(() => {
+    if (planSummary) {
+      const openFee = Number(planSummary.openFee || 0);
+      return {
+        transferred: planSummary.recipientGets || planSummary.amountIn || amount,
+        fee: planSummary.percentFee,
+        feePct: planSummary.percentLabel || "0.01%",
+        total: planSummary.senderPays,
+        openFee: openFee > 0 ? planSummary.openFee : "",
+      };
+    }
+    const est = estimateAcopayBill(amount);
+    return {
+      transferred: est.transferred,
+      fee: est.fee,
+      feePct: est.feePct,
+      total: est.total,
+      openFee: "",
+    };
+  }, [planSummary, amount]);
+
   async function copyPageUrl() {
     if (!pageUrl) return;
     try {
@@ -84,6 +109,7 @@ export function SendAcopayPage() {
   const send = useCallback(async () => {
     setError(null);
     setSignature(null);
+    setPlanSummary(null);
     setTgConfirmed(false);
     if (missing) {
       setError(t("sendAcopay.errMissing"));
@@ -112,6 +138,7 @@ export function SendAcopayPage() {
         exp: exp || undefined,
       });
       setSignature(res.signature);
+      if (res.plan?.summary) setPlanSummary(res.plan.summary);
       setBusy(false);
       setConfirming(true);
       try {
@@ -159,91 +186,79 @@ export function SendAcopayPage() {
       <div className="page-wrap mx-auto max-w-lg">
         <p className="label-orca">{t("sendAcopay.kicker")}</p>
         <h1 className="mt-2 text-3xl font-bold tracking-tight text-[var(--acopay-fg)]">
-          {t("sendAcopay.title")}
+          {signature ? t("sendAcopay.successTitle") : t("sendAcopay.title")}
         </h1>
 
-        <ol className="mt-5 space-y-2.5">
-          {[
-            t("sendAcopay.step1"),
-            t("sendAcopay.step2"),
-            t("sendAcopay.step3"),
-          ].map((step, i) => (
-            <li key={i} className="flex gap-3 text-[14px] leading-snug text-[var(--acopay-fg)]">
-              <span
-                className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--acopay-brand)]/15 text-xs font-bold text-[var(--acopay-brand)]"
-                aria-hidden
-              >
-                {i + 1}
-              </span>
-              <span className="text-[var(--acopay-muted)]">{step}</span>
-            </li>
-          ))}
-        </ol>
-
-        {badBrowser && (
-          <div className="mt-6 space-y-3 rounded-2xl border border-amber-500/40 bg-amber-500/15 p-4 text-sm text-[var(--acopay-fg)]">
-            <p className="font-semibold">{t("sendAcopay.wrongBrowserTitle")}</p>
-            <p className="leading-relaxed text-[var(--acopay-muted)]">{t("sendAcopay.wrongBrowserBody")}</p>
-            <button type="button" onClick={() => void copyPageUrl()} className="btn-orca-secondary !text-xs">
-              {copiedUrl ? t("sendAcopay.urlCopied") : t("sendAcopay.copyUrlChrome")}
-            </button>
-          </div>
-        )}
-
-        {missing ? (
-          <p className="mt-8 rounded-2xl border border-amber-500/40 bg-amber-500/15 px-4 py-3 text-sm text-[var(--acopay-fg)]">
-            {t("sendAcopay.missingParams")}
-          </p>
-        ) : (
+        {signature ? (
           <div className="mt-8 space-y-4">
-            <div className="rounded-2xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-bg)]/80 p-4 space-y-3 text-sm">
+            <div className="rounded-2xl border border-emerald-600/35 bg-emerald-500/10 p-4 space-y-3 text-sm">
               <div className="flex items-baseline justify-between gap-3">
-                <span className="text-[var(--acopay-muted)]">💸 {t("sendAcopay.amountLabel")}</span>
+                <span className="text-[var(--acopay-muted)]">💸 {t("sendAcopay.transferredLabel")}</span>
                 <span className="font-semibold tabular-nums text-[var(--acopay-fg)]">
-                  {amount} <span className="text-[var(--acopay-brand)]">ACOPAY</span>
+                  {bill.transferred} <span className="text-[var(--acopay-brand)]">ACOPAY</span>
                 </span>
               </div>
-              <div className="border-t border-[color:var(--acopay-border-strong)]/60 pt-3 space-y-2">
+              <div className="flex items-baseline justify-between gap-3">
+                <span className="text-[var(--acopay-muted)]">
+                  💸 {t("sendAcopay.feeLabel")}
+                </span>
+                <span className="tabular-nums text-[var(--acopay-fg)]">
+                  {bill.fee} ACOPAY <span className="text-[var(--acopay-muted)]">({bill.feePct})</span>
+                </span>
+              </div>
+              {bill.openFee ? (
+                <div className="flex items-baseline justify-between gap-3">
+                  <span className="text-[var(--acopay-muted)]">🆕 {t("sendAcopay.openFeeLabel")}</span>
+                  <span className="tabular-nums text-[var(--acopay-fg)]">{bill.openFee} ACOPAY</span>
+                </div>
+              ) : null}
+              <div className="flex items-baseline justify-between gap-3 border-t border-emerald-600/25 pt-3">
+                <span className="font-medium text-[var(--acopay-fg)]">🧾 {t("sendAcopay.totalLabel")}</span>
+                <span className="font-semibold tabular-nums text-[var(--acopay-fg)]">
+                  {bill.total} <span className="text-[var(--acopay-brand)]">ACOPAY</span>
+                </span>
+              </div>
+
+              <div className="border-t border-emerald-600/25 pt-3 space-y-2.5">
                 <p>
-                  <span className="text-[var(--acopay-muted)]">📤 {t("sendAcopay.fromLabel")}</span>
-                  <code className="mt-1 block break-all text-[13px] leading-relaxed text-[var(--acopay-fg)]">
-                    {from}
-                  </code>
+                  <span className="text-[var(--acopay-muted)]">👤 {t("sendAcopay.recipientLabel")}: </span>
+                  <span className="font-semibold text-[var(--acopay-fg)]">{shortAddr(to)}</span>
                 </p>
                 <p>
-                  <span className="text-[var(--acopay-muted)]">📥 {t("sendAcopay.toLabel")}</span>
+                  <span className="text-[var(--acopay-muted)]">👛 {t("sendAcopay.receiveAddrLabel")}</span>
                   <code className="mt-1 block break-all text-[13px] leading-relaxed text-[var(--acopay-fg)]">
                     {to}
                   </code>
                 </p>
+                <p>
+                  <span className="text-[var(--acopay-muted)]">📤 {t("sendAcopay.fromWalletLabel")}</span>
+                  <code className="mt-1 block break-all text-[13px] leading-relaxed text-[var(--acopay-fg)]">
+                    {from}
+                  </code>
+                </p>
+              </div>
+
+              <div className="border-t border-emerald-600/25 pt-3 space-y-2">
+                <p className="font-medium text-[var(--acopay-fg)]">
+                  📲{" "}
+                  {tgConfirmed
+                    ? t("sendAcopay.tgConfirmedStatus")
+                    : confirming
+                      ? t("sendAcopay.tgConfirmingStatus")
+                      : t("sendAcopay.tgFailedStatus")}
+                </p>
+                {explorerUrl && (
+                  <a
+                    href={explorerUrl}
+                    className="inline-block text-sm font-medium text-[var(--acopay-brand)] hover:underline"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    🔎 {t("sendAcopay.viewTx")}
+                  </a>
+                )}
               </div>
             </div>
-
-            {expired && <p className="text-sm text-amber-700 dark:text-amber-300">{t("sendAcopay.expired")}</p>}
-
-            {!signature && needsOpenInPhantom && (
-              <div className="space-y-2">
-                <a
-                  href={openInPhantomHref}
-                  className="btn-orca-primary flex w-full !rounded-xl items-center justify-center"
-                  rel="noopener noreferrer"
-                >
-                  {t("sendAcopay.openInPhantom")}
-                </a>
-                <p className="text-xs leading-relaxed text-[var(--acopay-muted)]">{t("sendAcopay.mobileBody")}</p>
-              </div>
-            )}
-
-            {!signature && !needsOpenInPhantom && (
-              <button
-                type="button"
-                disabled={busy || expired || badBrowser}
-                onClick={() => void send()}
-                className="btn-orca-primary flex w-full !rounded-xl items-center justify-center disabled:opacity-50"
-              >
-                {busy ? t("sendAcopay.waitingPhantom") : t("sendAcopay.connectSend")}
-              </button>
-            )}
 
             {error && (
               <p className="rounded-xl border border-red-500/40 bg-red-500/10 px-3 py-2 text-sm text-red-800 dark:text-red-200">
@@ -251,54 +266,116 @@ export function SendAcopayPage() {
               </p>
             )}
 
-            {signature && (
-              <div className="space-y-3 rounded-2xl border border-emerald-600/40 bg-emerald-500/15 p-4">
-                <p className="font-semibold text-[var(--acopay-fg)]">
-                  {tgConfirmed
-                    ? t("sendAcopay.sentAndConfirmed")
-                    : confirming
-                      ? t("sendAcopay.confirmingTg")
-                      : t("sendAcopay.sent")}
-                </p>
-                {explorerUrl && (
-                  <a
-                    href={explorerUrl}
-                    className="text-sm font-medium text-[var(--acopay-brand)] hover:underline"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {t("sendAcopay.viewTx")}
-                  </a>
-                )}
-
-                {tgConfirmed ? (
-                  <p className="text-sm text-[var(--acopay-muted)]">{t("sendAcopay.tgDoneHint")}</p>
-                ) : (
-                  !confirming &&
-                  paysokLine && (
-                    <>
-                      <p className="text-sm text-[var(--acopay-muted)]">{t("sendAcopay.pasteHint")}</p>
-                      <pre className="whitespace-pre-wrap break-all rounded-xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-bg)] p-3 font-mono text-xs text-[var(--acopay-fg)]">
-                        {paysokLine}
-                      </pre>
-                      <button type="button" onClick={() => void copyPaysok()} className="btn-orca-secondary !rounded-xl">
-                        {copied ? t("sendAcopay.copied") : t("sendAcopay.copyPaysok")}
-                      </button>
-                    </>
-                  )
-                )}
-
-                <a
-                  href={botUrl}
-                  className="btn-orca-primary flex w-full !rounded-xl items-center justify-center"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {t("sendAcopay.openTelegram")}
-                </a>
+            {!tgConfirmed && !confirming && paysokLine && (
+              <div className="space-y-2">
+                <p className="text-sm text-[var(--acopay-muted)]">{t("sendAcopay.pasteHint")}</p>
+                <pre className="whitespace-pre-wrap break-all rounded-xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-bg)] p-3 font-mono text-xs text-[var(--acopay-fg)]">
+                  {paysokLine}
+                </pre>
+                <button type="button" onClick={() => void copyPaysok()} className="btn-orca-secondary !rounded-xl">
+                  {copied ? t("sendAcopay.copied") : t("sendAcopay.copyPaysok")}
+                </button>
               </div>
             )}
+
+            <a
+              href={botUrl}
+              className="btn-orca-primary flex w-full !rounded-xl items-center justify-center"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t("sendAcopay.openTelegram")}
+            </a>
           </div>
+        ) : (
+          <>
+            <ol className="mt-5 space-y-2.5">
+              {[t("sendAcopay.step1"), t("sendAcopay.step2"), t("sendAcopay.step3")].map((step, i) => (
+                <li key={i} className="flex gap-3 text-[14px] leading-snug text-[var(--acopay-fg)]">
+                  <span
+                    className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--acopay-brand)]/15 text-xs font-bold text-[var(--acopay-brand)]"
+                    aria-hidden
+                  >
+                    {i + 1}
+                  </span>
+                  <span className="text-[var(--acopay-muted)]">{step}</span>
+                </li>
+              ))}
+            </ol>
+
+            {badBrowser && (
+              <div className="mt-6 space-y-3 rounded-2xl border border-amber-500/40 bg-amber-500/15 p-4 text-sm text-[var(--acopay-fg)]">
+                <p className="font-semibold">{t("sendAcopay.wrongBrowserTitle")}</p>
+                <p className="leading-relaxed text-[var(--acopay-muted)]">{t("sendAcopay.wrongBrowserBody")}</p>
+                <button type="button" onClick={() => void copyPageUrl()} className="btn-orca-secondary !text-xs">
+                  {copiedUrl ? t("sendAcopay.urlCopied") : t("sendAcopay.copyUrlChrome")}
+                </button>
+              </div>
+            )}
+
+            {missing ? (
+              <p className="mt-8 rounded-2xl border border-amber-500/40 bg-amber-500/15 px-4 py-3 text-sm text-[var(--acopay-fg)]">
+                {t("sendAcopay.missingParams")}
+              </p>
+            ) : (
+              <div className="mt-8 space-y-4">
+                <div className="rounded-2xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-bg)]/80 p-4 space-y-3 text-sm">
+                  <div className="flex items-baseline justify-between gap-3">
+                    <span className="text-[var(--acopay-muted)]">💸 {t("sendAcopay.amountLabel")}</span>
+                    <span className="font-semibold tabular-nums text-[var(--acopay-fg)]">
+                      {amount} <span className="text-[var(--acopay-brand)]">ACOPAY</span>
+                    </span>
+                  </div>
+                  <div className="border-t border-[color:var(--acopay-border-strong)]/60 pt-3 space-y-2">
+                    <p>
+                      <span className="text-[var(--acopay-muted)]">📤 {t("sendAcopay.fromLabel")}</span>
+                      <code className="mt-1 block break-all text-[13px] leading-relaxed text-[var(--acopay-fg)]">
+                        {from}
+                      </code>
+                    </p>
+                    <p>
+                      <span className="text-[var(--acopay-muted)]">📥 {t("sendAcopay.toLabel")}</span>
+                      <code className="mt-1 block break-all text-[13px] leading-relaxed text-[var(--acopay-fg)]">
+                        {to}
+                      </code>
+                    </p>
+                  </div>
+                </div>
+
+                {expired && <p className="text-sm text-amber-700 dark:text-amber-300">{t("sendAcopay.expired")}</p>}
+
+                {needsOpenInPhantom && (
+                  <div className="space-y-2">
+                    <a
+                      href={openInPhantomHref}
+                      className="btn-orca-primary flex w-full !rounded-xl items-center justify-center"
+                      rel="noopener noreferrer"
+                    >
+                      {t("sendAcopay.openInPhantom")}
+                    </a>
+                    <p className="text-xs leading-relaxed text-[var(--acopay-muted)]">{t("sendAcopay.mobileBody")}</p>
+                  </div>
+                )}
+
+                {!needsOpenInPhantom && (
+                  <button
+                    type="button"
+                    disabled={busy || expired || badBrowser}
+                    onClick={() => void send()}
+                    className="btn-orca-primary flex w-full !rounded-xl items-center justify-center disabled:opacity-50"
+                  >
+                    {busy ? t("sendAcopay.waitingPhantom") : t("sendAcopay.connectSend")}
+                  </button>
+                )}
+
+                {error && (
+                  <p className="rounded-xl border border-red-500/40 bg-red-500/10 px-3 py-2 text-sm text-red-800 dark:text-red-200">
+                    {error}
+                  </p>
+                )}
+              </div>
+            )}
+          </>
         )}
       </div>
     </section>
