@@ -33,8 +33,7 @@ const enBase: SendSection = {
   confirmingTg: "Confirming in Telegram…",
   tgDoneHint: "Check @AcopayNetwork_bot for the success receipt.",
   viewTx: "View transaction ↗",
-  pasteHint:
-    "Auto-confirm did not finish. Copy the command below and paste it into @AcopayNetwork_bot within 15 minutes.",
+  pasteHint: "Telegram chưa xác nhận. Sao chép lệnh dưới đây, dán vào @AcopayNetwork_bot.",
   copyPaysok: "Copy /paysok command",
   copied: "Copied",
   openTelegram: "Open Telegram Pay ↗",
@@ -85,8 +84,7 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     confirmingTg: "Đang xác nhận trên Telegram…",
     tgDoneHint: "Mở @AcopayNetwork_bot để xem biên lai thành công.",
     viewTx: "Xem giao dịch ↗",
-    pasteHint:
-      "Tự xác nhận chưa xong. Sao chép lệnh bên dưới và dán vào @AcopayNetwork_bot trong vòng 15 phút.",
+    pasteHint: "Telegram chưa xác nhận. Sao chép lệnh dưới đây, dán vào @AcopayNetwork_bot.",
     copyPaysok: "Sao chép lệnh /paysok",
     copied: "Đã sao chép",
     openTelegram: "Mở Telegram Pay ↗",

@@ -472,8 +472,7 @@ export const en = {
   confirmingTg: "Confirming in Telegram…",
   tgDoneHint: "Check @AcopayNetwork_bot for the success receipt.",
   viewTx: "View transaction ↗",
-  pasteHint:
-    "Auto-confirm did not finish. Copy the command below and paste it into @AcopayNetwork_bot within 15 minutes.",
+  pasteHint: "Telegram hasn’t confirmed yet. Copy the command below and paste it into @AcopayNetwork_bot.",
   copyPaysok: "Copy /paysok command",
   copied: "Copied",
   openTelegram: "Open Telegram Pay ↗",
