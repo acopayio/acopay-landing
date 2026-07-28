@@ -3,6 +3,7 @@ import type { Messages } from "./en";
 import { BUY_DESK_PARTIALS } from "./buyDesk";
 import { SITE_CONTENT_PARTIALS } from "./siteContent";
 import { CORE_UI_GAPS } from "./coreUiGaps";
+import { CHROME_NATIVE_FIX } from "./chromeNativeFix";
 import { LINK_WALLET_PARTIALS } from "./linkWallet";
 import { SEND_ACOPAY_PARTIALS } from "./sendAcopay";
 
@@ -1904,6 +1905,12 @@ for (const [code, content] of Object.entries(SITE_CONTENT_PARTIALS)) {
 
 // Native core UI for locales that used to inherit via alias seed
 for (const [code, content] of Object.entries(CORE_UI_GAPS)) {
+  partials[code] = mergePartial(partials[code], content as DeepPartialMessages);
+}
+
+// Professional chrome fixes (nav/FAQ/contract titles still EN in some locales)
+for (const [code, content] of Object.entries(CHROME_NATIVE_FIX)) {
+  if (!content || Object.keys(content as object).length === 0) continue;
   partials[code] = mergePartial(partials[code], content as DeepPartialMessages);
 }
 
