@@ -283,9 +283,6 @@ export function SendAcopayPage() {
             <p className="mt-6 max-w-sm text-[15px] font-medium leading-snug text-[var(--acopay-fg)]">
               {confirmPastWindow ? t("sendAcopay.confirmWaitTimeout") : t("sendAcopay.confirmWaitBody")}
             </p>
-            <p className="mt-2 max-w-xs text-xs leading-relaxed text-[var(--acopay-muted)]">
-              {t("sendAcopay.confirmWaitHint")}
-            </p>
 
             <div className="mt-8 w-full max-w-sm send-bill text-left text-sm">
               <div className="send-bill-row">
@@ -299,27 +296,6 @@ export function SendAcopayPage() {
                 <span className="send-bill-label">{t("sendAcopay.recipientLabel")}</span>
                 <span className="send-bill-value send-bill-value--plain">{shortAddr(to)}</span>
               </div>
-            </div>
-
-            <div className="mt-5 space-y-1.5 text-center">
-              {explorerUrl && (
-                <a
-                  href={explorerUrl}
-                  className="send-bill-link"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  🔎 {t("sendAcopay.viewTx")}
-                </a>
-              )}
-              <a
-                href={transfersUrl}
-                className="send-bill-link"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                📋 {t("sendAcopay.viewRecentTransfers")}
-              </a>
             </div>
           </div>
         ) : null}
