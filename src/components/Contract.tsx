@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { AddrHighlight } from "./AddrHighlight";
 import { TOKEN, explorerUrl, isMintLive, mintDisplay, solscanUrl } from "../config/token";
 import { useCopy } from "../hooks/useCopy";
 import { useT } from "../i18n/LanguageProvider";
@@ -52,7 +53,7 @@ export function Contract() {
                   <td>
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
                       <code className="break-all font-mono text-xs text-[var(--acopay-brand)] sm:text-sm">
-                        {mint}
+                        <AddrHighlight addr={mint} />
                       </code>
                       <button
                         type="button"

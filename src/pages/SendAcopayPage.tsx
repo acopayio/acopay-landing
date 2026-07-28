@@ -11,6 +11,7 @@ import {
   type SendPlanSummary,
   sendAcopayWithPhantom,
 } from "../lib/sendAcopay";
+import { AddrHighlight } from "../components/AddrHighlight";
 
 /** Expected confirm window (matches client + bot RPC retries). */
 const CONFIRM_WAIT_MS = 45_000;
@@ -342,11 +343,15 @@ export function SendAcopayPage() {
                 </p>
                 <div>
                   <span className="send-bill-label">👛 {t("sendAcopay.receiveAddrLabel")}</span>
-                  <code className="send-bill-addr">{to}</code>
+                  <code className="send-bill-addr">
+                    <AddrHighlight addr={to} />
+                  </code>
                 </div>
                 <div>
                   <span className="send-bill-label">📤 {t("sendAcopay.fromWalletLabel")}</span>
-                  <code className="send-bill-addr">{from}</code>
+                  <code className="send-bill-addr">
+                    <AddrHighlight addr={from} />
+                  </code>
                 </div>
               </div>
 
@@ -474,11 +479,15 @@ export function SendAcopayPage() {
                   <div className="send-bill-section">
                     <div>
                       <span className="send-bill-label">📤 {t("sendAcopay.fromLabel")}</span>
-                      <code className="send-bill-addr">{from}</code>
+                      <code className="send-bill-addr">
+                        <AddrHighlight addr={from} />
+                      </code>
                     </div>
                     <div>
                       <span className="send-bill-label">📥 {t("sendAcopay.toLabel")}</span>
-                      <code className="send-bill-addr">{to}</code>
+                      <code className="send-bill-addr">
+                        <AddrHighlight addr={to} />
+                      </code>
                     </div>
                   </div>
                 </div>

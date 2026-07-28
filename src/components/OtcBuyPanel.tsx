@@ -4,6 +4,7 @@ import { OTC, OTC_SESSION_MS, buildSolanaPayUrl, formatSessionClock, otcAcopayFo
 import { solscanUrl, TOKEN } from "../config/token";
 import { useCopy } from "../hooks/useCopy";
 import { useT } from "../i18n/LanguageProvider";
+import { AddrHighlight } from "./AddrHighlight";
 import { BrandLogo } from "./BrandLogo";
 
 const PRESETS = [10, 50, 100, 250, 500] as const;
@@ -420,8 +421,8 @@ export function OtcBuyPanel() {
           onClick={() => copy(OTC.address)}
           className="group mt-2 flex w-full items-center gap-2 rounded-xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-bg)]/60 px-3 py-3 text-left transition hover:border-[color:var(--acopay-brand)]/35"
         >
-          <code className="min-w-0 flex-1 truncate font-mono text-xs text-[var(--acopay-fg)] sm:text-[13px]">
-            {OTC.address}
+          <code className="min-w-0 flex-1 break-all font-mono text-xs text-[var(--acopay-fg)] sm:text-[13px]">
+            <AddrHighlight addr={OTC.address} />
           </code>
           <span className="shrink-0 text-xs font-semibold text-[var(--acopay-brand)]">
             {copied ? t("otc.copied") : t("otc.copy")}
@@ -446,8 +447,8 @@ export function OtcBuyPanel() {
           onClick={() => copy(OTC.address)}
           className="group mt-2 flex w-full items-center gap-2 rounded-xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-bg)]/60 px-3 py-3 text-left transition hover:border-[color:var(--acopay-brand)]/35"
         >
-          <code className="min-w-0 flex-1 truncate font-mono text-xs text-[var(--acopay-fg)] sm:text-[13px]">
-            {OTC.address}
+          <code className="min-w-0 flex-1 break-all font-mono text-xs text-[var(--acopay-fg)] sm:text-[13px]">
+            <AddrHighlight addr={OTC.address} />
           </code>
           <span className="shrink-0 text-xs font-semibold text-[var(--acopay-brand)]">
             {copied ? t("otc.copied") : t("otc.copy")}
