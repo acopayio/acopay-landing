@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { formatSessionClock, phantomBrowseUrl } from "../config/otc";
-import { TOKEN } from "../config/token";
+import { explorerTransfersUrl, TOKEN } from "../config/token";
 import { useI18n } from "../i18n/LanguageProvider";
 import { isSupportedLocale } from "../i18n/countries";
 import { estimateAcopayBill } from "../lib/estimateAcopayBill";
@@ -100,6 +100,34 @@ export function SendAcopayPage() {
     : null;
   const botUrl = `https://t.me/${TOKEN.telegramBot}`;
   const explorerUrl = signature ? `https://explorer.solana.com/tx/${signature}` : null;
+  const transfersUrl = explorerTransfersUrl();
+
+  function ExplorerLinks({ showEmoji = true }: { showEmoji?: boolean }) {
+    return (
+      <div className="space-y-1.5">
+        {explorerUrl && (
+          <a
+            href={explorerUrl}
+            className="block text-sm font-medium text-[var(--acopay-brand)] hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {showEmoji ? "🔎 " : ""}
+            {t("sendAcopay.viewTx")}
+          </a>
+        )}
+        <a
+          href={transfersUrl}
+          className="block text-sm font-medium text-[var(--acopay-brand)] hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {showEmoji ? "📋 " : ""}
+          {t("sendAcopay.viewRecentTransfers")}
+        </a>
+      </div>
+    );
+  }
 
   const bill = useMemo(() => {
     if (planSummary) {
@@ -273,16 +301,26 @@ export function SendAcopayPage() {
               </div>
             </div>
 
-            {explorerUrl && (
+            <div className="mt-5 space-y-1.5 text-center">
+              {explorerUrl && (
+                <a
+                  href={explorerUrl}
+                  className="block text-sm font-medium text-[var(--acopay-brand)] hover:underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  🔎 {t("sendAcopay.viewTx")}
+                </a>
+              )}
               <a
-                href={explorerUrl}
-                className="mt-5 text-sm font-medium text-[var(--acopay-brand)] hover:underline"
+                href={transfersUrl}
+                className="block text-sm font-medium text-[var(--acopay-brand)] hover:underline"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                {t("sendAcopay.viewTx")}
+                📋 {t("sendAcopay.viewRecentTransfers")}
               </a>
-            )}
+            </div>
           </div>
         ) : null}
 
@@ -340,16 +378,7 @@ export function SendAcopayPage() {
 
               <div className="border-t border-[color:var(--acopay-border-strong)]/60 pt-3 space-y-2">
                 <p className="font-medium text-[var(--acopay-fg)]">📲 {t("sendAcopay.tgConfirmedStatus")}</p>
-                {explorerUrl && (
-                  <a
-                    href={explorerUrl}
-                    className="inline-block text-sm font-medium text-[var(--acopay-brand)] hover:underline"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    🔎 {t("sendAcopay.viewTx")}
-                  </a>
-                )}
+                <ExplorerLinks />
               </div>
             </div>
 
@@ -384,16 +413,7 @@ export function SendAcopayPage() {
               <p className="border-t border-[color:var(--acopay-border-strong)]/60 pt-3 font-medium text-[var(--acopay-fg)]">
                 📲 {t("sendAcopay.tgFailedStatus")}
               </p>
-              {explorerUrl && (
-                <a
-                  href={explorerUrl}
-                  className="inline-block text-sm font-medium text-[var(--acopay-brand)] hover:underline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  🔎 {t("sendAcopay.viewTx")}
-                </a>
-              )}
+              <ExplorerLinks />
             </div>
 
             {error && !/not found yet|Transaction not found/i.test(error) && (

@@ -75,6 +75,13 @@ export function explorerUrl(): string {
     : TOKEN.links.explorer;
 }
 
+/** Solana Explorer transfers tab for ACOPAY mint. */
+export function explorerTransfersUrl(): string {
+  return isMintLive()
+    ? `https://explorer.solana.com/address/${TOKEN.mintAddress}/transfers`
+    : TOKEN.links.explorer;
+}
+
 export function solscanUrl(): string {
   return isMintLive()
     ? `https://solscan.io/token/${TOKEN.mintAddress}`
