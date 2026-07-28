@@ -1912,7 +1912,7 @@ for (const [code, content] of Object.entries(LINK_WALLET_PARTIALS)) {
   partials[code] = mergePartial(partials[code], content as DeepPartialMessages);
 }
 
-// Send ACOPAY (Phantom sign) — EN+VI; other locales inherit EN
+// Send ACOPAY (Phantom sign) — every UI locale (overrides EN inheritance)
 for (const [code, content] of Object.entries(SEND_ACOPAY_PARTIALS)) {
   if (code === "en") continue;
   partials[code] = mergePartial(partials[code], content as DeepPartialMessages);
