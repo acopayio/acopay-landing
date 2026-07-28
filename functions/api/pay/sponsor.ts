@@ -14,8 +14,8 @@ type PagesContext = {
   };
 };
 
-/** Default: volume bot pay-sponsor on VPS (OPERATOR co-sign). */
-const DEFAULT_UPSTREAM = "http://169.58.56.156:8790/pay/sponsor";
+/** Default: VPS hostname (Workers cannot fetch bare IPs — CF error 1003). */
+const DEFAULT_UPSTREAM = "http://vmi3457424.contaboserver.net/pay/sponsor";
 
 function json(status: number, body: unknown): Response {
   return new Response(JSON.stringify(body), {
