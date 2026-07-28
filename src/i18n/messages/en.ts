@@ -507,6 +507,7 @@ export const en = {
     errCopyLine: "Could not copy. Select the command manually.",
     errCopyUrl: "Could not copy URL. Select the address bar manually.",
     errConfirmTg: "Couldn’t auto-confirm in Telegram. Your ACOPAY was still sent — use the command below.",
+    errSimulateFailed: "Simulation failed before signing. The transfer would not succeed on Solana — try again or start Transfer again in Telegram.",
   },
 };
 

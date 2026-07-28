@@ -1,12 +1,13 @@
 /**
  * Phantom-signed ACOPAY (Token-2022) send — same fee rules as Telegram bot Pay.
- * SOL gas: OPERATOR co-signs via /api/pay/cosign AFTER Phantom signs (Lighthouse / Saul order).
- * Flow: sponsor (unsigned) → Phantom signTransaction → cosign (OPERATOR) → sendRaw.
+ * SOL gas: OPERATOR co-signs via /api/pay/cosign AFTER Phantom signs (Lighthouse / Saul #278183).
+ * Flow: sponsor (unsigned) → simulate sigVerify:false → Phantom signTransaction → cosign (OPERATOR) → sendRaw.
  */
 import {
   Connection,
   PublicKey,
   Transaction,
+  VersionedTransaction,
 } from "@solana/web3.js";
 import {
   TOKEN_2022_PROGRAM_ID,
@@ -323,8 +324,49 @@ function b64ToUint8Array(b64: string): Uint8Array {
 }
 
 /**
+ * Saul #278183: simulate with sigVerify:false BEFORE requesting Phantom signature
+ * so Phantom / Lighthouse can trust the outcome for multi-signer (OPERATOR feePayer).
+ */
+async function assertSponsoredTxSimulatesOk(connection: Connection, tx: Transaction): Promise<void> {
+  const wire = tx.serialize({
+    requireAllSignatures: false,
+    verifySignatures: false,
+  });
+
+  let err: unknown = null;
+  let logs: string[] | null = null;
+
+  try {
+    const vtx = VersionedTransaction.deserialize(wire);
+    const sim = await connection.simulateTransaction(vtx, {
+      sigVerify: false,
+      commitment: "confirmed",
+      replaceRecentBlockhash: true,
+    });
+    err = sim.value.err;
+    logs = sim.value.logs ?? null;
+  } catch (first) {
+    // Legacy Transaction path: omit signers ⇒ RPC does not force sigVerify:true
+    try {
+      const sim = await connection.simulateTransaction(tx);
+      err = sim.value.err;
+      logs = sim.value.logs ?? null;
+    } catch (second) {
+      throw new Error(
+        `SIMULATION_FAILED: ${second instanceof Error ? second.message : String(first)}`,
+      );
+    }
+  }
+
+  if (err) {
+    const tail = (logs || []).filter(Boolean).slice(-6).join(" · ");
+    throw new Error(tail ? `SIMULATION_FAILED: ${tail}` : "SIMULATION_FAILED");
+  }
+}
+
+/**
  * Connect Phantom (must match `fromBase58`), get unsigned sponsored tx,
- * Phantom signs FIRST, OPERATOR cosigns SECOND, then send.
+ * simulate (Saul), Phantom signs FIRST, OPERATOR cosigns SECOND, then send.
  */
 export async function sendAcopayWithPhantom(opts: {
   fromBase58: string;
@@ -398,6 +440,15 @@ export async function sendAcopayWithPhantom(opts: {
   const unsignedTx = Transaction.from(b64ToUint8Array(String(sponsored.tx)));
   if (!unsignedTx.feePayer) {
     throw new Error("Sponsored transaction missing fee payer.");
+  }
+
+  // 0) Simulate with sigVerify:false before asking Phantom to sign (Saul #278183)
+  try {
+    await assertSponsoredTxSimulatesOk(connection, unsignedTx);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    if (msg.startsWith("SIMULATION_FAILED")) throw e;
+    throw new Error(`SIMULATION_FAILED: ${friendlyRpcError(e)}`);
   }
 
   // 1) Phantom signs first (Saul / Lighthouse)

@@ -221,6 +221,8 @@ export function SendAcopayPage() {
         setError(isMobileUa() ? t("sendAcopay.errNoProviderMobile") : t("sendAcopay.errNoProviderDesktop"));
       } else if (msg === "WRONG_WALLET") {
         setError(t("sendAcopay.errWrongWallet", { addr: shortAddr(from) }));
+      } else if (/^SIMULATION_FAILED/i.test(msg)) {
+        setError(t("sendAcopay.errSimulateFailed"));
       } else if (/User rejected|rejected|4001/i.test(msg)) {
         setError(t("sendAcopay.errCancelled"));
       } else {
