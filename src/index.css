@@ -878,6 +878,25 @@ a.btn-orca-primary:disabled:hover {
   align-items: center;
 }
 
+.send-confirm-timer .otc-timer-ring {
+  box-shadow: 0 0 0 1px rgba(0, 229, 255, 0.12), 0 12px 40px rgba(0, 229, 255, 0.08);
+}
+
+@keyframes send-confirm-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.send-confirm-reveal {
+  animation: send-confirm-reveal 0.45s ease-out both;
+}
+
 .otc-timer-ring {
   width: 7.25rem;
   height: 7.25rem;

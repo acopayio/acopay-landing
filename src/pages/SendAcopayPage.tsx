@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { phantomBrowseUrl } from "../config/otc";
+import { formatSessionClock, phantomBrowseUrl } from "../config/otc";
 import { TOKEN } from "../config/token";
 import { useI18n } from "../i18n/LanguageProvider";
 import { isSupportedLocale } from "../i18n/countries";
@@ -11,6 +11,9 @@ import {
   type SendPlanSummary,
   sendAcopayWithPhantom,
 } from "../lib/sendAcopay";
+
+/** Expected confirm window (matches client + bot RPC retries). */
+const CONFIRM_WAIT_MS = 45_000;
 
 function isUnsupportedDesktopBrowser(): boolean {
   if (typeof navigator === "undefined") return false;
@@ -67,8 +70,26 @@ export function SendAcopayPage() {
   const [planSummary, setPlanSummary] = useState<SendPlanSummary | null>(null);
   const [tgConfirmed, setTgConfirmed] = useState(false);
   const [confirming, setConfirming] = useState(false);
+  const [confirmStartedAt, setConfirmStartedAt] = useState<number | null>(null);
+  const [now, setNow] = useState(() => Date.now());
   const [copied, setCopied] = useState(false);
   const [copiedUrl, setCopiedUrl] = useState(false);
+
+  useEffect(() => {
+    if (!confirming || confirmStartedAt == null) return;
+    const id = window.setInterval(() => setNow(Date.now()), 200);
+    return () => window.clearInterval(id);
+  }, [confirming, confirmStartedAt]);
+
+  const msLeft =
+    confirming && confirmStartedAt != null
+      ? Math.max(0, confirmStartedAt + CONFIRM_WAIT_MS - now)
+      : CONFIRM_WAIT_MS;
+  const confirmProgress =
+    confirming && confirmStartedAt != null
+      ? Math.min(1, Math.max(0, msLeft / CONFIRM_WAIT_MS))
+      : 1;
+  const confirmPastWindow = confirming && msLeft <= 0;
 
   const pageUrl = typeof window !== "undefined" ? window.location.href : "";
   const openInPhantomHref = pageUrl ? phantomBrowseUrl(pageUrl) : "https://phantom.com/download";
@@ -117,6 +138,7 @@ export function SendAcopayPage() {
     setSignature(null);
     setPlanSummary(null);
     setTgConfirmed(false);
+    setConfirmStartedAt(null);
     if (missing) {
       setError(t("sendAcopay.errMissing"));
       return;
@@ -146,6 +168,9 @@ export function SendAcopayPage() {
       setSignature(res.signature);
       if (res.plan?.summary) setPlanSummary(res.plan.summary);
       setBusy(false);
+      const started = Date.now();
+      setConfirmStartedAt(started);
+      setNow(started);
       setConfirming(true);
       try {
         await confirmPhantomPayInTelegram({
@@ -155,6 +180,7 @@ export function SendAcopayPage() {
           from: from,
         });
         setTgConfirmed(true);
+        setError(null);
       } catch (confirmErr) {
         const msg = confirmErr instanceof Error ? confirmErr.message : String(confirmErr);
         setError(t("sendAcopay.errConfirmTg", { detail: msg }));
@@ -187,29 +213,83 @@ export function SendAcopayPage() {
     }
   }
 
+  const pageTitle = !signature
+    ? t("sendAcopay.title")
+    : confirming
+      ? t("sendAcopay.pendingTitle")
+      : tgConfirmed
+        ? t("sendAcopay.successTitle")
+        : t("sendAcopay.onChainOkTitle");
+
   return (
     <section className="section-pad">
       <div className="page-wrap mx-auto max-w-lg">
         <p className="label-orca">{t("sendAcopay.kicker")}</p>
-        <h1 className="mt-2 text-3xl font-bold tracking-tight text-[var(--acopay-fg)]">
-          {!signature
-            ? t("sendAcopay.title")
-            : tgConfirmed
-              ? t("sendAcopay.successTitle")
-              : confirming
-                ? t("sendAcopay.pendingTitle")
-                : t("sendAcopay.onChainOkTitle")}
-        </h1>
+        <h1 className="mt-2 text-3xl font-bold tracking-tight text-[var(--acopay-fg)]">{pageTitle}</h1>
 
-        {signature ? (
-          <div className="mt-8 space-y-4">
-            <div
-              className={`rounded-2xl border p-4 space-y-3 text-sm ${
-                tgConfirmed
-                  ? "border-emerald-600/35 bg-emerald-500/10"
-                  : "border-[color:var(--acopay-border-strong)] bg-[var(--acopay-bg)]/80"
-              }`}
-            >
+        {/* —— Waiting: countdown only (no bill yet) —— */}
+        {signature && confirming ? (
+          <div className="mt-10 flex flex-col items-center text-center" aria-live="polite">
+            <div className="otc-session-timer send-confirm-timer">
+              <div
+                className="otc-timer-ring"
+                style={{
+                  background: `conic-gradient(#00E5FF ${confirmProgress * 360}deg, rgba(255,255,255,0.08) 0)`,
+                }}
+              >
+                <div className="otc-timer-core">
+                  <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--acopay-faint)]">
+                    {t("sendAcopay.confirmWaitLabel")}
+                  </p>
+                  <p
+                    className={`font-mono text-2xl font-bold tabular-nums tracking-tight ${
+                      confirmPastWindow ? "text-amber-300" : "text-[var(--acopay-fg)]"
+                    }`}
+                  >
+                    {confirmPastWindow ? "…" : formatSessionClock(msLeft)}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <p className="mt-6 max-w-sm text-[15px] font-medium leading-snug text-[var(--acopay-fg)]">
+              {confirmPastWindow ? t("sendAcopay.confirmWaitTimeout") : t("sendAcopay.confirmWaitBody")}
+            </p>
+            <p className="mt-2 max-w-xs text-xs leading-relaxed text-[var(--acopay-muted)]">
+              {t("sendAcopay.confirmWaitHint")}
+            </p>
+
+            <div className="mt-8 w-full max-w-sm rounded-2xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-bg)]/80 px-4 py-3.5 text-left text-sm">
+              <div className="flex items-baseline justify-between gap-3">
+                <span className="text-[var(--acopay-muted)]">{t("sendAcopay.amountLabel")}</span>
+                <span className="font-semibold tabular-nums text-[var(--acopay-fg)]">
+                  {fmtAcopayDisplay(bill.transferred)}{" "}
+                  <span className="text-[var(--acopay-brand)]">ACOPAY</span>
+                </span>
+              </div>
+              <div className="mt-2.5 flex items-baseline justify-between gap-3 border-t border-[color:var(--acopay-border-strong)]/60 pt-2.5">
+                <span className="text-[var(--acopay-muted)]">{t("sendAcopay.recipientLabel")}</span>
+                <span className="font-medium tabular-nums text-[var(--acopay-fg)]">{shortAddr(to)}</span>
+              </div>
+            </div>
+
+            {explorerUrl && (
+              <a
+                href={explorerUrl}
+                className="mt-5 text-sm font-medium text-[var(--acopay-brand)] hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {t("sendAcopay.viewTx")}
+              </a>
+            )}
+          </div>
+        ) : null}
+
+        {/* —— Success bill (only after Telegram confirms) —— */}
+        {signature && tgConfirmed ? (
+          <div className="mt-8 space-y-4 send-confirm-reveal">
+            <div className="rounded-2xl border border-emerald-600/35 bg-emerald-500/10 p-4 space-y-3 text-sm">
               <div className="flex items-baseline justify-between gap-3">
                 <span className="text-[var(--acopay-muted)]">💸 {t("sendAcopay.transferredLabel")}</span>
                 <span className="font-semibold tabular-nums text-[var(--acopay-fg)]">
@@ -259,14 +339,7 @@ export function SendAcopayPage() {
               </div>
 
               <div className="border-t border-[color:var(--acopay-border-strong)]/60 pt-3 space-y-2">
-                <p className="font-medium text-[var(--acopay-fg)]">
-                  📲{" "}
-                  {tgConfirmed
-                    ? t("sendAcopay.tgConfirmedStatus")
-                    : confirming
-                      ? t("sendAcopay.tgConfirmingStatus")
-                      : t("sendAcopay.tgFailedStatus")}
-                </p>
+                <p className="font-medium text-[var(--acopay-fg)]">📲 {t("sendAcopay.tgConfirmedStatus")}</p>
                 {explorerUrl && (
                   <a
                     href={explorerUrl}
@@ -280,13 +353,56 @@ export function SendAcopayPage() {
               </div>
             </div>
 
+            <p className="text-sm text-[var(--acopay-muted)]">{t("sendAcopay.tgDoneHint")}</p>
+
+            <a
+              href={botUrl}
+              className="btn-orca-primary flex w-full !rounded-xl items-center justify-center"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t("sendAcopay.openTelegram")}
+            </a>
+          </div>
+        ) : null}
+
+        {/* —— Fallback if confirm timed out / failed —— */}
+        {signature && !confirming && !tgConfirmed ? (
+          <div className="mt-8 space-y-4">
+            <div className="rounded-2xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-bg)]/80 p-4 space-y-3 text-sm">
+              <div className="flex items-baseline justify-between gap-3">
+                <span className="text-[var(--acopay-muted)]">💸 {t("sendAcopay.transferredLabel")}</span>
+                <span className="font-semibold tabular-nums text-[var(--acopay-fg)]">
+                  {fmtAcopayDisplay(bill.transferred)}{" "}
+                  <span className="text-[var(--acopay-brand)]">ACOPAY</span>
+                </span>
+              </div>
+              <div className="flex items-baseline justify-between gap-3">
+                <span className="text-[var(--acopay-muted)]">{t("sendAcopay.recipientLabel")}</span>
+                <span className="font-medium text-[var(--acopay-fg)]">{shortAddr(to)}</span>
+              </div>
+              <p className="border-t border-[color:var(--acopay-border-strong)]/60 pt-3 font-medium text-[var(--acopay-fg)]">
+                📲 {t("sendAcopay.tgFailedStatus")}
+              </p>
+              {explorerUrl && (
+                <a
+                  href={explorerUrl}
+                  className="inline-block text-sm font-medium text-[var(--acopay-brand)] hover:underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  🔎 {t("sendAcopay.viewTx")}
+                </a>
+              )}
+            </div>
+
             {error && !/not found yet|Transaction not found/i.test(error) && (
               <p className="rounded-xl border border-red-500/40 bg-red-500/10 px-3 py-2 text-sm text-red-800 dark:text-red-200">
                 {error}
               </p>
             )}
 
-            {!tgConfirmed && !confirming && paysokLine && (
+            {paysokLine && (
               <div className="space-y-2 rounded-2xl border border-amber-500/35 bg-amber-500/10 p-4">
                 <p className="text-sm text-[var(--acopay-fg)]">{t("sendAcopay.pasteHint")}</p>
                 <pre className="whitespace-pre-wrap break-all rounded-xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-bg)] p-3 font-mono text-xs text-[var(--acopay-fg)]">
@@ -307,7 +423,10 @@ export function SendAcopayPage() {
               {t("sendAcopay.openTelegram")}
             </a>
           </div>
-        ) : (
+        ) : null}
+
+        {/* —— Pre-sign approve UI —— */}
+        {!signature ? (
           <>
             <ol className="mt-5 space-y-2.5">
               {[t("sendAcopay.step1"), t("sendAcopay.step2"), t("sendAcopay.step3")].map((step, i) => (
@@ -396,7 +515,7 @@ export function SendAcopayPage() {
               </div>
             )}
           </>
-        )}
+        ) : null}
       </div>
     </section>
   );

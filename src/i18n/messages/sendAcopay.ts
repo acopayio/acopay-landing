@@ -38,8 +38,12 @@ const enBase: SendSection = {
   copied: "Copied",
   openTelegram: "Open Telegram Pay ↗",
   successTitle: "✅ ACOPAY transfer successful",
-  pendingTitle: "⏳ Confirming ACOPAY transfer…",
-  onChainOkTitle: "✅ On-chain transfer sent",
+  pendingTitle: "Confirming transfer",
+  onChainOkTitle: "On-chain transfer sent",
+  confirmWaitLabel: "Confirming",
+  confirmWaitBody: "Waiting for Solana and Telegram Pay to confirm your transfer.",
+  confirmWaitHint: "Usually a few seconds — please keep this page open.",
+  confirmWaitTimeout: "Still confirming… hang tight.",
   transferredLabel: "Transferred",
   feeLabel: "Network fee",
   totalLabel: "Total to pay",
@@ -122,8 +126,12 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     tgConfirmedStatus: "Telegram Pay: Đã xác nhận",
     tgConfirmingStatus: "Telegram Pay: Đang xác nhận…",
     tgFailedStatus: "Telegram Pay: Chưa xác nhận",
-    pendingTitle: "⏳ Đang xác nhận chuyển ACOPAY…",
-    onChainOkTitle: "✅ Đã chuyển on-chain"
+    pendingTitle: "Đang xác nhận giao dịch",
+    onChainOkTitle: "Đã gửi trên blockchain",
+    confirmWaitLabel: "Đang xác nhận",
+    confirmWaitBody: "Đang chờ Solana và Telegram Pay xác nhận lệnh chuyển của bạn.",
+    confirmWaitHint: "Thường chỉ vài giây — vui lòng giữ trang này mở.",
+    confirmWaitTimeout: "Vẫn đang xác nhận… xin chờ thêm."
   }),
 
   zh: L({
@@ -161,8 +169,12 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     tgConfirmedStatus: "Telegram Pay：已确认",
     tgConfirmingStatus: "Telegram Pay：确认中…",
     tgFailedStatus: "Telegram Pay：尚未确认",
-    pendingTitle: "⏳ 正在确认 ACOPAY 转账…",
-    onChainOkTitle: "✅ 链上已发送"
+    pendingTitle: "正在确认交易",
+    onChainOkTitle: "链上已发送",
+    confirmWaitLabel: "确认中",
+    confirmWaitBody: "正在等待 Solana 与 Telegram Pay 确认您的转账。",
+    confirmWaitHint: "通常只需几秒 — 请保持此页面打开。",
+    confirmWaitTimeout: "仍在确认中…请稍候。"
   }),
 
   ja: L({
@@ -200,8 +212,12 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     tgConfirmedStatus: "Telegram Pay：確認済み",
     tgConfirmingStatus: "Telegram Pay：確認中…",
     tgFailedStatus: "Telegram Pay：未確認",
-    pendingTitle: "⏳ ACOPAY送金を確認中…",
-    onChainOkTitle: "✅ チェーン上で送信済み"
+    pendingTitle: "取引を確認中",
+    onChainOkTitle: "チェーン上で送信済み",
+    confirmWaitLabel: "確認中",
+    confirmWaitBody: "Solana と Telegram Pay が送金を確認するのを待っています。",
+    confirmWaitHint: "通常数秒です — このページを開いたままにしてください。",
+    confirmWaitTimeout: "まだ確認中です…しばらくお待ちください。"
   }),
 
   ko: L({
@@ -239,8 +255,12 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     tgConfirmedStatus: "Telegram Pay: 확인됨",
     tgConfirmingStatus: "Telegram Pay: 확인 중…",
     tgFailedStatus: "Telegram Pay: 미확인",
-    pendingTitle: "⏳ ACOPAY 송금 확인 중…",
-    onChainOkTitle: "✅ 온체인 전송 완료"
+    pendingTitle: "거래 확인 중",
+    onChainOkTitle: "온체인 전송 완료",
+    confirmWaitLabel: "확인 중",
+    confirmWaitBody: "Solana와 Telegram Pay가 송금을 확인할 때까지 기다리는 중입니다.",
+    confirmWaitHint: "보통 몇 초면 됩니다 — 이 페이지를 열어 두세요.",
+    confirmWaitTimeout: "아직 확인 중… 잠시만 기다려 주세요."
   }),
 
   th: L({
@@ -278,8 +298,12 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     tgConfirmedStatus: "Telegram Pay: ยืนยันแล้ว",
     tgConfirmingStatus: "Telegram Pay: กำลังยืนยัน…",
     tgFailedStatus: "Telegram Pay: ยังไม่ยืนยัน",
-    pendingTitle: "⏳ กำลังยืนยันการโอน ACOPAY…",
-    onChainOkTitle: "✅ ส่งบนเชนแล้ว"
+    pendingTitle: "กำลังยืนยันธุรกรรม",
+    onChainOkTitle: "ส่งบนเชนแล้ว",
+    confirmWaitLabel: "กำลังยืนยัน",
+    confirmWaitBody: "กำลังรอ Solana และ Telegram Pay ยืนยันการโอนของคุณ",
+    confirmWaitHint: "โดยปกติไม่กี่วินาที — กรุณาเปิดหน้านี้ไว้",
+    confirmWaitTimeout: "ยังยืนยันอยู่… โปรดรอสักครู่"
   }),
 
   id: L({
@@ -317,8 +341,12 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     tgConfirmedStatus: "Telegram Pay: Dikonfirmasi",
     tgConfirmingStatus: "Telegram Pay: Mengonfirmasi…",
     tgFailedStatus: "Telegram Pay: Belum dikonfirmasi",
-    pendingTitle: "⏳ Mengonfirmasi transfer ACOPAY…",
-    onChainOkTitle: "✅ Terkirim on-chain"
+    pendingTitle: "Mengonfirmasi transaksi",
+    onChainOkTitle: "Terkirim on-chain",
+    confirmWaitLabel: "Mengonfirmasi",
+    confirmWaitBody: "Menunggu Solana dan Telegram Pay mengonfirmasi transfer Anda.",
+    confirmWaitHint: "Biasanya beberapa detik — tetap buka halaman ini.",
+    confirmWaitTimeout: "Masih mengonfirmasi… mohon tunggu."
   }),
 
   ms: L({
@@ -356,8 +384,12 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     tgConfirmedStatus: "Telegram Pay: Disahkan",
     tgConfirmingStatus: "Telegram Pay: Mengesahkan…",
     tgFailedStatus: "Telegram Pay: Belum disahkan",
-    pendingTitle: "⏳ Mengesahkan pindahan ACOPAY…",
-    onChainOkTitle: "✅ Dihantar on-chain"
+    pendingTitle: "Mengesahkan transaksi",
+    onChainOkTitle: "Dihantar on-chain",
+    confirmWaitLabel: "Mengesahkan",
+    confirmWaitBody: "Menunggu Solana dan Telegram Pay mengesahkan pindahan anda.",
+    confirmWaitHint: "Biasanya beberapa saat — kekalkan halaman ini dibuka.",
+    confirmWaitTimeout: "Masih mengesahkan… sila tunggu."
   }),
 
   hi: L({
@@ -395,8 +427,12 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     tgConfirmedStatus: "Telegram Pay: पुष्टि हो गई",
     tgConfirmingStatus: "Telegram Pay: पुष्टि हो रही है…",
     tgFailedStatus: "Telegram Pay: अभी पुष्टि नहीं",
-    pendingTitle: "⏳ ACOPAY ट्रांसफर की पुष्टि हो रही है…",
-    onChainOkTitle: "✅ ऑन-चेन भेज दिया गया"
+    pendingTitle: "लेन-देन की पुष्टि हो रही है",
+    onChainOkTitle: "ऑन-चेन भेज दिया गया",
+    confirmWaitLabel: "पुष्टि हो रही है",
+    confirmWaitBody: "Solana और Telegram Pay आपके ट्रांसफर की पुष्टि करने की प्रतीक्षा।",
+    confirmWaitHint: "आमतौर पर कुछ सेकंड — कृपया यह पेज खुला रखें।",
+    confirmWaitTimeout: "अभी भी पुष्टि हो रही है… प्रतीक्षा करें।"
   }),
 
   es: L({
@@ -434,8 +470,12 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     tgConfirmedStatus: "Telegram Pay: Confirmado",
     tgConfirmingStatus: "Telegram Pay: Confirmando…",
     tgFailedStatus: "Telegram Pay: Aún no confirmado",
-    pendingTitle: "⏳ Confirmando transferencia ACOPAY…",
-    onChainOkTitle: "✅ Transferencia on-chain enviada"
+    pendingTitle: "Confirmando transferencia",
+    onChainOkTitle: "Enviado on-chain",
+    confirmWaitLabel: "Confirmando",
+    confirmWaitBody: "Esperando a que Solana y Telegram Pay confirmen tu transferencia.",
+    confirmWaitHint: "Suele tardar unos segundos — mantén esta página abierta.",
+    confirmWaitTimeout: "Aún confirmando… un momento."
   }),
 
   pt: L({
@@ -473,8 +513,12 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     tgConfirmedStatus: "Telegram Pay: Confirmado",
     tgConfirmingStatus: "Telegram Pay: Confirmando…",
     tgFailedStatus: "Telegram Pay: Ainda não confirmado",
-    pendingTitle: "⏳ Confirmando transferência ACOPAY…",
-    onChainOkTitle: "✅ Transferência on-chain enviada"
+    pendingTitle: "Confirmando transferência",
+    onChainOkTitle: "Enviado on-chain",
+    confirmWaitLabel: "Confirmando",
+    confirmWaitBody: "Aguardando Solana e Telegram Pay confirmarem sua transferência.",
+    confirmWaitHint: "Normalmente leva alguns segundos — mantenha esta página aberta.",
+    confirmWaitTimeout: "Ainda confirmando… aguarde."
   }),
 
   fr: L({
@@ -512,8 +556,12 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     tgConfirmedStatus: "Telegram Pay : Confirmé",
     tgConfirmingStatus: "Telegram Pay : Confirmation…",
     tgFailedStatus: "Telegram Pay : Pas encore confirmé",
-    pendingTitle: "⏳ Confirmation du transfert ACOPAY…",
-    onChainOkTitle: "✅ Transfert on-chain envoyé"
+    pendingTitle: "Confirmation du transfert",
+    onChainOkTitle: "Envoyé on-chain",
+    confirmWaitLabel: "Confirmation",
+    confirmWaitBody: "En attente de la confirmation Solana et Telegram Pay.",
+    confirmWaitHint: "Quelques secondes en général — gardez cette page ouverte.",
+    confirmWaitTimeout: "Toujours en cours… un instant."
   }),
 
   de: L({
@@ -551,8 +599,12 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     tgConfirmedStatus: "Telegram Pay: Bestätigt",
     tgConfirmingStatus: "Telegram Pay: Wird bestätigt…",
     tgFailedStatus: "Telegram Pay: Noch nicht bestätigt",
-    pendingTitle: "⏳ ACOPAY-Überweisung wird bestätigt…",
-    onChainOkTitle: "✅ On-chain gesendet"
+    pendingTitle: "Überweisung wird bestätigt",
+    onChainOkTitle: "On-chain gesendet",
+    confirmWaitLabel: "Bestätigung",
+    confirmWaitBody: "Warten auf Bestätigung durch Solana und Telegram Pay.",
+    confirmWaitHint: "Meist nur wenige Sekunden — Seite bitte geöffnet lassen.",
+    confirmWaitTimeout: "Noch in Bestätigung… bitte warten."
   }),
 
   nl: L({
@@ -590,8 +642,12 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     tgConfirmedStatus: "Telegram Pay: Bevestigd",
     tgConfirmingStatus: "Telegram Pay: Bevestigen…",
     tgFailedStatus: "Telegram Pay: Nog niet bevestigd",
-    pendingTitle: "⏳ ACOPAY-overdracht bevestigen…",
-    onChainOkTitle: "✅ On-chain verzonden"
+    pendingTitle: "Overdracht bevestigen",
+    onChainOkTitle: "On-chain verzonden",
+    confirmWaitLabel: "Bevestigen",
+    confirmWaitBody: "Wachten tot Solana en Telegram Pay je overdracht bevestigen.",
+    confirmWaitHint: "Meestal enkele seconden — houd deze pagina open.",
+    confirmWaitTimeout: "Nog bezig met bevestigen… even geduld."
   }),
 
   it: L({
@@ -629,8 +685,12 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     tgConfirmedStatus: "Telegram Pay: Confermato",
     tgConfirmingStatus: "Telegram Pay: Conferma…",
     tgFailedStatus: "Telegram Pay: Non ancora confermato",
-    pendingTitle: "⏳ Conferma trasferimento ACOPAY…",
-    onChainOkTitle: "✅ Inviato on-chain"
+    pendingTitle: "Conferma trasferimento",
+    onChainOkTitle: "Inviato on-chain",
+    confirmWaitLabel: "Conferma",
+    confirmWaitBody: "In attesa che Solana e Telegram Pay confermino il trasferimento.",
+    confirmWaitHint: "Di solito pochi secondi — tieni aperta questa pagina.",
+    confirmWaitTimeout: "Ancora in conferma… attendi."
   }),
 
   ru: L({
@@ -668,8 +728,12 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     tgConfirmedStatus: "Telegram Pay: Подтверждено",
     tgConfirmingStatus: "Telegram Pay: Подтверждение…",
     tgFailedStatus: "Telegram Pay: Ещё не подтверждено",
-    pendingTitle: "⏳ Подтверждение перевода ACOPAY…",
-    onChainOkTitle: "✅ Отправлено on-chain"
+    pendingTitle: "Подтверждение перевода",
+    onChainOkTitle: "Отправлено on-chain",
+    confirmWaitLabel: "Подтверждение",
+    confirmWaitBody: "Ожидание подтверждения Solana и Telegram Pay.",
+    confirmWaitHint: "Обычно несколько секунд — не закрывайте страницу.",
+    confirmWaitTimeout: "Ещё подтверждаем… подождите."
   }),
 
   uk: L({
@@ -707,8 +771,12 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     tgConfirmedStatus: "Telegram Pay: Підтверджено",
     tgConfirmingStatus: "Telegram Pay: Підтвердження…",
     tgFailedStatus: "Telegram Pay: Ще не підтверджено",
-    pendingTitle: "⏳ Підтвердження переказу ACOPAY…",
-    onChainOkTitle: "✅ Надіслано on-chain"
+    pendingTitle: "Підтвердження переказу",
+    onChainOkTitle: "Надіслано on-chain",
+    confirmWaitLabel: "Підтвердження",
+    confirmWaitBody: "Очікування підтвердження Solana та Telegram Pay.",
+    confirmWaitHint: "Зазвичай кілька секунд — не закривайте сторінку.",
+    confirmWaitTimeout: "Ще підтверджуємо… зачекайте."
   }),
 
   pl: L({
@@ -746,8 +814,12 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     tgConfirmedStatus: "Telegram Pay: Potwierdzono",
     tgConfirmingStatus: "Telegram Pay: Potwierdzanie…",
     tgFailedStatus: "Telegram Pay: Jeszcze nie potwierdzono",
-    pendingTitle: "⏳ Potwierdzanie przelewu ACOPAY…",
-    onChainOkTitle: "✅ Wysłano on-chain"
+    pendingTitle: "Potwierdzanie przelewu",
+    onChainOkTitle: "Wysłano on-chain",
+    confirmWaitLabel: "Potwierdzanie",
+    confirmWaitBody: "Oczekiwanie na potwierdzenie Solana i Telegram Pay.",
+    confirmWaitHint: "Zwykle kilka sekund — nie zamykaj tej strony.",
+    confirmWaitTimeout: "Nadal potwierdzamy… proszę czekać."
   }),
 
   tr: L({
@@ -785,8 +857,12 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     tgConfirmedStatus: "Telegram Pay: Onaylandı",
     tgConfirmingStatus: "Telegram Pay: Onaylanıyor…",
     tgFailedStatus: "Telegram Pay: Henüz onaylanmadı",
-    pendingTitle: "⏳ ACOPAY transferi onaylanıyor…",
-    onChainOkTitle: "✅ On-chain gönderildi"
+    pendingTitle: "Transfer onaylanıyor",
+    onChainOkTitle: "On-chain gönderildi",
+    confirmWaitLabel: "Onaylanıyor",
+    confirmWaitBody: "Solana ve Telegram Pay transferinizi onaylayana kadar bekleniyor.",
+    confirmWaitHint: "Genellikle birkaç saniye — bu sayfayı açık tutun.",
+    confirmWaitTimeout: "Hâlâ onaylanıyor… lütfen bekleyin."
   }),
 
   ar: L({
@@ -824,7 +900,11 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     tgConfirmedStatus: "Telegram Pay: مؤكد",
     tgConfirmingStatus: "Telegram Pay: جارٍ التأكيد…",
     tgFailedStatus: "Telegram Pay: لم يُؤكد بعد",
-    pendingTitle: "⏳ جارٍ تأكيد تحويل ACOPAY…",
-    onChainOkTitle: "✅ أُرسل على السلسلة"
+    pendingTitle: "جارٍ تأكيد التحويل",
+    onChainOkTitle: "أُرسل على السلسلة",
+    confirmWaitLabel: "جارٍ التأكيد",
+    confirmWaitBody: "بانتظار تأكيد Solana وTelegram Pay لتحويلك.",
+    confirmWaitHint: "عادةً ثوانٍ قليلة — أبقِ هذه الصفحة مفتوحة.",
+    confirmWaitTimeout: "ما زال التأكيد جارياً… يُرجى الانتظار."
   }),
 };
