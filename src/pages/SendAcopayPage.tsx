@@ -210,8 +210,7 @@ export function SendAcopayPage() {
         setTgConfirmed(true);
         setError(null);
       } catch (confirmErr) {
-        const msg = confirmErr instanceof Error ? confirmErr.message : String(confirmErr);
-        setError(t("sendAcopay.errConfirmTg", { detail: msg }));
+        setError(t("sendAcopay.errConfirmTg"));
       } finally {
         setConfirming(false);
       }
@@ -390,7 +389,7 @@ export function SendAcopayPage() {
               <ExplorerLinks />
             </div>
 
-            {error && !/not found yet|Transaction not found/i.test(error) && (
+            {error && !paysokLine && (
               <p className="rounded-xl border border-red-500/40 bg-red-500/10 px-3 py-2 text-sm text-red-800 dark:text-red-200">
                 {error}
               </p>
@@ -398,7 +397,9 @@ export function SendAcopayPage() {
 
             {paysokLine && (
               <div className="space-y-2 rounded-2xl border border-amber-500/35 bg-amber-500/10 p-4">
-                <p className="text-sm text-[var(--acopay-fg)]">{t("sendAcopay.pasteHint")}</p>
+                <p className="text-sm leading-relaxed text-[var(--acopay-fg)] whitespace-pre-line">
+                  {t("sendAcopay.pasteHint")}
+                </p>
                 <pre className="whitespace-pre-wrap break-all rounded-xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-surface)] p-3 font-mono text-xs text-[var(--acopay-fg)]">
                   {paysokLine}
                 </pre>
