@@ -26,6 +26,12 @@ function shortAddr(a: string): string {
   return `${a.slice(0, 4)}…${a.slice(-4)}`;
 }
 
+function fmtAcopayDisplay(raw: string | number): string {
+  const n = Number(raw);
+  if (!Number.isFinite(n)) return String(raw);
+  return n.toFixed(9).replace(/\.?0+$/, "") || "0";
+}
+
 /**
  * Confirm Transfer from Telegram Pay (Phantom linked) → sign on Acopay.net → auto-confirm bot.
  */
@@ -186,40 +192,54 @@ export function SendAcopayPage() {
       <div className="page-wrap mx-auto max-w-lg">
         <p className="label-orca">{t("sendAcopay.kicker")}</p>
         <h1 className="mt-2 text-3xl font-bold tracking-tight text-[var(--acopay-fg)]">
-          {signature ? t("sendAcopay.successTitle") : t("sendAcopay.title")}
+          {!signature
+            ? t("sendAcopay.title")
+            : tgConfirmed
+              ? t("sendAcopay.successTitle")
+              : confirming
+                ? t("sendAcopay.pendingTitle")
+                : t("sendAcopay.onChainOkTitle")}
         </h1>
 
         {signature ? (
           <div className="mt-8 space-y-4">
-            <div className="rounded-2xl border border-emerald-600/35 bg-emerald-500/10 p-4 space-y-3 text-sm">
+            <div
+              className={`rounded-2xl border p-4 space-y-3 text-sm ${
+                tgConfirmed
+                  ? "border-emerald-600/35 bg-emerald-500/10"
+                  : "border-[color:var(--acopay-border-strong)] bg-[var(--acopay-bg)]/80"
+              }`}
+            >
               <div className="flex items-baseline justify-between gap-3">
                 <span className="text-[var(--acopay-muted)]">💸 {t("sendAcopay.transferredLabel")}</span>
                 <span className="font-semibold tabular-nums text-[var(--acopay-fg)]">
-                  {bill.transferred} <span className="text-[var(--acopay-brand)]">ACOPAY</span>
+                  {fmtAcopayDisplay(bill.transferred)}{" "}
+                  <span className="text-[var(--acopay-brand)]">ACOPAY</span>
                 </span>
               </div>
               <div className="flex items-baseline justify-between gap-3">
-                <span className="text-[var(--acopay-muted)]">
-                  💸 {t("sendAcopay.feeLabel")}
-                </span>
+                <span className="text-[var(--acopay-muted)]">💸 {t("sendAcopay.feeLabel")}</span>
                 <span className="tabular-nums text-[var(--acopay-fg)]">
-                  {bill.fee} ACOPAY <span className="text-[var(--acopay-muted)]">({bill.feePct})</span>
+                  {fmtAcopayDisplay(bill.fee)} ACOPAY{" "}
+                  <span className="text-[var(--acopay-muted)]">({bill.feePct})</span>
                 </span>
               </div>
               {bill.openFee ? (
                 <div className="flex items-baseline justify-between gap-3">
                   <span className="text-[var(--acopay-muted)]">🆕 {t("sendAcopay.openFeeLabel")}</span>
-                  <span className="tabular-nums text-[var(--acopay-fg)]">{bill.openFee} ACOPAY</span>
+                  <span className="tabular-nums text-[var(--acopay-fg)]">
+                    {fmtAcopayDisplay(bill.openFee)} ACOPAY
+                  </span>
                 </div>
               ) : null}
-              <div className="flex items-baseline justify-between gap-3 border-t border-emerald-600/25 pt-3">
+              <div className="flex items-baseline justify-between gap-3 border-t border-[color:var(--acopay-border-strong)]/60 pt-3">
                 <span className="font-medium text-[var(--acopay-fg)]">🧾 {t("sendAcopay.totalLabel")}</span>
                 <span className="font-semibold tabular-nums text-[var(--acopay-fg)]">
-                  {bill.total} <span className="text-[var(--acopay-brand)]">ACOPAY</span>
+                  {fmtAcopayDisplay(bill.total)} <span className="text-[var(--acopay-brand)]">ACOPAY</span>
                 </span>
               </div>
 
-              <div className="border-t border-emerald-600/25 pt-3 space-y-2.5">
+              <div className="border-t border-[color:var(--acopay-border-strong)]/60 pt-3 space-y-2.5">
                 <p>
                   <span className="text-[var(--acopay-muted)]">👤 {t("sendAcopay.recipientLabel")}: </span>
                   <span className="font-semibold text-[var(--acopay-fg)]">{shortAddr(to)}</span>
@@ -238,7 +258,7 @@ export function SendAcopayPage() {
                 </p>
               </div>
 
-              <div className="border-t border-emerald-600/25 pt-3 space-y-2">
+              <div className="border-t border-[color:var(--acopay-border-strong)]/60 pt-3 space-y-2">
                 <p className="font-medium text-[var(--acopay-fg)]">
                   📲{" "}
                   {tgConfirmed
@@ -260,15 +280,15 @@ export function SendAcopayPage() {
               </div>
             </div>
 
-            {error && (
+            {error && !/not found yet|Transaction not found/i.test(error) && (
               <p className="rounded-xl border border-red-500/40 bg-red-500/10 px-3 py-2 text-sm text-red-800 dark:text-red-200">
                 {error}
               </p>
             )}
 
             {!tgConfirmed && !confirming && paysokLine && (
-              <div className="space-y-2">
-                <p className="text-sm text-[var(--acopay-muted)]">{t("sendAcopay.pasteHint")}</p>
+              <div className="space-y-2 rounded-2xl border border-amber-500/35 bg-amber-500/10 p-4">
+                <p className="text-sm text-[var(--acopay-fg)]">{t("sendAcopay.pasteHint")}</p>
                 <pre className="whitespace-pre-wrap break-all rounded-xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-bg)] p-3 font-mono text-xs text-[var(--acopay-fg)]">
                   {paysokLine}
                 </pre>

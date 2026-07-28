@@ -230,27 +230,46 @@ export async function confirmPhantomPayInTelegram(opts: {
   from?: string;
   username?: string;
 }): Promise<{ ok: true; signature: string; explorer?: string }> {
-  const res = await fetch("/api/pay/confirm", {
-    method: "POST",
-    headers: { "Content-Type": "application/json", Accept: "application/json" },
-    body: JSON.stringify({
-      tg: opts.tg,
-      pid: opts.pid,
-      signature: opts.signature,
-      from: opts.from,
-      username: opts.username,
-    }),
-  });
-  let data: { ok?: boolean; signature?: string; explorer?: string; error?: string } = {};
-  try {
-    data = (await res.json()) as typeof data;
-  } catch {
-    throw new Error("Pay confirm returned invalid JSON.");
+  let lastErr: Error | null = null;
+  for (let attempt = 0; attempt < 6; attempt++) {
+    try {
+      const res = await fetch("/api/pay/confirm", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          tg: opts.tg,
+          pid: opts.pid,
+          signature: opts.signature,
+          from: opts.from,
+          username: opts.username,
+        }),
+      });
+      let data: { ok?: boolean; signature?: string; explorer?: string; error?: string } = {};
+      try {
+        data = (await res.json()) as typeof data;
+      } catch {
+        throw new Error("Pay confirm returned invalid JSON.");
+      }
+      if (!res.ok || !data.ok) {
+        const errMsg = data.error || `Pay confirm failed (${res.status})`;
+        if (/not found yet|Transaction not found/i.test(errMsg) && attempt < 5) {
+          await new Promise((r) => setTimeout(r, 2500 + attempt * 800));
+          continue;
+        }
+        throw new Error(errMsg);
+      }
+      return { ok: true, signature: data.signature || opts.signature, explorer: data.explorer };
+    } catch (e) {
+      lastErr = e instanceof Error ? e : new Error(String(e));
+      const msg = lastErr.message;
+      if (/not found yet|Transaction not found/i.test(msg) && attempt < 5) {
+        await new Promise((r) => setTimeout(r, 2500 + attempt * 800));
+        continue;
+      }
+      throw lastErr;
+    }
   }
-  if (!res.ok || !data.ok) {
-    throw new Error(data.error || `Pay confirm failed (${res.status})`);
-  }
-  return { ok: true, signature: data.signature || opts.signature, explorer: data.explorer };
+  throw lastErr || new Error("Pay confirm failed.");
 }
 
 function b64ToUint8Array(b64: string): Uint8Array {

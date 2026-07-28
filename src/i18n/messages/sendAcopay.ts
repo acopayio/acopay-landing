@@ -38,6 +38,8 @@ const enBase: SendSection = {
   copied: "Copied",
   openTelegram: "Open Telegram Pay ↗",
   successTitle: "✅ ACOPAY transfer successful",
+  pendingTitle: "⏳ Confirming ACOPAY transfer…",
+  onChainOkTitle: "✅ On-chain transfer sent",
   transferredLabel: "Transferred",
   feeLabel: "Network fee",
   totalLabel: "Total to pay",
@@ -119,7 +121,9 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     openFeeLabel: "Phí mở tài khoản lần đầu",
     tgConfirmedStatus: "Telegram Pay: Đã xác nhận",
     tgConfirmingStatus: "Telegram Pay: Đang xác nhận…",
-    tgFailedStatus: "Telegram Pay: Chưa xác nhận"
+    tgFailedStatus: "Telegram Pay: Chưa xác nhận",
+    pendingTitle: "⏳ Đang xác nhận chuyển ACOPAY…",
+    onChainOkTitle: "✅ Đã chuyển on-chain"
   }),
 
   zh: L({
@@ -156,7 +160,9 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     openFeeLabel: "首次代币账户",
     tgConfirmedStatus: "Telegram Pay：已确认",
     tgConfirmingStatus: "Telegram Pay：确认中…",
-    tgFailedStatus: "Telegram Pay：尚未确认"
+    tgFailedStatus: "Telegram Pay：尚未确认",
+    pendingTitle: "⏳ 正在确认 ACOPAY 转账…",
+    onChainOkTitle: "✅ 链上已发送"
   }),
 
   ja: L({
@@ -193,7 +199,9 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     openFeeLabel: "初回トークンアカウント",
     tgConfirmedStatus: "Telegram Pay：確認済み",
     tgConfirmingStatus: "Telegram Pay：確認中…",
-    tgFailedStatus: "Telegram Pay：未確認"
+    tgFailedStatus: "Telegram Pay：未確認",
+    pendingTitle: "⏳ ACOPAY送金を確認中…",
+    onChainOkTitle: "✅ チェーン上で送信済み"
   }),
 
   ko: L({
@@ -230,7 +238,9 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     openFeeLabel: "최초 토큰 계정",
     tgConfirmedStatus: "Telegram Pay: 확인됨",
     tgConfirmingStatus: "Telegram Pay: 확인 중…",
-    tgFailedStatus: "Telegram Pay: 미확인"
+    tgFailedStatus: "Telegram Pay: 미확인",
+    pendingTitle: "⏳ ACOPAY 송금 확인 중…",
+    onChainOkTitle: "✅ 온체인 전송 완료"
   }),
 
   th: L({
@@ -267,7 +277,9 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     openFeeLabel: "บัญชีโทเค็นครั้งแรก",
     tgConfirmedStatus: "Telegram Pay: ยืนยันแล้ว",
     tgConfirmingStatus: "Telegram Pay: กำลังยืนยัน…",
-    tgFailedStatus: "Telegram Pay: ยังไม่ยืนยัน"
+    tgFailedStatus: "Telegram Pay: ยังไม่ยืนยัน",
+    pendingTitle: "⏳ กำลังยืนยันการโอน ACOPAY…",
+    onChainOkTitle: "✅ ส่งบนเชนแล้ว"
   }),
 
   id: L({
@@ -304,7 +316,9 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     openFeeLabel: "Akun token pertama",
     tgConfirmedStatus: "Telegram Pay: Dikonfirmasi",
     tgConfirmingStatus: "Telegram Pay: Mengonfirmasi…",
-    tgFailedStatus: "Telegram Pay: Belum dikonfirmasi"
+    tgFailedStatus: "Telegram Pay: Belum dikonfirmasi",
+    pendingTitle: "⏳ Mengonfirmasi transfer ACOPAY…",
+    onChainOkTitle: "✅ Terkirim on-chain"
   }),
 
   ms: L({
@@ -341,7 +355,9 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     openFeeLabel: "Akaun token pertama",
     tgConfirmedStatus: "Telegram Pay: Disahkan",
     tgConfirmingStatus: "Telegram Pay: Mengesahkan…",
-    tgFailedStatus: "Telegram Pay: Belum disahkan"
+    tgFailedStatus: "Telegram Pay: Belum disahkan",
+    pendingTitle: "⏳ Mengesahkan pindahan ACOPAY…",
+    onChainOkTitle: "✅ Dihantar on-chain"
   }),
 
   hi: L({
@@ -378,7 +394,9 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     openFeeLabel: "पहला टोकन खाता",
     tgConfirmedStatus: "Telegram Pay: पुष्टि हो गई",
     tgConfirmingStatus: "Telegram Pay: पुष्टि हो रही है…",
-    tgFailedStatus: "Telegram Pay: अभी पुष्टि नहीं"
+    tgFailedStatus: "Telegram Pay: अभी पुष्टि नहीं",
+    pendingTitle: "⏳ ACOPAY ट्रांसफर की पुष्टि हो रही है…",
+    onChainOkTitle: "✅ ऑन-चेन भेज दिया गया"
   }),
 
   es: L({
@@ -415,7 +433,9 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     openFeeLabel: "Primera cuenta de token",
     tgConfirmedStatus: "Telegram Pay: Confirmado",
     tgConfirmingStatus: "Telegram Pay: Confirmando…",
-    tgFailedStatus: "Telegram Pay: Aún no confirmado"
+    tgFailedStatus: "Telegram Pay: Aún no confirmado",
+    pendingTitle: "⏳ Confirmando transferencia ACOPAY…",
+    onChainOkTitle: "✅ Transferencia on-chain enviada"
   }),
 
   pt: L({
@@ -452,7 +472,9 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     openFeeLabel: "Primeira conta de token",
     tgConfirmedStatus: "Telegram Pay: Confirmado",
     tgConfirmingStatus: "Telegram Pay: Confirmando…",
-    tgFailedStatus: "Telegram Pay: Ainda não confirmado"
+    tgFailedStatus: "Telegram Pay: Ainda não confirmado",
+    pendingTitle: "⏳ Confirmando transferência ACOPAY…",
+    onChainOkTitle: "✅ Transferência on-chain enviada"
   }),
 
   fr: L({
@@ -489,7 +511,9 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     openFeeLabel: "Premier compte de token",
     tgConfirmedStatus: "Telegram Pay : Confirmé",
     tgConfirmingStatus: "Telegram Pay : Confirmation…",
-    tgFailedStatus: "Telegram Pay : Pas encore confirmé"
+    tgFailedStatus: "Telegram Pay : Pas encore confirmé",
+    pendingTitle: "⏳ Confirmation du transfert ACOPAY…",
+    onChainOkTitle: "✅ Transfert on-chain envoyé"
   }),
 
   de: L({
@@ -526,7 +550,9 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     openFeeLabel: "Erstes Token-Konto",
     tgConfirmedStatus: "Telegram Pay: Bestätigt",
     tgConfirmingStatus: "Telegram Pay: Wird bestätigt…",
-    tgFailedStatus: "Telegram Pay: Noch nicht bestätigt"
+    tgFailedStatus: "Telegram Pay: Noch nicht bestätigt",
+    pendingTitle: "⏳ ACOPAY-Überweisung wird bestätigt…",
+    onChainOkTitle: "✅ On-chain gesendet"
   }),
 
   nl: L({
@@ -563,7 +589,9 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     openFeeLabel: "Eerste tokenaccount",
     tgConfirmedStatus: "Telegram Pay: Bevestigd",
     tgConfirmingStatus: "Telegram Pay: Bevestigen…",
-    tgFailedStatus: "Telegram Pay: Nog niet bevestigd"
+    tgFailedStatus: "Telegram Pay: Nog niet bevestigd",
+    pendingTitle: "⏳ ACOPAY-overdracht bevestigen…",
+    onChainOkTitle: "✅ On-chain verzonden"
   }),
 
   it: L({
@@ -600,7 +628,9 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     openFeeLabel: "Primo account token",
     tgConfirmedStatus: "Telegram Pay: Confermato",
     tgConfirmingStatus: "Telegram Pay: Conferma…",
-    tgFailedStatus: "Telegram Pay: Non ancora confermato"
+    tgFailedStatus: "Telegram Pay: Non ancora confermato",
+    pendingTitle: "⏳ Conferma trasferimento ACOPAY…",
+    onChainOkTitle: "✅ Inviato on-chain"
   }),
 
   ru: L({
@@ -637,7 +667,9 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     openFeeLabel: "Первый токен-счёт",
     tgConfirmedStatus: "Telegram Pay: Подтверждено",
     tgConfirmingStatus: "Telegram Pay: Подтверждение…",
-    tgFailedStatus: "Telegram Pay: Ещё не подтверждено"
+    tgFailedStatus: "Telegram Pay: Ещё не подтверждено",
+    pendingTitle: "⏳ Подтверждение перевода ACOPAY…",
+    onChainOkTitle: "✅ Отправлено on-chain"
   }),
 
   uk: L({
@@ -674,7 +706,9 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     openFeeLabel: "Перший токен-рахунок",
     tgConfirmedStatus: "Telegram Pay: Підтверджено",
     tgConfirmingStatus: "Telegram Pay: Підтвердження…",
-    tgFailedStatus: "Telegram Pay: Ще не підтверджено"
+    tgFailedStatus: "Telegram Pay: Ще не підтверджено",
+    pendingTitle: "⏳ Підтвердження переказу ACOPAY…",
+    onChainOkTitle: "✅ Надіслано on-chain"
   }),
 
   pl: L({
@@ -711,7 +745,9 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     openFeeLabel: "Pierwsze konto tokena",
     tgConfirmedStatus: "Telegram Pay: Potwierdzono",
     tgConfirmingStatus: "Telegram Pay: Potwierdzanie…",
-    tgFailedStatus: "Telegram Pay: Jeszcze nie potwierdzono"
+    tgFailedStatus: "Telegram Pay: Jeszcze nie potwierdzono",
+    pendingTitle: "⏳ Potwierdzanie przelewu ACOPAY…",
+    onChainOkTitle: "✅ Wysłano on-chain"
   }),
 
   tr: L({
@@ -748,7 +784,9 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     openFeeLabel: "İlk token hesabı",
     tgConfirmedStatus: "Telegram Pay: Onaylandı",
     tgConfirmingStatus: "Telegram Pay: Onaylanıyor…",
-    tgFailedStatus: "Telegram Pay: Henüz onaylanmadı"
+    tgFailedStatus: "Telegram Pay: Henüz onaylanmadı",
+    pendingTitle: "⏳ ACOPAY transferi onaylanıyor…",
+    onChainOkTitle: "✅ On-chain gönderildi"
   }),
 
   ar: L({
@@ -785,6 +823,8 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
     openFeeLabel: "حساب الرمز لأول مرة",
     tgConfirmedStatus: "Telegram Pay: مؤكد",
     tgConfirmingStatus: "Telegram Pay: جارٍ التأكيد…",
-    tgFailedStatus: "Telegram Pay: لم يُؤكد بعد"
+    tgFailedStatus: "Telegram Pay: لم يُؤكد بعد",
+    pendingTitle: "⏳ جارٍ تأكيد تحويل ACOPAY…",
+    onChainOkTitle: "✅ أُرسل على السلسلة"
   }),
 };

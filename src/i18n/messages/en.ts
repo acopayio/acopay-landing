@@ -476,6 +476,8 @@ export const en = {
     copied: "Copied",
     openTelegram: "Open Telegram Pay ↗",
     successTitle: "✅ ACOPAY transfer successful",
+    pendingTitle: "⏳ Confirming ACOPAY transfer…",
+    onChainOkTitle: "✅ On-chain transfer sent",
     transferredLabel: "Transferred",
     feeLabel: "Network fee",
     totalLabel: "Total to pay",
