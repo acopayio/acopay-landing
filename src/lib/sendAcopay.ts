@@ -220,6 +220,39 @@ async function fetchSponsoredTx(opts: {
   return data;
 }
 
+/**
+ * After on-chain send: ask bot to verify + post success in Telegram (no manual /paysok).
+ */
+export async function confirmPhantomPayInTelegram(opts: {
+  tg: string;
+  pid: string;
+  signature: string;
+  from?: string;
+  username?: string;
+}): Promise<{ ok: true; signature: string; explorer?: string }> {
+  const res = await fetch("/api/pay/confirm", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify({
+      tg: opts.tg,
+      pid: opts.pid,
+      signature: opts.signature,
+      from: opts.from,
+      username: opts.username,
+    }),
+  });
+  let data: { ok?: boolean; signature?: string; explorer?: string; error?: string } = {};
+  try {
+    data = (await res.json()) as typeof data;
+  } catch {
+    throw new Error("Pay confirm returned invalid JSON.");
+  }
+  if (!res.ok || !data.ok) {
+    throw new Error(data.error || `Pay confirm failed (${res.status})`);
+  }
+  return { ok: true, signature: data.signature || opts.signature, explorer: data.explorer };
+}
+
 function b64ToUint8Array(b64: string): Uint8Array {
   const bin = atob(b64);
   const out = new Uint8Array(bin.length);

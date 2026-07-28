@@ -5,7 +5,7 @@ import { TOKEN } from "../config/token";
 import { useI18n } from "../i18n/LanguageProvider";
 import { isSupportedLocale } from "../i18n/countries";
 import { hasPhantomExtension, isMobileUa } from "../lib/phantomPay";
-import { sendAcopayWithPhantom } from "../lib/sendAcopay";
+import { confirmPhantomPayInTelegram, sendAcopayWithPhantom } from "../lib/sendAcopay";
 
 function isUnsupportedDesktopBrowser(): boolean {
   if (typeof navigator === "undefined") return false;
@@ -22,7 +22,7 @@ function shortAddr(a: string): string {
 }
 
 /**
- * Confirm Send from Telegram Pay (Phantom linked) → signAndSend on Acopay.net → /paysok.
+ * Confirm Send from Telegram Pay (Phantom linked) → sign on Acopay.net → auto-confirm bot.
  */
 export function SendAcopayPage() {
   const { t, locale, setLocale } = useI18n();
@@ -52,6 +52,8 @@ export function SendAcopayPage() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [signature, setSignature] = useState<string | null>(null);
+  const [tgConfirmed, setTgConfirmed] = useState(false);
+  const [confirming, setConfirming] = useState(false);
   const [copied, setCopied] = useState(false);
   const [copiedUrl, setCopiedUrl] = useState(false);
 
@@ -79,6 +81,7 @@ export function SendAcopayPage() {
   const send = useCallback(async () => {
     setError(null);
     setSignature(null);
+    setTgConfirmed(false);
     if (missing) {
       setError(t("sendAcopay.errMissing"));
       return;
@@ -106,6 +109,22 @@ export function SendAcopayPage() {
         exp: exp || undefined,
       });
       setSignature(res.signature);
+      setBusy(false);
+      setConfirming(true);
+      try {
+        await confirmPhantomPayInTelegram({
+          tg,
+          pid,
+          signature: res.signature,
+          from: from,
+        });
+        setTgConfirmed(true);
+      } catch (confirmErr) {
+        const msg = confirmErr instanceof Error ? confirmErr.message : String(confirmErr);
+        setError(t("sendAcopay.errConfirmTg", { detail: msg }));
+      } finally {
+        setConfirming(false);
+      }
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
       if (msg === "PHANTOM_MISSING") {
@@ -117,7 +136,6 @@ export function SendAcopayPage() {
       } else {
         setError(msg);
       }
-    } finally {
       setBusy(false);
     }
   }, [missing, expired, badBrowser, from, to, amount, tg, pid, exp, t]);
@@ -145,9 +163,9 @@ export function SendAcopayPage() {
         </p>
 
         {badBrowser && (
-          <div className="mt-6 space-y-3 rounded-2xl border border-amber-500/35 bg-amber-500/10 p-4 text-sm text-amber-50">
-            <p className="font-semibold text-amber-100">{t("sendAcopay.wrongBrowserTitle")}</p>
-            <p className="leading-relaxed text-amber-50/90">{t("sendAcopay.wrongBrowserBody")}</p>
+          <div className="mt-6 space-y-3 rounded-2xl border border-amber-500/40 bg-amber-500/15 p-4 text-sm text-[var(--acopay-fg)]">
+            <p className="font-semibold">{t("sendAcopay.wrongBrowserTitle")}</p>
+            <p className="leading-relaxed text-[var(--acopay-muted)]">{t("sendAcopay.wrongBrowserBody")}</p>
             <button type="button" onClick={() => void copyPageUrl()} className="btn-orca-secondary !text-xs">
               {copiedUrl ? t("sendAcopay.urlCopied") : t("sendAcopay.copyUrlChrome")}
             </button>
@@ -155,7 +173,7 @@ export function SendAcopayPage() {
         )}
 
         {missing ? (
-          <p className="mt-8 rounded-2xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-100">
+          <p className="mt-8 rounded-2xl border border-amber-500/40 bg-amber-500/15 px-4 py-3 text-sm text-[var(--acopay-fg)]">
             {t("sendAcopay.missingParams")}
           </p>
         ) : (
@@ -175,7 +193,7 @@ export function SendAcopayPage() {
               </p>
             </div>
 
-            {expired && <p className="text-sm text-amber-300">{t("sendAcopay.expired")}</p>}
+            {expired && <p className="text-sm text-amber-700 dark:text-amber-300">{t("sendAcopay.expired")}</p>}
 
             {!signature && needsOpenInPhantom && (
               <div className="space-y-2">
@@ -202,41 +220,56 @@ export function SendAcopayPage() {
             )}
 
             {error && (
-              <p className="rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-200">
+              <p className="rounded-xl border border-red-500/40 bg-red-500/10 px-3 py-2 text-sm text-red-800 dark:text-red-200">
                 {error}
               </p>
             )}
 
-            {signature && paysokLine && (
-              <div className="space-y-3 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-4">
-                <p className="font-semibold text-emerald-100">{t("sendAcopay.sent")}</p>
+            {signature && (
+              <div className="space-y-3 rounded-2xl border border-emerald-600/40 bg-emerald-500/15 p-4">
+                <p className="font-semibold text-[var(--acopay-fg)]">
+                  {tgConfirmed
+                    ? t("sendAcopay.sentAndConfirmed")
+                    : confirming
+                      ? t("sendAcopay.confirmingTg")
+                      : t("sendAcopay.sent")}
+                </p>
                 {explorerUrl && (
                   <a
                     href={explorerUrl}
-                    className="text-sm text-[var(--acopay-brand)] hover:underline"
+                    className="text-sm font-medium text-[var(--acopay-brand)] hover:underline"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     {t("sendAcopay.viewTx")}
                   </a>
                 )}
-                <p className="text-sm text-emerald-50/90">{t("sendAcopay.pasteHint")}</p>
-                <pre className="whitespace-pre-wrap break-all rounded-xl bg-black/30 p-3 font-mono text-xs text-[var(--acopay-fg)]">
-                  {paysokLine}
-                </pre>
-                <div className="flex flex-col gap-2 sm:flex-row">
-                  <button type="button" onClick={() => void copyPaysok()} className="btn-orca-secondary !rounded-xl">
-                    {copied ? t("sendAcopay.copied") : t("sendAcopay.copyPaysok")}
-                  </button>
-                  <a
-                    href={botUrl}
-                    className="btn-orca-primary flex !rounded-xl items-center justify-center"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {t("sendAcopay.openTelegram")}
-                  </a>
-                </div>
+
+                {tgConfirmed ? (
+                  <p className="text-sm text-[var(--acopay-muted)]">{t("sendAcopay.tgDoneHint")}</p>
+                ) : (
+                  !confirming &&
+                  paysokLine && (
+                    <>
+                      <p className="text-sm text-[var(--acopay-muted)]">{t("sendAcopay.pasteHint")}</p>
+                      <pre className="whitespace-pre-wrap break-all rounded-xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-bg)] p-3 font-mono text-xs text-[var(--acopay-fg)]">
+                        {paysokLine}
+                      </pre>
+                      <button type="button" onClick={() => void copyPaysok()} className="btn-orca-secondary !rounded-xl">
+                        {copied ? t("sendAcopay.copied") : t("sendAcopay.copyPaysok")}
+                      </button>
+                    </>
+                  )
+                )}
+
+                <a
+                  href={botUrl}
+                  className="btn-orca-primary flex w-full !rounded-xl items-center justify-center"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {t("sendAcopay.openTelegram")}
+                </a>
               </div>
             )}
           </div>
