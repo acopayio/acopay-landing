@@ -1,22 +1,21 @@
 /**
- * Same-origin proxy: browser → /api/pay/sponsor → VPS builds UNSIGNED tx (feePayer=OPERATOR).
- * Phantom signs first in the browser; then POST /api/pay/cosign for OPERATOR partialSign.
- * Markets data still never hits VPS; this path is Pay-only.
+ * Same-origin proxy: browser → /api/pay/cosign → VPS OPERATOR partial-sign AFTER Phantom.
+ * Signing order (Phantom Lighthouse): Phantom signTransaction first, then this cosign.
  *
- * Auth = pending Phantom pay on VPS (tg/pid/from/to/amount). Optional CF env:
- *   PAY_SPONSOR_URL    override upstream (default Contabo volume sponsor)
+ * Optional CF env:
+ *   PAY_COSIGN_URL     override upstream (default …/pay/cosign)
  *   PAY_SPONSOR_SECRET optional shared secret header if set on VPS
  */
 type PagesContext = {
   request: Request;
   env: {
+    PAY_COSIGN_URL?: string;
     PAY_SPONSOR_URL?: string;
     PAY_SPONSOR_SECRET?: string;
   };
 };
 
-/** Default: VPS hostname (Workers cannot fetch bare IPs — CF error 1003). */
-const DEFAULT_UPSTREAM = "http://vmi3457424.contaboserver.net/pay/sponsor";
+const DEFAULT_UPSTREAM = "http://vmi3457424.contaboserver.net/pay/cosign";
 
 function json(status: number, body: unknown): Response {
   return new Response(JSON.stringify(body), {
@@ -28,8 +27,19 @@ function json(status: number, body: unknown): Response {
   });
 }
 
+function resolveUpstream(env: PagesContext["env"]): string {
+  const explicit = String(env.PAY_COSIGN_URL || "").trim();
+  if (explicit) return explicit;
+  // Derive from sponsor URL if set (…/pay/sponsor → …/pay/cosign)
+  const sponsor = String(env.PAY_SPONSOR_URL || "").trim();
+  if (sponsor.includes("/pay/sponsor")) {
+    return sponsor.replace(/\/pay\/sponsor\/?$/, "/pay/cosign");
+  }
+  return DEFAULT_UPSTREAM;
+}
+
 export async function onRequestPost(context: PagesContext): Promise<Response> {
-  const upstream = String(context.env.PAY_SPONSOR_URL || DEFAULT_UPSTREAM).trim();
+  const upstream = resolveUpstream(context.env);
   const secret = String(context.env.PAY_SPONSOR_SECRET || "").trim();
 
   let bodyText: string;
@@ -57,12 +67,12 @@ export async function onRequestPost(context: PagesContext): Promise<Response> {
       headers: {
         "Content-Type": "application/json; charset=utf-8",
         "Cache-Control": "no-store",
-        "X-Acopay-Pay": "sponsor-proxy",
+        "X-Acopay-Pay": "cosign-proxy",
       },
     });
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
-    return json(502, { error: `Sponsor upstream unreachable: ${msg}` });
+    return json(502, { error: `Cosign upstream unreachable: ${msg}` });
   }
 }
 

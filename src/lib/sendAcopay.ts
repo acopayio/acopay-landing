@@ -1,7 +1,7 @@
 /**
  * Phantom-signed ACOPAY (Token-2022) send — same fee rules as Telegram bot Pay.
- * SOL gas: OPERATOR co-signs via /api/pay/sponsor (feePayer = OPERATOR).
- * User Phantom only signs as token authority.
+ * SOL gas: OPERATOR co-signs via /api/pay/cosign AFTER Phantom signs (Lighthouse / Saul order).
+ * Flow: sponsor (unsigned) → Phantom signTransaction → cosign (OPERATOR) → sendRaw.
  */
 import {
   Connection,
@@ -182,8 +182,15 @@ type SponsorResponse = {
   tx?: string;
   feePayer?: string;
   plan?: { isFirstAtaOpen?: boolean; summary?: SendPlanSummary };
+  signOrder?: string;
   error?: string;
 };
+
+function uint8ToB64(bytes: Uint8Array): string {
+  let s = "";
+  for (let i = 0; i < bytes.length; i++) s += String.fromCharCode(bytes[i]);
+  return btoa(s);
+}
 
 async function fetchSponsoredTx(opts: {
   tg: string;
@@ -216,6 +223,42 @@ async function fetchSponsoredTx(opts: {
   }
   if (!data.tx) {
     throw new Error(data.error || "Pay sponsor did not return a transaction.");
+  }
+  return data;
+}
+
+/** OPERATOR partialSign after Phantom — Saul / Lighthouse order. */
+async function fetchOperatorCosign(opts: {
+  tg: string;
+  pid: string;
+  from: string;
+  to: string;
+  amount: string | number;
+  txBase64: string;
+}): Promise<SponsorResponse> {
+  const res = await fetch("/api/pay/cosign", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify({
+      tg: opts.tg,
+      pid: opts.pid,
+      from: opts.from,
+      to: opts.to,
+      amount: opts.amount,
+      tx: opts.txBase64,
+    }),
+  });
+  let data: SponsorResponse = {};
+  try {
+    data = (await res.json()) as SponsorResponse;
+  } catch {
+    throw new Error("Pay cosign returned invalid JSON.");
+  }
+  if (!res.ok) {
+    throw new Error(data.error || `Pay cosign failed (${res.status})`);
+  }
+  if (!data.tx) {
+    throw new Error(data.error || "Pay cosign did not return a transaction.");
   }
   return data;
 }
@@ -280,7 +323,8 @@ function b64ToUint8Array(b64: string): Uint8Array {
 }
 
 /**
- * Connect Phantom (must match `fromBase58`), get OPERATOR-sponsored tx, sign + send.
+ * Connect Phantom (must match `fromBase58`), get unsigned sponsored tx,
+ * Phantom signs FIRST, OPERATOR cosigns SECOND, then send.
  */
 export async function sendAcopayWithPhantom(opts: {
   fromBase58: string;
@@ -351,39 +395,65 @@ export async function sendAcopayWithPhantom(opts: {
     throw new Error(friendlyRpcError(e));
   }
 
-  const tx = Transaction.from(b64ToUint8Array(String(sponsored.tx)));
-  if (!tx.feePayer) {
+  const unsignedTx = Transaction.from(b64ToUint8Array(String(sponsored.tx)));
+  if (!unsignedTx.feePayer) {
     throw new Error("Sponsored transaction missing fee payer.");
   }
 
-  let signed: Transaction;
+  // 1) Phantom signs first (Saul / Lighthouse)
+  let phantomSigned: Transaction;
   try {
-    signed = await provider.signTransaction(tx);
+    phantomSigned = await provider.signTransaction(unsignedTx);
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
     if (/User rejected|rejected the request|4001/i.test(msg)) throw e;
     throw new Error(friendlyRpcError(e));
   }
 
+  const phantomSignedB64 = uint8ToB64(
+    phantomSigned.serialize({
+      requireAllSignatures: false,
+      verifySignatures: false,
+    }),
+  );
+
+  // 2) OPERATOR partialSign second (server-side; key never in browser)
+  let cosigned: SponsorResponse;
   try {
-    const signature = await connection.sendRawTransaction(signed.serialize(), {
+    cosigned = await fetchOperatorCosign({
+      tg: opts.tg,
+      pid: opts.pid,
+      from: opts.fromBase58,
+      to: opts.toBase58,
+      amount: opts.amountHuman,
+      txBase64: phantomSignedB64,
+    });
+  } catch (e) {
+    throw new Error(friendlyRpcError(e));
+  }
+
+  const fullySigned = Transaction.from(b64ToUint8Array(String(cosigned.tx)));
+
+  try {
+    const signature = await connection.sendRawTransaction(fullySigned.serialize(), {
       skipPreflight: true,
       maxRetries: 3,
     });
-    const plan: SendPlan | null = sponsored.plan?.summary
+    const planSrc = cosigned.plan || sponsored.plan;
+    const plan: SendPlan | null = planSrc?.summary
       ? {
           grossToRecipient: 0n,
           grossToTreasury: 0n,
           totalDebit: 0n,
-          isFirstAtaOpen: Boolean(sponsored.plan.isFirstAtaOpen),
-          summary: sponsored.plan.summary,
+          isFirstAtaOpen: Boolean(planSrc.isFirstAtaOpen),
+          summary: planSrc.summary,
         }
       : null;
     return {
       signature,
       plan,
       from: owner.toBase58(),
-      feePayer: sponsored.feePayer || tx.feePayer.toBase58(),
+      feePayer: cosigned.feePayer || sponsored.feePayer || unsignedTx.feePayer.toBase58(),
     };
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
