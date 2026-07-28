@@ -372,7 +372,7 @@ export function SendAcopayPage() {
 
         {/* —— Fallback if confirm timed out / failed —— */}
         {signature && !confirming && !tgConfirmed ? (
-          <div className="mt-8 space-y-4">
+          <div className="mt-8 space-y-4 send-confirm-reveal">
             <div className="send-bill send-bill--warn space-y-3 text-sm">
               <div className="send-bill-row">
                 <span className="send-bill-label">💸 {t("sendAcopay.transferredLabel")}</span>
@@ -381,11 +381,11 @@ export function SendAcopayPage() {
                 </span>
               </div>
               <div className="send-bill-row">
-                <span className="send-bill-label">{t("sendAcopay.recipientLabel")}</span>
+                <span className="send-bill-label">👤 {t("sendAcopay.recipientLabel")}</span>
                 <span className="send-bill-value send-bill-value--plain">{shortAddr(to)}</span>
               </div>
               <hr className="send-bill-divider" />
-              <p className="send-bill-status--pending">📲 {t("sendAcopay.tgFailedStatus")}</p>
+              <p className="send-bill-status--pending">{t("sendAcopay.tgFailedStatus")}</p>
               <ExplorerLinks />
             </div>
 
@@ -396,14 +396,24 @@ export function SendAcopayPage() {
             )}
 
             {paysokLine && (
-              <div className="space-y-2 rounded-2xl border border-amber-500/35 bg-amber-500/10 p-4">
-                <p className="text-sm leading-relaxed text-[var(--acopay-fg)] whitespace-pre-line">
-                  {t("sendAcopay.pasteHint")}
-                </p>
-                <pre className="whitespace-pre-wrap break-all rounded-xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-surface)] p-3 font-mono text-xs text-[var(--acopay-fg)]">
-                  {paysokLine}
-                </pre>
-                <button type="button" onClick={() => void copyPaysok()} className="btn-orca-secondary !rounded-xl">
+              <div className="send-fallback">
+                <p className="send-fallback-lead">{t("sendAcopay.pasteLead")}</p>
+                <ol className="send-fallback-steps">
+                  <li>
+                    <span className="send-fallback-step-num" aria-hidden>
+                      1
+                    </span>
+                    <span>{t("sendAcopay.pasteStep1")}</span>
+                  </li>
+                  <li>
+                    <span className="send-fallback-step-num" aria-hidden>
+                      2
+                    </span>
+                    <span>{t("sendAcopay.pasteStep2")}</span>
+                  </li>
+                </ol>
+                <pre className="send-fallback-cmd">{paysokLine}</pre>
+                <button type="button" onClick={() => void copyPaysok()} className="btn-orca-secondary !rounded-xl w-full">
                   {copied ? t("sendAcopay.copied") : t("sendAcopay.copyPaysok")}
                 </button>
               </div>
