@@ -158,9 +158,27 @@ export function SendAcopayPage() {
         <h1 className="mt-2 text-3xl font-bold tracking-tight text-[var(--acopay-fg)]">
           {t("sendAcopay.title")}
         </h1>
-        <p className="mt-4 whitespace-pre-line text-[15px] leading-relaxed text-[var(--acopay-muted)]">
+        <p className="mt-3 text-[15px] leading-relaxed text-[var(--acopay-muted)]">
           {t("sendAcopay.intro")}
         </p>
+
+        <ol className="mt-5 space-y-2.5">
+          {[
+            t("sendAcopay.step1"),
+            t("sendAcopay.step2"),
+            t("sendAcopay.step3"),
+          ].map((step, i) => (
+            <li key={i} className="flex gap-3 text-[14px] leading-snug text-[var(--acopay-fg)]">
+              <span
+                className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--acopay-brand)]/15 text-xs font-bold text-[var(--acopay-brand)]"
+                aria-hidden
+              >
+                {i + 1}
+              </span>
+              <span className="text-[var(--acopay-muted)]">{step}</span>
+            </li>
+          ))}
+        </ol>
 
         {badBrowser && (
           <div className="mt-6 space-y-3 rounded-2xl border border-amber-500/40 bg-amber-500/15 p-4 text-sm text-[var(--acopay-fg)]">
@@ -178,19 +196,27 @@ export function SendAcopayPage() {
           </p>
         ) : (
           <div className="mt-8 space-y-4">
-            <div className="rounded-2xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-bg)]/80 p-4 space-y-2 text-sm">
-              <p className="text-[var(--acopay-muted)]">
-                {t("sendAcopay.amountLabel")}{" "}
-                <span className="font-semibold text-[var(--acopay-fg)]">{amount} ACOPAY</span>
-              </p>
-              <p className="text-[var(--acopay-muted)]">
-                {t("sendAcopay.fromLabel")}{" "}
-                <code className="break-all text-[var(--acopay-fg)]">{from}</code>
-              </p>
-              <p className="text-[var(--acopay-muted)]">
-                {t("sendAcopay.toLabel")}{" "}
-                <code className="break-all text-[var(--acopay-fg)]">{to}</code>
-              </p>
+            <div className="rounded-2xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-bg)]/80 p-4 space-y-3 text-sm">
+              <div className="flex items-baseline justify-between gap-3">
+                <span className="text-[var(--acopay-muted)]">💸 {t("sendAcopay.amountLabel")}</span>
+                <span className="font-semibold tabular-nums text-[var(--acopay-fg)]">
+                  {amount} <span className="text-[var(--acopay-brand)]">ACOPAY</span>
+                </span>
+              </div>
+              <div className="border-t border-[color:var(--acopay-border-strong)]/60 pt-3 space-y-2">
+                <p>
+                  <span className="text-[var(--acopay-muted)]">📤 {t("sendAcopay.fromLabel")}</span>
+                  <code className="mt-1 block break-all text-[13px] leading-relaxed text-[var(--acopay-fg)]">
+                    {from}
+                  </code>
+                </p>
+                <p>
+                  <span className="text-[var(--acopay-muted)]">📥 {t("sendAcopay.toLabel")}</span>
+                  <code className="mt-1 block break-all text-[13px] leading-relaxed text-[var(--acopay-fg)]">
+                    {to}
+                  </code>
+                </p>
+              </div>
             </div>
 
             {expired && <p className="text-sm text-amber-700 dark:text-amber-300">{t("sendAcopay.expired")}</p>}
