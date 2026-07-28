@@ -9,7 +9,7 @@ type Partials = Record<string, { sendAcopay: SendSection }>;
 
 const enBase: SendSection = {
   kicker: "Telegram Pay",
-  title: "🔐 Sign ACOPAY transfer",
+  title: "🔐 Approve ACOPAY transfer",
   intro: "Use your linked Phantom — SOL network fee is sponsored.",
   step1: "Connect the Phantom wallet linked in the bot",
   step2: "Approve the ACOPAY transfer",
@@ -71,7 +71,7 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
   en: { sendAcopay: enBase },
 
   vi: L({
-    title: "🔐 Ký chuyển ACOPAY",
+    title: "🔐 Duyệt chuyển ACOPAY",
     intro: "Dùng Phantom đã liên kết — phí SOL do hệ thống trả.",
     step1: "Kết nối đúng ví Phantom đã liên kết trong bot",
     step2: "Duyệt giao dịch ACOPAY",
@@ -123,7 +123,7 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
   }),
 
   zh: L({
-    title: "🔐 签名转账 ACOPAY",
+    title: "🔐 批准 ACOPAY 转账",
     intro: "使用已关联的 Phantom — SOL 网络费由系统支付。",
     step1: "连接机器人中已关联的 Phantom 钱包",
     step2: "批准 ACOPAY 转账",
@@ -160,7 +160,7 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
   }),
 
   ja: L({
-    title: "🔐 ACOPAY送金に署名",
+    title: "🔐 ACOPAY送金を承認",
     intro: "連携済み Phantom を使用 — SOL手数料はシステム負担。",
     step1: "ボットで連携した Phantom を接続",
     step2: "ACOPAY送金を承認",
@@ -197,7 +197,7 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
   }),
 
   ko: L({
-    title: "🔐 ACOPAY 송금 서명",
+    title: "🔐 ACOPAY 송금 승인",
     intro: "연동된 Phantom 사용 — SOL 수수료는 시스템이 부담.",
     step1: "봇에 연동된 Phantom 지갑 연결",
     step2: "ACOPAY 송금 승인",
@@ -234,7 +234,7 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
   }),
 
   th: L({
-    title: "🔐 ลงนามโอน ACOPAY",
+    title: "🔐 อนุมัติการโอน ACOPAY",
     intro: "ใช้ Phantom ที่เชื่อมแล้ว — ค่าธรรมเนียม SOL ระบบจ่ายให้",
     step1: "เชื่อม Phantom ที่ผูกไว้ในบอท",
     step2: "อนุมัติการโอน ACOPAY",
@@ -271,7 +271,7 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
   }),
 
   id: L({
-    title: "🔐 Tanda tangani transfer ACOPAY",
+    title: "🔐 Setujui transfer ACOPAY",
     intro: "Gunakan Phantom tertaut — biaya SOL ditanggung sistem.",
     step1: "Hubungkan Phantom yang ditautkan di bot",
     step2: "Setujui transfer ACOPAY",
@@ -308,7 +308,7 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
   }),
 
   ms: L({
-    title: "🔐 Tandatangan pindahan ACOPAY",
+    title: "🔐 Luluskan pindahan ACOPAY",
     intro: "Guna Phantom yang dipautkan — yuran SOL ditanggung sistem.",
     step1: "Sambungkan Phantom yang dipautkan dalam bot",
     step2: "Luluskan pemindahan ACOPAY",
@@ -345,7 +345,7 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
   }),
 
   hi: L({
-    title: "🔐 ACOPAY ट्रांसफर पर साइन करें",
+    title: "🔐 ACOPAY ट्रांसफर स्वीकार करें",
     intro: "लिंक किया Phantom इस्तेमाल करें — SOL शुल्क सिस्टम भरता है।",
     step1: "बॉट में लिंक किया Phantom वॉलेट कनेक्ट करें",
     step2: "ACOPAY ट्रांसफर स्वीकार करें",
@@ -382,7 +382,7 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
   }),
 
   es: L({
-    title: "🔐 Firmar transferencia ACOPAY",
+    title: "🔐 Aprobar transferencia ACOPAY",
     intro: "Usa tu Phantom vinculado — la comisión SOL la cubre el sistema.",
     step1: "Conecta el Phantom vinculado en el bot",
     step2: "Aprueba la transferencia ACOPAY",
@@ -419,7 +419,7 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
   }),
 
   pt: L({
-    title: "🔐 Assinar transferência ACOPAY",
+    title: "🔐 Aprovar transferência ACOPAY",
     intro: "Use o Phantom vinculado — taxa SOL coberta pelo sistema.",
     step1: "Conecte o Phantom vinculado no bot",
     step2: "Aprove a transferência ACOPAY",
@@ -456,7 +456,7 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
   }),
 
   fr: L({
-    title: "🔐 Signer le transfert ACOPAY",
+    title: "🔐 Approuver le transfert ACOPAY",
     intro: "Utilisez votre Phantom lié — frais SOL pris en charge.",
     step1: "Connectez le Phantom lié dans le bot",
     step2: "Approuvez le transfert ACOPAY",
@@ -493,7 +493,7 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
   }),
 
   de: L({
-    title: "🔐 ACOPAY-Überweisung signieren",
+    title: "🔐 ACOPAY-Überweisung bestätigen",
     intro: "Verknüpftes Phantom nutzen — SOL-Gebühr übernimmt das System.",
     step1: "Im Bot verknüpftes Phantom verbinden",
     step2: "ACOPAY-Überweisung bestätigen",
@@ -530,7 +530,7 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
   }),
 
   nl: L({
-    title: "🔐 ACOPAY-overdracht ondertekenen",
+    title: "🔐 ACOPAY-overdracht goedkeuren",
     intro: "Gebruik je gekoppelde Phantom — SOL-kosten betaalt het systeem.",
     step1: "Verbind de Phantom die in de bot is gekoppeld",
     step2: "Keur de ACOPAY-overdracht goed",
@@ -567,7 +567,7 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
   }),
 
   it: L({
-    title: "🔐 Firma trasferimento ACOPAY",
+    title: "🔐 Approva trasferimento ACOPAY",
     intro: "Usa il Phantom collegato — commissione SOL a carico del sistema.",
     step1: "Collega il Phantom associato nel bot",
     step2: "Approva il trasferimento ACOPAY",
@@ -604,7 +604,7 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
   }),
 
   ru: L({
-    title: "🔐 Подписать перевод ACOPAY",
+    title: "🔐 Подтвердить перевод ACOPAY",
     intro: "Используйте связанный Phantom — комиссию SOL платит система.",
     step1: "Подключите Phantom, связанный в боте",
     step2: "Подтвердите перевод ACOPAY",
@@ -641,7 +641,7 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
   }),
 
   uk: L({
-    title: "🔐 Підписати переказ ACOPAY",
+    title: "🔐 Підтвердити переказ ACOPAY",
     intro: "Використовуйте пов’язаний Phantom — комісію SOL сплачує система.",
     step1: "Підключіть Phantom, пов’язаний у боті",
     step2: "Підтвердіть переказ ACOPAY",
@@ -678,7 +678,7 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
   }),
 
   pl: L({
-    title: "🔐 Podpisz przelew ACOPAY",
+    title: "🔐 Zatwierdź przelew ACOPAY",
     intro: "Użyj powiązanego Phantom — opłatę SOL pokrywa system.",
     step1: "Połącz Phantom powiązany w bocie",
     step2: "Zatwierdź przelew ACOPAY",
@@ -715,7 +715,7 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
   }),
 
   tr: L({
-    title: "🔐 ACOPAY transferini imzala",
+    title: "🔐 ACOPAY transferini onayla",
     intro: "Bağlı Phantom’u kullanın — SOL ücretini sistem öder.",
     step1: "Bot’ta bağlı Phantom cüzdanı bağla",
     step2: "ACOPAY transferini onayla",
@@ -752,7 +752,7 @@ export const SEND_ACOPAY_PARTIALS: Partials = {
   }),
 
   ar: L({
-    title: "🔐 توقيع تحويل ACOPAY",
+    title: "🔐 الموافقة على تحويل ACOPAY",
     intro: "استخدم Phantom المرتبط — رسوم SOL يدفعها النظام.",
     step1: "اربط محفظة Phantom المرتبطة في البوت",
     step2: "وافق على تحويل ACOPAY",

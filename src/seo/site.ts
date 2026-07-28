@@ -98,7 +98,7 @@ export const PAGE_SEO: Record<string, PageSeo> = {
     path: "/link-wallet",
   },
   "/send": {
-    title: "Transfer ACOPAY with Phantom | Acopay.net",
+    title: "Approve ACOPAY transfer | Acopay.net",
     description: SITE.defaultDescription,
     path: "/send",
   },

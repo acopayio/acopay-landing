@@ -447,7 +447,7 @@ export const en = {
   },
   sendAcopay: {
     kicker: "Telegram Pay",
-    title: "🔐 Sign ACOPAY transfer",
+    title: "🔐 Approve ACOPAY transfer",
     intro: "Use your linked Phantom — SOL network fee is sponsored.",
     step1: "Connect the Phantom wallet linked in the bot",
     step2: "Approve the ACOPAY transfer",
