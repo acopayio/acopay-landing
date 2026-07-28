@@ -108,7 +108,7 @@ export function SendAcopayPage() {
         {explorerUrl && (
           <a
             href={explorerUrl}
-            className="block text-sm font-medium text-[var(--acopay-brand)] hover:underline"
+            className="send-bill-link"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -118,7 +118,7 @@ export function SendAcopayPage() {
         )}
         <a
           href={transfersUrl}
-          className="block text-sm font-medium text-[var(--acopay-brand)] hover:underline"
+          className="send-bill-link"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -287,17 +287,17 @@ export function SendAcopayPage() {
               {t("sendAcopay.confirmWaitHint")}
             </p>
 
-            <div className="mt-8 w-full max-w-sm rounded-2xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-bg)]/80 px-4 py-3.5 text-left text-sm">
-              <div className="flex items-baseline justify-between gap-3">
-                <span className="text-[var(--acopay-muted)]">{t("sendAcopay.amountLabel")}</span>
-                <span className="font-semibold tabular-nums text-[var(--acopay-fg)]">
-                  {fmtAcopayDisplay(bill.transferred)}{" "}
-                  <span className="text-[var(--acopay-brand)]">ACOPAY</span>
+            <div className="mt-8 w-full max-w-sm send-bill text-left text-sm">
+              <div className="send-bill-row">
+                <span className="send-bill-label">{t("sendAcopay.amountLabel")}</span>
+                <span className="send-bill-value">
+                  {fmtAcopayDisplay(bill.transferred)} <span className="send-bill-ticker">ACOPAY</span>
                 </span>
               </div>
-              <div className="mt-2.5 flex items-baseline justify-between gap-3 border-t border-[color:var(--acopay-border-strong)]/60 pt-2.5">
-                <span className="text-[var(--acopay-muted)]">{t("sendAcopay.recipientLabel")}</span>
-                <span className="font-medium tabular-nums text-[var(--acopay-fg)]">{shortAddr(to)}</span>
+              <hr className="send-bill-divider" />
+              <div className="send-bill-row">
+                <span className="send-bill-label">{t("sendAcopay.recipientLabel")}</span>
+                <span className="send-bill-value send-bill-value--plain">{shortAddr(to)}</span>
               </div>
             </div>
 
@@ -305,7 +305,7 @@ export function SendAcopayPage() {
               {explorerUrl && (
                 <a
                   href={explorerUrl}
-                  className="block text-sm font-medium text-[var(--acopay-brand)] hover:underline"
+                  className="send-bill-link"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -314,7 +314,7 @@ export function SendAcopayPage() {
               )}
               <a
                 href={transfersUrl}
-                className="block text-sm font-medium text-[var(--acopay-brand)] hover:underline"
+                className="send-bill-link"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -327,57 +327,57 @@ export function SendAcopayPage() {
         {/* —— Success bill (only after Telegram confirms) —— */}
         {signature && tgConfirmed ? (
           <div className="mt-8 space-y-4 send-confirm-reveal">
-            <div className="rounded-2xl border border-emerald-600/35 bg-emerald-500/10 p-4 space-y-3 text-sm">
-              <div className="flex items-baseline justify-between gap-3">
-                <span className="text-[var(--acopay-muted)]">💸 {t("sendAcopay.transferredLabel")}</span>
-                <span className="font-semibold tabular-nums text-[var(--acopay-fg)]">
-                  {fmtAcopayDisplay(bill.transferred)}{" "}
-                  <span className="text-[var(--acopay-brand)]">ACOPAY</span>
+            <div className="send-bill send-bill--success space-y-3 text-sm">
+              <div className="send-bill-row">
+                <span className="send-bill-label">💸 {t("sendAcopay.transferredLabel")}</span>
+                <span className="send-bill-value">
+                  {fmtAcopayDisplay(bill.transferred)} <span className="send-bill-ticker">ACOPAY</span>
                 </span>
               </div>
-              <div className="flex items-baseline justify-between gap-3">
-                <span className="text-[var(--acopay-muted)]">💸 {t("sendAcopay.feeLabel")}</span>
-                <span className="tabular-nums text-[var(--acopay-fg)]">
+              <div className="send-bill-row">
+                <span className="send-bill-label">💸 {t("sendAcopay.feeLabel")}</span>
+                <span className="send-bill-value send-bill-value--plain">
                   {fmtAcopayDisplay(bill.fee)} ACOPAY{" "}
-                  <span className="text-[var(--acopay-muted)]">({bill.feePct})</span>
+                  <span className="send-bill-meta">({bill.feePct})</span>
                 </span>
               </div>
               {bill.openFee ? (
-                <div className="flex items-baseline justify-between gap-3">
-                  <span className="text-[var(--acopay-muted)]">🆕 {t("sendAcopay.openFeeLabel")}</span>
-                  <span className="tabular-nums text-[var(--acopay-fg)]">
+                <div className="send-bill-row">
+                  <span className="send-bill-label">🆕 {t("sendAcopay.openFeeLabel")}</span>
+                  <span className="send-bill-value send-bill-value--plain">
                     {fmtAcopayDisplay(bill.openFee)} ACOPAY
                   </span>
                 </div>
               ) : null}
-              <div className="flex items-baseline justify-between gap-3 border-t border-[color:var(--acopay-border-strong)]/60 pt-3">
-                <span className="font-medium text-[var(--acopay-fg)]">🧾 {t("sendAcopay.totalLabel")}</span>
-                <span className="font-semibold tabular-nums text-[var(--acopay-fg)]">
-                  {fmtAcopayDisplay(bill.total)} <span className="text-[var(--acopay-brand)]">ACOPAY</span>
+              <hr className="send-bill-divider" />
+              <div className="send-bill-row">
+                <span className="send-bill-label send-bill-label--strong">
+                  🧾 {t("sendAcopay.totalLabel")}
+                </span>
+                <span className="send-bill-value">
+                  {fmtAcopayDisplay(bill.total)} <span className="send-bill-ticker">ACOPAY</span>
                 </span>
               </div>
 
-              <div className="border-t border-[color:var(--acopay-border-strong)]/60 pt-3 space-y-2.5">
+              <hr className="send-bill-divider" />
+              <div className="send-bill-section">
                 <p>
-                  <span className="text-[var(--acopay-muted)]">👤 {t("sendAcopay.recipientLabel")}: </span>
+                  <span className="send-bill-label">👤 {t("sendAcopay.recipientLabel")}: </span>
                   <span className="font-semibold text-[var(--acopay-fg)]">{shortAddr(to)}</span>
                 </p>
-                <p>
-                  <span className="text-[var(--acopay-muted)]">👛 {t("sendAcopay.receiveAddrLabel")}</span>
-                  <code className="mt-1 block break-all text-[13px] leading-relaxed text-[var(--acopay-fg)]">
-                    {to}
-                  </code>
-                </p>
-                <p>
-                  <span className="text-[var(--acopay-muted)]">📤 {t("sendAcopay.fromWalletLabel")}</span>
-                  <code className="mt-1 block break-all text-[13px] leading-relaxed text-[var(--acopay-fg)]">
-                    {from}
-                  </code>
-                </p>
+                <div>
+                  <span className="send-bill-label">👛 {t("sendAcopay.receiveAddrLabel")}</span>
+                  <code className="send-bill-addr">{to}</code>
+                </div>
+                <div>
+                  <span className="send-bill-label">📤 {t("sendAcopay.fromWalletLabel")}</span>
+                  <code className="send-bill-addr">{from}</code>
+                </div>
               </div>
 
-              <div className="border-t border-[color:var(--acopay-border-strong)]/60 pt-3 space-y-2">
-                <p className="font-medium text-[var(--acopay-fg)]">📲 {t("sendAcopay.tgConfirmedStatus")}</p>
+              <hr className="send-bill-divider" />
+              <div className="space-y-2">
+                <p className="send-bill-status">📲 {t("sendAcopay.tgConfirmedStatus")}</p>
                 <ExplorerLinks />
               </div>
             </div>
@@ -398,21 +398,19 @@ export function SendAcopayPage() {
         {/* —— Fallback if confirm timed out / failed —— */}
         {signature && !confirming && !tgConfirmed ? (
           <div className="mt-8 space-y-4">
-            <div className="rounded-2xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-bg)]/80 p-4 space-y-3 text-sm">
-              <div className="flex items-baseline justify-between gap-3">
-                <span className="text-[var(--acopay-muted)]">💸 {t("sendAcopay.transferredLabel")}</span>
-                <span className="font-semibold tabular-nums text-[var(--acopay-fg)]">
-                  {fmtAcopayDisplay(bill.transferred)}{" "}
-                  <span className="text-[var(--acopay-brand)]">ACOPAY</span>
+            <div className="send-bill send-bill--warn space-y-3 text-sm">
+              <div className="send-bill-row">
+                <span className="send-bill-label">💸 {t("sendAcopay.transferredLabel")}</span>
+                <span className="send-bill-value">
+                  {fmtAcopayDisplay(bill.transferred)} <span className="send-bill-ticker">ACOPAY</span>
                 </span>
               </div>
-              <div className="flex items-baseline justify-between gap-3">
-                <span className="text-[var(--acopay-muted)]">{t("sendAcopay.recipientLabel")}</span>
-                <span className="font-medium text-[var(--acopay-fg)]">{shortAddr(to)}</span>
+              <div className="send-bill-row">
+                <span className="send-bill-label">{t("sendAcopay.recipientLabel")}</span>
+                <span className="send-bill-value send-bill-value--plain">{shortAddr(to)}</span>
               </div>
-              <p className="border-t border-[color:var(--acopay-border-strong)]/60 pt-3 font-medium text-[var(--acopay-fg)]">
-                📲 {t("sendAcopay.tgFailedStatus")}
-              </p>
+              <hr className="send-bill-divider" />
+              <p className="send-bill-status--pending">📲 {t("sendAcopay.tgFailedStatus")}</p>
               <ExplorerLinks />
             </div>
 
@@ -425,7 +423,7 @@ export function SendAcopayPage() {
             {paysokLine && (
               <div className="space-y-2 rounded-2xl border border-amber-500/35 bg-amber-500/10 p-4">
                 <p className="text-sm text-[var(--acopay-fg)]">{t("sendAcopay.pasteHint")}</p>
-                <pre className="whitespace-pre-wrap break-all rounded-xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-bg)] p-3 font-mono text-xs text-[var(--acopay-fg)]">
+                <pre className="whitespace-pre-wrap break-all rounded-xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-surface)] p-3 font-mono text-xs text-[var(--acopay-fg)]">
                   {paysokLine}
                 </pre>
                 <button type="button" onClick={() => void copyPaysok()} className="btn-orca-secondary !rounded-xl">
@@ -478,26 +476,23 @@ export function SendAcopayPage() {
               </p>
             ) : (
               <div className="mt-8 space-y-4">
-                <div className="rounded-2xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-bg)]/80 p-4 space-y-3 text-sm">
-                  <div className="flex items-baseline justify-between gap-3">
-                    <span className="text-[var(--acopay-muted)]">💸 {t("sendAcopay.amountLabel")}</span>
-                    <span className="font-semibold tabular-nums text-[var(--acopay-fg)]">
-                      {amount} <span className="text-[var(--acopay-brand)]">ACOPAY</span>
+                <div className="send-bill space-y-3 text-sm">
+                  <div className="send-bill-row">
+                    <span className="send-bill-label">💸 {t("sendAcopay.amountLabel")}</span>
+                    <span className="send-bill-value">
+                      {amount} <span className="send-bill-ticker">ACOPAY</span>
                     </span>
                   </div>
-                  <div className="border-t border-[color:var(--acopay-border-strong)]/60 pt-3 space-y-2">
-                    <p>
-                      <span className="text-[var(--acopay-muted)]">📤 {t("sendAcopay.fromLabel")}</span>
-                      <code className="mt-1 block break-all text-[13px] leading-relaxed text-[var(--acopay-fg)]">
-                        {from}
-                      </code>
-                    </p>
-                    <p>
-                      <span className="text-[var(--acopay-muted)]">📥 {t("sendAcopay.toLabel")}</span>
-                      <code className="mt-1 block break-all text-[13px] leading-relaxed text-[var(--acopay-fg)]">
-                        {to}
-                      </code>
-                    </p>
+                  <hr className="send-bill-divider" />
+                  <div className="send-bill-section">
+                    <div>
+                      <span className="send-bill-label">📤 {t("sendAcopay.fromLabel")}</span>
+                      <code className="send-bill-addr">{from}</code>
+                    </div>
+                    <div>
+                      <span className="send-bill-label">📥 {t("sendAcopay.toLabel")}</span>
+                      <code className="send-bill-addr">{to}</code>
+                    </div>
                   </div>
                 </div>
 

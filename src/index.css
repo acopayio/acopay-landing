@@ -878,10 +878,6 @@ a.btn-orca-primary:disabled:hover {
   align-items: center;
 }
 
-.send-confirm-timer .otc-timer-ring {
-  box-shadow: 0 0 0 1px rgba(0, 229, 255, 0.12), 0 12px 40px rgba(0, 229, 255, 0.08);
-}
-
 @keyframes send-confirm-reveal {
   from {
     opacity: 0;
@@ -895,6 +891,135 @@ a.btn-orca-primary:disabled:hover {
 
 .send-confirm-reveal {
   animation: send-confirm-reveal 0.45s ease-out both;
+}
+
+/* Pay receipt — high-contrast bill (Light + Dark) */
+.send-bill {
+  border-radius: 1rem;
+  border: 1px solid var(--acopay-border-strong);
+  background: var(--acopay-surface);
+  padding: 1.05rem 1.1rem;
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--acopay-fg) 4%, transparent);
+}
+
+.send-bill--success {
+  border-color: var(--acopay-success-ring);
+  background: var(--acopay-surface);
+  box-shadow:
+    inset 3px 0 0 var(--acopay-success),
+    0 10px 28px color-mix(in srgb, var(--acopay-fg) 5%, transparent);
+}
+
+.send-bill--warn {
+  border-color: color-mix(in srgb, #b45309 35%, var(--acopay-border-strong));
+  background: var(--acopay-surface);
+}
+
+.send-bill-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.send-bill-label {
+  color: var(--acopay-muted);
+  font-size: 0.875rem;
+  line-height: 1.35;
+}
+
+.send-bill-label--strong {
+  color: var(--acopay-fg);
+  font-weight: 600;
+}
+
+.send-bill-value {
+  color: var(--acopay-fg);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  text-align: right;
+  line-height: 1.35;
+}
+
+.send-bill-value--plain {
+  font-weight: 500;
+}
+
+.send-bill-ticker {
+  color: var(--acopay-brand-dim);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+html[data-theme="dark"] .send-bill-ticker {
+  color: var(--acopay-brand);
+}
+
+.send-bill-meta {
+  color: var(--acopay-faint);
+  font-weight: 500;
+  font-size: 0.8125rem;
+}
+
+.send-bill-divider {
+  border: 0;
+  border-top: 1px solid var(--acopay-border-strong);
+  margin: 0.85rem 0;
+}
+
+.send-bill-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.send-bill-addr {
+  display: block;
+  margin-top: 0.3rem;
+  padding: 0.55rem 0.65rem;
+  border-radius: 0.65rem;
+  border: 1px solid var(--acopay-border);
+  background: var(--acopay-surface-2);
+  color: var(--acopay-fg);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12.5px;
+  line-height: 1.45;
+  word-break: break-all;
+}
+
+.send-bill-status {
+  color: var(--acopay-success);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.send-bill-status--pending {
+  color: var(--acopay-muted);
+  font-weight: 600;
+}
+
+.send-bill-link {
+  display: block;
+  color: var(--acopay-brand-dim) !important;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  line-height: 1.4;
+}
+
+.send-bill-link:hover {
+  color: var(--acopay-brand-hover) !important;
+  text-decoration: underline;
+}
+
+html[data-theme="dark"] .send-bill-link {
+  color: var(--acopay-brand) !important;
+}
+
+.send-confirm-timer .otc-timer-ring {
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--acopay-brand) 22%, transparent),
+    0 12px 40px color-mix(in srgb, var(--acopay-brand) 10%, transparent);
 }
 
 .otc-timer-ring {
