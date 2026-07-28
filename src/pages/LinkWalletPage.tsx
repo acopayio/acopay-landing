@@ -263,17 +263,26 @@ export function LinkWalletPage() {
             )}
 
             {showSuccess && (
-              <div className="mt-2 space-y-4 rounded-2xl border border-[color:var(--acopay-brand)]/30 bg-[#00E5FF]/08 p-4 sm:p-5">
-                <div>
-                  <p className="text-sm font-semibold leading-snug text-[var(--acopay-fg)] sm:text-base">
-                    {t("linkWallet.linkedOk")}
-                  </p>
-                  <p className="mt-1 break-all font-mono text-sm leading-snug text-[var(--acopay-fg)] sm:text-base">
+              <div className="mt-2 space-y-5 rounded-2xl border border-[color:var(--acopay-brand)]/30 bg-[#00E5FF]/08 p-4 text-left sm:p-5">
+                <p className="flex items-start gap-2.5 text-[15px] font-semibold leading-snug text-[var(--acopay-fg)] sm:text-base">
+                  <span className="shrink-0 select-none" aria-hidden>
+                    ✅
+                  </span>
+                  <span>{t("linkWallet.linkedOk")}</span>
+                </p>
+                <p className="flex items-start gap-2.5 break-all font-mono text-sm leading-snug text-[var(--acopay-fg)] sm:text-[15px]">
+                  <span className="shrink-0 select-none font-sans" aria-hidden>
+                    👛
+                  </span>
+                  <span>
                     <AddrHighlight addr={pubkey!} />
-                  </p>
-                </div>
-                <p className="text-sm leading-relaxed text-[var(--acopay-muted)] sm:text-[15px]">
-                  {t("linkWallet.tgDoneHint")}
+                  </span>
+                </p>
+                <p className="flex items-start gap-2.5 text-sm leading-relaxed text-[var(--acopay-muted)] sm:text-[15px]">
+                  <span className="shrink-0 select-none" aria-hidden>
+                    📱
+                  </span>
+                  <span>{t("linkWallet.tgDoneHint")}</span>
                 </p>
                 <a
                   href="https://t.me/AcopayNetwork_bot"
