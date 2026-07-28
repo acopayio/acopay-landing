@@ -35,8 +35,8 @@ function isUnsupportedDesktopBrowser(): boolean {
 }
 
 /**
- * Prove Phantom ownership → paste /linkok into @AcopayNetwork_bot.
- * Mobile: Open in Phantom app only (no copy-URL step).
+ * Prove Phantom ownership → /linkok fallback into @AcopayNetwork_bot.
+ * Mobile: open page in Phantom app first, then sign.
  * Locale: ?lang= from bot (LanguageProvider) + full linkWallet i18n.
  */
 export function LinkWalletPage() {
@@ -144,9 +144,11 @@ export function LinkWalletPage() {
         <h1 className="mt-2 text-3xl font-bold tracking-tight text-[var(--acopay-fg)]">
           {t("linkWallet.title")}
         </h1>
-        <p className="mt-4 whitespace-pre-line text-[15px] leading-relaxed text-[var(--acopay-muted)]">
-          {t("linkWallet.intro")}
-        </p>
+        {t("linkWallet.intro").trim() ? (
+          <p className="mt-4 whitespace-pre-line text-[15px] leading-relaxed text-[var(--acopay-muted)]">
+            {t("linkWallet.intro")}
+          </p>
+        ) : null}
 
         {badBrowser && (
           <div className="mt-6 space-y-3 rounded-2xl border border-amber-500/35 bg-amber-500/10 p-4 text-sm text-amber-50">

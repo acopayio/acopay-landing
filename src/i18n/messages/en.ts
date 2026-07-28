@@ -406,11 +406,7 @@ export const en = {
   linkWallet: {
     kicker: "Telegram Pay",
     title: "Link Phantom wallet",
-    intro:
-      "Link your Phantom wallet to ACOPAY Pay.\n\n" +
-      "1. Sign the message below with Phantom\n" +
-      "2. Copy the signed command\n" +
-      "3. Paste it into @AcopayNetwork_bot",
+    intro: "",
     wrongBrowserTitle: "Use Chrome or Brave",
     wrongBrowserBody:
       "Phantom needs Google Chrome or Brave. Telegram may open another Windows browser — open this page in Chrome instead.",
@@ -424,7 +420,7 @@ export const en = {
     messageLabel: "Message to sign",
     telegramId: "Telegram ID: {tg}",
     expired: "This link expired. Send /linkwallet again in Telegram.",
-    openInPhantom: "Continue in Phantom",
+    openInPhantom: "Open Phantom wallet app",
     installPhantom: "Install Phantom ↗",
     noApp: "Don't have Phantom?",
     connectSign: "Connect Phantom & sign",
@@ -439,7 +435,7 @@ export const en = {
     errMissing: "Missing link details. Open this page from Telegram (/linkwallet).",
     errExpired: "This link expired. Send /linkwallet again in Telegram.",
     errBadBrowser: "This browser cannot run Phantom. Open this page in Google Chrome.",
-    errNoProviderMobile: "Phantom is not available here. Tap “Continue in Phantom” below.",
+    errNoProviderMobile: "Phantom is not available here. Tap \u201cOpen Phantom wallet app\u201d below.",
     errNoProviderDesktop: "Phantom extension not found. Install Phantom in Chrome, then try again.",
     errCancelled: "Signature cancelled in Phantom.",
     errCopyLine: "Could not copy. Select the /linkok line manually.",

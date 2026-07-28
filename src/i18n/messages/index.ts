@@ -440,11 +440,7 @@ const partials: Record<string, DeepPartialMessages> = {
     linkWallet: {
       kicker: "Telegram Pay",
       title: "Liên kết ví Phantom",
-      intro:
-        "Liên kết ví Phantom với ACOPAY Pay.\n\n" +
-        "1. Ký tin nhắn bên dưới bằng Phantom\n" +
-        "2. Sao chép lệnh đã ký\n" +
-        "3. Dán vào @AcopayNetwork_bot",
+      intro: "",
       wrongBrowserTitle: "Dùng Chrome hoặc Brave",
       wrongBrowserBody:
         "Phantom cần Google Chrome hoặc Brave. Telegram có thể mở trình duyệt khác trên Windows — hãy mở trang này bằng Chrome.",
@@ -458,7 +454,7 @@ const partials: Record<string, DeepPartialMessages> = {
       messageLabel: "Tin nhắn cần ký",
       telegramId: "Telegram ID: {tg}",
       expired: "Link đã hết hạn. Gửi lại /linkwallet trong Telegram.",
-      openInPhantom: "Tiếp tục trong Phantom",
+      openInPhantom: "Mở ứng dụng ví Phantom",
       installPhantom: "Cài Phantom ↗",
       noApp: "Chưa có Phantom?",
       connectSign: "Kết nối Phantom & ký",
@@ -473,7 +469,7 @@ const partials: Record<string, DeepPartialMessages> = {
       errMissing: "Thiếu thông tin liên kết. Mở trang từ Telegram (/linkwallet).",
       errExpired: "Link đã hết hạn. Gửi lại /linkwallet trong Telegram.",
       errBadBrowser: "Trình duyệt này không chạy Phantom. Hãy mở bằng Google Chrome.",
-      errNoProviderMobile: "Phantom không khả dụng tại đây. Bấm “Tiếp tục trong Phantom” bên dưới.",
+      errNoProviderMobile: "Phantom không khả dụng tại đây. Bấm \u201cMở ứng dụng ví Phantom\u201d bên dưới.",
       errNoProviderDesktop: "Không thấy tiện ích Phantom. Cài Phantom trên Chrome rồi thử lại.",
       errCancelled: "Đã hủy chữ ký trong Phantom.",
       errCopyLine: "Không sao chép được. Hãy chọn dòng /linkok thủ công.",

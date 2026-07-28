@@ -10,11 +10,7 @@ type Partials = Record<string, { linkWallet: LinkWalletSection }>;
 const enBase: LinkWalletSection = {
   kicker: "Telegram Pay",
   title: "Link Phantom wallet",
-  intro:
-    "Link your Phantom wallet to ACOPAY Pay.\n\n" +
-    "1. Sign the message below with Phantom\n" +
-    "2. Copy the signed command\n" +
-    "3. Paste it into @AcopayNetwork_bot",
+  intro: "",
   wrongBrowserTitle: "Use Chrome or Brave",
   wrongBrowserBody:
     "Phantom needs Google Chrome or Brave. Telegram may open another Windows browser — open this page in Chrome instead.",
@@ -28,7 +24,7 @@ const enBase: LinkWalletSection = {
   messageLabel: "Message to sign",
   telegramId: "Telegram ID: {tg}",
   expired: "This link expired. Send /linkwallet again in Telegram.",
-  openInPhantom: "Continue in Phantom",
+  openInPhantom: "Open Phantom wallet app",
   installPhantom: "Install Phantom ↗",
   noApp: "Don't have Phantom?",
   connectSign: "Connect Phantom & sign",
@@ -43,7 +39,7 @@ const enBase: LinkWalletSection = {
   errMissing: "Missing link details. Open this page from Telegram (/linkwallet).",
   errExpired: "This link expired. Send /linkwallet again in Telegram.",
   errBadBrowser: "This browser cannot run Phantom. Open this page in Google Chrome.",
-  errNoProviderMobile: "Phantom is not available here. Tap \u201cContinue in Phantom\u201d below.",
+  errNoProviderMobile: "Phantom is not available here. Tap \u201cOpen Phantom wallet app\u201d below.",
   errNoProviderDesktop: "Phantom extension not found. Install Phantom in Chrome, then try again.",
   errCancelled: "Signature cancelled in Phantom.",
   errCopyLine: "Could not copy. Select the /linkok line manually.",
@@ -61,11 +57,7 @@ export const LINK_WALLET_PARTIALS: Partials = {
 
   vi: L({
     title: "Liên kết ví Phantom",
-    intro:
-      "Liên kết ví Phantom với ACOPAY Pay.\n\n" +
-      "1. Ký tin nhắn bên dưới bằng Phantom\n" +
-      "2. Sao chép lệnh đã ký\n" +
-      "3. Dán vào @AcopayNetwork_bot",
+    intro: "",
     wrongBrowserTitle: "Dùng Chrome hoặc Brave",
     wrongBrowserBody:
       "Phantom cần Google Chrome hoặc Brave. Telegram có thể mở trình duyệt khác trên Windows — hãy mở trang này bằng Chrome.",
@@ -79,7 +71,7 @@ export const LINK_WALLET_PARTIALS: Partials = {
     messageLabel: "Tin nhắn cần ký",
     telegramId: "ID Telegram: {tg}",
     expired: "Link đã hết hạn. Gửi lại /linkwallet trong Telegram.",
-    openInPhantom: "Tiếp tục trong Phantom",
+    openInPhantom: "Mở ứng dụng ví Phantom",
     installPhantom: "Cài Phantom ↗",
     noApp: "Chưa có Phantom?",
     connectSign: "Kết nối Phantom & ký",
@@ -94,7 +86,7 @@ export const LINK_WALLET_PARTIALS: Partials = {
     errMissing: "Thiếu thông tin liên kết. Mở trang từ Telegram (/linkwallet).",
     errExpired: "Link đã hết hạn. Gửi lại /linkwallet trong Telegram.",
     errBadBrowser: "Trình duyệt này không chạy Phantom. Hãy mở bằng Google Chrome.",
-    errNoProviderMobile: "Phantom không khả dụng tại đây. Bấm \u201cTiếp tục trong Phantom\u201d bên dưới.",
+    errNoProviderMobile: "Phantom không khả dụng tại đây. Bấm \u201cMở ứng dụng ví Phantom\u201d bên dưới.",
     errNoProviderDesktop: "Không thấy tiện ích Phantom. Cài Phantom trên Chrome rồi thử lại.",
     errCancelled: "Đã hủy chữ ký trong Phantom.",
     errCopyLine: "Không sao chép được. Hãy chọn dòng /linkok thủ công.",
@@ -103,14 +95,10 @@ export const LINK_WALLET_PARTIALS: Partials = {
 
   zh: L({
     title: "关联 Phantom 钱包",
-    intro:
-      "将 Phantom 钱包关联到 ACOPAY Pay。\n\n" +
-      "1. 在 Phantom 中签署下方消息\n" +
-      "2. 复制已签名的命令\n" +
-      "3. 粘贴到 @AcopayNetwork_bot",
+    intro: "",
     mobileBody: "在手机上，请在 Phantom 应用内打开此页面以连接并签名。",
     messageLabel: "待签名消息",
-    openInPhantom: "在 Phantom 中继续",
+    openInPhantom: "打开 Phantom 钱包应用",
     noApp: "还没有 Phantom？",
     connectSign: "连接 Phantom 并签名",
     pasteHint: "复制下方命令，并在 15 分钟内粘贴到 @AcopayNetwork_bot。",
@@ -135,7 +123,7 @@ export const LINK_WALLET_PARTIALS: Partials = {
     errMissing: "缺少链接详情。请从 Telegram 打开此页（/linkwallet）。",
     errExpired: "此链接已过期。请在 Telegram 中再次发送 /linkwallet。",
     errBadBrowser: "此浏览器无法运行 Phantom。请用 Google Chrome 打开此页面。",
-    errNoProviderMobile: "此处无法使用 Phantom。请点击下方\u201c在 Phantom 中继续\u201d。",
+    errNoProviderMobile: "此处无法使用 Phantom。请点击下方\u201c打开 Phantom 钱包应用\u201d。",
     errNoProviderDesktop: "未找到 Phantom 扩展。请在 Chrome 中安装 Phantom，然后重试。",
     errCancelled: "已在 Phantom 中取消签名。",
     errCopyLine: "无法复制。请手动选择 /linkok 行。",
@@ -144,14 +132,10 @@ export const LINK_WALLET_PARTIALS: Partials = {
 
   ja: L({
     title: "Phantomウォレットを連携",
-    intro:
-      "Phantomウォレットを ACOPAY Pay に連携します。\n\n" +
-      "1. 下のメッセージを Phantom で署名\n" +
-      "2. 署名済みコマンドをコピー\n" +
-      "3. @AcopayNetwork_bot に貼り付け",
+    intro: "",
     mobileBody: "モバイルでは、Phantomアプリ内でこのページを開いて接続・署名してください。",
     messageLabel: "署名するメッセージ",
-    openInPhantom: "Phantomで続ける",
+    openInPhantom: "Phantomウォレットアプリを開く",
     noApp: "Phantomをお持ちでない場合",
     connectSign: "Phantomに接続して署名",
     pasteHint: "下のコマンドをコピーし、15分以内に @AcopayNetwork_bot へ貼り付けてください。",
@@ -176,7 +160,7 @@ export const LINK_WALLET_PARTIALS: Partials = {
     errMissing: "リンク情報が見つかりません。Telegram からこのページを開いてください（/linkwallet）。",
     errExpired: "このリンクは期限切れです。Telegram で /linkwallet を再度送信してください。",
     errBadBrowser: "このブラウザでは Phantom を実行できません。Google Chrome で開いてください。",
-    errNoProviderMobile: "ここでは Phantom が使えません。下の\u201cPhantomで続ける\u201dをタップしてください。",
+    errNoProviderMobile: "ここでは Phantom が使えません。下の\u201cPhantomウォレットアプリを開く\u201dをタップしてください。",
     errNoProviderDesktop: "Phantom 拡張機能が見つかりません。Chrome に Phantom をインストールして再試行してください。",
     errCancelled: "Phantom で署名をキャンセルしました。",
     errCopyLine: "コピーできませんでした。/linkok 行を手動で選択してください。",
@@ -185,14 +169,10 @@ export const LINK_WALLET_PARTIALS: Partials = {
 
   ko: L({
     title: "Phantom 지갑 연결",
-    intro:
-      "Phantom 지갑을 ACOPAY Pay에 연결합니다.\n\n" +
-      "1. 아래 메시지를 Phantom에서 서명\n" +
-      "2. 서명된 명령 복사\n" +
-      "3. @AcopayNetwork_bot에 붙여넣기",
+    intro: "",
     mobileBody: "모바일에서는 Phantom 앱에서 이 페이지를 열어 연결하고 서명하세요.",
     messageLabel: "서명할 메시지",
-    openInPhantom: "Phantom에서 계속",
+    openInPhantom: "Phantom 지갑 앱 열기",
     noApp: "Phantom이 없나요?",
     connectSign: "Phantom 연결 및 서명",
     pasteHint: "아래 명령을 복사해 15분 안에 @AcopayNetwork_bot에 붙여넣으세요.",
@@ -217,7 +197,7 @@ export const LINK_WALLET_PARTIALS: Partials = {
     errMissing: "링크 정보가 없습니다. Telegram에서 이 페이지를 여세요 (/linkwallet).",
     errExpired: "링크가 만료되었습니다. Telegram에서 /linkwallet을 다시 보내세요.",
     errBadBrowser: "이 브라우저에서는 Phantom을 실행할 수 없습니다. Google Chrome에서 이 페이지를 여세요.",
-    errNoProviderMobile: "여기서는 Phantom을 사용할 수 없습니다. 아래 \u201cPhantom에서 계속\u201d을 탭하세요.",
+    errNoProviderMobile: "여기서는 Phantom을 사용할 수 없습니다. 아래 \u201cPhantom 지갑 앱 열기\u201d를 탭하세요.",
     errNoProviderDesktop: "Phantom 확장 프로그램을 찾을 수 없습니다. Chrome에 Phantom을 설치하고 다시 시도하세요.",
     errCancelled: "Phantom에서 서명이 취소되었습니다.",
     errCopyLine: "복사할 수 없습니다. /linkok 줄을 직접 선택하세요.",
@@ -226,14 +206,10 @@ export const LINK_WALLET_PARTIALS: Partials = {
 
   th: L({
     title: "เชื่อมต่อกระเป๋า Phantom",
-    intro:
-      "เชื่อมต่อกระเป๋า Phantom กับ ACOPAY Pay\n\n" +
-      "1. ลงนามข้อความด้านล่างด้วย Phantom\n" +
-      "2. คัดลอกคำสั่งที่ลงนามแล้ว\n" +
-      "3. วางใน @AcopayNetwork_bot",
+    intro: "",
     mobileBody: "บนมือถือ ให้เปิดหน้านี้ในแอป Phantom เพื่อเชื่อมต่อและลงนาม",
     messageLabel: "ข้อความที่ต้องลงนาม",
-    openInPhantom: "ดำเนินการต่อใน Phantom",
+    openInPhantom: "เปิดแอปกระเป๋า Phantom",
     noApp: "ยังไม่มี Phantom?",
     connectSign: "เชื่อมต่อ Phantom และลงนาม",
     pasteHint: "คัดลอกคำสั่งด้านล่างแล้ววางใน @AcopayNetwork_bot ภายใน 15 นาที",
@@ -258,7 +234,7 @@ export const LINK_WALLET_PARTIALS: Partials = {
     errMissing: "ไม่พบข้อมูลลิงก์ เปิดหน้านี้จาก Telegram (/linkwallet)",
     errExpired: "ลิงก์นี้หมดอายุแล้ว ส่ง /linkwallet อีกครั้งใน Telegram",
     errBadBrowser: "เบราว์เซอร์นี้ไม่สามารถรัน Phantom ได้ เปิดหน้านี้ใน Google Chrome",
-    errNoProviderMobile: "Phantom ไม่สามารถใช้งานได้ที่นี่ แตะ \u201cดำเนินการต่อใน Phantom\u201d ด้านล่าง",
+    errNoProviderMobile: "Phantom ไม่สามารถใช้งานได้ที่นี่ แตะ \u201cเปิดแอปกระเป๋า Phantom\u201d ด้านล่าง",
     errNoProviderDesktop: "ไม่พบส่วนขยาย Phantom ติดตั้ง Phantom ใน Chrome แล้วลองอีกครั้ง",
     errCancelled: "ยกเลิกการลงนามใน Phantom แล้ว",
     errCopyLine: "ไม่สามารถคัดลอกได้ กรุณาเลือกบรรทัด /linkok ด้วยตนเอง",
@@ -267,14 +243,10 @@ export const LINK_WALLET_PARTIALS: Partials = {
 
   id: L({
     title: "Tautkan dompet Phantom",
-    intro:
-      "Tautkan dompet Phantom ke ACOPAY Pay.\n\n" +
-      "1. Tanda tangani pesan di bawah dengan Phantom\n" +
-      "2. Salin perintah yang sudah ditandatangani\n" +
-      "3. Tempel ke @AcopayNetwork_bot",
+    intro: "",
     mobileBody: "Di ponsel, buka halaman ini di aplikasi Phantom untuk menghubungkan dan menandatangani.",
     messageLabel: "Pesan untuk ditandatangani",
-    openInPhantom: "Lanjutkan di Phantom",
+    openInPhantom: "Buka aplikasi dompet Phantom",
     noApp: "Belum punya Phantom?",
     connectSign: "Hubungkan Phantom & tanda tangani",
     pasteHint: "Salin perintah di bawah dan tempel ke @AcopayNetwork_bot dalam 15 menit.",
@@ -299,7 +271,7 @@ export const LINK_WALLET_PARTIALS: Partials = {
     errMissing: "Detail tautan tidak ada. Buka halaman ini dari Telegram (/linkwallet).",
     errExpired: "Tautan ini kedaluwarsa. Kirim /linkwallet lagi di Telegram.",
     errBadBrowser: "Browser ini tidak dapat menjalankan Phantom. Buka halaman ini di Google Chrome.",
-    errNoProviderMobile: "Phantom tidak tersedia di sini. Ketuk \u201cLanjutkan di Phantom\u201d di bawah.",
+    errNoProviderMobile: "Phantom tidak tersedia di sini. Ketuk \u201cBuka aplikasi dompet Phantom\u201d di bawah.",
     errNoProviderDesktop: "Ekstensi Phantom tidak ditemukan. Pasang Phantom di Chrome, lalu coba lagi.",
     errCancelled: "Tanda tangan dibatalkan di Phantom.",
     errCopyLine: "Tidak dapat menyalin. Pilih baris /linkok secara manual.",
@@ -308,14 +280,10 @@ export const LINK_WALLET_PARTIALS: Partials = {
 
   ms: L({
     title: "Pautkan dompet Phantom",
-    intro:
-      "Pautkan dompet Phantom ke ACOPAY Pay.\n\n" +
-      "1. Tandatangan mesej di bawah dengan Phantom\n" +
-      "2. Salin arahan yang telah ditandatangani\n" +
-      "3. Tampal ke @AcopayNetwork_bot",
+    intro: "",
     mobileBody: "Pada mudah alih, buka halaman ini dalam aplikasi Phantom untuk sambung dan tandatangan.",
     messageLabel: "Mesej untuk ditandatangani",
-    openInPhantom: "Teruskan dalam Phantom",
+    openInPhantom: "Buka aplikasi dompet Phantom",
     noApp: "Belum ada Phantom?",
     connectSign: "Sambung Phantom & tandatangan",
     pasteHint: "Salin arahan di bawah dan tampal ke @AcopayNetwork_bot dalam 15 minit.",
@@ -340,7 +308,7 @@ export const LINK_WALLET_PARTIALS: Partials = {
     errMissing: "Butiran pautan tiada. Buka halaman ini dari Telegram (/linkwallet).",
     errExpired: "Pautan ini tamat tempoh. Hantar /linkwallet semula dalam Telegram.",
     errBadBrowser: "Pelayar ini tidak dapat menjalankan Phantom. Buka halaman ini dalam Google Chrome.",
-    errNoProviderMobile: "Phantom tidak tersedia di sini. Ketik \u201cTeruskan dalam Phantom\u201d di bawah.",
+    errNoProviderMobile: "Phantom tidak tersedia di sini. Ketuk \u201cBuka aplikasi dompet Phantom\u201d di bawah.",
     errNoProviderDesktop: "Sambungan Phantom tidak dijumpai. Pasang Phantom dalam Chrome, kemudian cuba semula.",
     errCancelled: "Tandatangan dibatalkan dalam Phantom.",
     errCopyLine: "Tidak dapat menyalin. Pilih baris /linkok secara manual.",
@@ -349,14 +317,10 @@ export const LINK_WALLET_PARTIALS: Partials = {
 
   hi: L({
     title: "Phantom वॉलेट लिंक करें",
-    intro:
-      "अपना Phantom वॉलेट ACOPAY Pay से लिंक करें।\n\n" +
-      "1. नीचे दिए संदेश पर Phantom से साइन करें\n" +
-      "2. साइन किया कमांड कॉपी करें\n" +
-      "3. @AcopayNetwork_bot में पेस्ट करें",
+    intro: "",
     mobileBody: "मोबाइल पर कनेक्ट और साइन करने के लिए यह पेज Phantom ऐप में खोलें।",
     messageLabel: "साइन करने वाला संदेश",
-    openInPhantom: "Phantom में जारी रखें",
+    openInPhantom: "Phantom वॉलेट ऐप खोलें",
     noApp: "Phantom नहीं है?",
     connectSign: "Phantom कनेक्ट करें और साइन करें",
     pasteHint: "नीचे कमांड कॉपी करें और 15 मिनट में @AcopayNetwork_bot में पेस्ट करें।",
@@ -381,7 +345,7 @@ export const LINK_WALLET_PARTIALS: Partials = {
     errMissing: "लिंक विवरण नहीं मिला। Telegram से यह पेज खोलें (/linkwallet)।",
     errExpired: "यह लिंक समाप्त हो गया। Telegram में /linkwallet फिर से भेजें।",
     errBadBrowser: "यह ब्राउज़र Phantom नहीं चला सकता। इस पेज को Google Chrome में खोलें।",
-    errNoProviderMobile: "यहाँ Phantom उपलब्ध नहीं है। नीचे \u201cPhantom में जारी रखें\u201d दबाएँ।",
+    errNoProviderMobile: "यहाँ Phantom उपलब्ध नहीं है। नीचे \u201cPhantom वॉलेट ऐप खोलें\u201d दबाएँ।",
     errNoProviderDesktop: "Phantom एक्सटेंशन नहीं मिला। Chrome में Phantom इंस्टॉल करें, फिर दोबारा कोशिश करें।",
     errCancelled: "Phantom में साइन रद्द हो गया।",
     errCopyLine: "कॉपी नहीं हुआ। /linkok लाइन मैन्युअल रूप से चुनें।",
@@ -390,14 +354,10 @@ export const LINK_WALLET_PARTIALS: Partials = {
 
   es: L({
     title: "Vincular cartera Phantom",
-    intro:
-      "Vincula tu cartera Phantom a ACOPAY Pay.\n\n" +
-      "1. Firma el mensaje de abajo con Phantom\n" +
-      "2. Copia el comando firmado\n" +
-      "3. Pégalo en @AcopayNetwork_bot",
+    intro: "",
     mobileBody: "En el móvil, abre esta página en la app Phantom para conectar y firmar.",
     messageLabel: "Mensaje para firmar",
-    openInPhantom: "Continuar en Phantom",
+    openInPhantom: "Abrir la app de Phantom",
     noApp: "¿No tienes Phantom?",
     connectSign: "Conectar Phantom y firmar",
     pasteHint: "Copia el comando de abajo y pégalo en @AcopayNetwork_bot en 15 minutos.",
@@ -422,7 +382,7 @@ export const LINK_WALLET_PARTIALS: Partials = {
     errMissing: "Faltan los detalles del enlace. Abre esta página desde Telegram (/linkwallet).",
     errExpired: "Este enlace caducó. Envía /linkwallet de nuevo en Telegram.",
     errBadBrowser: "Este navegador no puede ejecutar Phantom. Abre esta página en Google Chrome.",
-    errNoProviderMobile: "Phantom no está disponible aquí. Pulsa \u201cContinuar en Phantom\u201d abajo.",
+    errNoProviderMobile: "Phantom no está disponible aquí. Pulsa \u201cAbrir la app de Phantom\u201d abajo.",
     errNoProviderDesktop: "Extensión Phantom no encontrada. Instala Phantom en Chrome y vuelve a intentarlo.",
     errCancelled: "Firma cancelada en Phantom.",
     errCopyLine: "No se pudo copiar. Selecciona la línea /linkok manualmente.",
@@ -431,14 +391,10 @@ export const LINK_WALLET_PARTIALS: Partials = {
 
   pt: L({
     title: "Vincular carteira Phantom",
-    intro:
-      "Vincule sua carteira Phantom ao ACOPAY Pay.\n\n" +
-      "1. Assine a mensagem abaixo com o Phantom\n" +
-      "2. Copie o comando assinado\n" +
-      "3. Cole em @AcopayNetwork_bot",
+    intro: "",
     mobileBody: "No celular, abra esta página no app Phantom para conectar e assinar.",
     messageLabel: "Mensagem para assinar",
-    openInPhantom: "Continuar no Phantom",
+    openInPhantom: "Abrir o app da carteira Phantom",
     noApp: "Não tem Phantom?",
     connectSign: "Conectar Phantom e assinar",
     pasteHint: "Copie o comando abaixo e cole em @AcopayNetwork_bot em até 15 minutos.",
@@ -463,7 +419,7 @@ export const LINK_WALLET_PARTIALS: Partials = {
     errMissing: "Detalhes do link ausentes. Abra esta página pelo Telegram (/linkwallet).",
     errExpired: "Este link expirou. Envie /linkwallet novamente no Telegram.",
     errBadBrowser: "Este navegador não pode executar o Phantom. Abra esta página no Google Chrome.",
-    errNoProviderMobile: "Phantom não está disponível aqui. Toque em \u201cContinuar no Phantom\u201d abaixo.",
+    errNoProviderMobile: "Phantom não está disponível aqui. Toque em \u201cAbrir o app da carteira Phantom\u201d abaixo.",
     errNoProviderDesktop: "Extensão Phantom não encontrada. Instale o Phantom no Chrome e tente novamente.",
     errCancelled: "Assinatura cancelada no Phantom.",
     errCopyLine: "Não foi possível copiar. Selecione a linha /linkok manualmente.",
@@ -472,14 +428,10 @@ export const LINK_WALLET_PARTIALS: Partials = {
 
   fr: L({
     title: "Lier le portefeuille Phantom",
-    intro:
-      "Liez votre portefeuille Phantom à ACOPAY Pay.\n\n" +
-      "1. Signez le message ci-dessous avec Phantom\n" +
-      "2. Copiez la commande signée\n" +
-      "3. Collez-la dans @AcopayNetwork_bot",
+    intro: "",
     mobileBody: "Sur mobile, ouvrez cette page dans l'app Phantom pour connecter et signer.",
     messageLabel: "Message à signer",
-    openInPhantom: "Continuer dans Phantom",
+    openInPhantom: "Ouvrir l'application Phantom",
     noApp: "Pas encore Phantom ?",
     connectSign: "Connecter Phantom et signer",
     pasteHint: "Copiez la commande ci-dessous et collez-la dans @AcopayNetwork_bot sous 15 minutes.",
@@ -504,7 +456,7 @@ export const LINK_WALLET_PARTIALS: Partials = {
     errMissing: "Détails du lien manquants. Ouvrez cette page depuis Telegram (/linkwallet).",
     errExpired: "Ce lien a expiré. Envoyez /linkwallet à nouveau dans Telegram.",
     errBadBrowser: "Ce navigateur ne peut pas exécuter Phantom. Ouvrez cette page dans Google Chrome.",
-    errNoProviderMobile: "Phantom n'est pas disponible ici. Appuyez sur \u00ab\u00a0Continuer dans Phantom\u00a0\u00bb ci-dessous.",
+    errNoProviderMobile: "Phantom n'est pas disponible ici. Appuyez sur \u00ab\u00a0Ouvrir l'application Phantom\u00a0\u00bb ci-dessous.",
     errNoProviderDesktop: "Extension Phantom introuvable. Installez Phantom dans Chrome, puis réessayez.",
     errCancelled: "Signature annulée dans Phantom.",
     errCopyLine: "Impossible de copier. Sélectionnez la ligne /linkok manuellement.",
@@ -513,14 +465,10 @@ export const LINK_WALLET_PARTIALS: Partials = {
 
   de: L({
     title: "Phantom-Wallet verknüpfen",
-    intro:
-      "Verknüpfen Sie Ihre Phantom-Wallet mit ACOPAY Pay.\n\n" +
-      "1. Nachricht unten mit Phantom signieren\n" +
-      "2. Signierten Befehl kopieren\n" +
-      "3. In @AcopayNetwork_bot einfügen",
+    intro: "",
     mobileBody: "Öffnen Sie diese Seite auf dem Handy in der Phantom-App, um zu verbinden und zu signieren.",
     messageLabel: "Zu signierende Nachricht",
-    openInPhantom: "In Phantom fortfahren",
+    openInPhantom: "Phantom-Wallet-App öffnen",
     noApp: "Noch kein Phantom?",
     connectSign: "Phantom verbinden & signieren",
     pasteHint: "Kopieren Sie den Befehl unten und fügen Sie ihn innerhalb von 15 Minuten in @AcopayNetwork_bot ein.",
@@ -545,7 +493,7 @@ export const LINK_WALLET_PARTIALS: Partials = {
     errMissing: "Link-Details fehlen. Öffnen Sie diese Seite aus Telegram (/linkwallet).",
     errExpired: "Dieser Link ist abgelaufen. Senden Sie /linkwallet erneut in Telegram.",
     errBadBrowser: "Dieser Browser kann Phantom nicht ausführen. Öffnen Sie diese Seite in Google Chrome.",
-    errNoProviderMobile: "Phantom ist hier nicht verfügbar. Tippen Sie unten auf \u201eIn Phantom fortfahren\u201c.",
+    errNoProviderMobile: "Phantom ist hier nicht verfügbar. Tippen Sie unten auf \u201ePhantom-Wallet-App öffnen\u201c.",
     errNoProviderDesktop: "Phantom-Erweiterung nicht gefunden. Installieren Sie Phantom in Chrome und versuchen Sie es erneut.",
     errCancelled: "Signatur in Phantom abgebrochen.",
     errCopyLine: "Kopieren nicht möglich. Wählen Sie die /linkok-Zeile manuell aus.",
@@ -554,14 +502,10 @@ export const LINK_WALLET_PARTIALS: Partials = {
 
   nl: L({
     title: "Phantom-wallet koppelen",
-    intro:
-      "Koppel je Phantom-wallet aan ACOPAY Pay.\n\n" +
-      "1. Onderteken het bericht hieronder met Phantom\n" +
-      "2. Kopieer het ondertekende commando\n" +
-      "3. Plak het in @AcopayNetwork_bot",
+    intro: "",
     mobileBody: "Open deze pagina op mobiel in de Phantom-app om te verbinden en te ondertekenen.",
     messageLabel: "Bericht om te ondertekenen",
-    openInPhantom: "Doorgaan in Phantom",
+    openInPhantom: "Open de Phantom-wallet-app",
     noApp: "Nog geen Phantom?",
     connectSign: "Phantom verbinden & ondertekenen",
     pasteHint: "Kopieer het commando hieronder en plak het binnen 15 minuten in @AcopayNetwork_bot.",
@@ -586,7 +530,7 @@ export const LINK_WALLET_PARTIALS: Partials = {
     errMissing: "Linkgegevens ontbreken. Open deze pagina vanuit Telegram (/linkwallet).",
     errExpired: "Deze link is verlopen. Stuur /linkwallet opnieuw in Telegram.",
     errBadBrowser: "Deze browser kan Phantom niet uitvoeren. Open deze pagina in Google Chrome.",
-    errNoProviderMobile: "Phantom is hier niet beschikbaar. Tik hieronder op \u201eDoorgaan in Phantom\u201c.",
+    errNoProviderMobile: "Phantom is hier niet beschikbaar. Tik hieronder op \u201eOpen de Phantom-wallet-app\u201c.",
     errNoProviderDesktop: "Phantom-extensie niet gevonden. Installeer Phantom in Chrome en probeer opnieuw.",
     errCancelled: "Handtekening geannuleerd in Phantom.",
     errCopyLine: "Kon niet kopiëren. Selecteer de /linkok-regel handmatig.",
@@ -595,14 +539,10 @@ export const LINK_WALLET_PARTIALS: Partials = {
 
   it: L({
     title: "Collega il wallet Phantom",
-    intro:
-      "Collega il tuo wallet Phantom ad ACOPAY Pay.\n\n" +
-      "1. Firma il messaggio qui sotto con Phantom\n" +
-      "2. Copia il comando firmato\n" +
-      "3. Incollalo in @AcopayNetwork_bot",
+    intro: "",
     mobileBody: "Su mobile, apri questa pagina nell'app Phantom per collegare e firmare.",
     messageLabel: "Messaggio da firmare",
-    openInPhantom: "Continua in Phantom",
+    openInPhantom: "Apri l'app Phantom",
     noApp: "Non hai Phantom?",
     connectSign: "Collega Phantom e firma",
     pasteHint: "Copia il comando qui sotto e incollalo in @AcopayNetwork_bot entro 15 minuti.",
@@ -627,7 +567,7 @@ export const LINK_WALLET_PARTIALS: Partials = {
     errMissing: "Dettagli link mancanti. Apri questa pagina da Telegram (/linkwallet).",
     errExpired: "Questo link è scaduto. Invia /linkwallet di nuovo in Telegram.",
     errBadBrowser: "Questo browser non può eseguire Phantom. Apri questa pagina in Google Chrome.",
-    errNoProviderMobile: "Phantom non è disponibile qui. Tocca \u201cContinua in Phantom\u201d in basso.",
+    errNoProviderMobile: "Phantom non è disponibile qui. Tocca \u201cApri l'app Phantom\u201d in basso.",
     errNoProviderDesktop: "Estensione Phantom non trovata. Installa Phantom in Chrome e riprova.",
     errCancelled: "Firma annullata in Phantom.",
     errCopyLine: "Impossibile copiare. Seleziona la riga /linkok manualmente.",
@@ -636,14 +576,10 @@ export const LINK_WALLET_PARTIALS: Partials = {
 
   ru: L({
     title: "Привязать кошелёк Phantom",
-    intro:
-      "Привяжите кошелёк Phantom к ACOPAY Pay.\n\n" +
-      "1. Подпишите сообщение ниже в Phantom\n" +
-      "2. Скопируйте подписанную команду\n" +
-      "3. Вставьте в @AcopayNetwork_bot",
+    intro: "",
     mobileBody: "На телефоне откройте эту страницу в приложении Phantom, чтобы подключить и подписать.",
     messageLabel: "Сообщение для подписи",
-    openInPhantom: "Продолжить в Phantom",
+    openInPhantom: "Открыть приложение Phantom",
     noApp: "Нет Phantom?",
     connectSign: "Подключить Phantom и подписать",
     pasteHint: "Скопируйте команду ниже и вставьте в @AcopayNetwork_bot в течение 15 минут.",
@@ -668,7 +604,7 @@ export const LINK_WALLET_PARTIALS: Partials = {
     errMissing: "Данные ссылки отсутствуют. Откройте эту страницу из Telegram (/linkwallet).",
     errExpired: "Ссылка истекла. Отправьте /linkwallet снова в Telegram.",
     errBadBrowser: "Этот браузер не поддерживает Phantom. Откройте страницу в Google Chrome.",
-    errNoProviderMobile: "Phantom недоступен здесь. Нажмите \u00ab\u00a0Продолжить в Phantom\u00a0\u00bb ниже.",
+    errNoProviderMobile: "Phantom недоступен здесь. Нажмите \u00ab\u00a0Открыть приложение Phantom\u00a0\u00bb ниже.",
     errNoProviderDesktop: "Расширение Phantom не найдено. Установите Phantom в Chrome и попробуйте снова.",
     errCancelled: "Подпись отменена в Phantom.",
     errCopyLine: "Не удалось скопировать. Выберите строку /linkok вручную.",
@@ -677,14 +613,10 @@ export const LINK_WALLET_PARTIALS: Partials = {
 
   uk: L({
     title: "Прив'язати гаманець Phantom",
-    intro:
-      "Прив'яжіть гаманець Phantom до ACOPAY Pay.\n\n" +
-      "1. Підпишіть повідомлення нижче в Phantom\n" +
-      "2. Скопіюйте підписану команду\n" +
-      "3. Вставте в @AcopayNetwork_bot",
+    intro: "",
     mobileBody: "На телефоні відкрийте цю сторінку в додатку Phantom, щоб підключити й підписати.",
     messageLabel: "Повідомлення для підпису",
-    openInPhantom: "Продовжити в Phantom",
+    openInPhantom: "Відкрити застосунок Phantom",
     noApp: "Немає Phantom?",
     connectSign: "Підключити Phantom і підписати",
     pasteHint: "Скопіюйте команду нижче й вставте в @AcopayNetwork_bot протягом 15 хвилин.",
@@ -709,7 +641,7 @@ export const LINK_WALLET_PARTIALS: Partials = {
     errMissing: "Дані посилання відсутні. Відкрийте цю сторінку з Telegram (/linkwallet).",
     errExpired: "Посилання прострочене. Надішліть /linkwallet знову у Telegram.",
     errBadBrowser: "Цей браузер не підтримує Phantom. Відкрийте сторінку в Google Chrome.",
-    errNoProviderMobile: "Phantom недоступний тут. Натисніть \u00ab\u00a0Продовжити в Phantom\u00a0\u00bb нижче.",
+    errNoProviderMobile: "Phantom недоступний тут. Натисніть \u00ab\u00a0Відкрити застосунок Phantom\u00a0\u00bb нижче.",
     errNoProviderDesktop: "Розширення Phantom не знайдено. Встановіть Phantom у Chrome і спробуйте знову.",
     errCancelled: "Підпис скасовано в Phantom.",
     errCopyLine: "Не вдалося скопіювати. Виберіть рядок /linkok вручну.",
@@ -718,14 +650,10 @@ export const LINK_WALLET_PARTIALS: Partials = {
 
   pl: L({
     title: "Połącz portfel Phantom",
-    intro:
-      "Połącz portfel Phantom z ACOPAY Pay.\n\n" +
-      "1. Podpisz wiadomość poniżej w Phantom\n" +
-      "2. Skopiuj podpisane polecenie\n" +
-      "3. Wklej do @AcopayNetwork_bot",
+    intro: "",
     mobileBody: "Na telefonie otwórz tę stronę w aplikacji Phantom, aby połączyć i podpisać.",
     messageLabel: "Wiadomość do podpisania",
-    openInPhantom: "Kontynuuj w Phantom",
+    openInPhantom: "Otwórz aplikację Phantom",
     noApp: "Nie masz Phantom?",
     connectSign: "Połącz Phantom i podpisz",
     pasteHint: "Skopiuj polecenie poniżej i wklej do @AcopayNetwork_bot w ciągu 15 minut.",
@@ -750,7 +678,7 @@ export const LINK_WALLET_PARTIALS: Partials = {
     errMissing: "Brakuje danych linku. Otwórz tę stronę z Telegram (/linkwallet).",
     errExpired: "Ten link wygasł. Wyślij /linkwallet ponownie w Telegram.",
     errBadBrowser: "Ta przeglądarka nie może uruchomić Phantom. Otwórz tę stronę w Google Chrome.",
-    errNoProviderMobile: "Phantom nie jest tu dostępny. Dotknij \u201eKontynuuj w Phantom\u201c poniżej.",
+    errNoProviderMobile: "Phantom nie jest tu dostępny. Dotknij \u201eOtwórz aplikację Phantom\u201c poniżej.",
     errNoProviderDesktop: "Nie znaleziono rozszerzenia Phantom. Zainstaluj Phantom w Chrome i spróbuj ponownie.",
     errCancelled: "Podpis anulowany w Phantom.",
     errCopyLine: "Nie można skopiować. Wybierz wiersz /linkok ręcznie.",
@@ -759,14 +687,10 @@ export const LINK_WALLET_PARTIALS: Partials = {
 
   tr: L({
     title: "Phantom cüzdanını bağla",
-    intro:
-      "Phantom cüzdanınızı ACOPAY Pay'e bağlayın.\n\n" +
-      "1. Aşağıdaki mesajı Phantom ile imzalayın\n" +
-      "2. İmzalı komutu kopyalayın\n" +
-      "3. @AcopayNetwork_bot'a yapıştırın",
+    intro: "",
     mobileBody: "Mobilde bağlanıp imzalamak için bu sayfayı Phantom uygulamasında açın.",
     messageLabel: "İmzalanacak mesaj",
-    openInPhantom: "Phantom'da devam et",
+    openInPhantom: "Phantom cüzdan uygulamasını aç",
     noApp: "Phantom yok mu?",
     connectSign: "Phantom'ı bağla ve imzala",
     pasteHint: "Aşağıdaki komutu kopyalayıp 15 dakika içinde @AcopayNetwork_bot'a yapıştırın.",
@@ -791,7 +715,7 @@ export const LINK_WALLET_PARTIALS: Partials = {
     errMissing: "Bağlantı ayrıntıları eksik. Bu sayfayı Telegram'dan açın (/linkwallet).",
     errExpired: "Bu bağlantının süresi doldu. Telegram'da /linkwallet komutunu tekrar gönderin.",
     errBadBrowser: "Bu tarayıcı Phantom'u çalıştıramaz. Bu sayfayı Google Chrome'da açın.",
-    errNoProviderMobile: "Phantom burada kullanılamaz. Aşağıdaki \u201cPhantom'da Devam Et\u201d'e dokunun.",
+    errNoProviderMobile: "Phantom burada kullanılamaz. Aşağıdaki \u201cPhantom cüzdan uygulamasını aç\u201d'e dokunun.",
     errNoProviderDesktop: "Phantom uzantısı bulunamadı. Chrome'a Phantom kurun, sonra tekrar deneyin.",
     errCancelled: "İmza Phantom'da iptal edildi.",
     errCopyLine: "Kopyalanamadı. /linkok satırını manuel olarak seçin.",
@@ -800,14 +724,10 @@ export const LINK_WALLET_PARTIALS: Partials = {
 
   ar: L({
     title: "ربط محفظة Phantom",
-    intro:
-      "اربط محفظة Phantom بـ ACOPAY Pay.\n\n" +
-      "1. وقّع الرسالة أدناه عبر Phantom\n" +
-      "2. انسخ الأمر الموقَّع\n" +
-      "3. الصقه في @AcopayNetwork_bot",
+    intro: "",
     mobileBody: "على الجوال، افتح هذه الصفحة داخل تطبيق Phantom للاتصال والتوقيع.",
     messageLabel: "الرسالة للتوقيع",
-    openInPhantom: "المتابعة في Phantom",
+    openInPhantom: "افتح تطبيق محفظة Phantom",
     noApp: "ليس لديك Phantom؟",
     connectSign: "ربط Phantom والتوقيع",
     pasteHint: "انسخ الأمر أدناه والصقه في @AcopayNetwork_bot خلال 15 دقيقة.",
@@ -832,7 +752,7 @@ export const LINK_WALLET_PARTIALS: Partials = {
     errMissing: "تفاصيل الرابط مفقودة. افتح هذه الصفحة من Telegram (/linkwallet).",
     errExpired: "انتهت صلاحية هذا الرابط. أرسل /linkwallet مرة أخرى في Telegram.",
     errBadBrowser: "هذا المتصفح لا يدعم Phantom. افتح هذه الصفحة في Google Chrome.",
-    errNoProviderMobile: "Phantom غير متاح هنا. اضغط على \u201cالمتابعة في Phantom\u201d أدناه.",
+    errNoProviderMobile: "Phantom غير متاح هنا. اضغط على \u201cافتح تطبيق محفظة Phantom\u201d أدناه.",
     errNoProviderDesktop: "لم يتم العثور على إضافة Phantom. ثبّت Phantom في Chrome ثم حاول مرة أخرى.",
     errCancelled: "تم إلغاء التوقيع في Phantom.",
     errCopyLine: "تعذّر النسخ. اختر سطر /linkok يدوياً.",
