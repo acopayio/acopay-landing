@@ -2,6 +2,7 @@ import { en } from "./en";
 import type { Messages } from "./en";
 import { BUY_DESK_PARTIALS } from "./buyDesk";
 import { SITE_CONTENT_PARTIALS } from "./siteContent";
+import { CORE_UI_GAPS } from "./coreUiGaps";
 import { LINK_WALLET_PARTIALS } from "./linkWallet";
 import { SEND_ACOPAY_PARTIALS } from "./sendAcopay";
 
@@ -1888,13 +1889,8 @@ const partials: Record<string, DeepPartialMessages> = {
   },
 };
 
-// Alias similar locales — clone so later overlays (Buy desk) do not mutate the source
-partials.ms = mergePartial(partials.id);
-partials.uk = mergePartial(partials.ru);
-partials.pl = mergePartial(partials.de);
-partials.nl = mergePartial(partials.de);
-partials.it = mergePartial(partials.es);
-partials.tr = mergePartial(partials.de);
+// No neighbor-locale alias seeds (uk≠ru, nl/pl/tr≠de, it≠es, ms≠id).
+// Missing keys fall through deepMerge(en, …) until CORE_UI_GAPS / overlays fill them.
 
 // Full Buy desk (`buyPage` + `otc`) for every UI locale (vi already inline above)
 for (const [code, desk] of Object.entries(BUY_DESK_PARTIALS)) {
@@ -1903,6 +1899,11 @@ for (const [code, desk] of Object.entries(BUY_DESK_PARTIALS)) {
 
 // Site-wide pages/tabs (Trade, Token, Contract, FAQ, Roadmap gaps, Markets, theme…)
 for (const [code, content] of Object.entries(SITE_CONTENT_PARTIALS)) {
+  partials[code] = mergePartial(partials[code], content as DeepPartialMessages);
+}
+
+// Native core UI for locales that used to inherit via alias seed
+for (const [code, content] of Object.entries(CORE_UI_GAPS)) {
   partials[code] = mergePartial(partials[code], content as DeepPartialMessages);
 }
 
