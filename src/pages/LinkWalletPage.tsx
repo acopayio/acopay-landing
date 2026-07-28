@@ -5,6 +5,7 @@ import { AddrHighlight } from "../components/AddrHighlight";
 import { phantomBrowseUrl } from "../config/otc";
 import { useI18n } from "../i18n/LanguageProvider";
 import { isSupportedLocale } from "../i18n/countries";
+import { confirmLinkWalletInTelegram } from "../lib/linkWalletConfirm";
 import { getPhantomProvider, hasPhantomExtension, isMobileUa } from "../lib/phantomPay";
 
 function buildLinkMessage(tg: string, nonce: string, exp: string) {
@@ -35,9 +36,9 @@ function isUnsupportedDesktopBrowser(): boolean {
 }
 
 /**
- * Prove Phantom ownership → /linkok fallback into @AcopayNetwork_bot.
+ * Prove Phantom ownership → POST /api/pay/link auto-completes Telegram.
+ * /linkok is fallback only if auto-confirm fails.
  * Mobile: open page in Phantom app first, then sign.
- * Locale: ?lang= from bot (LanguageProvider) + full linkWallet i18n.
  */
 export function LinkWalletPage() {
   const { t, setLocale } = useI18n();
@@ -47,12 +48,10 @@ export function LinkWalletPage() {
   const exp = (params.get("exp") || "").trim();
   const langParam = (params.get("lang") || "").trim();
 
-  // Bot deep-link ?lang= seeds locale once — do not re-lock when user changes language in the header.
   useEffect(() => {
     if (isSupportedLocale(langParam)) {
       setLocale(langParam);
     }
-    // Intentionally omit `locale`: re-running when locale changes would fight the language menu.
     // eslint-disable-next-line react-hooks/exhaustive-deps -- seed from URL only when langParam changes
   }, [langParam, setLocale]);
 
@@ -68,6 +67,8 @@ export function LinkWalletPage() {
   const needsOpenInPhantom = mobile && !hasProvider;
 
   const [busy, setBusy] = useState(false);
+  const [confirming, setConfirming] = useState(false);
+  const [tgConfirmed, setTgConfirmed] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [pubkey, setPubkey] = useState<string | null>(null);
   const [linkOk, setLinkOk] = useState<string | null>(null);
@@ -91,6 +92,7 @@ export function LinkWalletPage() {
   const sign = useCallback(async () => {
     setError(null);
     setLinkOk(null);
+    setTgConfirmed(false);
     if (!message) {
       setError(t("linkWallet.errMissing"));
       return;
@@ -117,14 +119,24 @@ export function LinkWalletPage() {
       const sig58 = toSigBase58(signature);
       setPubkey(pk);
       setLinkOk(`/linkok ${pk} ${sig58}`);
+      setBusy(false);
+      setConfirming(true);
+      try {
+        await confirmLinkWalletInTelegram({ tg, publicKey: pk, signature: sig58 });
+        setTgConfirmed(true);
+        setError(null);
+      } catch {
+        setError(t("linkWallet.errConfirmTg"));
+      } finally {
+        setConfirming(false);
+      }
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
       if (/User rejected|rejected|4001/i.test(msg)) setError(t("linkWallet.errCancelled"));
       else setError(msg);
-    } finally {
       setBusy(false);
     }
-  }, [message, expired, badBrowser, t]);
+  }, [message, expired, badBrowser, tg, t]);
 
   async function copyLine() {
     if (!linkOk) return;
@@ -136,6 +148,9 @@ export function LinkWalletPage() {
       setError(t("linkWallet.errCopyLine"));
     }
   }
+
+  const showFallback = Boolean(linkOk && !confirming && !tgConfirmed);
+  const showSuccess = Boolean(linkOk && tgConfirmed && pubkey);
 
   return (
     <section className="section-pad">
@@ -170,70 +185,108 @@ export function LinkWalletPage() {
           </p>
         ) : (
           <div className="mt-8 space-y-4">
-            <div className="rounded-2xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-bg)]/80 p-4">
-              <p className="text-xs font-medium tracking-wide text-[var(--acopay-faint)]">
-                {t("linkWallet.messageLabel")}
-              </p>
-              <pre className="mt-2 whitespace-pre-wrap break-all font-mono text-xs leading-relaxed text-[var(--acopay-fg)]">
-                {message}
-              </pre>
-              <p className="mt-2 text-[11px] text-[var(--acopay-faint)]">{t("linkWallet.telegramId", { tg })}</p>
-            </div>
+            {!linkOk && (
+              <div className="rounded-2xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-bg)]/80 p-4">
+                <p className="text-xs font-medium tracking-wide text-[var(--acopay-faint)]">
+                  {t("linkWallet.messageLabel")}
+                </p>
+                <pre className="mt-2 whitespace-pre-wrap break-all font-mono text-xs leading-relaxed text-[var(--acopay-fg)]">
+                  {message}
+                </pre>
+                <p className="mt-2 text-[11px] text-[var(--acopay-faint)]">{t("linkWallet.telegramId", { tg })}</p>
+              </div>
+            )}
 
             {expired && <p className="text-sm text-amber-300">{t("linkWallet.expired")}</p>}
 
-            {needsOpenInPhantom ? (
-              <div className="space-y-2">
-                <a
-                  href={openInPhantomHref}
-                  className="btn-orca-primary flex w-full !rounded-xl items-center justify-center"
-                  rel="noopener noreferrer"
-                >
-                  {t("linkWallet.openInPhantom")}
-                </a>
-                <p className="text-xs leading-relaxed text-[var(--acopay-muted)]">{t("linkWallet.mobileBody")}</p>
-                <p className="text-xs text-[var(--acopay-muted)]">
-                  {t("linkWallet.noApp")}{" "}
+            {!linkOk &&
+              (needsOpenInPhantom ? (
+                <div className="space-y-2">
                   <a
-                    href="https://phantom.com/download"
-                    className="text-[var(--acopay-brand)] hover:underline"
-                    target="_blank"
+                    href={openInPhantomHref}
+                    className="btn-orca-primary flex w-full !rounded-xl items-center justify-center"
                     rel="noopener noreferrer"
                   >
-                    {t("linkWallet.installPhantom")}
+                    {t("linkWallet.openInPhantom")}
                   </a>
-                </p>
-              </div>
-            ) : (
-              <>
-                <button
-                  type="button"
-                  disabled={busy || expired || badBrowser || !hasProvider}
-                  onClick={() => void sign()}
-                  className="btn-orca-primary w-full !rounded-xl disabled:opacity-50"
-                >
-                  {busy ? t("linkWallet.waitingPhantom") : t("linkWallet.connectSign")}
-                </button>
-
-                {!badBrowser && !hasProvider && (
+                  <p className="text-xs leading-relaxed text-[var(--acopay-muted)]">{t("linkWallet.mobileBody")}</p>
                   <p className="text-xs text-[var(--acopay-muted)]">
-                    {t("linkWallet.needPhantom")}{" "}
+                    {t("linkWallet.noApp")}{" "}
                     <a
                       href="https://phantom.com/download"
                       className="text-[var(--acopay-brand)] hover:underline"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      {t("linkWallet.installChrome")}
+                      {t("linkWallet.installPhantom")}
                     </a>
                   </p>
-                )}
-              </>
-            )}
+                </div>
+              ) : (
+                <>
+                  <button
+                    type="button"
+                    disabled={busy || expired || badBrowser || !hasProvider}
+                    onClick={() => void sign()}
+                    className="btn-orca-primary w-full !rounded-xl disabled:opacity-50"
+                  >
+                    {busy ? t("linkWallet.waitingPhantom") : t("linkWallet.connectSign")}
+                  </button>
+
+                  {!badBrowser && !hasProvider && (
+                    <p className="text-xs text-[var(--acopay-muted)]">
+                      {t("linkWallet.needPhantom")}{" "}
+                      <a
+                        href="https://phantom.com/download"
+                        className="text-[var(--acopay-brand)] hover:underline"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {t("linkWallet.installChrome")}
+                      </a>
+                    </p>
+                  )}
+                </>
+              ))}
 
             {error && <p className="text-sm text-amber-300">{error}</p>}
 
-            {linkOk && (
+            {confirming && (
+              <div className="mt-2 space-y-3 rounded-2xl border border-[color:var(--acopay-brand)]/30 bg-[#00E5FF]/08 p-4 sm:p-5">
+                {pubkey ? (
+                  <p className="break-all font-mono text-sm text-[var(--acopay-fg)]">
+                    <AddrHighlight addr={pubkey} />
+                  </p>
+                ) : null}
+                <p className="text-sm font-medium text-[var(--acopay-fg)]">{t("linkWallet.confirmingTg")}</p>
+              </div>
+            )}
+
+            {showSuccess && (
+              <div className="mt-2 space-y-4 rounded-2xl border border-[color:var(--acopay-brand)]/30 bg-[#00E5FF]/08 p-4 sm:p-5">
+                <div>
+                  <p className="text-sm font-semibold leading-snug text-[var(--acopay-fg)] sm:text-base">
+                    {t("linkWallet.linkedOk")}
+                  </p>
+                  <p className="mt-1 break-all font-mono text-sm leading-snug text-[var(--acopay-fg)] sm:text-base">
+                    <AddrHighlight addr={pubkey!} />
+                  </p>
+                </div>
+                <p className="text-sm leading-relaxed text-[var(--acopay-muted)] sm:text-[15px]">
+                  {t("linkWallet.tgDoneHint")}
+                </p>
+                <a
+                  href="https://t.me/AcopayNetwork_bot"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-orca-primary inline-flex w-full items-center justify-center !rounded-xl !text-sm"
+                >
+                  {t("linkWallet.openTelegram")}
+                </a>
+              </div>
+            )}
+
+            {showFallback && (
               <div className="mt-2 space-y-4 rounded-2xl border border-[color:var(--acopay-brand)]/30 bg-[#00E5FF]/08 p-4 sm:p-5">
                 <div>
                   <p className="text-sm font-semibold leading-snug text-[var(--acopay-fg)] sm:text-base">
@@ -252,7 +305,7 @@ export function LinkWalletPage() {
                   <p className="break-all font-mono text-[11px] leading-relaxed sm:text-xs">
                     <span className="font-semibold text-[var(--acopay-brand)]">/linkok</span>
                     <span className="font-normal text-[var(--acopay-fg)]">
-                      {linkOk.replace(/^\/linkok\s*/, " ")}
+                      {linkOk!.replace(/^\/linkok\s*/, " ")}
                     </span>
                   </p>
                 </div>
