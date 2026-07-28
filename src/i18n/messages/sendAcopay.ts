@@ -33,7 +33,7 @@ const enBase: SendSection = {
   confirmingTg: "Confirming in Telegram…",
   tgDoneHint: "Check @AcopayNetwork_bot for the success receipt.",
   viewTx: "View transaction ↗",
-  pasteHint: "Telegram chưa xác nhận. Sao chép lệnh dưới đây, dán vào @AcopayNetwork_bot.",
+  pasteHint: "Telegram hasn’t confirmed yet. Copy the command below and paste it into @AcopayNetwork_bot.",
   copyPaysok: "Copy /paysok command",
   copied: "Copied",
   openTelegram: "Open Telegram Pay ↗",
