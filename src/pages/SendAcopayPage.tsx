@@ -161,9 +161,6 @@ export function SendAcopayPage() {
         <h1 className="mt-2 text-3xl font-bold tracking-tight text-[var(--acopay-fg)]">
           {t("sendAcopay.title")}
         </h1>
-        <p className="mt-3 text-[15px] leading-relaxed text-[var(--acopay-muted)]">
-          {t("sendAcopay.intro")}
-        </p>
 
         <ol className="mt-5 space-y-2.5">
           {[
