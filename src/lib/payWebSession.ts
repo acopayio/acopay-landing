@@ -39,6 +39,13 @@ export function telegramHttpsToAppScheme(httpsUrl: string): string | null {
  */
 export function openTelegramBotLink(httpsUrl: string): void {
   if (typeof window === "undefined") return;
+  // Last-mile guard — only open Telegram domains (even if API is compromised).
+  try {
+    const host = new URL(httpsUrl).hostname;
+    if (!/(^|\.)t\.me$/i.test(host) && !/(^|\.)telegram\.me$/i.test(host)) return;
+  } catch {
+    return;
+  }
   const app = telegramHttpsToAppScheme(httpsUrl);
 
   if (isMobileUa() && app) {
