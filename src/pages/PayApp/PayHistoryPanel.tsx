@@ -67,18 +67,15 @@ export function PayHistoryPanel({ onBack, onError }: Props) {
       <div className="otc-panel-inner !p-5 sm:!p-6">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--acopay-brand)]">
-              {t("payApp.history")}
-            </p>
-            <h2 className="mt-1 text-xl font-bold tracking-tight text-[var(--acopay-fg)]">
+            <h2 className="text-xl font-bold tracking-tight text-[var(--acopay-fg)]">
               {t("payApp.historyTitle")}
             </h2>
             <p className="mt-1 text-xs text-[var(--acopay-faint)]">
               {total} · {t("payApp.histPage", { n: String(page + 1), m: String(pageCount) })}
             </p>
           </div>
-          <button type="button" onClick={onBack} className="text-xs font-semibold text-[var(--acopay-brand)]">
-            {t("payApp.historyBack")}
+          <button type="button" onClick={onBack} className="shrink-0 text-xs font-semibold text-[var(--acopay-brand)]">
+            ← {t("payApp.historyBack")}
           </button>
         </div>
 

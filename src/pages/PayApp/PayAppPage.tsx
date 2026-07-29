@@ -143,11 +143,15 @@ export function PayAppPage() {
             <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--acopay-brand)]">
               {t("payApp.kicker")}
             </p>
-            <h1 className="mt-0.5 text-2xl font-bold tracking-tight text-[var(--acopay-fg)] lg:text-[1.75rem]">
-              {t("payApp.title")}
-            </h1>
+            {panel === "home" && (
+              <h1 className="mt-0.5 text-2xl font-bold tracking-tight text-[var(--acopay-fg)] lg:text-[1.75rem]">
+                {t("payApp.title")}
+              </h1>
+            )}
           </div>
-          <p className="hidden text-right text-sm text-[var(--acopay-muted)] sm:block">{t("payApp.subtitle")}</p>
+          {panel === "home" && (
+            <p className="hidden text-right text-sm text-[var(--acopay-muted)] sm:block">{t("payApp.subtitle")}</p>
+          )}
         </header>
 
         {(error || flash) && (
@@ -217,11 +221,12 @@ export function PayAppPage() {
                         {t("payApp.logout")}
                       </button>
                     </div>
-                    <p className="mt-4 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--acopay-faint)]">
+                    <p className="mt-4 inline-flex items-center gap-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--acopay-success)]">
+                      <span aria-hidden>💰</span>
                       {t("payApp.balanceLabel")}
                     </p>
                     <p className="mt-1 flex flex-wrap items-baseline gap-x-2">
-                      <span className="text-3xl font-bold tabular-nums text-[var(--acopay-fg)] lg:text-4xl">
+                      <span className="text-3xl font-bold tabular-nums text-[var(--acopay-success)] lg:text-4xl">
                         {hasWallet ? formatAcopay(bal) : "—"}
                       </span>
                       <span className="text-base font-bold text-[var(--acopay-brand)]">ACOPAY</span>

@@ -3,7 +3,7 @@ import { AddrHighlight } from "../../components/AddrHighlight";
 import { useI18n } from "../../i18n/LanguageProvider";
 import { formatAcopay, previewPay, sendPay, type PayPreview } from "../../lib/payWebSession";
 
-const PRESETS = [10, 50, 100, 250, 500];
+const PRESETS = [10, 50, 100, 250, 500, 1000, 2000];
 
 type Props = {
   balance: number | null | undefined;
@@ -68,16 +68,13 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
       <div className="otc-panel-inner !p-5 sm:!p-6">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--acopay-brand)]">
-              {t("payApp.send")}
-            </p>
-            <h2 className="mt-1 text-xl font-bold tracking-tight text-[var(--acopay-fg)]">
+            <h2 className="text-xl font-bold tracking-tight text-[var(--acopay-fg)]">
               {t("payApp.sendTitle")}
             </h2>
             <p className="mt-1 text-sm text-[var(--acopay-muted)]">{t("payApp.sendSubtitle")}</p>
           </div>
-          <button type="button" onClick={onBack} className="text-xs font-semibold text-[var(--acopay-brand)]">
-            {t("payApp.historyBack")}
+          <button type="button" onClick={onBack} className="shrink-0 text-xs font-semibold text-[var(--acopay-brand)]">
+            ← {t("payApp.historyBack")}
           </button>
         </div>
 
@@ -100,7 +97,8 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
                 <label className="text-xs font-semibold text-[var(--acopay-muted)]">
                   {t("payApp.sendAmountLabel")}
                 </label>
-                <span className="text-[11px] text-[var(--acopay-faint)]">
+                <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-[var(--acopay-success)]">
+                  <span aria-hidden>💰</span>
                   {t("payApp.balanceLabel")}: {formatAcopay(balance)} ACOPAY
                 </span>
               </div>
@@ -160,8 +158,8 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
               <div className="border-t border-[color:var(--acopay-border)] pt-2.5">
                 <Row label={t("payApp.sendTotal")} value={`${preview.plan.total} ACOPAY`} strong />
               </div>
-              <p className="text-[11px] text-[var(--acopay-faint)]">
-                {t("payApp.balanceLabel")}: {formatAcopay(preview.balance)} ACOPAY
+              <p className="text-[11px] font-semibold text-[var(--acopay-success)]">
+                <span aria-hidden>💰</span> {t("payApp.balanceLabel")}: {formatAcopay(preview.balance)} ACOPAY
                 {!preview.enough ? ` — ${t("payApp.sendInsufficient")}` : ""}
               </p>
             </div>
@@ -176,7 +174,7 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
                 }}
                 className="btn-orca-secondary flex-1 !rounded-xl !py-3 text-sm"
               >
-                {t("payApp.historyBack")}
+                ← {t("payApp.historyBack")}
               </button>
               <button
                 type="button"
