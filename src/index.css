@@ -3,6 +3,7 @@
 /* ACOPAY theme — light (default) + dark; accent cyan from logo */
 @theme {
   --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-pay-username: "Plus Jakarta Sans", "Outfit", ui-sans-serif, system-ui, sans-serif;
   --color-jup-bg: #0c1017;
   --color-jup-bg-2: #090b0e;
   --color-jup-surface: #13161a;
@@ -889,6 +890,29 @@ a.btn-orca-primary:disabled:hover {
 
 .send-confirm-reveal {
   animation: send-confirm-reveal 0.45s ease-out both;
+}
+
+/* Web Pay @username — distinct readable face (≠ Outfit body), all locales */
+.pay-tg-username {
+  font-family: "Plus Jakarta Sans", var(--font-sans);
+  font-weight: 800;
+  font-size: 1.125rem;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--acopay-brand);
+}
+@media (min-width: 640px) {
+  .pay-tg-username {
+    font-size: 1.25rem;
+  }
+}
+.pay-tg-username--inline {
+  font-size: 1.05rem;
+}
+@media (min-width: 640px) {
+  .pay-tg-username--inline {
+    font-size: 1.125rem;
+  }
 }
 
 /* Pay receipt — high-contrast bill (Light + Dark) */

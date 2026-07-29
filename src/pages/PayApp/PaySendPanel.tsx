@@ -95,7 +95,7 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
                 placeholder="@username or Solana address"
                 className={`mt-2 w-full rounded-2xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-surface)] px-4 py-3 outline-none focus:border-[color:var(--acopay-brand)] ${
                   toIsUsername
-                    ? "text-base font-bold tracking-tight text-[var(--acopay-brand)] sm:text-lg"
+                    ? "pay-tg-username pay-tg-username--inline"
                     : "font-mono text-sm text-[var(--acopay-fg)]"
                 }`}
                 autoComplete="off"
@@ -246,7 +246,7 @@ function Row({
       <span
         className={`text-right tabular-nums ${
           username
-            ? "text-base font-bold tracking-tight text-[var(--acopay-brand)] sm:text-lg"
+            ? "pay-tg-username pay-tg-username--inline"
             : strong
               ? "text-sm font-bold text-[var(--acopay-fg)]"
               : "text-sm font-semibold text-[var(--acopay-fg)]"

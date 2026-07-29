@@ -209,7 +209,7 @@ export function PayAppPage() {
                       <p
                         className={
                           me.username
-                            ? "min-w-0 truncate text-lg font-extrabold leading-snug tracking-tight text-[var(--acopay-brand)] sm:text-xl"
+                            ? "pay-tg-username min-w-0 truncate"
                             : "truncate text-sm font-medium text-[var(--acopay-muted)]"
                         }
                       >
