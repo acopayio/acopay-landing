@@ -14,6 +14,13 @@ import {
 } from "@solana/spl-token";
 import { OTC, phantomBrowseUrl, buildSolanaPayUrl } from "../config/otc";
 import { TOKEN } from "../config/token";
+import {
+  buildBuyResumePageUrl,
+  type StoredBuySession,
+  writeStoredBuySession,
+  syncBuySessionUrl,
+  setAutopayFlag,
+} from "./buySession";
 
 const USDT_DECIMALS = 6;
 const ACOPAY_DECIMALS = TOKEN.decimals;
@@ -198,32 +205,47 @@ export async function getAcopayUiBalance(ownerBase58: string): Promise<number | 
   }
 }
 
-/** Mobile / no-extension fallback. */
-export function openPhantomFallback(amountUsdt: number): void {
+export type PhantomFallbackSession = StoredBuySession;
+
+/**
+ * Mobile / no-extension fallback.
+ * Telegram → Phantom /ul/browse HTTPS Buy **with resume query** (storage không chia sẻ giữa WebView).
+ * Safari/Chrome → solana: Pay URI; persist session trước khi rời trang.
+ * Never wrap solana: in /ul/browse (black WebView).
+ */
+export function openPhantomFallback(amountUsdt: number, session?: PhantomFallbackSession | null): void {
   if (!isMobileUa()) {
     window.open("https://phantom.com/download", "_blank", "noopener,noreferrer");
     return;
   }
 
-  const payUrl = buildSolanaPayUrl(amountUsdt);
   const ua = typeof navigator !== "undefined" ? navigator.userAgent : "";
-  // Telegram in-app browser: window.open + wrapping solana: in /ul/browse → blank/black screen.
   const inTelegram =
     /Telegram/i.test(ua) ||
     (typeof window !== "undefined" &&
       !!(window as unknown as { TelegramWebviewProxy?: unknown }).TelegramWebviewProxy);
 
+  const resume: StoredBuySession =
+    session && session.amount === amountUsdt
+      ? session
+      : {
+          amount: amountUsdt,
+          endsAt: Date.now() + OTC.sessionMinutes * 60 * 1000,
+          startedAt: Date.now(),
+          watchAfterSig: null,
+        };
+
+  // Sync before any navigation — Telegram WebView storage ≠ Phantom WebView storage.
+  writeStoredBuySession(resume);
+  setAutopayFlag(amountUsdt);
+  syncBuySessionUrl(resume, { autoPay: true });
+
   if (inTelegram) {
-    // Open this HTTPS Buy page inside Phantom (provider injects). User taps the button again to sign.
-    const page =
-      typeof window !== "undefined"
-        ? window.location.href.split("#")[0]
-        : "https://acopay.net/buy";
+    const page = buildBuyResumePageUrl(resume, { autoPay: true });
     window.location.assign(phantomBrowseUrl(page));
     return;
   }
 
-  // Safari / Chrome / etc.: hand off Solana Pay URI (same path as scanning the QR).
-  // Never put solana: inside phantom.app/ul/browse — that loads a black WebView.
-  window.location.assign(payUrl);
+  // Safari / Chrome: Solana Pay URI (same as QR). Session already in storage + URL.
+  window.location.assign(buildSolanaPayUrl(amountUsdt));
 }

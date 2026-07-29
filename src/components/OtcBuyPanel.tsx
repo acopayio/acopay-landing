@@ -4,6 +4,15 @@ import { OTC, OTC_SESSION_MS, buildSolanaPayUrl, formatSessionClock, otcAcopayFo
 import { solscanUrl, TOKEN } from "../config/token";
 import { useCopy } from "../hooks/useCopy";
 import { useT } from "../i18n/LanguageProvider";
+import {
+  clearBuySessionUrl,
+  readAutopayFlag,
+  readStoredBuySession,
+  setAutopayFlag,
+  syncBuySessionUrl,
+  writeStoredBuySession,
+  type StoredBuySession,
+} from "../lib/buySession";
 import { AddrHighlight } from "./AddrHighlight";
 import { BrandLogo } from "./BrandLogo";
 
@@ -11,41 +20,10 @@ const PRESETS = [10, 50, 100, 250, 500] as const;
 
 type Phase = "setup" | "paying" | "expired";
 
-const BUY_SESSION_KEY = "acopay_buy_session_v1";
-
-type StoredBuySession = {
-  amount: number;
-  endsAt: number;
-  startedAt: number;
-  watchAfterSig: string | null;
-};
-
-function readStoredBuySession(): StoredBuySession | null {
-  try {
-    const raw = sessionStorage.getItem(BUY_SESSION_KEY);
-    if (!raw) return null;
-    const parsed = JSON.parse(raw) as StoredBuySession;
-    if (!parsed || typeof parsed.amount !== "number" || typeof parsed.endsAt !== "number") {
-      return null;
-    }
-    if (parsed.amount < OTC.minUsdt) return null;
-    if (Date.now() >= parsed.endsAt) {
-      sessionStorage.removeItem(BUY_SESSION_KEY);
-      return null;
-    }
-    return parsed;
-  } catch {
-    return null;
-  }
-}
-
-function writeStoredBuySession(s: StoredBuySession | null) {
-  try {
-    if (!s) sessionStorage.removeItem(BUY_SESSION_KEY);
-    else sessionStorage.setItem(BUY_SESSION_KEY, JSON.stringify(s));
-  } catch {
-    /* ignore */
-  }
+/** Sync init — tránh 1 frame setup trước khi useEffect restore (đặc biệt mobile). */
+function initialBuySession(): StoredBuySession | null {
+  if (typeof window === "undefined") return null;
+  return readStoredBuySession();
 }
 
 function shortAddr(a: string) {
@@ -74,11 +52,16 @@ export function OtcBuyPanel() {
   const t = useT();
   const isNarrow = useIsNarrow();
   const payAnchorRef = useRef<HTMLDivElement>(null);
-  const restoredRef = useRef(false);
-  const [amountStr, setAmountStr] = useState("50");
-  const [phase, setPhase] = useState<Phase>("setup");
-  const [sessionAmount, setSessionAmount] = useState<number | null>(null);
-  const [sessionEndsAt, setSessionEndsAt] = useState<number | null>(null);
+  const bootSessionRef = useRef<StoredBuySession | null | undefined>(undefined);
+  if (bootSessionRef.current === undefined) {
+    bootSessionRef.current = initialBuySession();
+  }
+  const boot = bootSessionRef.current;
+
+  const [amountStr, setAmountStr] = useState(() => (boot ? String(boot.amount) : "50"));
+  const [phase, setPhase] = useState<Phase>(() => (boot ? "paying" : "setup"));
+  const [sessionAmount, setSessionAmount] = useState<number | null>(() => boot?.amount ?? null);
+  const [sessionEndsAt, setSessionEndsAt] = useState<number | null>(() => boot?.endsAt ?? null);
   const [now, setNow] = useState(() => Date.now());
   const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
   const [qrError, setQrError] = useState<string | null>(null);
@@ -91,24 +74,17 @@ export function OtcBuyPanel() {
   const [settleStatus, setSettleStatus] = useState<"idle" | "settling" | "complete">("idle");
   const [creditedAcopay, setCreditedAcopay] = useState<number | null>(null);
   /** Cursor: OTC USDT ATA sig before this session — QR/mobile auto-detect. */
-  const [watchAfterSig, setWatchAfterSig] = useState<string | null>(null);
-  const [sessionStartedAt, setSessionStartedAt] = useState<number | null>(null);
+  const [watchAfterSig, setWatchAfterSig] = useState<string | null>(() => boot?.watchAfterSig ?? null);
+  const [sessionStartedAt, setSessionStartedAt] = useState<number | null>(() => boot?.startedAt ?? null);
 
-  // Phantom browse / Solana Pay leaves this tab and remounts React — restore paying session.
+  // Mirror URL → storage once; strip buy_* from address bar after hydrate (giữ storage + autopay flag).
   useEffect(() => {
-    if (restoredRef.current) return;
-    restoredRef.current = true;
-    const stored = readStoredBuySession();
-    if (!stored) return;
-    setAmountStr(String(stored.amount));
-    setSessionAmount(stored.amount);
-    setSessionEndsAt(stored.endsAt);
-    setSessionStartedAt(stored.startedAt);
-    setWatchAfterSig(stored.watchAfterSig);
-    setNow(Date.now());
-    setPhase("paying");
-    setSettleStatus("idle");
-  }, []);
+    if (!boot) return;
+    writeStoredBuySession(boot);
+    // Phantom browse chỉ mang query — copy autopay sang storage trước khi xóa URL.
+    if (readAutopayFlag() != null) setAutopayFlag(boot.amount);
+    clearBuySessionUrl();
+  }, [boot]);
 
   useEffect(() => {
     if (phase !== "paying" || sessionAmount == null || sessionEndsAt == null || sessionStartedAt == null) {
@@ -116,14 +92,18 @@ export function OtcBuyPanel() {
     }
     if (settleStatus === "complete") {
       writeStoredBuySession(null);
+      setAutopayFlag(null);
+      clearBuySessionUrl();
       return;
     }
-    writeStoredBuySession({
+    const s: StoredBuySession = {
       amount: sessionAmount,
       endsAt: sessionEndsAt,
       startedAt: sessionStartedAt,
       watchAfterSig,
-    });
+    };
+    writeStoredBuySession(s);
+    syncBuySessionUrl(s);
   }, [phase, sessionAmount, sessionEndsAt, sessionStartedAt, watchAfterSig, settleStatus]);
 
   const draftAmount = useMemo(() => {
@@ -163,6 +143,23 @@ export function OtcBuyPanel() {
   const showInlinePay = isNarrow && phase !== "setup";
   const showSidePay = !isNarrow;
 
+  function currentPaySession(): StoredBuySession | null {
+    if (
+      sessionAmount == null ||
+      sessionEndsAt == null ||
+      sessionStartedAt == null ||
+      !Number.isFinite(sessionAmount)
+    ) {
+      return null;
+    }
+    return {
+      amount: sessionAmount,
+      endsAt: sessionEndsAt,
+      startedAt: sessionStartedAt,
+      watchAfterSig,
+    };
+  }
+
   async function openPhantomPay() {
     if (!activeValid) return;
     setWalletError(null);
@@ -177,34 +174,30 @@ export function OtcBuyPanel() {
       openPhantomFallback,
       payUsdtWithPhantom,
       getAcopayUiBalance,
-      isMobileUa,
     } = await import("../lib/phantomPay");
 
+    const paySession =
+      currentPaySession() ??
+      ({
+        amount: activeAmount,
+        endsAt: Date.now() + OTC_SESSION_MS,
+        startedAt: Date.now(),
+        watchAfterSig,
+      } satisfies StoredBuySession);
+
+    // Persist BEFORE deeplink — Telegram storage không sang Phantom WebView.
+    writeStoredBuySession(paySession);
+    syncBuySessionUrl(paySession);
+
     if (!hasPhantomExtension()) {
-      const ua = navigator.userAgent || "";
-      const inTelegram =
-        /Telegram/i.test(ua) ||
-        !!(window as unknown as { TelegramWebviewProxy?: unknown }).TelegramWebviewProxy;
-      // Only Telegram→Phantom browse needs resume; Solana Pay URI leaves this page.
-      if (isMobileUa() && inTelegram) {
-        try {
-          sessionStorage.setItem("acopay_buy_autopay", String(activeAmount));
-        } catch {
-          /* ignore */
-        }
-      }
-      openPhantomFallback(activeAmount);
+      openPhantomFallback(activeAmount, paySession);
       if (!/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)) {
         setWalletError(t("otc.phantomMissingLong"));
       }
       return;
     }
 
-    try {
-      sessionStorage.removeItem("acopay_buy_autopay");
-    } catch {
-      /* ignore */
-    }
+    setAutopayFlag(null);
 
     setPayingWallet(true);
     try {
@@ -217,7 +210,7 @@ export function OtcBuyPanel() {
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
       if (msg === "PHANTOM_MISSING") {
-        openPhantomFallback(activeAmount);
+        openPhantomFallback(activeAmount, paySession);
         setWalletError(t("otc.phantomMissing"));
       } else if (/User rejected|rejected the request|4001/i.test(msg)) {
         setWalletError(t("otc.phantomCancelled"));
@@ -229,31 +222,28 @@ export function OtcBuyPanel() {
     }
   }
 
-  /** Resume Pay-with-Phantom after opening Buy page inside Phantom (Telegram path). */
+  /** Resume Pay-with-Phantom after Buy opens inside Phantom (Telegram /ul/browse + buy_pay=1). */
+  const autopayConsumedRef = useRef(false);
   useEffect(() => {
     if (phase !== "paying" || settleStatus !== "idle" || !activeValid || payingWallet) return;
+    if (autopayConsumedRef.current) return;
     let cancelled = false;
     let tries = 0;
 
     async function resume() {
-      let want: string | null = null;
-      try {
-        want = sessionStorage.getItem("acopay_buy_autopay");
-      } catch {
-        return;
-      }
-      if (!want || Number(want) !== activeAmount) return;
+      const want = readAutopayFlag();
+      if (want == null || want !== activeAmount) return;
       const { hasPhantomExtension } = await import("../lib/phantomPay");
       if (cancelled) return;
       if (!hasPhantomExtension()) {
-        if (tries++ < 15) window.setTimeout(() => void resume(), 400);
+        if (tries++ < 20) window.setTimeout(() => void resume(), 400);
         return;
       }
-      try {
-        sessionStorage.removeItem("acopay_buy_autopay");
-      } catch {
-        /* ignore */
-      }
+      autopayConsumedRef.current = true;
+      setAutopayFlag(null);
+      const s = currentPaySession();
+      if (s) syncBuySessionUrl(s);
+      else clearBuySessionUrl();
       void openPhantomPay();
     }
 
@@ -363,6 +353,8 @@ export function OtcBuyPanel() {
       if (stamp >= sessionEndsAt) {
         setPhase("expired");
         writeStoredBuySession(null);
+        setAutopayFlag(null);
+        clearBuySessionUrl();
       }
     }, 250);
     return () => window.clearInterval(id);
@@ -401,6 +393,14 @@ export function OtcBuyPanel() {
     if (!draftValid) return;
     const ends = Date.now() + OTC_SESSION_MS;
     const started = Date.now();
+    const seed: StoredBuySession = {
+      amount: draftAmount,
+      endsAt: ends,
+      startedAt: started,
+      watchAfterSig: null,
+    };
+    writeStoredBuySession(seed);
+    syncBuySessionUrl(seed);
     setSessionAmount(draftAmount);
     setSessionEndsAt(ends);
     setSessionStartedAt(started);
@@ -416,6 +416,8 @@ export function OtcBuyPanel() {
       const { snapshotOtcUsdtLatestSig } = await import("../lib/otcDepositWatch");
       const cursor = await snapshotOtcUsdtLatestSig();
       setWatchAfterSig(cursor);
+      writeStoredBuySession({ ...seed, watchAfterSig: cursor });
+      syncBuySessionUrl({ ...seed, watchAfterSig: cursor });
     } catch {
       setWatchAfterSig(null);
     }
@@ -427,10 +429,21 @@ export function OtcBuyPanel() {
   async function refreshSession() {
     if (sessionAmount == null || sessionAmount < OTC.minUsdt) {
       setPhase("setup");
+      writeStoredBuySession(null);
+      setAutopayFlag(null);
+      clearBuySessionUrl();
       return;
     }
     const ends = Date.now() + OTC_SESSION_MS;
     const started = Date.now();
+    const seed: StoredBuySession = {
+      amount: sessionAmount,
+      endsAt: ends,
+      startedAt: started,
+      watchAfterSig: null,
+    };
+    writeStoredBuySession(seed);
+    syncBuySessionUrl(seed);
     setSessionEndsAt(ends);
     setSessionStartedAt(started);
     setNow(started);
@@ -442,7 +455,10 @@ export function OtcBuyPanel() {
     setPhase("paying");
     try {
       const { snapshotOtcUsdtLatestSig } = await import("../lib/otcDepositWatch");
-      setWatchAfterSig(await snapshotOtcUsdtLatestSig());
+      const cursor = await snapshotOtcUsdtLatestSig();
+      setWatchAfterSig(cursor);
+      writeStoredBuySession({ ...seed, watchAfterSig: cursor });
+      syncBuySessionUrl({ ...seed, watchAfterSig: cursor });
     } catch {
       setWatchAfterSig(null);
     }
@@ -460,6 +476,8 @@ export function OtcBuyPanel() {
     setSettleStatus("idle");
     setCreditedAcopay(null);
     writeStoredBuySession(null);
+    setAutopayFlag(null);
+    clearBuySessionUrl();
     if (sessionAmount != null) setAmountStr(String(sessionAmount));
   }
 
