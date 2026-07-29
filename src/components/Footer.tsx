@@ -7,7 +7,7 @@ import { TELEGRAM_PAY_LABEL } from "./TelegramPayButton";
 const PRODUCT_LINKS = [
   { to: "/token", labelKey: "nav.token" },
   { to: "/markets", labelKey: "nav.markets" },
-  { to: "/trade", labelKey: "nav.trade" },
+  { to: "/pay", labelKey: "nav.trade" },
   { to: "/contract", labelKey: "nav.contract" },
   { to: "/roadmap", labelKey: "nav.roadmap" },
   { to: "/faq", labelKey: "nav.faq" },
@@ -76,7 +76,7 @@ export function Footer() {
               {t("hero.solscan")}
             </a>
 
-            <Link to="/trade" className="hover:text-[var(--acopay-brand)]">
+            <Link to="/pay" className="hover:text-[var(--acopay-brand)]">
               {t("nav.trade")}
             </Link>
             <span className="select-none" aria-hidden="true" />
@@ -90,7 +90,7 @@ export function Footer() {
                 Jupiter ↗
               </a>
             ) : (
-              <Link to="/trade" className="hover:text-[var(--acopay-brand)]">
+              <Link to="/pay" className="hover:text-[var(--acopay-brand)]">
                 {t("nav.trade")}
               </Link>
             )}
@@ -174,7 +174,7 @@ export function Footer() {
                     Jupiter ↗
                   </a>
                 ) : (
-                  <Link to="/trade" className="text-[var(--acopay-muted)] hover:text-[var(--acopay-brand)]">
+                  <Link to="/pay" className="text-[var(--acopay-muted)] hover:text-[var(--acopay-brand)]">
                     {t("nav.trade")}
                   </Link>
                 )}

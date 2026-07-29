@@ -94,7 +94,7 @@ export function LaunchStatus() {
               ))}
             </ul>
             <div className="mt-6 flex flex-wrap gap-2">
-              <Link to="/trade" className="btn-orca-secondary !py-2 !text-xs">
+              <Link to="/buy" className="btn-orca-secondary !py-2 !text-xs">
                 {t("launch.howToBuy")}
               </Link>
               <Link to="/contract" className="btn-orca-ghost !py-2 !text-xs">

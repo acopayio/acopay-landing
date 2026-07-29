@@ -73,7 +73,7 @@ export function BuyPage() {
                 Raydium ↗
               </a>
             )}
-            <Link to="/trade" className="btn-orca-ghost !text-xs">
+            <Link to="/markets" className="btn-orca-ghost !text-xs">
               {t("buyPage.howToSwap")}
             </Link>
           </div>

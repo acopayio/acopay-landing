@@ -57,10 +57,15 @@ export const PAGE_SEO: Record<string, PageSeo> = {
     description: SITE.defaultDescription,
     path: "/buy",
   },
-  "/trade": {
-    title: "How to Buy ACOPAY | Official Buy & DEX Swap",
+  "/pay": {
+    title: "ACOPAY Wallet | Send & receive ACOPAY",
     description: SITE.defaultDescription,
-    path: "/trade",
+    path: "/pay",
+  },
+  "/trade": {
+    title: "ACOPAY Wallet | Send & receive ACOPAY",
+    description: SITE.defaultDescription,
+    path: "/pay",
   },
   "/markets": {
     title: "ACOPAY Markets | Transactions, Pools & Swap",

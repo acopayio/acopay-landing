@@ -3,7 +3,7 @@ export const en = {
   nav: {
     home: "Home",
     buy: "Buy",
-    trade: "Trade",
+    trade: "Transfers",
     markets: "Markets",
     token: "Token",
     contract: "Contract",

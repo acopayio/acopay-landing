@@ -97,7 +97,7 @@ export function Contract() {
               >
                 {t("hero.solscan")}
               </a>
-              <Link to="/trade" className="btn-orca-secondary !py-2 !text-xs">
+              <Link to="/buy" className="btn-orca-secondary !py-2 !text-xs">
                 {t("contractPage.howToBuy")}
               </Link>
             </div>

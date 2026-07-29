@@ -8,7 +8,6 @@ import { PoolsPage } from "./pages/PoolsPage";
 import { RoadmapPage } from "./pages/RoadmapPage";
 import { TokenPage } from "./pages/TokenPage";
 import { BuyPage } from "./pages/BuyPage";
-import { TradePage } from "./pages/TradePage";
 import { LinkWalletPage } from "./pages/LinkWalletPage";
 import { SendAcopayPage } from "./pages/SendAcopayPage";
 import { PayAppPage } from "./pages/PayApp/PayAppPage";
@@ -22,12 +21,12 @@ export default function App() {
           <Route index element={<HomePage />} />
           <Route path="buy" element={<BuyPage />} />
           <Route path="pay" element={<PayAppPage />} />
+          <Route path="trade" element={<Navigate to="/pay" replace />} />
           <Route path="link-wallet" element={<LinkWalletPage />} />
           <Route path="send" element={<SendAcopayPage />} />
           <Route path="token" element={<TokenPage />} />
           <Route path="markets" element={<PoolsPage />} />
           <Route path="pools" element={<Navigate to="/markets" replace />} />
-          <Route path="trade" element={<TradePage />} />
           <Route path="contract" element={<ContractPage />} />
           <Route path="roadmap" element={<RoadmapPage />} />
           <Route path="faq" element={<FAQPage />} />
