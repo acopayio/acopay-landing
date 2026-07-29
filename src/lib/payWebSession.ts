@@ -333,11 +333,44 @@ export function parseAmountInput(display: string): number {
 }
 
 /**
- * Live amount input: insert `,` thousands while typing; only `.` for decimals (≤4).
- * Example: `11111` → `11,111` · `1234.5` → `1,234.5`
+ * Live amount input display:
+ * - `,` = thousands (auto-inserted)
+ * - `.` = decimal (max 4)
+ * iOS/VI decimal keypad often emits `,` for decimal — treat that as `.`
+ * when it is not already a thousand-group comma.
+ *
+ * Examples: `11111` → `11,111` · `12,5` (iOS) → `12.5` · `1,234.56` → `1,234.56`
  */
 export function formatAmountInput(raw: string): string {
-  let s = String(raw).replace(/,/g, "").replace(/[^\d.]/g, "");
+  let s = String(raw).replace(/[^\d.,]/g, "");
+  if (!s) return "";
+
+  // Decide decimal separator: prefer `.`; if only `,` and it looks like a decimal
+  // (not `\d{1,3}(,\d{3})+` thousand groups), map `,` → `.`.
+  const hasDot = s.includes(".");
+  const hasComma = s.includes(",");
+  if (hasDot && hasComma) {
+    // Rightmost of `.`/`,` is decimal; strip the other as thousands noise.
+    const lastSep = Math.max(s.lastIndexOf("."), s.lastIndexOf(","));
+    const intRaw = s.slice(0, lastSep).replace(/[.,]/g, "");
+    const frac = s.slice(lastSep + 1).replace(/[.,]/g, "").slice(0, 4);
+    s = `${intRaw}.${frac}`;
+  } else if (!hasDot && hasComma) {
+    const thousandOnly = /^\d{1,3}(,\d{3})+$/.test(s);
+    const thousandPlusFrac = /^\d{1,3}(,\d{3})+,\d{1,4}$/.test(s);
+    if (thousandOnly) {
+      s = s.replace(/,/g, "");
+    } else if (thousandPlusFrac) {
+      const last = s.lastIndexOf(",");
+      s = `${s.slice(0, last).replace(/,/g, "")}.${s.slice(last + 1)}`;
+    } else {
+      // Locale decimal comma (iOS VI keypad): `12,5` → `12.5`
+      const last = s.lastIndexOf(",");
+      s = `${s.slice(0, last).replace(/,/g, "")}.${s.slice(last + 1).replace(/,/g, "")}`;
+    }
+  }
+
+  s = s.replace(/[^\d.]/g, "");
   const dot = s.indexOf(".");
   if (dot !== -1) {
     s = s.slice(0, dot + 1) + s.slice(dot + 1).replace(/\./g, "");

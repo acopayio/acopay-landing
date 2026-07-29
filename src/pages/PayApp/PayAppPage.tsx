@@ -143,11 +143,7 @@ export function PayAppPage() {
             <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--acopay-brand)]">
               {t("payApp.kicker")}
             </p>
-            {panel === "home" && (
-              <h1 className="mt-0.5 text-2xl font-bold tracking-tight text-[var(--acopay-fg)] lg:text-[1.75rem]">
-                {t("payApp.title")}
-              </h1>
-            )}
+            {/* Kevin 2026-07-29: no redundant "Ví/Wallet" H1 under GIAO DỊCH — kicker is enough */}
           </div>
           {panel === "home" && (
             <p className="hidden text-right text-sm text-[var(--acopay-muted)] sm:block">{t("payApp.subtitle")}</p>

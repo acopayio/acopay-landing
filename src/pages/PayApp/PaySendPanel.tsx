@@ -11,7 +11,7 @@ import {
   type PayPreview,
 } from "../../lib/payWebSession";
 
-const PRESETS = [10, 50, 100, 250, 500, 1000, 2000]; // cf-bust 2026-07-29f
+const PRESETS = [10, 50, 100, 250, 500, 1000, 2000]; // cf-bust 2026-07-29g-chuyen-decimal
 
 
 type Props = {
@@ -118,7 +118,12 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
                   value={amount}
                   onChange={(e) => setAmount(formatAmountInput(e.target.value))}
                   inputMode="decimal"
-                  placeholder="0"
+                  enterKeyHint="done"
+                  autoComplete="off"
+                  autoCorrect="off"
+                  spellCheck={false}
+                  lang="en"
+                  placeholder="0.0"
                   className="min-w-0 flex-1 bg-transparent text-3xl font-bold tabular-nums tracking-tight text-[var(--acopay-fg)] outline-none"
                 />
                 <span className="shrink-0 rounded-lg bg-[var(--acopay-brand-soft)] px-2.5 py-1 text-xs font-bold text-[var(--acopay-brand)]">
