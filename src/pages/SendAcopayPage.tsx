@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useSearchParams } from "react-router-dom";
 import { formatSessionClock, phantomBrowseUrl } from "../config/otc";
 import { explorerTransfersUrl, TOKEN } from "../config/token";
@@ -22,10 +22,11 @@ import {
 /** Expected confirm window (matches client + bot RPC retries). */
 const CONFIRM_WAIT_MS = 45_000;
 
-/** Amount + ACOPAY logo + ticker — logo size fixed via `.send-bill-logo` (same on every bill row). */
-function AcopayCoinMark() {
+/** Amount + logo + ticker — one flex row, optical middle (same on every bill row). */
+function AcopayAmount({ children }: { children: ReactNode }) {
   return (
-    <span className="inline-flex items-center gap-1">
+    <span className="send-bill-amount">
+      <span className="send-bill-amount-num">{children}</span>
       <BrandLogo className="send-bill-logo" alt="" />
       <span className="send-bill-ticker">ACOPAY</span>
     </span>
@@ -379,7 +380,7 @@ export function SendAcopayPage() {
               <div className="send-bill-row">
                 <span className="send-bill-label">{t("sendAcopay.amountLabel")}</span>
                 <span className="send-bill-value">
-                  {fmtAcopayDisplay(bill.transferred)} <AcopayCoinMark />
+                  <AcopayAmount>{fmtAcopayDisplay(bill.transferred)}</AcopayAmount>
                 </span>
               </div>
               <hr className="send-bill-divider" />
@@ -444,7 +445,7 @@ export function SendAcopayPage() {
               <div className="send-bill-row">
                 <span className="send-bill-label">💸 {t("sendAcopay.transferredLabel")}</span>
                 <span className="send-bill-value">
-                  {fmtAcopayDisplay(bill.transferred)} <AcopayCoinMark />
+                  <AcopayAmount>{fmtAcopayDisplay(bill.transferred)}</AcopayAmount>
                 </span>
               </div>
               <div className="send-bill-row">
@@ -453,14 +454,14 @@ export function SendAcopayPage() {
                   <span className="send-bill-meta">({bill.feePct})</span>
                 </span>
                 <span className="send-bill-value send-bill-value--plain inline-flex items-center gap-1">
-                  {fmtAcopayDisplay(bill.fee)} <AcopayCoinMark />
+                  <AcopayAmount>{fmtAcopayDisplay(bill.fee)}</AcopayAmount>
                 </span>
               </div>
               {bill.openFee ? (
                 <div className="send-bill-row">
                   <span className="send-bill-label">🆕 {t("sendAcopay.openFeeLabel")}</span>
                   <span className="send-bill-value send-bill-value--plain inline-flex items-center gap-1">
-                    {fmtAcopayDisplay(bill.openFee)} <AcopayCoinMark />
+                    <AcopayAmount>{fmtAcopayDisplay(bill.openFee)}</AcopayAmount>
                   </span>
                 </div>
               ) : null}
@@ -470,7 +471,7 @@ export function SendAcopayPage() {
                   🧾 {t("sendAcopay.totalLabel")}
                 </span>
                 <span className="send-bill-value">
-                  {fmtAcopayDisplay(bill.total)} <AcopayCoinMark />
+                  <AcopayAmount>{fmtAcopayDisplay(bill.total)}</AcopayAmount>
                 </span>
               </div>
 
@@ -525,7 +526,7 @@ export function SendAcopayPage() {
               <div className="send-bill-row">
                 <span className="send-bill-label">💸 {t("sendAcopay.transferredLabel")}</span>
                 <span className="send-bill-value">
-                  {fmtAcopayDisplay(bill.transferred)} <AcopayCoinMark />
+                  <AcopayAmount>{fmtAcopayDisplay(bill.transferred)}</AcopayAmount>
                 </span>
               </div>
               <div className="send-bill-row">
@@ -623,7 +624,7 @@ export function SendAcopayPage() {
                   <div className="send-bill-row">
                     <span className="send-bill-label">💸 {t("sendAcopay.amountLabel")}</span>
                     <span className="send-bill-value">
-                      {amount} <AcopayCoinMark />
+                      <AcopayAmount>{amount}</AcopayAmount>
                     </span>
                   </div>
                   <hr className="send-bill-divider" />

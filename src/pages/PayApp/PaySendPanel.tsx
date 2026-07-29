@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { flushSync } from "react-dom";
 import { AddrHighlight } from "../../components/AddrHighlight";
 import { BrandLogo } from "../../components/BrandLogo";
@@ -677,7 +677,7 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
                 <div className="send-bill-row">
                   <span className="send-bill-label">{t("sendAcopay.amountLabel")}</span>
                   <span className="send-bill-value">
-                    {formatAcopay(parseAmountInput(String(waitBill.transferred)))} <AcopayCoinMark />
+                    <AcopayAmount>{formatAcopay(parseAmountInput(String(waitBill.transferred)))}</AcopayAmount>
                   </span>
                 </div>
                 <hr className="send-bill-divider" />
@@ -740,7 +740,7 @@ function PhantomParitySuccessBill({ success }: { success: SuccessState }) {
       <div className="send-bill-row">
         <span className="send-bill-label">💸 {t("sendAcopay.transferredLabel")}</span>
         <span className="send-bill-value">
-          {formatAcopay(parseAmountInput(String(success.transferred)))} <AcopayCoinMark />
+          <AcopayAmount>{formatAcopay(parseAmountInput(String(success.transferred)))}</AcopayAmount>
         </span>
       </div>
       <div className="send-bill-row">
@@ -749,14 +749,14 @@ function PhantomParitySuccessBill({ success }: { success: SuccessState }) {
           <span className="send-bill-meta">({success.feePct})</span>
         </span>
         <span className="send-bill-value send-bill-value--plain inline-flex items-center gap-1">
-          {formatAcopay(parseAmountInput(String(success.fee)))} <AcopayCoinMark />
+          <AcopayAmount>{formatAcopay(parseAmountInput(String(success.fee)))}</AcopayAmount>
         </span>
       </div>
       {success.isFirstAtaOpen && openFeeN > 0 ? (
         <div className="send-bill-row">
           <span className="send-bill-label">🆕 {t("sendAcopay.openFeeLabel")}</span>
           <span className="send-bill-value send-bill-value--plain inline-flex items-center gap-1">
-            {formatAcopay(openFeeN)} <AcopayCoinMark />
+            <AcopayAmount>{formatAcopay(openFeeN)}</AcopayAmount>
           </span>
         </div>
       ) : null}
@@ -764,7 +764,7 @@ function PhantomParitySuccessBill({ success }: { success: SuccessState }) {
       <div className="send-bill-row">
         <span className="send-bill-label send-bill-label--strong">🧾 {t("sendAcopay.totalLabel")}</span>
         <span className="send-bill-value">
-          {formatAcopay(parseAmountInput(String(success.total)))} <AcopayCoinMark />
+          <AcopayAmount>{formatAcopay(parseAmountInput(String(success.total)))}</AcopayAmount>
         </span>
       </div>
 
@@ -808,9 +808,11 @@ function PhantomParitySuccessBill({ success }: { success: SuccessState }) {
   );
 }
 
-function AcopayCoinMark() {
+/** Amount + logo + ticker on one baseline (flex middle). */
+function AcopayAmount({ children }: { children: ReactNode }) {
   return (
-    <span className="inline-flex items-center gap-1">
+    <span className="send-bill-amount">
+      <span className="send-bill-amount-num">{children}</span>
       <BrandLogo className="send-bill-logo" alt="" />
       <span className="send-bill-ticker">ACOPAY</span>
     </span>
@@ -884,11 +886,7 @@ function TransferBill({
       <div className="send-bill-row">
         <span className="send-bill-label">{amountLabel}</span>
         <span className="send-bill-value">
-          {formatAcopay(parseAmountInput(String(plan.transferred)))}{" "}
-          <span className="inline-flex items-center gap-1">
-            <BrandLogo className="send-bill-logo" alt="" />
-            <span className="send-bill-ticker">ACOPAY</span>
-          </span>
+          <AcopayAmount>{formatAcopay(parseAmountInput(String(plan.transferred)))}</AcopayAmount>
         </span>
       </div>
       <div className="send-bill-row">
@@ -897,22 +895,14 @@ function TransferBill({
           <span className="send-bill-meta">({plan.feePct})</span>
         </span>
         <span className="send-bill-value send-bill-value--plain inline-flex items-center gap-1">
-          {formatAcopay(parseAmountInput(String(plan.fee)))}{" "}
-          <span className="inline-flex items-center gap-1">
-            <BrandLogo className="send-bill-logo" alt="" />
-            <span className="send-bill-ticker">ACOPAY</span>
-          </span>
+          <AcopayAmount>{formatAcopay(parseAmountInput(String(plan.fee)))}</AcopayAmount>
         </span>
       </div>
       {plan.isFirstAtaOpen && parseAmountInput(String(plan.openFee)) > 0 && (
         <div className="send-bill-row">
           <span className="send-bill-label">{openFeeLabel}</span>
           <span className="send-bill-value send-bill-value--plain inline-flex items-center gap-1">
-            {formatAcopay(parseAmountInput(String(plan.openFee)))}{" "}
-            <span className="inline-flex items-center gap-1">
-              <BrandLogo className="send-bill-logo" alt="" />
-              <span className="send-bill-ticker">ACOPAY</span>
-            </span>
+            <AcopayAmount>{formatAcopay(parseAmountInput(String(plan.openFee)))}</AcopayAmount>
           </span>
         </div>
       )}
@@ -920,11 +910,7 @@ function TransferBill({
       <div className="send-bill-row">
         <span className="send-bill-label send-bill-label--strong">{totalLabel}</span>
         <span className="send-bill-value">
-          {formatAcopay(parseAmountInput(String(plan.total)))}{" "}
-          <span className="inline-flex items-center gap-1">
-            <BrandLogo className="send-bill-logo" alt="" />
-            <span className="send-bill-ticker">ACOPAY</span>
-          </span>
+          <AcopayAmount>{formatAcopay(parseAmountInput(String(plan.total)))}</AcopayAmount>
         </span>
       </div>
 
@@ -936,11 +922,7 @@ function TransferBill({
               plan.enough === false ? "text-[var(--acopay-danger,#b91c1c)]" : ""
             }`}
           >
-            {formatAcopay(plan.balance)}{" "}
-            <span className="inline-flex items-center gap-1">
-              <BrandLogo className="send-bill-logo" alt="" />
-              <span className="send-bill-ticker">ACOPAY</span>
-            </span>
+            <AcopayAmount>{formatAcopay(plan.balance)}</AcopayAmount>
             {plan.enough === false ? (
               <span className="send-bill-meta"> — {insufficient}</span>
             ) : null}
