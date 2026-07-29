@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import QRCode from "qrcode";
 import { OTC, OTC_SESSION_MS, buildSolanaPayUrl, formatSessionClock, otcAcopayForUsdt } from "../config/otc";
-import { solscanUrl, TOKEN } from "../config/token";
+import { explorerTransfersUrl, TOKEN } from "../config/token";
 import { useCopy } from "../hooks/useCopy";
 import { useT } from "../i18n/LanguageProvider";
 import {
@@ -523,14 +523,11 @@ export function OtcBuyPanel() {
           {buyerPubkey ? (
             <div className="otc-success-credit mt-3 w-full max-w-sm text-left">
               <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--acopay-faint)]">
-                {t("otc.acopaySentTo")}
+                📥 {t("otc.acopaySentTo")} - {t("otc.networkValue")}
               </p>
               <div className="mt-1.5 break-all rounded-xl border border-[var(--acopay-line)] bg-[var(--acopay-elevated)] px-3 py-2.5 text-xs text-[var(--acopay-fg)]">
                 <AddrHighlight addr={buyerPubkey} />
               </div>
-              <p className="mt-1.5 text-[11px] text-[var(--acopay-faint)]">
-                {t("otc.creditedNetworkLabel")}: {t("otc.networkValue")}
-              </p>
             </div>
           ) : null}
           <div className="otc-success-actions">
@@ -546,22 +543,14 @@ export function OtcBuyPanel() {
             )}
             {buyerPubkey && (
               <a
-                href={`https://solscan.io/account/${buyerPubkey}`}
+                href={explorerTransfersUrl()}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-orca-ghost !rounded-xl !px-4 !py-2.5 !text-xs"
               >
-                {t("otc.viewWalletSolscan")}
+                {t("markets.transfers")} ACOPAY ↗
               </a>
             )}
-            <a
-              href={solscanUrl()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-orca-ghost !rounded-xl !px-4 !py-2.5 !text-xs"
-            >
-              {t("otc.tokenSolscan")}
-            </a>
           </div>
         </div>
       ) : settleStatus === "settling" ? (

@@ -414,7 +414,7 @@ const partials: Record<string, DeepPartialMessages> = {
       successKicker: "Mua ACOPAY",
       paymentSuccessful: "Thanh toán thành công",
       paidLine: "Bạn đã trả {amount} USDT · tỷ giá 1 USDT = 1 ACOPAY",
-      acopaySentTo: "Đã gửi ACOPAY về ví của bạn",
+      acopaySentTo: "Đã gửi về ví : ACOPAY",
       creditedNetworkLabel: "Mạng",
       usdtTx: "Giao dịch USDT ↗",
       tokenSolscan: "Token trên Solscan ↗",
