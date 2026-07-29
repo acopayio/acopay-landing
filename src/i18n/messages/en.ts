@@ -558,7 +558,7 @@ export const en = {
     receiveHint: "Scan the QR or copy your Solana address to receive ACOPAY.",
     receiveAddressLabel: "Wallet address",
     receiveNetwork: "Solana Mainnet · ACOPAY",
-    receiveByUsername: "Or receive via Telegram Pay",
+    receiveByUsername: "Receive via Telegram Pay",
     historyTitle: "Transfer history",
     historyEmpty: "No transfers in this period.",
     historyBack: "Back",

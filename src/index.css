@@ -1164,19 +1164,13 @@ html[data-theme="dark"] .send-bill-link {
   object-fit: cover;
 }
 
-/* Web Pay — Receive: QR + address unit, Telegram block
- * Avoid color-mix() inside linear-gradient — LightningCSS fallback
- * can expand to solid --acopay-brand and wash the card. */
+/* Web Pay — Receive: QR + address (minimal chrome — Kevin: fewer borders) */
 .pay-recv-stage {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0;
-  border-radius: 1.25rem;
-  border: 1px solid var(--acopay-border-strong);
-  background: var(--acopay-surface);
-  padding: 1.15rem 1rem 1rem;
-  box-shadow: 0 0 0 6px var(--acopay-brand-soft);
+  padding: 0.25rem 0 0;
 }
 
 .pay-recv-qr {
@@ -1189,8 +1183,6 @@ html[data-theme="dark"] .send-bill-link {
   width: 100%;
   max-width: 22rem;
   text-align: center;
-  border-top: 1px solid var(--acopay-border);
-  padding-top: 0.9rem;
 }
 
 .pay-recv-addr-code {
@@ -1198,23 +1190,12 @@ html[data-theme="dark"] .send-bill-link {
   width: 100%;
   word-break: break-all;
   overflow-wrap: anywhere;
-  border-radius: 0.85rem;
-  background: var(--acopay-bg);
-  border: 1px solid var(--acopay-border);
-  padding: 0.7rem 0.75rem;
+  padding: 0.35rem 0.15rem;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 0.78rem;
   line-height: 1.55;
   text-align: left;
   color: var(--acopay-fg);
-}
-
-.pay-recv-tg {
-  border-radius: 1rem;
-  border: 1px solid var(--acopay-border-strong);
-  background: var(--acopay-brand-soft);
-  padding: 0.9rem 1rem;
-  text-align: center;
 }
 
 .otc-address-block {

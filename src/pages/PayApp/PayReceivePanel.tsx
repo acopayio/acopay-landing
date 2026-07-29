@@ -11,7 +11,7 @@ type Props = {
 
 /**
  * Receive layout (Kevin 2026-07-29):
- * QR (+ logo) → wallet address under QR → Telegram @username → Copy
+ * QR (+ logo) → Solana badge + address → Telegram @username (no frame) → Copy
  */
 export function PayReceivePanel({ address, username, onBack }: Props) {
   const { t } = useI18n();
@@ -64,7 +64,6 @@ export function PayReceivePanel({ address, username, onBack }: Props) {
           </button>
         </div>
 
-        {/* QR + address as one receive unit */}
         <div className="pay-recv-stage mt-5">
           <div className="pay-recv-qr">
             {qr ? (
@@ -85,12 +84,8 @@ export function PayReceivePanel({ address, username, onBack }: Props) {
           </div>
 
           <div className="pay-recv-addr">
-            <div className="flex flex-wrap items-center justify-center gap-2">
-              <p className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--acopay-faint)]">
-                <span aria-hidden>📍</span>
-                {t("payApp.receiveAddressLabel")}
-              </p>
-              <span className="inline-flex items-center gap-1 rounded-full border border-[color-mix(in_srgb,var(--acopay-brand)_32%,transparent)] bg-[var(--acopay-brand-soft)] px-2.5 py-0.5 text-[10px] font-bold tracking-wide text-[var(--acopay-brand)]">
+            <div className="flex justify-center">
+              <span className="inline-flex items-center gap-1 rounded-full bg-[var(--acopay-brand-soft)] px-2.5 py-0.5 text-[10px] font-bold tracking-wide text-[var(--acopay-brand)]">
                 <span aria-hidden>◎</span>
                 {t("payApp.receiveNetwork")}
               </span>
@@ -101,9 +96,8 @@ export function PayReceivePanel({ address, username, onBack }: Props) {
           </div>
         </div>
 
-        {/* Telegram username — above Copy */}
         {username ? (
-          <div className="pay-recv-tg mt-4">
+          <div className="mt-4 text-center">
             <p className="inline-flex items-center justify-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--acopay-brand-dim)]">
               <span aria-hidden>📱</span>
               {t("payApp.receiveByUsername")}
