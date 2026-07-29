@@ -16,8 +16,6 @@ export function BrandLogo({ className = "h-8 w-8 shrink-0", alt = "" }: Props) {
         // Pointy-top hexagon mask
         clipPath:
           "polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0% 50%)",
-        WebkitClipPath:
-          "polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0% 50%)",
       }}
     >
       <img
