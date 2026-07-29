@@ -16,12 +16,9 @@ import {
 
 type Phase = "boot" | "login" | "polling" | "home";
 
-/**
- * Phase 0 Web Pay — Telegram Pay wallet only (no Phantom).
- * Sign-in = open bot deep-link (no Login Widget on public UI).
- */
+/** Web wallet — Telegram session. Clean account UI only. */
 export function PayAppPage() {
-  const { t, locale } = useI18n();
+  const { t } = useI18n();
   const [phase, setPhase] = useState<Phase>("boot");
   const [me, setMe] = useState<PayMe | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -119,17 +116,14 @@ export function PayAppPage() {
   }
 
   const bal = me?.balance?.acopay;
+  const mint = me?.mint || TOKEN.mintAddress;
 
   return (
     <section className="section-pad relative overflow-x-clip pb-16">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(0,229,255,0.08),_transparent_55%)]" />
       <div className="page-wrap relative mx-auto max-w-lg space-y-6">
-        <header className="space-y-1">
-          <p className="text-xs font-semibold uppercase tracking-wider text-[var(--acopay-brand)]">
-            {t("payApp.kicker")}
-          </p>
+        <header>
           <h1 className="text-2xl font-bold tracking-tight text-[var(--acopay-fg)]">{t("payApp.title")}</h1>
-          <p className="text-sm leading-relaxed text-[var(--acopay-muted)]">{t("payApp.subtitle")}</p>
         </header>
 
         {error && (
@@ -148,7 +142,6 @@ export function PayAppPage() {
         {(phase === "login" || phase === "polling") && (
           <div className="space-y-4 rounded-2xl border border-[color:var(--acopay-border)] bg-[var(--acopay-bg-2)]/80 p-5">
             <p className="text-sm text-[var(--acopay-muted)]">{t("payApp.loginHint")}</p>
-
             <button
               type="button"
               onClick={() => void startDeepLinkLogin()}
@@ -157,7 +150,6 @@ export function PayAppPage() {
             >
               {phase === "polling" ? t("payApp.waitingTelegram") : t("payApp.openTelegram")}
             </button>
-
             {phase === "polling" && botUrl && (
               <p className="text-center text-xs text-[var(--acopay-faint)]">
                 {t("payApp.pollingHint")}{" "}
@@ -176,19 +168,17 @@ export function PayAppPage() {
           <div className="space-y-4">
             <div className="rounded-2xl border border-[color:var(--acopay-border)] bg-[var(--acopay-bg-2)]/80 p-5">
               <div className="flex items-start justify-between gap-3">
-                <div>
-                  <p className="text-xs text-[var(--acopay-faint)]">{t("payApp.balanceLabel")}</p>
-                  <p className="mt-1 text-3xl font-bold tracking-tight text-[var(--acopay-fg)]">
-                    {formatAcopay(bal)}{" "}
-                    <span className="text-base font-semibold text-[var(--acopay-brand)]">ACOPAY</span>
-                  </p>
-                  {me.username ? (
-                    <p className="mt-2 text-sm text-[var(--acopay-muted)]">@{me.username}</p>
-                  ) : (
-                    <p className="mt-2 text-sm text-[var(--acopay-muted)]">
-                      {t("payApp.tgId")}: {me.telegramId}
+                <div className="min-w-0">
+                  {(me.username || me.telegramId) && (
+                    <p className="text-sm font-medium text-[var(--acopay-fg)]">
+                      {me.username ? `@${me.username}` : me.telegramId}
                     </p>
                   )}
+                  <p className="mt-3 text-xs text-[var(--acopay-faint)]">{t("payApp.balanceLabel")}</p>
+                  <p className="mt-0.5 text-3xl font-bold tracking-tight text-[var(--acopay-fg)]">
+                    {formatAcopay(bal)}{" "}
+                    <span className="text-lg font-semibold text-[var(--acopay-brand)]">ACOPAY</span>
+                  </p>
                 </div>
                 <button
                   type="button"
@@ -200,9 +190,11 @@ export function PayAppPage() {
               </div>
 
               {!me.hasBotWallet || !me.publicKey ? (
-                <div className="mt-4 rounded-xl border border-amber-500/30 bg-amber-500/10 px-3 py-3 text-sm text-[var(--acopay-fg)]">
-                  <p className="font-medium">{t("payApp.needWalletTitle")}</p>
-                  <p className="mt-1 text-xs text-[var(--acopay-muted)]">{t("payApp.needWalletBody")}</p>
+                <div className="mt-5 border-t border-[color:var(--acopay-border)] pt-4">
+                  <p className="text-sm font-medium text-[var(--acopay-fg)]">{t("payApp.needWalletTitle")}</p>
+                  <p className="mt-1 text-xs leading-relaxed text-[var(--acopay-muted)]">
+                    {t("payApp.needWalletBody")}
+                  </p>
                   <a
                     href={TOKEN.telegramPayUrl}
                     target="_blank"
@@ -213,16 +205,16 @@ export function PayAppPage() {
                   </a>
                 </div>
               ) : (
-                <div className="mt-4 space-y-2">
+                <div className="mt-5 border-t border-[color:var(--acopay-border)] pt-4">
                   <p className="text-xs text-[var(--acopay-faint)]">{t("payApp.walletLabel")}</p>
-                  <div className="flex flex-wrap items-center gap-2">
-                    <code className="break-all text-sm text-[var(--acopay-fg)]">
+                  <div className="mt-1.5 flex items-center gap-2">
+                    <code className="min-w-0 flex-1 truncate font-mono text-sm text-[var(--acopay-fg)]">
                       <AddrHighlight addr={me.publicKey} />
                     </code>
                     <button
                       type="button"
                       onClick={() => void copyAddr()}
-                      className="rounded-lg border border-[color:var(--acopay-border)] px-2 py-1 text-xs font-medium text-[var(--acopay-brand)]"
+                      className="shrink-0 rounded-lg border border-[color:var(--acopay-border)] px-2.5 py-1 text-xs font-medium text-[var(--acopay-brand)]"
                     >
                       {copied ? t("payApp.copied") : t("payApp.copy")}
                     </button>
@@ -235,24 +227,21 @@ export function PayAppPage() {
               <button
                 type="button"
                 disabled
-                className="rounded-xl border border-[color:var(--acopay-border)] bg-[var(--acopay-bg)] px-4 py-3 text-sm font-semibold text-[var(--acopay-faint)] opacity-70"
-                title={t("payApp.comingSoon")}
+                className="rounded-xl border border-[color:var(--acopay-border)] bg-[var(--acopay-bg)] px-4 py-3 text-sm font-semibold text-[var(--acopay-faint)] opacity-60"
               >
                 {t("payApp.send")}
               </button>
               <button
                 type="button"
                 disabled
-                className="rounded-xl border border-[color:var(--acopay-border)] bg-[var(--acopay-bg)] px-4 py-3 text-sm font-semibold text-[var(--acopay-faint)] opacity-70"
-                title={t("payApp.comingSoon")}
+                className="rounded-xl border border-[color:var(--acopay-border)] bg-[var(--acopay-bg)] px-4 py-3 text-sm font-semibold text-[var(--acopay-faint)] opacity-60"
               >
                 {t("payApp.receive")}
               </button>
               <button
                 type="button"
                 disabled
-                className="rounded-xl border border-[color:var(--acopay-border)] bg-[var(--acopay-bg)] px-4 py-3 text-sm font-semibold text-[var(--acopay-faint)] opacity-70"
-                title={t("payApp.comingSoon")}
+                className="rounded-xl border border-[color:var(--acopay-border)] bg-[var(--acopay-bg)] px-4 py-3 text-sm font-semibold text-[var(--acopay-faint)] opacity-60"
               >
                 {t("payApp.history")}
               </button>
@@ -264,19 +253,16 @@ export function PayAppPage() {
               </Link>
             </div>
 
-            <p className="text-[11px] leading-relaxed text-[var(--acopay-faint)]">
+            <p className="text-[11px] text-[var(--acopay-faint)]">
               {t("payApp.mintLabel")}{" "}
               <a
-                href={`https://solscan.io/token/${me.mint || TOKEN.mintAddress}`}
+                href={`https://solscan.io/token/${mint}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="break-all font-mono text-[var(--acopay-brand)]/90 hover:underline"
+                className="font-mono text-[var(--acopay-muted)] hover:text-[var(--acopay-brand)]"
               >
-                {me.mint || TOKEN.mintAddress}
+                <AddrHighlight addr={mint} />
               </a>
-            </p>
-            <p className="text-[11px] text-[var(--acopay-faint)]">
-              {t("payApp.noPhantom")} · {locale.toUpperCase()}
             </p>
           </div>
         )}
