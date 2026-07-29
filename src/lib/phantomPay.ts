@@ -144,24 +144,6 @@ function friendlyRpcError(err: unknown): string {
   return msg;
 }
 
-export async function getWorkingConnection(): Promise<Connection> {
-  let lastErr: unknown;
-  for (const rpc of RPC_CANDIDATES) {
-    if (!rpc) continue;
-    try {
-      const connection = new Connection(rpc, {
-        commitment: "confirmed",
-        confirmTransactionInitialTimeout: 60_000,
-      });
-      await connection.getLatestBlockhash("confirmed");
-      return connection;
-    } catch (e) {
-      lastErr = e;
-    }
-  }
-  throw new Error(friendlyRpcError(lastErr ?? new Error("No RPC available")));
-}
-
 /**
  * Connect Phantom extension and send USDT (SPL) to the official Buy page address.
  */
