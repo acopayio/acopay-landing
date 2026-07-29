@@ -850,7 +850,7 @@ export function OtcBuyPanel() {
                 type="button"
                 disabled={!draftValid}
                 onClick={startSession}
-                className="btn-orca-primary mt-auto w-full !rounded-xl !py-3.5 !text-[0.95rem]"
+                className="btn-orca-primary mt-1 w-full !rounded-xl !py-3.5 !text-[0.95rem]"
               >
                 {t("otc.continuePay")}
               </button>
@@ -858,7 +858,7 @@ export function OtcBuyPanel() {
           )}
 
           {showPaymentControls && (
-            <div className="mt-auto space-y-3 pt-1">
+            <div className="mt-1 space-y-3 pt-1">
               <div className="otc-status-row">
                 {phase === "expired" ? (
                   <>

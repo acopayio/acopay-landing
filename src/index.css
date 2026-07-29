@@ -541,7 +541,7 @@ a.btn-orca-primary:disabled:hover {
   .otc-panel-grid {
     grid-template-columns: 1fr 1fr;
     gap: 2rem;
-    align-items: stretch;
+    align-items: start;
   }
 }
 
@@ -549,7 +549,11 @@ a.btn-orca-primary:disabled:hover {
   display: flex;
   flex-direction: column;
   gap: 1.15rem;
-  min-height: 100%;
+  min-height: 0;
+}
+
+.otc-col-qr {
+  height: auto;
 }
 
 .otc-header {
@@ -612,8 +616,10 @@ a.btn-orca-primary:disabled:hover {
   gap: 1rem;
 }
 
-.otc-col-qr {
-  height: 100%;
+@media (min-width: 900px) {
+  .otc-col-qr {
+    height: 100%;
+  }
 }
 
 /* Tablet only — do not override tighter phone padding (≤639px) */
