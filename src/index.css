@@ -956,9 +956,16 @@ a.btn-orca-primary:disabled:hover {
 
 .send-bill-row {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
+}
+
+/* Logo inside bill rows — vertically centred with surrounding text */
+.send-bill-logo {
+  vertical-align: middle;
+  position: relative;
+  top: -0.5px; /* micro-nudge to match cap-height */
 }
 
 .send-bill-row--balance {
@@ -981,7 +988,7 @@ a.btn-orca-primary:disabled:hover {
 
 /* Fixed logo size on every bill ACOPAY mark — do not vary per row */
 .send-bill-logo {
-  width: 0.875rem; /* 14px — matches h-3.5 */
+  width: 0.875rem; /* 14px */
   height: 0.875rem;
   flex-shrink: 0;
   object-fit: contain;
