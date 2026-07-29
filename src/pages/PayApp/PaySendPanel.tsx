@@ -122,7 +122,6 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
   const [busy, setBusy] = useState(false);
   const [step, setStep] = useState<Step>("form");
   const [success, setSuccess] = useState<SuccessState | null>(null);
-  const [signingPhase, setSigningPhase] = useState<"idle" | "approve" | "confirming">("idle");
   const [awaitingPhantomReturn, setAwaitingPhantomReturn] = useState(false);
   const [confirmStartedAt, setConfirmStartedAt] = useState<number | null>(null);
   const [now, setNow] = useState(() => Date.now());
@@ -140,7 +139,6 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
     setConfirmStartedAt(null);
     setSuccess(s);
     setStep("success");
-    setSigningPhase("idle");
     setBusy(false);
     onSentBot(s.explorer);
   }
@@ -185,7 +183,6 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
     setConfirmStartedAt(started);
     setNow(Date.now());
     setStep("waiting");
-    setSigningPhase("confirming");
     setBusy(true);
     setPreview({
       ok: true,
@@ -220,7 +217,6 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
       if (!pending) {
         setAwaitingPhantomReturn(false);
         setBusy(false);
-        setSigningPhase("idle");
         return;
       }
       pollBusyRef.current = true;
@@ -301,7 +297,6 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
       setConfirmStartedAt(started);
       setNow(started);
       setStep("waiting");
-      setSigningPhase("confirming");
       setBusy(true);
     });
   }
@@ -329,7 +324,6 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
   const confirmPastWindow = step === "waiting" && msLeft <= 0;
 
   async function runPhantomInline(sess: PhantomSession, p: PayPreview) {
-    setSigningPhase("approve");
     const res = await sendAcopayWithPhantom({
       fromBase58: sess.from,
       toBase58: sess.to,
@@ -374,7 +368,6 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
   async function onPrimaryAction() {
     if (!preview) return;
     onError("");
-    setSigningPhase("idle");
 
     if (preview.mode === "bot") {
       const waitStarted = Date.now();
@@ -389,12 +382,10 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
         }
         onError("Unexpected send response.");
         setStep("confirm");
-        setSigningPhase("idle");
         setBusy(false);
       } catch (e) {
         onError(e instanceof Error ? e.message : String(e));
         setStep("confirm");
-        setSigningPhase("idle");
         setBusy(false);
       }
       return;
@@ -447,7 +438,6 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
         // Restore confirm only to open Phantom modal, then waiting after sign.
         setStep("confirm");
         setBusy(false);
-        setSigningPhase("idle");
         try {
           await runPhantomInline(sess, preview);
         } catch (e) {
@@ -464,7 +454,6 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
             onError(msg);
           }
           setStep("confirm");
-          setSigningPhase("idle");
           setBusy(false);
         }
         return;
@@ -476,7 +465,6 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
     } catch (e) {
       onError(e instanceof Error ? e.message : String(e));
       setStep("confirm");
-      setSigningPhase("idle");
       setBusy(false);
     }
   }
@@ -638,7 +626,6 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
                   setAwaitingPhantomReturn(false);
                   setStep("form");
                   setPreview(null);
-                  setSigningPhase("idle");
                   setBusy(false);
                 }}
                 className="btn-orca-secondary flex-1 !rounded-xl !py-3 text-sm"
