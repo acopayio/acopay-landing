@@ -1,10 +1,12 @@
 /**
  * ACOPAY Web Pay — Telegram session client (Phase 0).
- * Token in sessionStorage; sent as X-Acopay-Pay-Session (never exposes CF secret).
+ * Token: HttpOnly cookie (CF proxy) primary; in-memory for same-tab handoff.
+ * P2: do NOT keep token in sessionStorage (XSS-readable).
  */
 import { PayApiError, throwPayApiError } from "./payWebErrors";
 
-const SESSION_KEY = "acopay_pay_session_v1";
+const SESSION_KEY = "acopay_pay_session_v1"; // legacy — cleared on read
+let memorySession: string | null = null;
 
 export { PayApiError, mapPayApiError } from "./payWebErrors";
 
@@ -102,18 +104,28 @@ function headers(session?: string | null): HeadersInit {
   return h;
 }
 
+const fetchCred: RequestCredentials = "same-origin";
+
 export function getPaySession(): string | null {
+  if (memorySession) return memorySession;
   try {
-    return sessionStorage.getItem(SESSION_KEY);
+    const legacy = sessionStorage.getItem(SESSION_KEY);
+    if (legacy) {
+      memorySession = legacy;
+      sessionStorage.removeItem(SESSION_KEY);
+      return legacy;
+    }
   } catch {
-    return null;
+    /* private mode */
   }
+  // Cookie-only after reload — proxy forwards Cookie → upstream header.
+  return null;
 }
 
 export function setPaySession(token: string | null) {
+  memorySession = token;
   try {
-    if (!token) sessionStorage.removeItem(SESSION_KEY);
-    else sessionStorage.setItem(SESSION_KEY, token);
+    sessionStorage.removeItem(SESSION_KEY);
   } catch {
     /* private mode */
   }
@@ -127,6 +139,7 @@ export async function requestTelegramAuth(): Promise<{
   const res = await fetch("/api/pay/auth-request", {
     method: "POST",
     headers: headers(null),
+    credentials: fetchCred,
     body: "{}",
   });
   const data = (await res.json()) as {
@@ -156,6 +169,7 @@ export async function pollTelegramAuth(requestId: string): Promise<{
   const res = await fetch(`/api/pay/auth-poll?requestId=${q}`, {
     method: "GET",
     headers: headers(null),
+    credentials: fetchCred,
   });
   const data = (await res.json()) as {
     ok?: boolean;
@@ -178,6 +192,7 @@ export async function loginWithTelegramWidget(payload: Record<string, unknown>):
   const res = await fetch("/api/pay/auth-telegram", {
     method: "POST",
     headers: headers(null),
+    credentials: fetchCred,
     body: JSON.stringify(payload),
   });
   const data = (await res.json()) as {
@@ -194,7 +209,11 @@ export async function loginWithTelegramWidget(payload: Record<string, unknown>):
 }
 
 export async function fetchPayMe(): Promise<PayMe> {
-  const res = await fetch("/api/pay/me", { method: "GET", headers: headers() });
+  const res = await fetch("/api/pay/me", {
+    method: "GET",
+    headers: headers(),
+    credentials: fetchCred,
+  });
   const data = (await res.json()) as PayMe & { error?: string; errorCode?: string };
   if (res.status === 401) {
     setPaySession(null);
@@ -236,7 +255,7 @@ export async function fetchPayHistory(opts?: {
   const pageSize = opts?.pageSize ?? 20;
   const res = await fetch(
     `/api/pay/history?period=${encodeURIComponent(period)}&page=${page}&pageSize=${pageSize}`,
-    { method: "GET", headers: headers() },
+    { method: "GET", headers: headers(), credentials: fetchCred },
   );
   const data = (await res.json()) as PayHistoryPage & {
     ok?: boolean;
@@ -288,6 +307,7 @@ export async function previewPay(to: string, amount: number | string): Promise<P
   const res = await fetch("/api/pay/preview", {
     method: "POST",
     headers: headers(),
+    credentials: fetchCred,
     body: JSON.stringify({ to, amount }),
   });
   const data = (await res.json()) as PayPreview & {
@@ -325,6 +345,7 @@ export async function sendPay(to: string, amount: number | string): Promise<PayS
   const res = await fetch("/api/pay/send", {
     method: "POST",
     headers: headers(),
+    credentials: fetchCred,
     body: JSON.stringify({ to, amount }),
   });
   const data = (await res.json()) as PaySendResult & {
@@ -346,7 +367,12 @@ export async function sendPay(to: string, amount: number | string): Promise<PayS
 
 export async function logoutPay(): Promise<void> {
   try {
-    await fetch("/api/pay/auth-logout", { method: "POST", headers: headers(), body: "{}" });
+    await fetch("/api/pay/auth-logout", {
+      method: "POST",
+      headers: headers(),
+      credentials: fetchCred,
+      body: "{}",
+    });
   } catch {
     /* ignore */
   }

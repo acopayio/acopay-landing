@@ -7,7 +7,6 @@ import { useI18n } from "../../i18n/LanguageProvider";
 import {
   fetchPayMe,
   formatAcopay,
-  getPaySession,
   logoutPay,
   mapPayApiError,
   openTelegramBotLink,
@@ -60,11 +59,7 @@ export function PayAppPage() {
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      const tok = getPaySession();
-      if (!tok) {
-        if (!cancelled) setPhase("login");
-        return;
-      }
+      // Cookie HttpOnly may exist without in-memory token after reload.
       try {
         await loadMe();
       } catch {

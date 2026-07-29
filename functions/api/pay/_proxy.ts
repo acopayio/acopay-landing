@@ -1,12 +1,13 @@
 /**
- * Shared CF Pages → VPS Pay proxy (secret header + optional session).
+ * Shared CF Pages → VPS Pay proxy (secret header + HttpOnly session cookie).
  * Not a route (leading underscore).
  *
  * Upstream hostname from CF Pages env only (not in git):
  *   PAY_UPSTREAM_BASE  = http://<pay-host>     (no trailing slash)
  *   or PAY_SPONSOR_URL = http://<pay-host>/pay/sponsor
  *
- * Workers cannot fetch bare IPs (CF error 1003) — use hostname in the secret.
+ * P2 (2026-07-30): session also in HttpOnly cookie `acopay_pay_sess`
+ * so XSS cannot read token from sessionStorage.
  */
 type PagesEnv = {
   PAY_SPONSOR_URL?: string;
@@ -14,12 +15,16 @@ type PagesEnv = {
   PAY_UPSTREAM_BASE?: string;
 };
 
-export function json(status: number, body: unknown): Response {
+const COOKIE_NAME = "acopay_pay_sess";
+const COOKIE_MAX_AGE = 7 * 24 * 60 * 60; // match bot SESSION_TTL
+
+export function json(status: number, body: unknown, extraHeaders?: HeadersInit): Response {
   return new Response(JSON.stringify(body), {
     status,
     headers: {
       "Content-Type": "application/json; charset=utf-8",
       "Cache-Control": "no-store",
+      ...(extraHeaders || {}),
     },
   });
 }
@@ -36,6 +41,26 @@ export function upstreamPath(env: PagesEnv, path: string): string {
   const base = upstreamBase(env);
   const p = path.startsWith("/") ? path : `/${path}`;
   return `${base}${p}`;
+}
+
+function readCookieToken(req: Request): string | null {
+  const raw = req.headers.get("Cookie") || "";
+  const m = new RegExp(`(?:^|;\\s*)${COOKIE_NAME}=([^;]+)`).exec(raw);
+  if (!m) return null;
+  try {
+    return decodeURIComponent(m[1].trim());
+  } catch {
+    return m[1].trim() || null;
+  }
+}
+
+function setSessionCookie(token: string): string {
+  const secure = "Secure; ";
+  return `${COOKIE_NAME}=${encodeURIComponent(token)}; Path=/; Max-Age=${COOKIE_MAX_AGE}; HttpOnly; ${secure}SameSite=Strict`;
+}
+
+function clearSessionCookie(): string {
+  return `${COOKIE_NAME}=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Strict`;
 }
 
 export async function proxyPay(
@@ -59,12 +84,15 @@ export async function proxyPay(
   };
   if (secret) headers["X-Acopay-Pay-Secret"] = secret;
 
-  const sess =
+  const hdrSess =
     context.request.headers.get("X-Acopay-Pay-Session") ||
     context.request.headers.get("Authorization");
-  if (sess) {
-    if (/^Bearer\s+/i.test(sess)) headers.Authorization = sess;
-    else headers["X-Acopay-Pay-Session"] = sess.replace(/^Bearer\s+/i, "").trim();
+  const cookieSess = readCookieToken(context.request);
+  if (hdrSess) {
+    if (/^Bearer\s+/i.test(hdrSess)) headers.Authorization = hdrSess;
+    else headers["X-Acopay-Pay-Session"] = hdrSess.replace(/^Bearer\s+/i, "").trim();
+  } else if (cookieSess) {
+    headers["X-Acopay-Pay-Session"] = cookieSess;
   }
 
   let body: string | undefined;
@@ -88,13 +116,34 @@ export async function proxyPay(
       body: body && method !== "GET" ? body || "{}" : undefined,
     });
     const text = await upstreamRes.text();
+
+    const outHeaders: Record<string, string> = {
+      "Content-Type": "application/json; charset=utf-8",
+      "Cache-Control": "no-store",
+      "X-Acopay-Pay": "web-proxy",
+    };
+
+    // Auth success → set HttpOnly cookie (token still in JSON for one-shot handoff).
+    const isAuthOk =
+      (path === "/pay/auth/poll" || path === "/pay/auth/telegram") && upstreamRes.ok;
+    const isLogout = path === "/pay/auth/logout";
+    if (isLogout) {
+      outHeaders["Set-Cookie"] = clearSessionCookie();
+    } else if (isAuthOk) {
+      try {
+        const data = JSON.parse(text) as { ok?: boolean; status?: string; token?: string };
+        const tok = String(data.token || "").trim();
+        if (tok && (data.ok === true || data.status === "ok")) {
+          outHeaders["Set-Cookie"] = setSessionCookie(tok);
+        }
+      } catch {
+        /* keep body as-is */
+      }
+    }
+
     return new Response(text, {
       status: upstreamRes.status,
-      headers: {
-        "Content-Type": "application/json; charset=utf-8",
-        "Cache-Control": "no-store",
-        "X-Acopay-Pay": "web-proxy",
-      },
+      headers: outHeaders,
     });
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
@@ -106,10 +155,11 @@ export function corsOptions(methods = "GET, POST, OPTIONS"): Response {
   return new Response(null, {
     status: 204,
     headers: {
-      // Same-origin site only — never wildcard (state-changing Pay POSTs).
       "Access-Control-Allow-Origin": "https://acopay.net",
       "Access-Control-Allow-Methods": methods,
-      "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Acopay-Pay-Session",
+      "Access-Control-Allow-Headers":
+        "Content-Type, Authorization, X-Acopay-Pay-Session",
+      "Access-Control-Allow-Credentials": "true",
       "Access-Control-Max-Age": "86400",
       Vary: "Origin",
     },
