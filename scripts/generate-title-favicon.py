@@ -20,6 +20,8 @@ ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "public" / "assets" / "logo-redraw-512.png"
 OUT_128 = ROOT / "public" / "assets" / "favicon.png"
 OUT_512 = ROOT / "public" / "assets" / "favicon-title-512.png"
+OUT_TITLE_128 = ROOT / "public" / "assets" / "title-icon-128.png"
+OUT_TITLE_512 = ROOT / "public" / "assets" / "title-icon-512.png"
 BLACK = (12, 16, 23, 255)  # #0c1017
 # Measured vertex radius of neon mark on 512 source
 SRC_VERTEX_R = 307.2
@@ -52,8 +54,12 @@ def main() -> None:
     src = Image.open(SRC).convert("RGBA")
     make_title_favicon(src, 128).save(OUT_128, "PNG", optimize=True)
     make_title_favicon(src, 512).save(OUT_512, "PNG", optimize=True)
+    make_title_favicon(src, 128).save(OUT_TITLE_128, "PNG", optimize=True)
+    make_title_favicon(src, 512).save(OUT_TITLE_512, "PNG", optimize=True)
     print(f"wrote {OUT_128}")
     print(f"wrote {OUT_512}")
+    print(f"wrote {OUT_TITLE_128}")
+    print(f"wrote {OUT_TITLE_512}")
 
 
 if __name__ == "__main__":

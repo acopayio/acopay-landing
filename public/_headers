@@ -33,7 +33,19 @@
   X-Content-Type-Options: nosniff
 
 /assets/favicon.png
-  Cache-Control: public, max-age=86400
+  Cache-Control: public, max-age=300, must-revalidate
+  X-Content-Type-Options: nosniff
+
+/assets/title-icon-128.png
+  Cache-Control: public, max-age=300, must-revalidate
+  X-Content-Type-Options: nosniff
+
+/assets/title-icon-512.png
+  Cache-Control: public, max-age=300, must-revalidate
+  X-Content-Type-Options: nosniff
+
+/assets/favicon-title-512.png
+  Cache-Control: public, max-age=300, must-revalidate
   X-Content-Type-Options: nosniff
 
 # Language flag icons
