@@ -169,13 +169,6 @@ export function OtcBuyPanel() {
     setCreditedAcopay(null);
     setSettleStatus("idle");
 
-    const {
-      hasPhantomExtension,
-      openPhantomFallback,
-      payUsdtWithPhantom,
-      getAcopayUiBalance,
-    } = await import("../lib/phantomPay");
-
     const paySession =
       currentPaySession() ??
       ({
@@ -185,19 +178,32 @@ export function OtcBuyPanel() {
         watchAfterSig,
       } satisfies StoredBuySession);
 
-    // Persist BEFORE deeplink — Telegram storage không sang Phantom WebView.
+    // Persist BEFORE deeplink / extension pay.
     writeStoredBuySession(paySession);
     syncBuySessionUrl(paySession);
+    setAutopayFlag(null);
 
-    if (!hasPhantomExtension()) {
-      openPhantomFallback(activeAmount, paySession);
-      if (!/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)) {
-        setWalletError(t("otc.phantomMissingLong"));
-      }
+    // Mobile (Telegram/Safari): Solana Pay URI = cùng QR → Phantom sheet ký ngay.
+    // Không import web3 / không RPC / không /ul/browse (đó là chỗ nút “Xác nhận…” kẹt lâu).
+    // Buy OTC ≠ /send Saul (2 signers) — không đụng sendAcopay.
+    const mobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || "");
+    if (mobile) {
+      window.location.assign(buildSolanaPayUrl(activeAmount));
       return;
     }
 
-    setAutopayFlag(null);
+    const {
+      hasPhantomExtension,
+      openPhantomFallback,
+      payUsdtWithPhantom,
+      getAcopayUiBalance,
+    } = await import("../lib/phantomPay");
+
+    if (!hasPhantomExtension()) {
+      openPhantomFallback(activeAmount, paySession);
+      setWalletError(t("otc.phantomMissingLong"));
+      return;
+    }
 
     setPayingWallet(true);
     try {
@@ -222,11 +228,12 @@ export function OtcBuyPanel() {
     }
   }
 
-  /** Resume Pay-with-Phantom after Buy opens inside Phantom (Telegram /ul/browse + buy_pay=1). */
+  /** Desktop-only leftover: resume if buy_pay landed with extension (mobile uses solana: now). */
   const autopayConsumedRef = useRef(false);
   useEffect(() => {
     if (phase !== "paying" || settleStatus !== "idle" || !activeValid || payingWallet) return;
     if (autopayConsumedRef.current) return;
+    if (/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || "")) return;
     let cancelled = false;
     let tries = 0;
 
@@ -236,7 +243,7 @@ export function OtcBuyPanel() {
       const { hasPhantomExtension } = await import("../lib/phantomPay");
       if (cancelled) return;
       if (!hasPhantomExtension()) {
-        if (tries++ < 20) window.setTimeout(() => void resume(), 400);
+        if (tries++ < 10) window.setTimeout(() => void resume(), 400);
         return;
       }
       autopayConsumedRef.current = true;

@@ -12,10 +12,9 @@ import {
   getAccount,
   getAssociatedTokenAddressSync,
 } from "@solana/spl-token";
-import { OTC, phantomBrowseUrl, buildSolanaPayUrl } from "../config/otc";
+import { OTC, buildSolanaPayUrl } from "../config/otc";
 import { TOKEN } from "../config/token";
 import {
-  buildBuyResumePageUrl,
   type StoredBuySession,
   writeStoredBuySession,
   syncBuySessionUrl,
@@ -37,6 +36,60 @@ const RPC_CANDIDATES = [
   "https://solana.drpc.org",
   "https://api.mainnet-beta.solana.com",
 ];
+
+/** Cache one working RPC for this page load — avoids re-probing on every pay/settle poll. */
+let cachedConnection: Connection | null = null;
+let cachedRpc: string | null = null;
+
+function withTimeout<T>(p: Promise<T>, ms: number, label: string): Promise<T> {
+  return new Promise((resolve, reject) => {
+    const t = setTimeout(() => reject(new Error(`${label} timeout`)), ms);
+    p.then(
+      (v) => {
+        clearTimeout(t);
+        resolve(v);
+      },
+      (e) => {
+        clearTimeout(t);
+        reject(e);
+      }
+    );
+  });
+}
+
+async function tryRpc(rpc: string): Promise<Connection> {
+  const connection = new Connection(rpc, {
+    commitment: "confirmed",
+    confirmTransactionInitialTimeout: 60_000,
+  });
+  await withTimeout(connection.getLatestBlockhash("confirmed"), 4_000, rpc);
+  return connection;
+}
+
+export async function getWorkingConnection(): Promise<Connection> {
+  if (cachedConnection && cachedRpc) {
+    try {
+      await withTimeout(cachedConnection.getLatestBlockhash("confirmed"), 3_000, cachedRpc);
+      return cachedConnection;
+    } catch {
+      cachedConnection = null;
+      cachedRpc = null;
+    }
+  }
+
+  const rpcs = RPC_CANDIDATES.filter(Boolean);
+  // Race all RPCs — sequential probe was 10–30s+ on mobile before sign UI.
+  try {
+    const result = await Promise.any(rpcs.map((rpc) => tryRpc(rpc).then((c) => ({ c, rpc }))));
+    cachedConnection = result.c;
+    cachedRpc = result.rpc;
+    return result.c;
+  } catch (e) {
+    const agg = e as AggregateError;
+    const last = Array.isArray(agg?.errors) ? agg.errors[agg.errors.length - 1] : e;
+    throw new Error(friendlyRpcError(last ?? new Error("No RPC available")));
+  }
+}
 
 type PhantomProvider = {
   isPhantom?: boolean;
@@ -208,22 +261,15 @@ export async function getAcopayUiBalance(ownerBase58: string): Promise<number | 
 export type PhantomFallbackSession = StoredBuySession;
 
 /**
- * Mobile / no-extension fallback.
- * Telegram → Phantom /ul/browse HTTPS Buy **with resume query** (storage không chia sẻ giữa WebView).
- * Safari/Chrome → solana: Pay URI; persist session trước khi rời trang.
- * Never wrap solana: in /ul/browse (black WebView).
+ * Mobile Buy: Solana Pay URI ngay (cùng QR) → Phantom hiện sheet ký USDT tức thì.
+ * Không dùng /ul/browse + build tx qua RPC (chậm / nút “Xác nhận…” kẹt lâu).
+ * Không bọc solana: trong browse (màn đen). Không đụng /send Saul multi-signer.
  */
 export function openPhantomFallback(amountUsdt: number, session?: PhantomFallbackSession | null): void {
   if (!isMobileUa()) {
     window.open("https://phantom.com/download", "_blank", "noopener,noreferrer");
     return;
   }
-
-  const ua = typeof navigator !== "undefined" ? navigator.userAgent : "";
-  const inTelegram =
-    /Telegram/i.test(ua) ||
-    (typeof window !== "undefined" &&
-      !!(window as unknown as { TelegramWebviewProxy?: unknown }).TelegramWebviewProxy);
 
   const resume: StoredBuySession =
     session && session.amount === amountUsdt
@@ -235,17 +281,8 @@ export function openPhantomFallback(amountUsdt: number, session?: PhantomFallbac
           watchAfterSig: null,
         };
 
-  // Sync before any navigation — Telegram WebView storage ≠ Phantom WebView storage.
   writeStoredBuySession(resume);
-  setAutopayFlag(amountUsdt);
-  syncBuySessionUrl(resume, { autoPay: true });
-
-  if (inTelegram) {
-    const page = buildBuyResumePageUrl(resume, { autoPay: true });
-    window.location.assign(phantomBrowseUrl(page));
-    return;
-  }
-
-  // Safari / Chrome: Solana Pay URI (same as QR). Session already in storage + URL.
+  setAutopayFlag(null);
+  syncBuySessionUrl(resume);
   window.location.assign(buildSolanaPayUrl(amountUsdt));
 }
