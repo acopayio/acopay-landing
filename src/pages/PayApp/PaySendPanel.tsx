@@ -24,6 +24,7 @@ import {
   formatAcopay,
   formatAmountInput,
   looksLikeTelegramUsername,
+  mapPayApiError,
   parseAmountInput,
   previewPay,
   sendPay,
@@ -115,7 +116,11 @@ function amountsClose(a: number, b: number): boolean {
 }
 
 export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
+
+  function showErr(e: unknown) {
+    onError(mapPayApiError(e, t, locale));
+  }
   const [to, setTo] = useState("");
   const [amount, setAmount] = useState("");
   const [preview, setPreview] = useState<PayPreview | null>(null);
@@ -269,7 +274,7 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
       setPreview(p);
       setStep("confirm");
     } catch (e) {
-      onError(e instanceof Error ? e.message : String(e));
+      showErr(e);
     } finally {
       setBusy(false);
     }
@@ -384,11 +389,11 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
           finishSuccess(previewToSuccess(preview, explorer, r.signature));
           return;
         }
-        onError("Unexpected send response.");
+        onError(t("payApp.errUnexpectedSend"));
         setStep("confirm");
         setBusy(false);
       } catch (e) {
-        onError(e instanceof Error ? e.message : String(e));
+        showErr(e);
         setStep("confirm");
         setBusy(false);
       }
@@ -403,7 +408,7 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
       if (r.mode === "phantom" && r.sendUrl) {
         const sess = parsePhantomSendUrl(r.sendUrl);
         if (!sess) {
-          onError("Invalid Phantom send session.");
+          onError(t("payApp.errInvalidPhantomSession"));
           setStep("confirm");
           setBusy(false);
           return;
@@ -455,7 +460,7 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
           } else if (/^SIMULATION_FAILED/i.test(msg)) {
             onError(t("payApp.billErrSimulateFailed"));
           } else {
-            onError(msg);
+            showErr(e);
           }
           setStep("confirm");
           setBusy(false);
@@ -463,11 +468,11 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
         return;
       }
 
-      onError("Unexpected send response.");
+      onError(t("payApp.errUnexpectedSend"));
       setStep("confirm");
       setBusy(false);
     } catch (e) {
-      onError(e instanceof Error ? e.message : String(e));
+      showErr(e);
       setStep("confirm");
       setBusy(false);
     }
@@ -541,7 +546,7 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
               <input
                 value={to}
                 onChange={(e) => setTo(e.target.value)}
-                placeholder="@username or Solana address"
+                placeholder={t("payApp.sendToPlaceholder")}
                 className={`mt-2 w-full rounded-2xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-surface)] px-4 py-3 outline-none focus:border-[color:var(--acopay-brand)] ${
                   toIsUsername
                     ? "pay-tg-username pay-tg-username--inline"

@@ -2,7 +2,11 @@
  * ACOPAY Web Pay — Telegram session client (Phase 0).
  * Token in sessionStorage; sent as X-Acopay-Pay-Session (never exposes CF secret).
  */
+import { PayApiError, throwPayApiError } from "./payWebErrors";
+
 const SESSION_KEY = "acopay_pay_session_v1";
+
+export { PayApiError, mapPayApiError } from "./payWebErrors";
 
 function isMobileUa(): boolean {
   if (typeof navigator === "undefined") return false;
@@ -124,9 +128,10 @@ export async function requestTelegramAuth(): Promise<{
     botUrl?: string;
     expiresAt?: number;
     error?: string;
+    errorCode?: string;
   };
   if (!res.ok || !data.ok || !data.requestId || !data.botUrl) {
-    throw new Error(data.error || "Could not start Telegram login.");
+    throwPayApiError(data, "auth_start", "Could not start Telegram login.");
   }
   return {
     requestId: data.requestId,
@@ -151,8 +156,9 @@ export async function pollTelegramAuth(requestId: string): Promise<{
     token?: string;
     username?: string | null;
     error?: string;
+    errorCode?: string;
   };
-  if (!res.ok) throw new Error(data.error || "Poll failed.");
+  if (!res.ok) throwPayApiError(data, "auth_poll", "Poll failed.");
   return {
     status: String(data.status || "unknown"),
     token: data.token,
@@ -167,9 +173,14 @@ export async function loginWithTelegramWidget(payload: Record<string, unknown>):
     headers: headers(null),
     body: JSON.stringify(payload),
   });
-  const data = (await res.json()) as { ok?: boolean; token?: string; error?: string };
+  const data = (await res.json()) as {
+    ok?: boolean;
+    token?: string;
+    error?: string;
+    errorCode?: string;
+  };
   if (!res.ok || !data.ok || !data.token) {
-    throw new Error(data.error || "Telegram login failed.");
+    throwPayApiError(data, "auth_login", "Telegram login failed.");
   }
   setPaySession(data.token);
   return data.token;
@@ -177,13 +188,13 @@ export async function loginWithTelegramWidget(payload: Record<string, unknown>):
 
 export async function fetchPayMe(): Promise<PayMe> {
   const res = await fetch("/api/pay/me", { method: "GET", headers: headers() });
-  const data = (await res.json()) as PayMe & { error?: string };
+  const data = (await res.json()) as PayMe & { error?: string; errorCode?: string };
   if (res.status === 401) {
     setPaySession(null);
-    throw new Error("session_expired");
+    throw new PayApiError("session_expired", "session_expired");
   }
   if (!res.ok || !data.ok) {
-    throw new Error(data.error || "Could not load Pay profile.");
+    throwPayApiError(data, "load_profile", "Could not load Pay profile.");
   }
   return data;
 }
@@ -220,13 +231,17 @@ export async function fetchPayHistory(opts?: {
     `/api/pay/history?period=${encodeURIComponent(period)}&page=${page}&pageSize=${pageSize}`,
     { method: "GET", headers: headers() },
   );
-  const data = (await res.json()) as PayHistoryPage & { ok?: boolean; error?: string };
+  const data = (await res.json()) as PayHistoryPage & {
+    ok?: boolean;
+    error?: string;
+    errorCode?: string;
+  };
   if (res.status === 401) {
     setPaySession(null);
-    throw new Error("session_expired");
+    throw new PayApiError("session_expired", "session_expired");
   }
   if (!res.ok || !data.ok) {
-    throw new Error(data.error || "Could not load history.");
+    throwPayApiError(data, "load_history", "Could not load history.");
   }
   return {
     items: Array.isArray(data.items) ? data.items : [],
@@ -268,13 +283,19 @@ export async function previewPay(to: string, amount: number | string): Promise<P
     headers: headers(),
     body: JSON.stringify({ to, amount }),
   });
-  const data = (await res.json()) as PayPreview & { error?: string };
+  const data = (await res.json()) as PayPreview & {
+    error?: string;
+    errorCode?: string;
+    min?: string | number;
+    need?: string | number;
+    have?: string | number;
+  };
   if (res.status === 401) {
     setPaySession(null);
-    throw new Error("session_expired");
+    throw new PayApiError("session_expired", "session_expired");
   }
   if (!res.ok || !data.ok) {
-    throw new Error(data.error || "Preview failed.");
+    throwPayApiError(data, "preview_failed", "Preview failed.");
   }
   return data;
 }
@@ -299,13 +320,19 @@ export async function sendPay(to: string, amount: number | string): Promise<PayS
     headers: headers(),
     body: JSON.stringify({ to, amount }),
   });
-  const data = (await res.json()) as PaySendResult & { error?: string };
+  const data = (await res.json()) as PaySendResult & {
+    error?: string;
+    errorCode?: string;
+    min?: string | number;
+    need?: string | number;
+    have?: string | number;
+  };
   if (res.status === 401) {
     setPaySession(null);
-    throw new Error("session_expired");
+    throw new PayApiError("session_expired", "session_expired");
   }
   if (!res.ok || !data.ok) {
-    throw new Error(data.error || "Send failed.");
+    throwPayApiError(data, "send_failed", "Send failed.");
   }
   return data;
 }

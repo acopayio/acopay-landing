@@ -18,6 +18,7 @@ import {
 } from "@solana/spl-token";
 import { TOKEN } from "../config/token";
 import { getPhantomProvider } from "./phantomPay";
+import { PayApiError } from "./payWebErrors";
 
 /** TREASURY — first ATA open fee (1 ACOPAY) + % fee withdraw destination. */
 export const ACOPAY_TREASURY = "287s1e5LVRwQ1sfXuFGKwLog7n2vLBJDAm5buW5T3WSQ";
@@ -215,17 +216,23 @@ async function fetchSponsoredTx(opts: {
       exp: opts.exp || undefined,
     }),
   });
-  let data: SponsorResponse = {};
+  let data: SponsorResponse & { errorCode?: string } = {};
   try {
-    data = (await res.json()) as SponsorResponse;
+    data = (await res.json()) as SponsorResponse & { errorCode?: string };
   } catch {
-    throw new Error("Pay sponsor returned invalid JSON.");
+    throw new PayApiError("sponsor_failed", "Pay sponsor returned invalid JSON.");
   }
   if (!res.ok) {
-    throw new Error(data.error || `Pay sponsor failed (${res.status})`);
+    throw new PayApiError(
+      data.errorCode || "sponsor_failed",
+      data.error || `Pay sponsor failed (${res.status})`,
+    );
   }
   if (!data.tx) {
-    throw new Error(data.error || "Pay sponsor did not return a transaction.");
+    throw new PayApiError(
+      data.errorCode || "sponsor_failed",
+      data.error || "Pay sponsor did not return a transaction.",
+    );
   }
   return data;
 }
@@ -251,17 +258,23 @@ async function fetchOperatorCosign(opts: {
       tx: opts.txBase64,
     }),
   });
-  let data: SponsorResponse = {};
+  let data: SponsorResponse & { errorCode?: string } = {};
   try {
-    data = (await res.json()) as SponsorResponse;
+    data = (await res.json()) as SponsorResponse & { errorCode?: string };
   } catch {
-    throw new Error("Pay cosign returned invalid JSON.");
+    throw new PayApiError("cosign_failed", "Pay cosign returned invalid JSON.");
   }
   if (!res.ok) {
-    throw new Error(data.error || `Pay cosign failed (${res.status})`);
+    throw new PayApiError(
+      data.errorCode || "cosign_failed",
+      data.error || `Pay cosign failed (${res.status})`,
+    );
   }
   if (!data.tx) {
-    throw new Error(data.error || "Pay cosign did not return a transaction.");
+    throw new PayApiError(
+      data.errorCode || "cosign_failed",
+      data.error || "Pay cosign did not return a transaction.",
+    );
   }
   return data;
 }
@@ -383,7 +396,10 @@ export async function sendAcopayWithPhantom(opts: {
     throw new Error("PHANTOM_MISSING");
   }
   if (typeof provider.signTransaction !== "function") {
-    throw new Error("This Phantom build cannot co-sign. Update Phantom and try again.");
+    throw new PayApiError(
+      "phantom_outdated",
+      "This Phantom build cannot co-sign. Update Phantom and try again.",
+    );
   }
 
   const expectedFrom = new PublicKey(opts.fromBase58);
@@ -399,7 +415,10 @@ export async function sendAcopayWithPhantom(opts: {
   }
 
   if (!opts.tg || !opts.pid) {
-    throw new Error("Missing Telegram pay session. Confirm Send in the bot first.");
+    throw new PayApiError(
+      "missing_pay_session",
+      "Missing Telegram pay session. Confirm Send in the bot first.",
+    );
   }
 
   let connection: Connection;
@@ -414,13 +433,13 @@ export async function sendAcopayWithPhantom(opts: {
   try {
     const fromAccount = await getAccount(connection, senderAta, "confirmed", TOKEN_2022_PROGRAM_ID);
     if (fromAccount.amount === 0n) {
-      throw new Error("This Phantom wallet has no ACOPAY. Fund it first.");
+      throw new PayApiError("phantom_no_acopay", "This Phantom wallet has no ACOPAY. Fund it first.");
     }
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
     if (msg.startsWith("This Phantom wallet has no ACOPAY")) throw e;
     if (/could not find account|Account does not exist|Invalid param/i.test(msg)) {
-      throw new Error("This Phantom wallet has no ACOPAY. Fund it first.");
+      throw new PayApiError("phantom_no_acopay", "This Phantom wallet has no ACOPAY. Fund it first.");
     }
     // RPC flake — continue; sponsor API will re-check
   }

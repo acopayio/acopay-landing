@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { AddrHighlight } from "../../components/AddrHighlight";
 import { BrandLogo } from "../../components/BrandLogo";
 import { useI18n } from "../../i18n/LanguageProvider";
-import { fetchPayHistory, formatAcopay, type PayHistoryItem } from "../../lib/payWebSession";
+import { fetchPayHistory, formatAcopay, mapPayApiError, type PayHistoryItem } from "../../lib/payWebSession";
 
 type Props = {
   onBack: () => void;
@@ -58,7 +58,7 @@ export function PayHistoryPanel({ onBack, onError }: Props) {
         setTotal(data.total);
       })
       .catch((e) => {
-        if (!cancelled) onError(e instanceof Error ? e.message : String(e));
+        if (!cancelled) onError(mapPayApiError(e, t, locale));
       })
       .finally(() => {
         if (!cancelled) setLoading(false);
@@ -66,7 +66,7 @@ export function PayHistoryPanel({ onBack, onError }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [period, page, onError]);
+  }, [period, page, onError, t, locale]);
 
   function kindLabel(kind: string) {
     if (kind === "send") return t("payApp.kindSend");

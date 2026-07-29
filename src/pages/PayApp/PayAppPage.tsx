@@ -9,6 +9,7 @@ import {
   formatAcopay,
   getPaySession,
   logoutPay,
+  mapPayApiError,
   openTelegramBotLink,
   pollTelegramAuth,
   requestTelegramAuth,
@@ -31,7 +32,7 @@ function initialPayPanel(): Panel {
 }
 
 export function PayAppPage() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const [phase, setPhase] = useState<Phase>("boot");
   const [panel, setPanel] = useState<Panel>(initialPayPanel);
   const [me, setMe] = useState<PayMe | null>(null);
@@ -39,6 +40,8 @@ export function PayAppPage() {
   const [botUrl, setBotUrl] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const pollRef = useRef<number | null>(null);
+
+  const showErr = (e: unknown) => setError(mapPayApiError(e, t, locale));
 
   const clearPoll = () => {
     if (pollRef.current != null) {
@@ -102,12 +105,12 @@ export function PayAppPage() {
           }
         } catch (e) {
           clearPoll();
-          setError(e instanceof Error ? e.message : String(e));
+          showErr(e);
           setPhase("login");
         }
       }, 2000);
     } catch (e) {
-      setError(e instanceof Error ? e.message : String(e));
+      showErr(e);
       setPhase("login");
     }
   }
