@@ -520,7 +520,7 @@ export const en = {
     subtitle: "Transfer & receive ACOPAY",
     loading: "Loading…",
     loginTitle: "🔗 Connect Telegram Pay",
-    loginHint: "Tap Open Telegram and finish in @AcopayNetwork_bot to send and receive ACOPAY on the web.",
+    loginHint: "Tap Open Telegram and finish in @AcopayNetwork_bot to pay with ACOPAY on the web.",
     loginHintMobile: "",
     loginHintDesktop: "",
     step1: "📤 Transfer & receive ACOPAY",
