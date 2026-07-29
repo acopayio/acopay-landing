@@ -370,10 +370,12 @@ export function SendAcopayPage() {
                 </span>
               </div>
               <div className="send-bill-row">
-                <span className="send-bill-label">💸 {t("sendAcopay.feeLabel")}</span>
-                <span className="send-bill-value send-bill-value--plain inline-flex flex-wrap items-center justify-end gap-1">
-                  {fmtAcopayDisplay(bill.fee)} <AcopayCoinMark className="h-3 w-3" />
+                <span className="send-bill-label">
+                  💸 {t("sendAcopay.feeLabel")}{" "}
                   <span className="send-bill-meta">({bill.feePct})</span>
+                </span>
+                <span className="send-bill-value send-bill-value--plain inline-flex items-center gap-1">
+                  {fmtAcopayDisplay(bill.fee)} <AcopayCoinMark className="h-3 w-3" />
                 </span>
               </div>
               {bill.openFee ? (

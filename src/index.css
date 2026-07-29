@@ -961,6 +961,28 @@ a.btn-orca-primary:disabled:hover {
   gap: 0.75rem;
 }
 
+.send-bill-row--balance {
+  margin-top: 0.15rem;
+  padding-top: 0.55rem;
+  border-top: 1px dashed color-mix(in srgb, var(--acopay-border-strong) 80%, transparent);
+}
+
+.send-bill-row--balance .send-bill-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.send-bill-row--balance .send-bill-value {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--acopay-muted);
+}
+
+.send-bill-row--balance .send-bill-ticker {
+  font-size: 0.75rem;
+}
+
 .send-bill-label {
   color: var(--acopay-muted);
   font-size: 0.875rem;

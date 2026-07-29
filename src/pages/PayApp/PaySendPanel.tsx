@@ -293,9 +293,9 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
                 <label className="text-xs font-semibold text-[var(--acopay-muted)]">
                   {t("payApp.sendAmountLabel")}
                 </label>
-                <span className="inline-flex items-center gap-1 text-[11px] font-semibold tabular-nums text-[var(--acopay-success)]">
-                  <span aria-hidden>💰</span>
-                  {t("payApp.balanceLabel")}: {formatAcopay(balance)}
+                <span className="inline-flex items-center gap-1 text-[11px] font-semibold tabular-nums text-[var(--acopay-muted)]">
+                  {t("payApp.balanceLabel")}{" "}
+                  <span className="tabular-nums text-[var(--acopay-fg)]">{formatAcopay(balance)}</span>
                   <AcopayTicker className="h-3 w-3" />
                 </span>
               </div>
@@ -519,14 +519,16 @@ function TransferBill({
         </span>
       </div>
       <div className="send-bill-row">
-        <span className="send-bill-label">{feeLabel}</span>
-        <span className="send-bill-value send-bill-value--plain inline-flex flex-wrap items-center justify-end gap-1">
+        <span className="send-bill-label">
+          {feeLabel}{" "}
+          <span className="send-bill-meta">({plan.feePct})</span>
+        </span>
+        <span className="send-bill-value send-bill-value--plain inline-flex items-center gap-1">
           {formatAcopay(parseAmountInput(String(plan.fee)))}{" "}
           <span className="inline-flex items-center gap-1">
             <BrandLogo className="h-3 w-3" alt="" />
             <span className="send-bill-ticker">ACOPAY</span>
           </span>
-          <span className="send-bill-meta">({plan.feePct})</span>
         </span>
       </div>
       {plan.isFirstAtaOpen && parseAmountInput(String(plan.openFee)) > 0 && (
@@ -554,11 +556,23 @@ function TransferBill({
       </div>
 
       {typeof plan.balance === "number" && (
-        <p className="inline-flex flex-wrap items-center gap-1 text-[11px] font-semibold tabular-nums text-[var(--acopay-success)]">
-          <span aria-hidden>💰</span> {balanceLabel}: {formatAcopay(plan.balance)}
-          <BrandLogo className="h-3 w-3" alt="" />
-          {plan.enough === false ? ` — ${insufficient}` : ""}
-        </p>
+        <div className="send-bill-row send-bill-row--balance">
+          <span className="send-bill-label">{balanceLabel}</span>
+          <span
+            className={`send-bill-value inline-flex items-center gap-1 ${
+              plan.enough === false ? "text-[var(--acopay-danger,#b91c1c)]" : ""
+            }`}
+          >
+            {formatAcopay(plan.balance)}{" "}
+            <span className="inline-flex items-center gap-1">
+              <BrandLogo className="h-3 w-3" alt="" />
+              <span className="send-bill-ticker">ACOPAY</span>
+            </span>
+            {plan.enough === false ? (
+              <span className="send-bill-meta"> — {insufficient}</span>
+            ) : null}
+          </span>
+        </div>
       )}
 
       {status ? <p className="send-bill-status">{status}</p> : null}
