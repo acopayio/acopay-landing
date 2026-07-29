@@ -206,6 +206,8 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
             onError(t("payApp.billErrWrongWallet", { addr: shortAddr(sess.from) }));
           } else if (/User rejected|rejected|4001/i.test(msg)) {
             onError(t("payApp.billErrCancelled"));
+          } else if (/^SIMULATION_FAILED/i.test(msg)) {
+            onError(t("payApp.billErrSimulateFailed"));
           } else {
             onError(msg);
           }

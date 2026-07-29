@@ -590,6 +590,8 @@ export const en = {
     billErrNoPhantom: "Install or open Phantom to approve this transfer.",
     billErrWrongWallet: "Wrong Phantom wallet. Switch to {addr}.",
     billErrCancelled: "Approval cancelled.",
+    billErrSimulateFailed:
+      "Simulation failed. The transfer would not succeed on Solana — try again or start Transfer again in Telegram.",
     histToday: "Today",
     histYesterday: "Yesterday",
     histThisWeek: "This week",

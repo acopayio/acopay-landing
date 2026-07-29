@@ -1,7 +1,9 @@
 /**
  * Phantom-signed ACOPAY (Token-2022) send — same fee rules as Telegram bot Pay.
  * SOL gas: OPERATOR co-signs via /api/pay/cosign AFTER Phantom signs (Lighthouse / Saul #278183).
- * Flow: sponsor (unsigned) → simulate sigVerify:false → Phantom signTransaction → cosign (OPERATOR) → sendRaw.
+ * Flow: sponsor → simulate sigVerify:false → Phantom signTransaction → cosign → VersionedTransaction sendRaw.
+ * Saul P0 (2026-07-29): after cosign use VersionedTransaction.deserialize (never Transaction.from);
+ * skipPreflight:false. Do not rebuild message bytes Phantom already signed.
  */
 import {
   Connection,
@@ -483,11 +485,17 @@ export async function sendAcopayWithPhantom(opts: {
     throw new Error(friendlyRpcError(e));
   }
 
-  const fullySigned = Transaction.from(b64ToUint8Array(String(cosigned.tx)));
+  // Saul #278183 P0: keep wire bytes — VersionedTransaction.deserialize, never Transaction.from
+  let fullySigned: VersionedTransaction;
+  try {
+    fullySigned = VersionedTransaction.deserialize(b64ToUint8Array(String(cosigned.tx)));
+  } catch (e) {
+    throw new Error(friendlyRpcError(e));
+  }
 
   try {
     const signature = await connection.sendRawTransaction(fullySigned.serialize(), {
-      skipPreflight: true,
+      skipPreflight: false,
       maxRetries: 3,
     });
     const planSrc = cosigned.plan || sponsored.plan;
@@ -509,6 +517,9 @@ export async function sendAcopayWithPhantom(opts: {
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
     if (/User rejected|rejected the request|4001/i.test(msg)) throw e;
+    if (/simulation failed|preflight|Blockhash not found|expired/i.test(msg)) {
+      throw new Error(`SIMULATION_FAILED: ${friendlyRpcError(e)}`);
+    }
     throw new Error(friendlyRpcError(e));
   }
 }

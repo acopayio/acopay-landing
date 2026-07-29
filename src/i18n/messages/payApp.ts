@@ -86,6 +86,8 @@ const enBase: PaySection = {
   billErrNoPhantom: "Install or open Phantom to approve this transfer.",
   billErrWrongWallet: "Wrong Phantom wallet. Switch to {addr}.",
   billErrCancelled: "Approval cancelled.",
+  billErrSimulateFailed:
+    "Simulation failed. The transfer would not succeed on Solana — try again or start Transfer again in Telegram.",
   histToday: "Today",
   histYesterday: "Yesterday",
   histThisWeek: "This week",
@@ -167,6 +169,7 @@ export const PAY_APP_PARTIALS: Partials = {
     billErrNoPhantom: "Cài hoặc mở Phantom để duyệt chuyển khoản này.",
     billErrWrongWallet: "Sai ví Phantom. Hãy chuyển sang {addr}.",
     billErrCancelled: "Đã hủy duyệt.",
+    billErrSimulateFailed: "Mô phỏng thất bại. Lệnh chuyển sẽ không thành công trên Solana — thử lại hoặc bắt đầu Chuyển lại trong Telegram.",
     histToday: "Hôm nay",
     histYesterday: "Hôm qua",
     histThisWeek: "Tuần này",
@@ -236,6 +239,7 @@ export const PAY_APP_PARTIALS: Partials = {
     billErrNoPhantom: "请安装或打开 Phantom 以批准此转账。",
     billErrWrongWallet: "Phantom 钱包不匹配。请切换到 {addr}。",
     billErrCancelled: "已取消批准。",
+    billErrSimulateFailed: "模拟失败。该转账在 Solana 上不会成功 — 请重试或在 Telegram 中重新发起转账。",
   }),
   ja: L({
     kicker: "送金",
@@ -297,6 +301,7 @@ export const PAY_APP_PARTIALS: Partials = {
     billErrNoPhantom: "この送金を承認するには Phantom をインストールまたは開いてください。",
     billErrWrongWallet: "Phantom ウォレットが違います。{addr} に切り替えてください。",
     billErrCancelled: "承認がキャンセルされました。",
+    billErrSimulateFailed: "シミュレーションに失敗しました。Solana上では送金できません — 再試行するか、Telegramで送金をやり直してください。",
   }),
   ko: L({
     kicker: "전송",
@@ -358,6 +363,7 @@ export const PAY_APP_PARTIALS: Partials = {
     billErrNoPhantom: "이 이체를 승인하려면 Phantom을 설치하거나 여세요.",
     billErrWrongWallet: "잘못된 Phantom 지갑입니다. {addr}(으)로 전환하세요.",
     billErrCancelled: "승인이 취소되었습니다.",
+    billErrSimulateFailed: "시뮬레이션에 실패했습니다. Solana에서 전송이 성공하지 않습니다 — 다시 시도하거나 Telegram에서 송금을 다시 시작하세요.",
   }),
   th: L({
     kicker: "โอน",
@@ -419,6 +425,7 @@ export const PAY_APP_PARTIALS: Partials = {
     billErrNoPhantom: "ติดตั้งหรือเปิด Phantom เพื่ออนุมัติการโอนนี้",
     billErrWrongWallet: "กระเป๋า Phantom ผิด สลับเป็น {addr}",
     billErrCancelled: "ยกเลิกการอนุมัติแล้ว",
+    billErrSimulateFailed: "จำลองล้มเหลว การโอนจะไม่สำเร็จบน Solana — ลองอีกครั้งหรือเริ่มโอนใหม่ใน Telegram",
   }),
   id: L({
     kicker: "Transfer",
@@ -480,6 +487,7 @@ export const PAY_APP_PARTIALS: Partials = {
     billErrNoPhantom: "Pasang atau buka Phantom untuk menyetujui transfer ini.",
     billErrWrongWallet: "Dompet Phantom salah. Beralih ke {addr}.",
     billErrCancelled: "Persetujuan dibatalkan.",
+    billErrSimulateFailed: "Simulasi gagal. Transfer tidak akan berhasil di Solana — coba lagi atau mulai Transfer lagi di Telegram.",
   }),
   ms: L({
     kicker: "Pemindahan",
@@ -541,6 +549,7 @@ export const PAY_APP_PARTIALS: Partials = {
     billErrNoPhantom: "Pasang atau buka Phantom untuk meluluskan pemindahan ini.",
     billErrWrongWallet: "Dompet Phantom salah. Tukar ke {addr}.",
     billErrCancelled: "Kelulusan dibatalkan.",
+    billErrSimulateFailed: "Simulasi gagal. Pemindahan tidak akan berjaya di Solana — cuba lagi atau mulakan Transfer semula dalam Telegram.",
   }),
   hi: L({
     kicker: "ट्रांसफ़र",
@@ -602,6 +611,7 @@ export const PAY_APP_PARTIALS: Partials = {
     billErrNoPhantom: "इस ट्रांसफर को स्वीकृत करने के लिए Phantom इंस्टॉल या खोलें।",
     billErrWrongWallet: "गलत Phantom वॉलेट। {addr} पर स्विच करें।",
     billErrCancelled: "स्वीकृति रद्द।",
+    billErrSimulateFailed: "सिमुलेशन विफल। Solana पर ट्रांसफर सफल नहीं होगा — फिर कोशिश करें या Telegram में Transfer फिर शुरू करें।",
   }),
   es: L({
     kicker: "Transferencias",
@@ -663,6 +673,7 @@ export const PAY_APP_PARTIALS: Partials = {
     billErrNoPhantom: "Instala o abre Phantom para aprobar esta transferencia.",
     billErrWrongWallet: "Phantom incorrecto. Cambia a {addr}.",
     billErrCancelled: "Aprobación cancelada.",
+    billErrSimulateFailed: "La simulación falló. La transferencia no tendría éxito en Solana — inténtalo de nuevo o inicia Transfer otra vez en Telegram.",
   }),
   pt: L({
     kicker: "Transferências",
@@ -724,6 +735,7 @@ export const PAY_APP_PARTIALS: Partials = {
     billErrNoPhantom: "Instale ou abra a Phantom para aprovar esta transferência.",
     billErrWrongWallet: "Phantom errada. Mude para {addr}.",
     billErrCancelled: "Aprovação cancelada.",
+    billErrSimulateFailed: "A simulação falhou. A transferência não teria sucesso na Solana — tente de novo ou inicie Transfer novamente no Telegram.",
   }),
   fr: L({
     kicker: "Transferts",
@@ -785,6 +797,7 @@ export const PAY_APP_PARTIALS: Partials = {
     billErrNoPhantom: "Installez ou ouvrez Phantom pour approuver ce transfert.",
     billErrWrongWallet: "Mauvaise Phantom. Passez à {addr}.",
     billErrCancelled: "Approbation annulée.",
+    billErrSimulateFailed: "Échec de la simulation. Le transfert n'aboutirait pas sur Solana — réessayez ou relancez Transfer dans Telegram.",
   }),
   de: L({
     kicker: "Transfers",
@@ -846,6 +859,7 @@ export const PAY_APP_PARTIALS: Partials = {
     billErrNoPhantom: "Phantom installieren oder öffnen, um zu genehmigen.",
     billErrWrongWallet: "Falsche Phantom. Zu {addr} wechseln.",
     billErrCancelled: "Genehmigung abgebrochen.",
+    billErrSimulateFailed: "Simulation fehlgeschlagen. Die Überweisung würde auf Solana scheitern — erneut versuchen oder Transfer in Telegram neu starten.",
   }),
   nl: L({
     kicker: "Transfers",
@@ -907,6 +921,7 @@ export const PAY_APP_PARTIALS: Partials = {
     billErrNoPhantom: "Installeer of open Phantom om goed te keuren.",
     billErrWrongWallet: "Verkeerde Phantom. Schakel naar {addr}.",
     billErrCancelled: "Goedkeuring geannuleerd.",
+    billErrSimulateFailed: "Simulatie mislukt. De overdracht zou op Solana mislukken — probeer opnieuw of start Transfer opnieuw in Telegram.",
   }),
   it: L({
     kicker: "Trasferimenti",
@@ -968,6 +983,7 @@ export const PAY_APP_PARTIALS: Partials = {
     billErrNoPhantom: "Installa o apri Phantom per approvare.",
     billErrWrongWallet: "Phantom sbagliata. Passa a {addr}.",
     billErrCancelled: "Approvazione annullata.",
+    billErrSimulateFailed: "Simulazione non riuscita. Il trasferimento non andrebbe a buon fine su Solana — riprova o riavvia Transfer in Telegram.",
   }),
   ru: L({
     kicker: "Переводы",
@@ -1029,6 +1045,7 @@ export const PAY_APP_PARTIALS: Partials = {
     billErrNoPhantom: "Установите или откройте Phantom для подтверждения.",
     billErrWrongWallet: "Неверный Phantom. Переключитесь на {addr}.",
     billErrCancelled: "Подтверждение отменено.",
+    billErrSimulateFailed: "Симуляция не удалась. Перевод не прошёл бы в Solana — повторите или начните Transfer снова в Telegram.",
   }),
   uk: L({
     kicker: "Перекази",
@@ -1090,6 +1107,7 @@ export const PAY_APP_PARTIALS: Partials = {
     billErrNoPhantom: "Встановіть або відкрийте Phantom для підтвердження.",
     billErrWrongWallet: "Невірний Phantom. Перейдіть на {addr}.",
     billErrCancelled: "Підтвердження скасовано.",
+    billErrSimulateFailed: "Симуляція не вдалася. Переказ не пройшов би в Solana — спробуйте ще раз або почніть Transfer знову в Telegram.",
   }),
   pl: L({
     kicker: "Przelewy",
@@ -1151,6 +1169,7 @@ export const PAY_APP_PARTIALS: Partials = {
     billErrNoPhantom: "Zainstaluj lub otwórz Phantom, aby zatwierdzić.",
     billErrWrongWallet: "Zły Phantom. Przełącz na {addr}.",
     billErrCancelled: "Zatwierdzenie anulowane.",
+    billErrSimulateFailed: "Symulacja nie powiodła się. Przelew nie udałby się na Solana — spróbuj ponownie lub uruchom Transfer w Telegram.",
   }),
   tr: L({
     kicker: "Transferler",
@@ -1212,6 +1231,7 @@ export const PAY_APP_PARTIALS: Partials = {
     billErrNoPhantom: "Bu transferi onaylamak için Phantom kurun veya açın.",
     billErrWrongWallet: "Yanlış Phantom. {addr} adresine geçin.",
     billErrCancelled: "Onay iptal edildi.",
+    billErrSimulateFailed: "Simülasyon başarısız. Transfer Solana'da başarısız olurdu — tekrar deneyin veya Telegram'da Transfer'i yeniden başlatın.",
   }),
   ar: L({
     kicker: "التحويلات",
@@ -1273,5 +1293,6 @@ export const PAY_APP_PARTIALS: Partials = {
     billErrNoPhantom: "ثبّت أو افتح Phantom للموافقة على هذا التحويل.",
     billErrWrongWallet: "محفظة Phantom خاطئة. انتقل إلى {addr}.",
     billErrCancelled: "أُلغيت الموافقة.",
+    billErrSimulateFailed: "فشلت المحاكاة. لن تنجح التحويلة على Solana — أعد المحاولة أو ابدأ التحويل من جديد في Telegram.",
   }),
 };
