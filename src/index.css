@@ -1155,6 +1155,15 @@ html[data-theme="dark"] .send-bill-link {
   object-fit: contain;
 }
 
+.otc-qr-logo--circle {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 9999px;
+  padding: 0.12rem;
+  box-shadow: 0 0 0 4px #fff;
+  object-fit: cover;
+}
+
 .otc-address-block {
   margin-top: auto;
 }
