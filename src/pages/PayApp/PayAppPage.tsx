@@ -171,6 +171,10 @@ export function PayAppPage() {
               <p className="mt-1.5 text-sm leading-relaxed text-[var(--acopay-muted)]">{t("payApp.loginHint")}</p>
               <p className="mt-3 text-xs font-medium text-[var(--acopay-brand)]">{deviceHint}</p>
               <p className="mt-4 text-sm text-[var(--acopay-faint)] sm:hidden">{t("payApp.subtitle")}</p>
+              {/* build stamp — hard-refresh if you still see old copy */}
+              <p className="mt-4 hidden text-[10px] text-[var(--acopay-faint)] lg:block" data-pay-build="2026-07-29c">
+                build 0729c
+              </p>
             </div>
 
             <div className="flex flex-col justify-center gap-3 px-5 py-5 lg:px-6 lg:py-6">
