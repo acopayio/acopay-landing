@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { flushSync } from "react-dom";
 import { AddrHighlight } from "../../components/AddrHighlight";
 import { BrandLogo } from "../../components/BrandLogo";
 import { formatSessionClock, phantomBrowseUrl } from "../../config/otc";
@@ -295,12 +296,20 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
   }
 
   function beginWaiting() {
-    const started = Date.now();
-    setConfirmStartedAt(started);
-    setNow(started);
-    setStep("waiting");
-    setSigningPhase("confirming");
-    setBusy(true);
+    flushSync(() => {
+      const started = Date.now();
+      setConfirmStartedAt(started);
+      setNow(started);
+      setStep("waiting");
+      setSigningPhase("confirming");
+      setBusy(true);
+    });
+  }
+
+  /** Keep the 45s clock on screen briefly even if RPC returns fast. */
+  async function holdWaitingMinMs(startedAt: number, minMs = 2500) {
+    const left = minMs - (Date.now() - startedAt);
+    if (left > 0) await new Promise((r) => window.setTimeout(r, left));
   }
 
   useEffect(() => {
@@ -329,6 +338,7 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
       pid: sess.pid,
       exp: sess.exp,
     });
+    const waitStarted = Date.now();
     beginWaiting();
     let explorer = `https://solscan.io/tx/${res.signature}`;
     try {
@@ -342,6 +352,7 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
     } catch {
       /* on-chain ok; Telegram receipt may lag — still show success bill */
     }
+    await holdWaitingMinMs(waitStarted);
     const s = previewToSuccess(p, explorer, res.signature);
     if (res.plan?.summary) {
       s.transferred = String(res.plan.summary.recipientGets || res.plan.summary.amountIn || s.transferred);
@@ -356,18 +367,22 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
     finishSuccess(s);
   }
 
-  /** Bot: confirm → 45s wait UI → bill. Phantom: sign → wait → bill (same bill). */
+  /**
+   * Bot PK: NEVER leave confirm CTA as “Đang tải…”.
+   * Switch to 45s clock first → send → Phantom-parity success bill.
+   */
   async function onPrimaryAction() {
     if (!preview) return;
     onError("");
     setSigningPhase("idle");
-    let keepBusyForPhantomReturn = false;
-    try {
-      // Bot / custodial: show 45s clock immediately (no “Loading…” on the CTA).
-      if (preview.mode === "bot") {
-        beginWaiting();
+
+    if (preview.mode === "bot") {
+      const waitStarted = Date.now();
+      beginWaiting();
+      try {
         const r = await sendPay(preview.recipient.to, preview.amount);
         if (r.mode === "bot" && (r.explorer || r.signature)) {
+          await holdWaitingMinMs(waitStarted);
           const explorer = r.explorer || `https://solscan.io/tx/${r.signature}`;
           finishSuccess(previewToSuccess(preview, explorer, r.signature));
           return;
@@ -376,16 +391,26 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
         setStep("confirm");
         setSigningPhase("idle");
         setBusy(false);
-        return;
+      } catch (e) {
+        onError(e instanceof Error ? e.message : String(e));
+        setStep("confirm");
+        setSigningPhase("idle");
+        setBusy(false);
       }
+      return;
+    }
 
-      setBusy(true);
+    // Phantom: show clock while creating session (no Loading on confirm button).
+    beginWaiting();
+    try {
       const r = await sendPay(preview.recipient.to, preview.amount);
 
       if (r.mode === "phantom" && r.sendUrl) {
         const sess = parsePhantomSendUrl(r.sendUrl);
         if (!sess) {
           onError("Invalid Phantom send session.");
+          setStep("confirm");
+          setBusy(false);
           return;
         }
 
@@ -406,9 +431,7 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
             startedAt: Date.now(),
           };
           savePayPhantomPending(pending);
-          keepBusyForPhantomReturn = true;
           setAwaitingPhantomReturn(true);
-          beginWaiting();
           const browseTarget = withPayReturnParam(sess.sendUrl);
           window.location.assign(phantomBrowseUrl(browseTarget));
           return;
@@ -416,9 +439,15 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
 
         if (!hasPhantomExtension()) {
           onError(t("payApp.billErrNoPhantom"));
+          setStep("confirm");
+          setBusy(false);
           return;
         }
 
+        // Restore confirm only to open Phantom modal, then waiting after sign.
+        setStep("confirm");
+        setBusy(false);
+        setSigningPhase("idle");
         try {
           await runPhantomInline(sess, preview);
         } catch (e) {
@@ -443,7 +472,6 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
 
       onError("Unexpected send response.");
       setStep("confirm");
-      setSigningPhase("idle");
       setBusy(false);
     } catch (e) {
       onError(e instanceof Error ? e.message : String(e));
