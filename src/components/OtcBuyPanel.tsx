@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import QRCode from "qrcode";
 import { OTC, OTC_SESSION_MS, buildSolanaPayUrl, formatSessionClock, otcAcopayForUsdt } from "../config/otc";
-import { explorerTransfersUrl, solscanUrl, TOKEN } from "../config/token";
+import { explorerTransfersUrl, TOKEN } from "../config/token";
 import { useCopy } from "../hooks/useCopy";
 import { useT } from "../i18n/LanguageProvider";
 import {
@@ -548,17 +548,9 @@ export function OtcBuyPanel() {
                 rel="noopener noreferrer"
                 className="btn-orca-ghost !rounded-xl !px-4 !py-2.5 !text-xs"
               >
-                {t("markets.transfers")} ACOPAY ↗
+                {t("contractPage.solanaExplorer")}
               </a>
             )}
-            <a
-              href={solscanUrl()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-orca-ghost !rounded-xl !px-4 !py-2.5 !text-xs"
-            >
-              Solscan ↗
-            </a>
           </div>
         </div>
       ) : settleStatus === "settling" ? (
