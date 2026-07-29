@@ -9,6 +9,8 @@ function isMobileUa(): boolean {
   return /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
 }
 
+export { isMobileUa };
+
 /** https://t.me/Bot?start=payload → tg://resolve?domain=Bot&start=payload */
 export function telegramHttpsToAppScheme(httpsUrl: string): string | null {
   try {
