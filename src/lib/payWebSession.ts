@@ -51,7 +51,7 @@ export async function requestTelegramAuth(): Promise<{
   botUrl: string;
   expiresAt: number;
 }> {
-  const res = await fetch("/api/pay/auth/request", {
+  const res = await fetch("/api/pay/auth-request", {
     method: "POST",
     headers: headers(null),
     body: "{}",
@@ -79,7 +79,7 @@ export async function pollTelegramAuth(requestId: string): Promise<{
   username?: string | null;
 }> {
   const q = encodeURIComponent(requestId);
-  const res = await fetch(`/api/pay/auth/poll?requestId=${q}`, {
+  const res = await fetch(`/api/pay/auth-poll?requestId=${q}`, {
     method: "GET",
     headers: headers(null),
   });
@@ -100,7 +100,7 @@ export async function pollTelegramAuth(requestId: string): Promise<{
 
 /** Telegram Login Widget callback payload → session token. */
 export async function loginWithTelegramWidget(payload: Record<string, unknown>): Promise<string> {
-  const res = await fetch("/api/pay/auth/telegram", {
+  const res = await fetch("/api/pay/auth-telegram", {
     method: "POST",
     headers: headers(null),
     body: JSON.stringify(payload),
@@ -128,7 +128,7 @@ export async function fetchPayMe(): Promise<PayMe> {
 
 export async function logoutPay(): Promise<void> {
   try {
-    await fetch("/api/pay/auth/logout", { method: "POST", headers: headers(), body: "{}" });
+    await fetch("/api/pay/auth-logout", { method: "POST", headers: headers(), body: "{}" });
   } catch {
     /* ignore */
   }
