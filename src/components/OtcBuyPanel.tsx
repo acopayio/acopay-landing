@@ -196,7 +196,6 @@ export function OtcBuyPanel() {
       hasPhantomExtension,
       openPhantomFallback,
       payUsdtWithPhantom,
-      getAcopayUiBalance,
     } = await import("../lib/phantomPay");
 
     if (!hasPhantomExtension()) {
@@ -208,10 +207,9 @@ export function OtcBuyPanel() {
     setPayingWallet(true);
     try {
       const { signature, buyer } = await payUsdtWithPhantom(activeAmount);
-      const before = await getAcopayUiBalance(buyer);
       setPaidSig(signature);
       setBuyerPubkey(buyer);
-      setBaselineAcopay(before ?? 0);
+      setBaselineAcopay(null); // will fetch baseline during settle polling (after Phantom signs)
       setSettleStatus("settling");
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
@@ -265,7 +263,6 @@ export function OtcBuyPanel() {
     if (settleStatus !== "settling" || !buyerPubkey || !activeValid) return;
     let cancelled = false;
     const need = receive;
-    const base = baselineAcopay ?? 0;
     const since = sessionStartedAt ?? Date.now() - 60_000;
 
     async function tick() {
@@ -289,7 +286,13 @@ export function OtcBuyPanel() {
 
       const bal = await getAcopayUiBalance(buyerPubkey!);
       if (cancelled || bal == null) return;
-      const gained = bal - base;
+      // Baseline may still be null (desktop extension flow: we avoid blocking Phantom signing).
+      if (baselineAcopay == null) {
+        setBaselineAcopay(bal ?? 0);
+        return;
+      }
+
+      const gained = bal - (baselineAcopay ?? 0);
       if (gained + 1e-9 >= need * 0.998) {
         setCreditedAcopay(gained);
         setSettleStatus("complete");

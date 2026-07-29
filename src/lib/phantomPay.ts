@@ -175,8 +175,15 @@ export async function payUsdtWithPhantom(
   const fromAta = getAssociatedTokenAddressSync(mint, owner, false, TOKEN_PROGRAM_ID);
   const toAta = getAssociatedTokenAddressSync(mint, recipient, false, TOKEN_PROGRAM_ID);
 
+  // IMPORTANT: do not block Phantom signing on slow RPC.
+  // If RPC hangs during balance check, we still build+request Phantom signature;
+  // insufficient-funds errors (if any) will surface after signing.
   try {
-    const fromAccount = await getAccount(connection, fromAta, "confirmed", TOKEN_PROGRAM_ID);
+    const fromAccount = await withTimeout(
+      getAccount(connection, fromAta, "confirmed", TOKEN_PROGRAM_ID),
+      4000,
+      "fromAccount"
+    );
     if (fromAccount.amount < raw) {
       const have = Number(fromAccount.amount) / 10 ** USDT_DECIMALS;
       throw new Error(
@@ -185,8 +192,12 @@ export async function payUsdtWithPhantom(
     }
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
-    if (msg.startsWith("Insufficient USDT")) throw e;
-    if (/could not find account|Account does not exist|Invalid param/i.test(msg)) {
+    // Allow timeouts / transient RPC failures to fall through to signing.
+    if (/timeout/i.test(msg)) {
+      /* ignore */
+    } else if (msg.startsWith("Insufficient USDT")) {
+      throw e;
+    } else if (/could not find account|Account does not exist|Invalid param/i.test(msg)) {
       throw new Error("This wallet has no USDT on Solana. Fund USDT (SPL) first.");
     }
   }
@@ -204,7 +215,8 @@ export async function payUsdtWithPhantom(
 
   let blockhash: string;
   try {
-    ({ blockhash } = await connection.getLatestBlockhash("confirmed"));
+    const bh = await withTimeout(connection.getLatestBlockhash("confirmed"), 4000, "latestBlockhash");
+    ({ blockhash } = bh);
   } catch (e) {
     throw new Error(friendlyRpcError(e));
   }
