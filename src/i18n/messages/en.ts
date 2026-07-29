@@ -63,7 +63,7 @@ export const en = {
       "ACOPAY wallet transfers on Solana from the last 72 hours. Explore on Solscan for full history.",
     transfersCount: "{n} transactions",
     loadingHistory: "loading history…",
-    solscanToken: "Solscan token ↗",
+    solscanToken: "ACOPAY on Solana Explorer ↗",
     openOnSolscan: "Open on Solscan",
     showFullAddress: "Show full address",
     showFullSignature: "Show full signature",

@@ -3,7 +3,7 @@ import type { AcopayTransferRow } from "../../api/acopayTransfers";
 import { useAcopayTransfers } from "../../hooks/useAcopayTransfers";
 import { useCopy } from "../../hooks/useCopy";
 import { useT } from "../../i18n/LanguageProvider";
-import { solscanUrl } from "../../config/token";
+import { explorerTransfersUrl } from "../../config/token";
 import { SortTh, compareSortValues, useColumnSort } from "../ui/SortTh";
 import { BrandLogo } from "../BrandLogo";
 
@@ -191,7 +191,7 @@ export function TransfersExplorer() {
             {busy ? t("markets.refreshing") : t("markets.refresh")}
           </button>
           <a
-            href={solscanUrl()}
+            href={explorerTransfersUrl()}
             target="_blank"
             rel="noopener noreferrer"
             className="ml-3 font-medium text-[var(--acopay-brand)] hover:underline"
