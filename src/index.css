@@ -979,8 +979,12 @@ a.btn-orca-primary:disabled:hover {
   color: var(--acopay-muted);
 }
 
-.send-bill-row--balance .send-bill-ticker {
-  font-size: 0.75rem;
+/* Fixed logo size on every bill ACOPAY mark — do not vary per row */
+.send-bill-logo {
+  width: 0.875rem; /* 14px — matches h-3.5 */
+  height: 0.875rem;
+  flex-shrink: 0;
+  object-fit: contain;
 }
 
 .send-bill-label {

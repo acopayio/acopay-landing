@@ -18,11 +18,11 @@ import { looksLikeTelegramUsername } from "../lib/payWebSession";
 /** Expected confirm window (matches client + bot RPC retries). */
 const CONFIRM_WAIT_MS = 45_000;
 
-/** Amount + ACOPAY logo + ticker (same pattern as Markets / Pay bill). */
-function AcopayCoinMark({ className = "h-3.5 w-3.5" }: { className?: string }) {
+/** Amount + ACOPAY logo + ticker — logo size fixed via `.send-bill-logo` (same on every bill row). */
+function AcopayCoinMark() {
   return (
     <span className="inline-flex items-center gap-1">
-      <BrandLogo className={className} alt="" />
+      <BrandLogo className="send-bill-logo" alt="" />
       <span className="send-bill-ticker">ACOPAY</span>
     </span>
   );
@@ -375,14 +375,14 @@ export function SendAcopayPage() {
                   <span className="send-bill-meta">({bill.feePct})</span>
                 </span>
                 <span className="send-bill-value send-bill-value--plain inline-flex items-center gap-1">
-                  {fmtAcopayDisplay(bill.fee)} <AcopayCoinMark className="h-3 w-3" />
+                  {fmtAcopayDisplay(bill.fee)} <AcopayCoinMark />
                 </span>
               </div>
               {bill.openFee ? (
                 <div className="send-bill-row">
                   <span className="send-bill-label">🆕 {t("sendAcopay.openFeeLabel")}</span>
                   <span className="send-bill-value send-bill-value--plain inline-flex items-center gap-1">
-                    {fmtAcopayDisplay(bill.openFee)} <AcopayCoinMark className="h-3 w-3" />
+                    {fmtAcopayDisplay(bill.openFee)} <AcopayCoinMark />
                   </span>
                 </div>
               ) : null}

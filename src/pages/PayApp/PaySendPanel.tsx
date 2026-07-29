@@ -513,7 +513,7 @@ function TransferBill({
         <span className="send-bill-value">
           {formatAcopay(parseAmountInput(String(plan.transferred)))}{" "}
           <span className="inline-flex items-center gap-1">
-            <BrandLogo className="h-3.5 w-3.5" alt="" />
+            <BrandLogo className="send-bill-logo" alt="" />
             <span className="send-bill-ticker">ACOPAY</span>
           </span>
         </span>
@@ -526,7 +526,7 @@ function TransferBill({
         <span className="send-bill-value send-bill-value--plain inline-flex items-center gap-1">
           {formatAcopay(parseAmountInput(String(plan.fee)))}{" "}
           <span className="inline-flex items-center gap-1">
-            <BrandLogo className="h-3 w-3" alt="" />
+            <BrandLogo className="send-bill-logo" alt="" />
             <span className="send-bill-ticker">ACOPAY</span>
           </span>
         </span>
@@ -537,7 +537,7 @@ function TransferBill({
           <span className="send-bill-value send-bill-value--plain inline-flex items-center gap-1">
             {formatAcopay(parseAmountInput(String(plan.openFee)))}{" "}
             <span className="inline-flex items-center gap-1">
-              <BrandLogo className="h-3 w-3" alt="" />
+              <BrandLogo className="send-bill-logo" alt="" />
               <span className="send-bill-ticker">ACOPAY</span>
             </span>
           </span>
@@ -549,7 +549,7 @@ function TransferBill({
         <span className="send-bill-value">
           {formatAcopay(parseAmountInput(String(plan.total)))}{" "}
           <span className="inline-flex items-center gap-1">
-            <BrandLogo className="h-3.5 w-3.5" alt="" />
+            <BrandLogo className="send-bill-logo" alt="" />
             <span className="send-bill-ticker">ACOPAY</span>
           </span>
         </span>
@@ -565,7 +565,7 @@ function TransferBill({
           >
             {formatAcopay(plan.balance)}{" "}
             <span className="inline-flex items-center gap-1">
-              <BrandLogo className="h-3 w-3" alt="" />
+              <BrandLogo className="send-bill-logo" alt="" />
               <span className="send-bill-ticker">ACOPAY</span>
             </span>
             {plan.enough === false ? (
