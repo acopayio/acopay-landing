@@ -1164,22 +1164,19 @@ html[data-theme="dark"] .send-bill-link {
   object-fit: cover;
 }
 
-/* Web Pay — Receive: QR + address unit, Telegram block */
+/* Web Pay — Receive: QR + address unit, Telegram block
+ * Avoid color-mix() inside linear-gradient — LightningCSS fallback
+ * can expand to solid --acopay-brand and wash the card. */
 .pay-recv-stage {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0;
   border-radius: 1.25rem;
-  border: 1px solid color-mix(in srgb, var(--acopay-brand) 22%, transparent);
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--acopay-brand) 7%, var(--acopay-surface)) 0%,
-      var(--acopay-surface) 42%
-    );
+  border: 1px solid var(--acopay-border-strong);
+  background: var(--acopay-surface);
   padding: 1.15rem 1rem 1rem;
-  box-shadow: 0 0 0 6px color-mix(in srgb, var(--acopay-brand) 5%, transparent);
+  box-shadow: 0 0 0 6px var(--acopay-brand-soft);
 }
 
 .pay-recv-qr {
@@ -1214,7 +1211,7 @@ html[data-theme="dark"] .send-bill-link {
 
 .pay-recv-tg {
   border-radius: 1rem;
-  border: 1px solid color-mix(in srgb, var(--acopay-brand) 28%, transparent);
+  border: 1px solid var(--acopay-border-strong);
   background: var(--acopay-brand-soft);
   padding: 0.9rem 1rem;
   text-align: center;
