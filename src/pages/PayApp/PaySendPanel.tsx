@@ -276,11 +276,15 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
   }
 
   function previewToSuccess(p: PayPreview, explorer: string, signature?: string): SuccessState {
+    const label =
+      p.recipient.labelKind === "tgUser" || (!p.recipient.username && !p.recipient.label)
+        ? t("payApp.recipientTgUser")
+        : p.recipient.label;
     return {
       explorer,
       signature,
       from: p.from,
-      label: p.recipient.label,
+      label,
       to: p.recipient.to,
       transferred: String(p.plan.transferred),
       fee: String(p.plan.fee),
@@ -469,9 +473,15 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
     }
   }
 
+  const recipientBillLabel =
+    preview?.recipient.labelKind === "tgUser" ||
+    (preview && !preview.recipient.username && !preview.recipient.label)
+      ? t("payApp.recipientTgUser")
+      : preview?.recipient.label || "";
+
   const billPlan = preview
     ? {
-        label: preview.recipient.label,
+        label: recipientBillLabel,
         to: preview.recipient.to,
         transferred: String(preview.plan.transferred),
         fee: String(preview.plan.fee),

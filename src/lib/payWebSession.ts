@@ -239,7 +239,14 @@ export type PayPreview = {
   ok: boolean;
   mode: "bot" | "phantom";
   from: string;
-  recipient: { to: string; label: string; kind: string; username: string | null };
+  recipient: {
+    to: string;
+    label: string;
+    labelKind?: "username" | "tgUser" | "address";
+    kind: string;
+    username: string | null;
+    telegramId?: string | null;
+  };
   amount: number;
   plan: {
     transferred: string;

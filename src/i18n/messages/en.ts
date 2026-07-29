@@ -527,6 +527,7 @@ export const en = {
     step2: "",
     step3: "",
     openTelegram: "📲 Open Telegram",
+    recipientTgUser: "Telegram Pay user",
     waitingTelegram: "Waiting for confirmation…",
     pollingHint: "Confirm in Telegram, then return here.",
     openAgain: "Open again",
