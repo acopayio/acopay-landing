@@ -319,15 +319,15 @@ export function withThousands(intPart: string): string {
 }
 
 /**
- * Web `/pay` amount precision — Kevin 2026-07-29: **9 decimals** on web
- * (Telegram bot `fmtAcopay` stays at 4 — do not sync that down).
+ * Web `/pay` amount precision — Kevin 2026-07-30: **6 decimals** on web
+ * (Telegram bot `fmtAcopay` stays at 4; on-chain mint still 9 — display only).
  */
-export const ACOPAY_WEB_DECIMALS = 9;
+export const ACOPAY_WEB_DECIMALS = 6;
 
 /**
  * ACOPAY amount / balance display on Web Pay:
  * - `,` = thousand separator
- * - `.` = decimal separator (max **9** places, trim trailing zeros)
+ * - `.` = decimal separator (max **6** places, trim trailing zeros)
  * Independent of UI language (VI/EN/…).
  */
 export function formatAcopay(n: number | null | undefined): string {
@@ -344,7 +344,7 @@ export function parseAmountInput(display: string): number {
 }
 
 /**
- * Live amount input — no max integer digits; max **9** fractional digits.
+ * Live amount input — no max integer digits; max **6** fractional digits.
  *
  * Bugfix (2026-07-29): typing 5th digit after `1,111` produced `1,1111`,
  * which the old heuristic treated as decimal `1.1111`. Now glue `,`+4+ digits

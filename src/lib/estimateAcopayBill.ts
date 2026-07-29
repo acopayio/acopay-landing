@@ -2,6 +2,8 @@
  * Estimate ACOPAY bill (0.01% = 1 bps) when sponsor plan is missing.
  * Matches bot display for simple transfers without first-ATA open fee.
  */
+import { ACOPAY_WEB_DECIMALS } from "./payWebSession";
+
 export function estimateAcopayBill(amountHuman: string | number): {
   transferred: string;
   fee: string;
@@ -13,10 +15,11 @@ export function estimateAcopayBill(amountHuman: string | number): {
   if (!Number.isFinite(amt) || amt <= 0) {
     return { transferred: String(amountHuman), fee: "—", feePct: "0.01%", total: String(amountHuman), openFee: "0" };
   }
-  const fee = Math.round(amt * 0.0001 * 1e9) / 1e9;
-  const total = Math.round((amt + fee) * 1e9) / 1e9;
+  const scale = 10 ** ACOPAY_WEB_DECIMALS;
+  const fee = Math.round(amt * 0.0001 * scale) / scale;
+  const total = Math.round((amt + fee) * scale) / scale;
   const fmt = (n: number) => {
-    const s = n.toFixed(9).replace(/\.?0+$/, "");
+    const s = n.toFixed(ACOPAY_WEB_DECIMALS).replace(/\.?0+$/, "");
     return s === "-0" ? "0" : s;
   };
   return {

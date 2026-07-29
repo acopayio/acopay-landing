@@ -13,7 +13,7 @@ import {
 } from "../lib/sendAcopay";
 import { AddrHighlight } from "../components/AddrHighlight";
 import { BrandLogo } from "../components/BrandLogo";
-import { looksLikeTelegramUsername } from "../lib/payWebSession";
+import { ACOPAY_WEB_DECIMALS, looksLikeTelegramUsername } from "../lib/payWebSession";
 
 /** Expected confirm window (matches client + bot RPC retries). */
 const CONFIRM_WAIT_MS = 45_000;
@@ -60,7 +60,7 @@ function shortAddr(a: string): string {
 function fmtAcopayDisplay(raw: string | number): string {
   const n = Number(raw);
   if (!Number.isFinite(n)) return String(raw);
-  return n.toFixed(9).replace(/\.?0+$/, "") || "0";
+  return n.toFixed(ACOPAY_WEB_DECIMALS).replace(/\.?0+$/, "") || "0";
 }
 
 /**
