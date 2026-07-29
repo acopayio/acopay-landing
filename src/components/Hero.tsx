@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { TOKEN, explorerUrl, isMintLive, mintDisplay, solscanUrl } from "../config/token";
+import { TOKEN, explorerUrl, isMintLive, mintDisplay } from "../config/token";
 import { BuyButton } from "./BuyButton";
 import { BrandLogo } from "./BrandLogo";
 import { useCopy } from "../hooks/useCopy";
@@ -53,14 +53,6 @@ export function Hero() {
                   className="btn-orca-secondary"
                 >
                   {t("hero.explorer")}
-                </a>
-                <a
-                  href={solscanUrl()}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-orca-secondary"
-                >
-                  {t("hero.solscan")}
                 </a>
               </>
             ) : (
