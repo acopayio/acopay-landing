@@ -11,6 +11,43 @@ const PRESETS = [10, 50, 100, 250, 500] as const;
 
 type Phase = "setup" | "paying" | "expired";
 
+const BUY_SESSION_KEY = "acopay_buy_session_v1";
+
+type StoredBuySession = {
+  amount: number;
+  endsAt: number;
+  startedAt: number;
+  watchAfterSig: string | null;
+};
+
+function readStoredBuySession(): StoredBuySession | null {
+  try {
+    const raw = sessionStorage.getItem(BUY_SESSION_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as StoredBuySession;
+    if (!parsed || typeof parsed.amount !== "number" || typeof parsed.endsAt !== "number") {
+      return null;
+    }
+    if (parsed.amount < OTC.minUsdt) return null;
+    if (Date.now() >= parsed.endsAt) {
+      sessionStorage.removeItem(BUY_SESSION_KEY);
+      return null;
+    }
+    return parsed;
+  } catch {
+    return null;
+  }
+}
+
+function writeStoredBuySession(s: StoredBuySession | null) {
+  try {
+    if (!s) sessionStorage.removeItem(BUY_SESSION_KEY);
+    else sessionStorage.setItem(BUY_SESSION_KEY, JSON.stringify(s));
+  } catch {
+    /* ignore */
+  }
+}
+
 function shortAddr(a: string) {
   return `${a.slice(0, 4)}…${a.slice(-4)}`;
 }
@@ -37,6 +74,7 @@ export function OtcBuyPanel() {
   const t = useT();
   const isNarrow = useIsNarrow();
   const payAnchorRef = useRef<HTMLDivElement>(null);
+  const restoredRef = useRef(false);
   const [amountStr, setAmountStr] = useState("50");
   const [phase, setPhase] = useState<Phase>("setup");
   const [sessionAmount, setSessionAmount] = useState<number | null>(null);
@@ -55,6 +93,38 @@ export function OtcBuyPanel() {
   /** Cursor: OTC USDT ATA sig before this session — QR/mobile auto-detect. */
   const [watchAfterSig, setWatchAfterSig] = useState<string | null>(null);
   const [sessionStartedAt, setSessionStartedAt] = useState<number | null>(null);
+
+  // Phantom browse / Solana Pay leaves this tab and remounts React — restore paying session.
+  useEffect(() => {
+    if (restoredRef.current) return;
+    restoredRef.current = true;
+    const stored = readStoredBuySession();
+    if (!stored) return;
+    setAmountStr(String(stored.amount));
+    setSessionAmount(stored.amount);
+    setSessionEndsAt(stored.endsAt);
+    setSessionStartedAt(stored.startedAt);
+    setWatchAfterSig(stored.watchAfterSig);
+    setNow(Date.now());
+    setPhase("paying");
+    setSettleStatus("idle");
+  }, []);
+
+  useEffect(() => {
+    if (phase !== "paying" || sessionAmount == null || sessionEndsAt == null || sessionStartedAt == null) {
+      return;
+    }
+    if (settleStatus === "complete") {
+      writeStoredBuySession(null);
+      return;
+    }
+    writeStoredBuySession({
+      amount: sessionAmount,
+      endsAt: sessionEndsAt,
+      startedAt: sessionStartedAt,
+      watchAfterSig,
+    });
+  }, [phase, sessionAmount, sessionEndsAt, sessionStartedAt, watchAfterSig, settleStatus]);
 
   const draftAmount = useMemo(() => {
     const n = Number(amountStr.replace(",", "."));
@@ -290,7 +360,10 @@ export function OtcBuyPanel() {
     const id = window.setInterval(() => {
       const stamp = Date.now();
       setNow(stamp);
-      if (stamp >= sessionEndsAt) setPhase("expired");
+      if (stamp >= sessionEndsAt) {
+        setPhase("expired");
+        writeStoredBuySession(null);
+      }
     }, 250);
     return () => window.clearInterval(id);
   }, [phase, sessionEndsAt, settleStatus]);
@@ -386,6 +459,7 @@ export function OtcBuyPanel() {
     setBaselineAcopay(null);
     setSettleStatus("idle");
     setCreditedAcopay(null);
+    writeStoredBuySession(null);
     if (sessionAmount != null) setAmountStr(String(sessionAmount));
   }
 
