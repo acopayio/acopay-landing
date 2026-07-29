@@ -18,7 +18,7 @@ import {
   type PayPreview,
 } from "../../lib/payWebSession";
 
-const PRESETS = [10, 50, 100, 250, 500, 1000, 2000]; // cf-bust 2026-07-29i-bill
+const PRESETS = [10, 50, 100, 250, 500, 1000, 2000]; // cf-bust 2026-07-29j-cta
 
 type Props = {
   balance: number | null | undefined;
@@ -27,7 +27,7 @@ type Props = {
   onSentBot: (explorer: string) => void;
 };
 
-type Step = "form" | "confirm" | "signing" | "success";
+type Step = "form" | "confirm" | "success";
 
 type PhantomSession = {
   from: string;
@@ -44,7 +44,6 @@ type SuccessState = {
   signature?: string;
   label: string;
   to: string;
-  from?: string;
   transferred: string;
   fee: string;
   feePct: string;
@@ -74,7 +73,12 @@ function shortAddr(a: string): string {
   return `${a.slice(0, 4)}…${a.slice(-4)}`;
 }
 
-/** Transfer ACOPAY — form → bill confirm → (bot|Phantom inline) → success bill. */
+/**
+ * Transfer ACOPAY — Kevin 2026-07-29:
+ * - Bot wallet → CTA Confirm transfer → success bill
+ * - Phantom linked → CTA 🔐 Sign on Phantom (no extra Confirm) → success bill
+ * Same bill UI either way (no “paid from …” labels).
+ */
 export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
   const { t } = useI18n();
   const [to, setTo] = useState("");
@@ -82,13 +86,12 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
   const [preview, setPreview] = useState<PayPreview | null>(null);
   const [busy, setBusy] = useState(false);
   const [step, setStep] = useState<Step>("form");
-  const [phantom, setPhantom] = useState<PhantomSession | null>(null);
   const [success, setSuccess] = useState<SuccessState | null>(null);
-  const [signingHint, setSigningHint] = useState<"idle" | "approve" | "confirming">("idle");
+  const [signingPhase, setSigningPhase] = useState<"idle" | "approve" | "confirming">("idle");
 
   const amountNum = useMemo(() => parseAmountInput(amount), [amount]);
   const toIsUsername = looksLikeTelegramUsername(to);
-  const mobileNoProvider = isMobileUa() && !hasPhantomExtension();
+  const isPhantomMode = preview?.mode === "phantom";
 
   async function onPreview() {
     onError("");
@@ -110,7 +113,6 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
       signature,
       label: p.recipient.label,
       to: p.recipient.to,
-      from: p.from,
       transferred: String(p.plan.transferred),
       fee: String(p.plan.fee),
       feePct: p.plan.feePct,
@@ -121,7 +123,7 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
   }
 
   async function runPhantomInline(sess: PhantomSession, p: PayPreview) {
-    setSigningHint("approve");
+    setSigningPhase("approve");
     const res = await sendAcopayWithPhantom({
       fromBase58: sess.from,
       toBase58: sess.to,
@@ -130,7 +132,7 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
       pid: sess.pid,
       exp: sess.exp,
     });
-    setSigningHint("confirming");
+    setSigningPhase("confirming");
     let explorer = `https://solscan.io/tx/${res.signature}`;
     try {
       const conf = await confirmPhantomPayInTelegram({
@@ -155,15 +157,19 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
     }
     setSuccess(s);
     setStep("success");
+    setSigningPhase("idle");
     onSentBot(explorer);
   }
 
-  async function onConfirm() {
+  /** Bot: confirm → bill. Phantom: sign CTA → bill (no intermediate Confirm). */
+  async function onPrimaryAction() {
     if (!preview) return;
     onError("");
     setBusy(true);
+    setSigningPhase("idle");
     try {
       const r = await sendPay(preview.recipient.to, preview.amount);
+
       if (r.mode === "bot" && (r.explorer || r.signature)) {
         const explorer = r.explorer || `https://solscan.io/tx/${r.signature}`;
         setSuccess(previewToSuccess(preview, explorer, r.signature));
@@ -171,69 +177,47 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
         onSentBot(explorer);
         return;
       }
+
       if (r.mode === "phantom" && r.sendUrl) {
         const sess = parsePhantomSendUrl(r.sendUrl);
         if (!sess) {
           onError("Invalid Phantom send session.");
           return;
         }
-        setPhantom(sess);
-        setStep("signing");
-        if (hasPhantomExtension()) {
-          try {
-            await runPhantomInline(sess, preview);
-          } catch (e) {
-            const msg = e instanceof Error ? e.message : String(e);
-            if (msg === "PHANTOM_MISSING") {
-              onError(t("payApp.billErrNoPhantom"));
-            } else if (msg === "WRONG_WALLET") {
-              onError(t("payApp.billErrWrongWallet", { addr: shortAddr(sess.from) }));
-            } else if (/User rejected|rejected|4001/i.test(msg)) {
-              onError(t("payApp.billErrCancelled"));
-            } else {
-              onError(msg);
-            }
-            setSigningHint("idle");
+
+        // Mobile without extension: open Phantom in-app browser (/send fallback).
+        if (isMobileUa() && !hasPhantomExtension()) {
+          window.location.assign(phantomBrowseUrl(sess.sendUrl));
+          return;
+        }
+
+        if (!hasPhantomExtension()) {
+          onError(t("payApp.billErrNoPhantom"));
+          return;
+        }
+
+        try {
+          await runPhantomInline(sess, preview);
+        } catch (e) {
+          const msg = e instanceof Error ? e.message : String(e);
+          if (msg === "PHANTOM_MISSING") {
+            onError(t("payApp.billErrNoPhantom"));
+          } else if (msg === "WRONG_WALLET") {
+            onError(t("payApp.billErrWrongWallet", { addr: shortAddr(sess.from) }));
+          } else if (/User rejected|rejected|4001/i.test(msg)) {
+            onError(t("payApp.billErrCancelled"));
+          } else {
+            onError(msg);
           }
-        } else {
-          setSigningHint("idle");
+          setSigningPhase("idle");
         }
         return;
       }
+
       onError("Unexpected send response.");
     } catch (e) {
       onError(e instanceof Error ? e.message : String(e));
-    } finally {
-      setBusy(false);
-    }
-  }
-
-  async function onRetryPhantom() {
-    if (!preview || !phantom) return;
-    onError("");
-    setBusy(true);
-    try {
-      if (!hasPhantomExtension()) {
-        if (mobileNoProvider) {
-          window.location.assign(phantomBrowseUrl(phantom.sendUrl));
-          return;
-        }
-        onError(t("payApp.billErrNoPhantom"));
-        return;
-      }
-      await runPhantomInline(phantom, preview);
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : String(e);
-      if (msg === "PHANTOM_MISSING") {
-        onError(t("payApp.billErrNoPhantom"));
-      } else if (msg === "WRONG_WALLET") {
-        onError(t("payApp.billErrWrongWallet", { addr: shortAddr(phantom.from) }));
-      } else if (/User rejected|rejected|4001/i.test(msg)) {
-        onError(t("payApp.billErrCancelled"));
-      } else {
-        onError(msg);
-      }
-      setSigningHint("idle");
+      setSigningPhase("idle");
     } finally {
       setBusy(false);
     }
@@ -243,7 +227,6 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
     ? {
         label: preview.recipient.label,
         to: preview.recipient.to,
-        from: preview.from,
         transferred: String(preview.plan.transferred),
         fee: String(preview.plan.fee),
         feePct: preview.plan.feePct,
@@ -255,12 +238,16 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
       }
     : null;
 
-  const headerTitle =
-    step === "success"
-      ? t("payApp.sendDone")
-      : step === "signing"
-        ? t("payApp.billSigningTitle")
-        : t("payApp.sendTitle");
+  const headerTitle = step === "success" ? t("payApp.sendDone") : t("payApp.sendTitle");
+
+  const primaryLabel = (() => {
+    if (busy) {
+      if (signingPhase === "confirming") return t("payApp.billConfirming");
+      if (signingPhase === "approve") return t("payApp.loading");
+      return t("payApp.loading");
+    }
+    return isPhantomMode ? t("payApp.sendPhantom") : t("payApp.sendConfirm");
+  })();
 
   return (
     <div className="otc-panel">
@@ -362,7 +349,6 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
               brand={t("payApp.billBrand")}
               network={t("payApp.billNetwork")}
               toLabel={t("payApp.sendToLabel")}
-              fromLabel={t("payApp.billFrom")}
               amountLabel={t("payApp.sendAmountLabel")}
               feeLabel={t("payApp.sendFee")}
               openFeeLabel={t("payApp.sendOpenFee")}
@@ -379,6 +365,7 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
                 onClick={() => {
                   setStep("form");
                   setPreview(null);
+                  setSigningPhase("idle");
                 }}
                 className="btn-orca-secondary flex-1 !rounded-xl !py-3 text-sm"
               >
@@ -387,69 +374,12 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
               <button
                 type="button"
                 disabled={busy || !billPlan.enough}
-                onClick={() => void onConfirm()}
+                onClick={() => void onPrimaryAction()}
                 className="btn-orca-primary flex-[1.4] !rounded-xl !py-3 text-sm font-semibold disabled:opacity-50"
               >
-                {busy ? t("payApp.loading") : t("payApp.sendConfirm")}
+                {primaryLabel}
               </button>
             </div>
-          </div>
-        )}
-
-        {step === "signing" && billPlan && phantom && (
-          <div className="mt-5 space-y-4">
-            <TransferBill
-              variant="confirm"
-              brand={t("payApp.billBrand")}
-              network={t("payApp.billNetwork")}
-              toLabel={t("payApp.sendToLabel")}
-              fromLabel={t("payApp.billFrom")}
-              amountLabel={t("payApp.sendAmountLabel")}
-              feeLabel={t("payApp.sendFee")}
-              openFeeLabel={t("payApp.sendOpenFee")}
-              totalLabel={t("payApp.sendTotal")}
-              balanceLabel={t("payApp.balanceLabel")}
-              insufficient={t("payApp.sendInsufficient")}
-              plan={billPlan}
-              status={
-                signingHint === "confirming"
-                  ? t("payApp.billConfirming")
-                  : signingHint === "approve"
-                    ? t("payApp.billSigningHint")
-                    : t("payApp.billSigningHint")
-              }
-            />
-
-            {mobileNoProvider ? (
-              <a
-                href={phantomBrowseUrl(phantom.sendUrl)}
-                className="btn-orca-primary flex w-full !rounded-xl items-center justify-center !py-3.5 text-sm font-semibold"
-              >
-                {t("payApp.billOpenPhantom")}
-              </a>
-            ) : (
-              <button
-                type="button"
-                disabled={busy || signingHint === "confirming"}
-                onClick={() => void onRetryPhantom()}
-                className="btn-orca-primary w-full !rounded-xl !py-3.5 text-sm font-semibold disabled:opacity-50"
-              >
-                {busy || signingHint !== "idle" ? t("payApp.loading") : t("payApp.sendConfirm")}
-              </button>
-            )}
-
-            <button
-              type="button"
-              disabled={busy}
-              onClick={() => {
-                setStep("confirm");
-                setPhantom(null);
-                setSigningHint("idle");
-              }}
-              className="btn-orca-secondary w-full !rounded-xl !py-3 text-sm"
-            >
-              ← {t("payApp.historyBack")}
-            </button>
           </div>
         )}
 
@@ -460,7 +390,6 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
               brand={t("payApp.billBrand")}
               network={t("payApp.billNetwork")}
               toLabel={t("payApp.sendToLabel")}
-              fromLabel={t("payApp.billFrom")}
               amountLabel={t("payApp.sendAmountLabel")}
               feeLabel={t("payApp.sendFee")}
               openFeeLabel={t("payApp.sendOpenFee")}
@@ -470,7 +399,6 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
               plan={{
                 label: success.label,
                 to: success.to,
-                from: success.from,
                 transferred: success.transferred,
                 fee: success.fee,
                 feePct: success.feePct,
@@ -500,7 +428,6 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
 type BillPlan = {
   label: string;
   to: string;
-  from?: string;
   transferred: string;
   fee: string;
   feePct: string;
@@ -516,7 +443,6 @@ function TransferBill({
   brand,
   network,
   toLabel,
-  fromLabel,
   amountLabel,
   feeLabel,
   openFeeLabel,
@@ -532,7 +458,6 @@ function TransferBill({
   brand: string;
   network: string;
   toLabel: string;
-  fromLabel: string;
   amountLabel: string;
   feeLabel: string;
   openFeeLabel: string;
@@ -566,14 +491,6 @@ function TransferBill({
             <AddrHighlight addr={plan.to} />
           </code>
         </div>
-        {plan.from ? (
-          <div>
-            <span className="send-bill-label">{fromLabel}</span>
-            <code className="send-bill-addr">
-              <AddrHighlight addr={plan.from} />
-            </code>
-          </div>
-        ) : null}
       </div>
 
       <hr className="send-bill-divider" />
@@ -634,7 +551,6 @@ function TransferBill({
   );
 }
 
-/** Round ACOPAY mark + optional ticker text (coin-style). */
 function AcopayTicker({
   className = "h-3.5 w-3.5",
   label = true,

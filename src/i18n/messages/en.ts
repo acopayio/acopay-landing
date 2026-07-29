@@ -572,7 +572,7 @@ export const en = {
     sendAmountLabel: "Amount",
     sendPreview: "Continue",
     sendConfirm: "Confirm transfer",
-    sendPhantom: "Approve in Phantom",
+    sendPhantom: "🔐 Approve in Phantom",
     sendFee: "Network fee",
     sendOpenFee: "First-time account",
     sendTotal: "You pay",
