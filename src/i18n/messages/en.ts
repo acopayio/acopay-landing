@@ -571,7 +571,7 @@ export const en = {
     sendToLabel: "To",
     sendAmountLabel: "Amount",
     sendPreview: "Continue",
-    sendConfirm: "Confirm transfer",
+    sendConfirm: "✅ Confirm transfer",
     sendPhantom: "🔐 Approve Phantom",
     sendFee: "Transaction fee",
     sendOpenFee: "First-time account",
