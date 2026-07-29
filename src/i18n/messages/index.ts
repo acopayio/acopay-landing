@@ -404,7 +404,7 @@ const partials: Record<string, DeepPartialMessages> = {
       awaitHintWide: "Thanh toán bằng Phantom, quét QR, hoặc gửi USDT tới địa chỉ nạp.",
       confirmPhantom: "Xác nhận trong Phantom…",
       settling: "Đang gửi ACOPAY…",
-      payPhantom: "👻 Thanh toán bằng ví Phantom",
+      payPhantom: "🔐 Thanh toán bằng ví Phantom",
       usdtSubmitted: "Đã gửi giao dịch USDT.",
       viewTx: "Xem giao dịch",
       newCode: "Mã thanh toán mới",
