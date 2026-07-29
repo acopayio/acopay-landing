@@ -146,7 +146,7 @@ export function PayAppPage() {
             </p>
             {/* Kevin 2026-07-29: no redundant "Ví/Wallet" H1 under GIAO DỊCH — kicker is enough */}
           </div>
-          {panel === "home" && (
+          {phase === "home" && panel === "home" && (
             <p className="hidden text-right text-sm text-[var(--acopay-muted)] sm:block">{t("payApp.subtitle")}</p>
           )}
         </header>
@@ -168,29 +168,55 @@ export function PayAppPage() {
         )}
 
         {(phase === "login" || phase === "polling") && (
-          <div className="rounded-2xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-surface)] lg:grid lg:grid-cols-[1.1fr_1fr] lg:overflow-hidden">
-            <div className="border-b border-[color:var(--acopay-border)] px-5 py-5 lg:border-b-0 lg:border-r lg:px-6 lg:py-6">
-              <h2 className="text-base font-semibold text-[var(--acopay-fg)]">{t("payApp.loginTitle")}</h2>
-              <p className="mt-1.5 text-sm leading-relaxed text-[var(--acopay-muted)]">{t("payApp.loginHint")}</p>
-            </div>
-            <div className="flex flex-col justify-center gap-3 px-5 py-5 lg:px-6 lg:py-6">
-              <button
-                type="button"
-                onClick={() => void startDeepLinkLogin()}
-                disabled={phase === "polling"}
-                className="btn-orca-primary flex w-full items-center justify-center gap-2 !rounded-xl !py-3 text-sm font-semibold disabled:opacity-70"
-              >
-                {phase === "polling" ? t("payApp.waitingTelegram") : t("payApp.openTelegram")}
-              </button>
-              {phase === "polling" && botUrl && (
-                <button
-                  type="button"
-                  onClick={() => openTelegramBotLink(botUrl)}
-                  className="text-sm font-semibold text-[var(--acopay-brand)]"
-                >
-                  {t("payApp.openAgain")}
-                </button>
-              )}
+          <div className="lg:flex lg:min-h-[min(32rem,70vh)] lg:items-center lg:justify-center">
+            <div className="w-full overflow-hidden rounded-2xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-surface)] shadow-[0_12px_40px_-24px_rgba(12,16,23,0.35)] lg:max-w-md lg:px-0">
+              <div className="px-5 py-6 sm:px-6 lg:px-8 lg:py-9 lg:text-center">
+                <div className="mb-4 hidden justify-center lg:flex">
+                  <span className="inline-flex rounded-full bg-[var(--acopay-brand-soft)] p-3 ring-1 ring-[color:var(--acopay-brand)]/25">
+                    <BrandLogo className="h-12 w-12" alt="" />
+                  </span>
+                </div>
+                <h2 className="text-base font-semibold text-[var(--acopay-fg)] lg:text-xl">{t("payApp.loginTitle")}</h2>
+                <p className="mt-2 text-sm leading-relaxed text-[var(--acopay-muted)] lg:mx-auto lg:max-w-sm">
+                  {t("payApp.loginHint")}
+                </p>
+
+                <ul className="mt-5 hidden gap-2.5 text-left lg:mx-auto lg:mt-6 lg:grid lg:max-w-sm lg:gap-2">
+                  {[t("payApp.step1"), t("payApp.step2"), t("payApp.step3")]
+                    .filter((s) => Boolean(s && String(s).trim()))
+                    .map((line) => (
+                      <li
+                        key={line}
+                        className="rounded-xl border border-[color:var(--acopay-border)] bg-[var(--acopay-bg)] px-3.5 py-2.5 text-sm font-medium text-[var(--acopay-fg)]"
+                      >
+                        {line}
+                      </li>
+                    ))}
+                </ul>
+
+                <div className="mt-5 flex flex-col gap-2.5 lg:mt-8 lg:items-center">
+                  <button
+                    type="button"
+                    onClick={() => void startDeepLinkLogin()}
+                    disabled={phase === "polling"}
+                    className="btn-orca-primary flex w-full items-center justify-center gap-2 !rounded-xl !py-3.5 text-sm font-semibold disabled:opacity-70 lg:max-w-sm"
+                  >
+                    {phase === "polling" ? t("payApp.waitingTelegram") : t("payApp.openTelegram")}
+                  </button>
+                  {phase === "polling" && botUrl && (
+                    <button
+                      type="button"
+                      onClick={() => openTelegramBotLink(botUrl)}
+                      className="text-sm font-semibold text-[var(--acopay-brand)]"
+                    >
+                      {t("payApp.openAgain")}
+                    </button>
+                  )}
+                  {phase === "polling" ? (
+                    <p className="text-xs text-[var(--acopay-faint)] lg:max-w-sm">{t("payApp.pollingHint")}</p>
+                  ) : null}
+                </div>
+              </div>
             </div>
           </div>
         )}
