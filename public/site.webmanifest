@@ -13,13 +13,13 @@
   "categories": ["finance", "business"],
   "icons": [
     {
-      "src": "/assets/favicon.png",
+      "src": "/assets/logo-redraw-128.png",
       "sizes": "128x128",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/assets/logo-solid.png",
+      "src": "/assets/logo-redraw-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
