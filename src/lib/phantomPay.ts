@@ -200,7 +200,30 @@ export async function getAcopayUiBalance(ownerBase58: string): Promise<number | 
 
 /** Mobile / no-extension fallback. */
 export function openPhantomFallback(amountUsdt: number): void {
+  if (!isMobileUa()) {
+    window.open("https://phantom.com/download", "_blank", "noopener,noreferrer");
+    return;
+  }
+
   const payUrl = buildSolanaPayUrl(amountUsdt);
-  const href = isMobileUa() ? phantomBrowseUrl(payUrl) : "https://phantom.com/download";
-  window.open(href, "_blank", "noopener,noreferrer");
+  const ua = typeof navigator !== "undefined" ? navigator.userAgent : "";
+  // Telegram in-app browser: window.open + wrapping solana: in /ul/browse → blank/black screen.
+  const inTelegram =
+    /Telegram/i.test(ua) ||
+    (typeof window !== "undefined" &&
+      !!(window as unknown as { TelegramWebviewProxy?: unknown }).TelegramWebviewProxy);
+
+  if (inTelegram) {
+    // Open this HTTPS Buy page inside Phantom (provider injects). User taps the button again to sign.
+    const page =
+      typeof window !== "undefined"
+        ? window.location.href.split("#")[0]
+        : "https://acopay.net/buy";
+    window.location.assign(phantomBrowseUrl(page));
+    return;
+  }
+
+  // Safari / Chrome / etc.: hand off Solana Pay URI (same path as scanning the QR).
+  // Never put solana: inside phantom.app/ul/browse — that loads a black WebView.
+  window.location.assign(payUrl);
 }

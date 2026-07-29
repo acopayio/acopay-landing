@@ -102,15 +102,38 @@ export function OtcBuyPanel() {
     setCreditedAcopay(null);
     setSettleStatus("idle");
 
-    const { hasPhantomExtension, openPhantomFallback, payUsdtWithPhantom, getAcopayUiBalance } =
-      await import("../lib/phantomPay");
+    const {
+      hasPhantomExtension,
+      openPhantomFallback,
+      payUsdtWithPhantom,
+      getAcopayUiBalance,
+      isMobileUa,
+    } = await import("../lib/phantomPay");
 
     if (!hasPhantomExtension()) {
+      const ua = navigator.userAgent || "";
+      const inTelegram =
+        /Telegram/i.test(ua) ||
+        !!(window as unknown as { TelegramWebviewProxy?: unknown }).TelegramWebviewProxy;
+      // Only Telegram→Phantom browse needs resume; Solana Pay URI leaves this page.
+      if (isMobileUa() && inTelegram) {
+        try {
+          sessionStorage.setItem("acopay_buy_autopay", String(activeAmount));
+        } catch {
+          /* ignore */
+        }
+      }
       openPhantomFallback(activeAmount);
       if (!/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)) {
         setWalletError(t("otc.phantomMissingLong"));
       }
       return;
+    }
+
+    try {
+      sessionStorage.removeItem("acopay_buy_autopay");
+    } catch {
+      /* ignore */
     }
 
     setPayingWallet(true);
@@ -135,6 +158,41 @@ export function OtcBuyPanel() {
       setPayingWallet(false);
     }
   }
+
+  /** Resume Pay-with-Phantom after opening Buy page inside Phantom (Telegram path). */
+  useEffect(() => {
+    if (phase !== "paying" || settleStatus !== "idle" || !activeValid || payingWallet) return;
+    let cancelled = false;
+    let tries = 0;
+
+    async function resume() {
+      let want: string | null = null;
+      try {
+        want = sessionStorage.getItem("acopay_buy_autopay");
+      } catch {
+        return;
+      }
+      if (!want || Number(want) !== activeAmount) return;
+      const { hasPhantomExtension } = await import("../lib/phantomPay");
+      if (cancelled) return;
+      if (!hasPhantomExtension()) {
+        if (tries++ < 15) window.setTimeout(() => void resume(), 400);
+        return;
+      }
+      try {
+        sessionStorage.removeItem("acopay_buy_autopay");
+      } catch {
+        /* ignore */
+      }
+      void openPhantomPay();
+    }
+
+    void resume();
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- resume only when entering paying idle
+  }, [phase, settleStatus, activeValid, activeAmount, payingWallet]);
 
   useEffect(() => {
     if (settleStatus !== "settling" || !buyerPubkey || !activeValid) return;

@@ -368,7 +368,7 @@ export const en = {
     awaitHintWide: "Pay with Phantom, scan the QR, or send USDT to the deposit address.",
     confirmPhantom: "Confirm in Phantom…",
     settling: "Sending ACOPAY…",
-    payPhantom: "Pay with Phantom",
+    payPhantom: "👻 Pay with Phantom wallet",
     usdtSubmitted: "USDT tx submitted.",
     viewTx: "View tx",
     newCode: "New payment code",
