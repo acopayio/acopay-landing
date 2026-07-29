@@ -324,6 +324,7 @@ export function PayAppPage() {
                 onBack={() => setPanel("home")}
                 onError={(m) => setError(m || null)}
                 onSentBot={(explorer) => {
+                  // Success bill stays inside PaySendPanel; refresh balance + soft flash.
                   setFlash(`${t("payApp.sendDone")} — ${explorer}`);
                   void loadMe();
                   window.setTimeout(() => setFlash(null), 6000);

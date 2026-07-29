@@ -277,6 +277,11 @@ export type PaySendResult = {
   explorer?: string;
   sendUrl?: string;
   pid?: string;
+  from?: string;
+  to?: string;
+  amount?: number | string;
+  tg?: string;
+  exp?: number | string;
 };
 
 export async function sendPay(to: string, amount: number | string): Promise<PaySendResult> {
