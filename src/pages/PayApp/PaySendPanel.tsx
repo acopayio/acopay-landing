@@ -231,11 +231,12 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
                 onClick={() => void onConfirm()}
                 className="btn-orca-primary flex-[1.4] !rounded-xl !py-3 text-sm font-semibold disabled:opacity-50"
               >
-                {busy
-                  ? t("payApp.loading")
-                  : preview.mode === "phantom"
-                    ? t("payApp.sendPhantom")
-                    : t("payApp.sendConfirm")}
+                {/*
+                  Kevin 2026-07-29: Web `/pay` Telegram Pay session always shows
+                  Confirm transfer — even if spend mode is Phantom (redirect still
+                  happens). “Ký trên Phantom” stays on `/send` page only.
+                */}
+                {busy ? t("payApp.loading") : t("payApp.sendConfirm")}
               </button>
             </div>
           </div>
