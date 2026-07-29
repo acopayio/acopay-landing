@@ -345,7 +345,10 @@ export function parseAmountInput(display: string): number {
  * which the old heuristic treated as decimal `1.1111`. Now glue `,`+4+ digits
  * back before parsing (`1,1111` → `11111` → `11,111`).
  *
- * iOS/VI keypad `,` as decimal: `12,5` → `12.5` (last group length ≠ 3).
+ * iOS/VI keypad `,` as decimal: trailing `,` → `.`, or one digit after `,` (`12,5` → `12.5`).
+ *
+ * Bug fix (2026-07-29 evening): backspace on `11,111` → `11,11` was treated as
+ * decimal `11.11`. Incomplete thousand groups (2 digits after `,`) glue as integer.
  */
 export function formatAmountInput(raw: string): string {
   let s = String(raw).replace(/[^\d.,]/g, "");
@@ -372,11 +375,14 @@ export function formatAmountInput(raw: string): string {
       const last = s.lastIndexOf(",");
       const after = s.slice(last + 1);
       const before = s.slice(0, last);
-      // Last group exactly 3 and head is valid thousand prefix → all thousands
       if (after.length === 3 && (/^\d{1,3}(,\d{3})*$/.test(before) || /^\d+$/.test(before))) {
+        // Complete thousand group
+        s = s.replace(/,/g, "");
+      } else if (after.length === 2 || after.length > 3) {
+        // Backspace mid-thousands: "11,111" → "11,11" (NOT decimal 11.11)
         s = s.replace(/,/g, "");
       } else {
-        // Locale decimal comma: 12,5 → 12.5
+        // Locale decimal comma with 1 fractional digit: 12,5 → 12.5
         s = `${before.replace(/,/g, "")}.${after.replace(/,/g, "")}`;
       }
     }
