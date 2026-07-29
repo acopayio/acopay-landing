@@ -101,7 +101,7 @@ export const CHROME_NATIVE_FIX: Record<string, object> = {
     },
     faq: { title: "Häufige Fragen" },
     hero: {
-      explorer: "Block-Explorer ↗",
+      explorer: "Solana Explorer ↗",
       details: "Mehr →",
     },
     footer: { community: "Community", product: "Produkt" },

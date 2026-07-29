@@ -28,7 +28,7 @@ export const CORE_UI_GAPS: Record<string, object> = {
       aria: "Змінити мову за країною",
     },
     hero: {
-      explorer: "Оглядач ↗",
+      explorer: "Оглядач Solana ↗",
       solscan: "Solscan ↗",
       desc: "Платіжна утиліта Solana для переказів між гаманцями. Торгуйте ACOPAY/USDT на Raydium і Jupiter.",
       contractAddress: "Адреса контракту",
@@ -149,7 +149,7 @@ export const CORE_UI_GAPS: Record<string, object> = {
       aria: "Taal wisselen op land",
     },
     hero: {
-      explorer: "Verkenner ↗",
+      explorer: "Solana Verkenner ↗",
       solscan: "Solscan ↗",
       desc: "Solana-betalingsutility voor transfers van wallet naar wallet. Handel ACOPAY/USDT op Raydium en Jupiter.",
       contractAddress: "Contractadres",
@@ -270,7 +270,7 @@ export const CORE_UI_GAPS: Record<string, object> = {
       aria: "Zmień język według kraju",
     },
     hero: {
-      explorer: "Eksplorator ↗",
+      explorer: "Eksplorator Solana ↗",
       solscan: "Solscan ↗",
       desc: "Narzędzie płatnicze Solana do przelewów między portfelami. Handluj ACOPAY/USDT na Raydium i Jupiter.",
       contractAddress: "Adres kontraktu",
@@ -390,7 +390,7 @@ export const CORE_UI_GAPS: Record<string, object> = {
       aria: "Ülkeye göre dil değiştir",
     },
     hero: {
-      explorer: "Gezgin ↗",
+      explorer: "Solana Gezgini ↗",
       solscan: "Solscan ↗",
       desc: "Cüzdandan cüzdana transferler için Solana ödeme yardımcı tokeni. Raydium ve Jupiter'de ACOPAY/USDT işlem yapın.",
       contractAddress: "Sözleşme adresi",
@@ -512,7 +512,7 @@ export const CORE_UI_GAPS: Record<string, object> = {
       aria: "Cambia lingua in base al Paese",
     },
     hero: {
-      explorer: "Esploratore ↗",
+      explorer: "Esploratore Solana ↗",
       solscan: "Solscan ↗",
       desc: "Utility di pagamento su Solana per trasferimenti tra portafogli. Opera ACOPAY/USDT su Raydium e Jupiter.",
       contractAddress: "Indirizzo del contratto",
@@ -636,7 +636,7 @@ export const CORE_UI_GAPS: Record<string, object> = {
       aria: "Tukar bahasa mengikut negara",
     },
     hero: {
-      explorer: "Penjelajah ↗",
+      explorer: "Penjelajah Solana ↗",
       solscan: "Solscan ↗",
       desc: "Utiliti pembayaran Solana untuk pindahan dompet-ke-dompet. Dagangkan ACOPAY/USDT di Raydium dan Jupiter.",
       contractAddress: "Alamat kontrak",
