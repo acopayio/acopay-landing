@@ -148,27 +148,26 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
     onSentBot(s.explorer);
   }
 
-  /** Hydrate success bill from /pay?paid=1… (Phantom → Safari redirect). */
+  /** Hydrate success bill from /pay?paid=1… (Phantom → Safari redirect).
+   * Amounts/label come from session pending only — never trust URL money fields (anti-phishing). */
   useEffect(() => {
     if (hydratedPaidRef.current) return;
     if (typeof window === "undefined") return;
     const paid = parsePayPaidQuery(window.location.search);
     if (!paid) return;
     hydratedPaidRef.current = true;
-    const explorer = `https://solscan.io/tx/${paid.signature}`;
-    finishSuccess({
-      explorer,
-      signature: paid.signature,
-      from: paid.from,
-      label: paid.label,
-      to: paid.to,
-      transferred: paid.transferred,
-      fee: paid.fee,
-      feePct: paid.feePct,
-      openFee: paid.openFee,
-      total: paid.total,
-      isFirstAtaOpen: paid.isFirstAtaOpen,
-    });
+
+    const pending = loadPayPhantomPending();
+    if (pending && pending.from === paid.from && pending.to === paid.to) {
+      finishSuccess(
+        pendingToSuccess(pending, `https://solscan.io/tx/${paid.signature}`, paid.signature),
+      );
+      clearPayPaidQueryFromUrl();
+      return;
+    }
+
+    // No matching pending → ignore spoofed ?paid= bill amounts; clear URL.
+    // Resume poll effect may still pick up a real pending without paid query.
     clearPayPaidQueryFromUrl();
     // eslint-disable-next-line react-hooks/exhaustive-deps -- one-shot URL hydrate
   }, []);

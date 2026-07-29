@@ -106,10 +106,12 @@ export function corsOptions(methods = "GET, POST, OPTIONS"): Response {
   return new Response(null, {
     status: 204,
     headers: {
-      "Access-Control-Allow-Origin": "*",
+      // Same-origin site only — never wildcard (state-changing Pay POSTs).
+      "Access-Control-Allow-Origin": "https://acopay.net",
       "Access-Control-Allow-Methods": methods,
       "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Acopay-Pay-Session",
       "Access-Control-Max-Age": "86400",
+      Vary: "Origin",
     },
   });
 }

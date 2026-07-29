@@ -114,7 +114,12 @@ export function parsePayPaidQuery(search: string | URLSearchParams): PayPaidQuer
   const fee = (sp.get("fee") || "").trim();
   const feePct = (sp.get("feePct") || "0.01%").trim();
   const total = (sp.get("total") || "").trim();
-  if (!signature || !from || !to || !transferred || !total) return null;
+  // Reject spoofed / non-base58 sigs early (bill hydrate must also match pending).
+  if (!signature || !/^[1-9A-HJ-NP-Za-km-z]{64,128}$/.test(signature)) return null;
+  if (!from || !to || !transferred || !total) return null;
+  if (!/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(from) || !/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(to)) {
+    return null;
+  }
   return {
     signature,
     from,
