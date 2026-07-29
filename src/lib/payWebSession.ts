@@ -314,14 +314,20 @@ export function withThousands(intPart: string): string {
 }
 
 /**
- * ACOPAY amount / balance display — same rules as Telegram bot `fmtAcopay`:
+ * Web `/pay` amount precision — Kevin 2026-07-29: **9 decimals** on web
+ * (Telegram bot `fmtAcopay` stays at 4 — do not sync that down).
+ */
+export const ACOPAY_WEB_DECIMALS = 9;
+
+/**
+ * ACOPAY amount / balance display on Web Pay:
  * - `,` = thousand separator
- * - `.` = decimal separator (max 4 places, trim trailing zeros)
+ * - `.` = decimal separator (max **9** places, trim trailing zeros)
  * Independent of UI language (VI/EN/…).
  */
 export function formatAcopay(n: number | null | undefined): string {
   if (n == null || !Number.isFinite(n)) return "—";
-  const trimmed = n.toFixed(4).replace(/0+$/, "").replace(/\.$/, "");
+  const trimmed = n.toFixed(ACOPAY_WEB_DECIMALS).replace(/0+$/, "").replace(/\.$/, "");
   const [intPart, dec] = trimmed.split(".");
   return withThousands(intPart) + (dec != null ? `.${dec}` : "");
 }
@@ -333,40 +339,46 @@ export function parseAmountInput(display: string): number {
 }
 
 /**
- * Live amount input display:
- * - `,` = thousands (auto-inserted)
- * - `.` = decimal (max 4)
- * iOS/VI decimal keypad often emits `,` for decimal — treat that as `.`
- * when it is not already a thousand-group comma.
+ * Live amount input — no max integer digits; max **9** fractional digits.
  *
- * Examples: `11111` → `11,111` · `12,5` (iOS) → `12.5` · `1,234.56` → `1,234.56`
+ * Bugfix (2026-07-29): typing 5th digit after `1,111` produced `1,1111`,
+ * which the old heuristic treated as decimal `1.1111`. Now glue `,`+4+ digits
+ * back before parsing (`1,1111` → `11111` → `11,111`).
+ *
+ * iOS/VI keypad `,` as decimal: `12,5` → `12.5` (last group length ≠ 3).
  */
 export function formatAmountInput(raw: string): string {
   let s = String(raw).replace(/[^\d.,]/g, "");
   if (!s) return "";
 
-  // Decide decimal separator: prefer `.`; if only `,` and it looks like a decimal
-  // (not `\d{1,3}(,\d{3})+` thousand groups), map `,` → `.`.
-  const hasDot = s.includes(".");
-  const hasComma = s.includes(",");
-  if (hasDot && hasComma) {
-    // Rightmost of `.`/`,` is decimal; strip the other as thousands noise.
-    const lastSep = Math.max(s.lastIndexOf("."), s.lastIndexOf(","));
-    const intRaw = s.slice(0, lastSep).replace(/[.,]/g, "");
-    const frac = s.slice(lastSep + 1).replace(/[.,]/g, "").slice(0, 4);
+  // Mid-edit after auto-thousands: "1,111" + "1" → "1,1111" → glue → "11111"
+  while (/,(\d{4,})/.test(s)) {
+    s = s.replace(/,(\d{4,})/g, "$1");
+  }
+
+  if (s.includes(".")) {
+    const lastDot = s.lastIndexOf(".");
+    const intRaw = s.slice(0, lastDot).replace(/[.,]/g, "");
+    const frac = s.slice(lastDot + 1).replace(/[.,]/g, "").slice(0, ACOPAY_WEB_DECIMALS);
     s = `${intRaw}.${frac}`;
-  } else if (!hasDot && hasComma) {
-    const thousandOnly = /^\d{1,3}(,\d{3})+$/.test(s);
-    const thousandPlusFrac = /^\d{1,3}(,\d{3})+,\d{1,4}$/.test(s);
-    if (thousandOnly) {
+  } else if (s.includes(",")) {
+    if (/^\d{1,3}(,\d{3})+$/.test(s)) {
+      // Pure thousands: 1,111 / 11,111 / 1,234,567
       s = s.replace(/,/g, "");
-    } else if (thousandPlusFrac) {
-      const last = s.lastIndexOf(",");
-      s = `${s.slice(0, last).replace(/,/g, "")}.${s.slice(last + 1)}`;
+    } else if (s.endsWith(",")) {
+      // iOS starting decimal
+      s = `${s.replace(/,/g, "")}.`;
     } else {
-      // Locale decimal comma (iOS VI keypad): `12,5` → `12.5`
       const last = s.lastIndexOf(",");
-      s = `${s.slice(0, last).replace(/,/g, "")}.${s.slice(last + 1).replace(/,/g, "")}`;
+      const after = s.slice(last + 1);
+      const before = s.slice(0, last);
+      // Last group exactly 3 and head is valid thousand prefix → all thousands
+      if (after.length === 3 && (/^\d{1,3}(,\d{3})*$/.test(before) || /^\d+$/.test(before))) {
+        s = s.replace(/,/g, "");
+      } else {
+        // Locale decimal comma: 12,5 → 12.5
+        s = `${before.replace(/,/g, "")}.${after.replace(/,/g, "")}`;
+      }
     }
   }
 
@@ -383,7 +395,7 @@ export function formatAmountInput(raw: string): string {
   const intNorm = (intRaw || "0").replace(/^0+(?=\d)/, "") || "0";
   const intFmt = withThousands(intNorm);
   if (decRaw !== undefined || endsWithDot) {
-    return `${intFmt}.${(decRaw ?? "").slice(0, 4)}`;
+    return `${intFmt}.${(decRaw ?? "").slice(0, ACOPAY_WEB_DECIMALS)}`;
   }
   return intFmt;
 }

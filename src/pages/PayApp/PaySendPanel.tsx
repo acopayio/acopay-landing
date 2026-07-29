@@ -11,7 +11,7 @@ import {
   type PayPreview,
 } from "../../lib/payWebSession";
 
-const PRESETS = [10, 50, 100, 250, 500, 1000, 2000]; // cf-bust 2026-07-29g-chuyen-decimal
+const PRESETS = [10, 50, 100, 250, 500, 1000, 2000]; // cf-bust 2026-07-29h-amt9
 
 
 type Props = {
