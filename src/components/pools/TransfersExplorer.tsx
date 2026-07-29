@@ -1,5 +1,4 @@
 import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
 import type { AcopayTransferRow } from "../../api/acopayTransfers";
 import { useAcopayTransfers } from "../../hooks/useAcopayTransfers";
 import { useCopy } from "../../hooks/useCopy";
@@ -178,17 +177,9 @@ export function TransfersExplorer() {
   return (
     <div className="space-y-4">
       <div className="space-y-2">
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <div className="min-w-0 space-y-1">
-            <h3 className="text-lg font-semibold text-[var(--acopay-fg)]">{t("markets.transfersTitle")}</h3>
-            <p className="text-sm leading-relaxed text-[var(--acopay-muted)]">{t("markets.transfersSubtitle")}</p>
-          </div>
-          <Link
-            to="/pay"
-            className="shrink-0 rounded-xl border border-[color:var(--acopay-brand)]/40 bg-[var(--acopay-brand-soft)] px-3 py-2 text-xs font-semibold text-[var(--acopay-brand)] hover:opacity-90"
-          >
-            {t("payApp.openPayCta")}
-          </Link>
+        <div className="min-w-0 space-y-1">
+          <h3 className="text-lg font-semibold text-[var(--acopay-fg)]">{t("markets.transfersTitle")}</h3>
+          <p className="text-sm leading-relaxed text-[var(--acopay-muted)]">{t("markets.transfersSubtitle")}</p>
         </div>
         <p className="text-xs text-[var(--acopay-faint)]">
           {!backfillComplete ? `${t("markets.loadingHistory")} · ` : ""}
