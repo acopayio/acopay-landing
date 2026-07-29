@@ -8,7 +8,6 @@ import {
   fetchPayMe,
   formatAcopay,
   getPaySession,
-  isMobileUa,
   logoutPay,
   openTelegramBotLink,
   pollTelegramAuth,
@@ -39,12 +38,7 @@ export function PayAppPage() {
   const [error, setError] = useState<string | null>(null);
   const [botUrl, setBotUrl] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
-  const [mobile, setMobile] = useState(false);
   const pollRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    setMobile(isMobileUa());
-  }, []);
 
   const clearPoll = () => {
     if (pollRef.current != null) {
@@ -140,7 +134,6 @@ export function PayAppPage() {
 
   const bal = me?.balance?.acopay;
   const mint = me?.mint || TOKEN.mintAddress;
-  const deviceHint = mobile ? t("payApp.loginHintMobile") : t("payApp.loginHintDesktop");
 
   return (
     <section className="relative overflow-x-clip px-4 py-6 sm:px-6 lg:py-8">
@@ -179,7 +172,6 @@ export function PayAppPage() {
             <div className="border-b border-[color:var(--acopay-border)] px-5 py-5 lg:border-b-0 lg:border-r lg:px-6 lg:py-6">
               <h2 className="text-base font-semibold text-[var(--acopay-fg)]">{t("payApp.loginTitle")}</h2>
               <p className="mt-1.5 text-sm leading-relaxed text-[var(--acopay-muted)]">{t("payApp.loginHint")}</p>
-              <p className="mt-3 text-xs font-medium text-[var(--acopay-brand)]">{deviceHint}</p>
             </div>
             <div className="flex flex-col justify-center gap-3 px-5 py-5 lg:px-6 lg:py-6">
               <button
