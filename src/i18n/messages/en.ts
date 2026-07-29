@@ -553,6 +553,16 @@ export const en = {
     errCopy: "Could not copy.",
     openPayCta: "Open Wallet",
     openPayCtaHint: "",
+    sendInBot: "Send in Telegram",
+    receiveTitle: "Receive ACOPAY",
+    receiveHint: "Share this address or QR.",
+    historyTitle: "History",
+    historyEmpty: "No transfers yet.",
+    historyBack: "Back",
+    kindSend: "Sent",
+    kindRecv: "Received",
+    kindBuy: "Bought",
+    openExplorer: "Explorer",
   },
 };
 

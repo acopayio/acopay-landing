@@ -188,6 +188,36 @@ export async function fetchPayMe(): Promise<PayMe> {
   return data;
 }
 
+export type PayHistoryItem = {
+  at: string | null;
+  kind: string;
+  amount: number | null;
+  sig: string | null;
+  to: string | null;
+  fromTg: string | null;
+  toTg: string | null;
+};
+
+export async function fetchPayHistory(limit = 20): Promise<PayHistoryItem[]> {
+  const res = await fetch(`/api/pay/history?limit=${limit}`, {
+    method: "GET",
+    headers: headers(),
+  });
+  const data = (await res.json()) as {
+    ok?: boolean;
+    items?: PayHistoryItem[];
+    error?: string;
+  };
+  if (res.status === 401) {
+    setPaySession(null);
+    throw new Error("session_expired");
+  }
+  if (!res.ok || !data.ok) {
+    throw new Error(data.error || "Could not load history.");
+  }
+  return Array.isArray(data.items) ? data.items : [];
+}
+
 export async function logoutPay(): Promise<void> {
   try {
     await fetch("/api/pay/auth-logout", { method: "POST", headers: headers(), body: "{}" });
