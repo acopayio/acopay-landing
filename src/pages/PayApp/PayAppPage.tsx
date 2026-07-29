@@ -210,7 +210,13 @@ export function PayAppPage() {
                 <div className="rounded-2xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-surface)] p-5 lg:grid lg:grid-cols-[1fr_auto] lg:gap-8 lg:p-6">
                   <div className="min-w-0">
                     <div className="flex items-center justify-between gap-3">
-                      <p className="truncate text-sm font-medium text-[var(--acopay-muted)]">
+                      <p
+                        className={
+                          me.username
+                            ? "truncate text-base font-bold tracking-tight text-[var(--acopay-brand)] sm:text-lg"
+                            : "truncate text-sm font-medium text-[var(--acopay-muted)]"
+                        }
+                      >
                         {me.username ? `@${me.username}` : me.telegramId || "—"}
                       </p>
                       <button

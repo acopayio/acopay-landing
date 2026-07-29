@@ -66,7 +66,9 @@ export function PayReceivePanel({ address, username, onBack }: Props) {
         {username ? (
           <p className="mt-4 text-center text-sm text-[var(--acopay-muted)]">
             {t("payApp.receiveFriends")}{" "}
-            <span className="font-semibold text-[var(--acopay-brand)]">@{username}</span>
+            <span className="text-base font-bold tracking-tight text-[var(--acopay-brand)] sm:text-lg">
+              @{username}
+            </span>
           </p>
         ) : null}
 

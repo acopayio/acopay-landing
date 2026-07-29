@@ -305,10 +305,60 @@ export async function logoutPay(): Promise<void> {
   setPaySession(null);
 }
 
+/** Thousands separators — always en-US commas (locale-independent on Web Pay). */
+export function withThousands(intPart: string): string {
+  const neg = String(intPart).startsWith("-");
+  const abs = neg ? String(intPart).slice(1) : String(intPart);
+  const grouped = abs.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return neg ? `-${grouped}` : grouped;
+}
+
+/**
+ * ACOPAY amount / balance display — same rules as Telegram bot `fmtAcopay`:
+ * - `,` = thousand separator
+ * - `.` = decimal separator (max 4 places, trim trailing zeros)
+ * Independent of UI language (VI/EN/…).
+ */
 export function formatAcopay(n: number | null | undefined): string {
   if (n == null || !Number.isFinite(n)) return "—";
-  return n.toLocaleString(undefined, {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 4,
-  });
+  const trimmed = n.toFixed(4).replace(/0+$/, "").replace(/\.$/, "");
+  const [intPart, dec] = trimmed.split(".");
+  return withThousands(intPart) + (dec != null ? `.${dec}` : "");
+}
+
+/** Parse amount field (strip thousand commas). */
+export function parseAmountInput(display: string): number {
+  const n = Number(String(display).replace(/,/g, "").trim());
+  return Number.isFinite(n) ? n : NaN;
+}
+
+/**
+ * Live amount input: insert `,` thousands while typing; only `.` for decimals (≤4).
+ * Example: `11111` → `11,111` · `1234.5` → `1,234.5`
+ */
+export function formatAmountInput(raw: string): string {
+  let s = String(raw).replace(/,/g, "").replace(/[^\d.]/g, "");
+  const dot = s.indexOf(".");
+  if (dot !== -1) {
+    s = s.slice(0, dot + 1) + s.slice(dot + 1).replace(/\./g, "");
+  }
+  if (s === "") return "";
+  if (s === ".") return "0.";
+
+  const endsWithDot = s.endsWith(".");
+  const [intRaw, decRaw] = s.split(".");
+  const intNorm = (intRaw || "0").replace(/^0+(?=\d)/, "") || "0";
+  const intFmt = withThousands(intNorm);
+  if (decRaw !== undefined || endsWithDot) {
+    return `${intFmt}.${(decRaw ?? "").slice(0, 4)}`;
+  }
+  return intFmt;
+}
+
+/** Telegram @username look (not a Solana base58 pubkey). */
+export function looksLikeTelegramUsername(value: string): boolean {
+  const s = value.trim().replace(/^@/, "");
+  if (!s || s.length > 32) return false;
+  if (/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(s)) return false;
+  return /^[a-zA-Z0-9_]{3,32}$/.test(s);
 }
