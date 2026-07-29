@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { AddrHighlight } from "../../components/AddrHighlight";
+import { BrandLogo } from "../../components/BrandLogo";
 import { useI18n } from "../../i18n/LanguageProvider";
 import { fetchPayHistory, formatAcopay, type PayHistoryItem } from "../../lib/payWebSession";
 
