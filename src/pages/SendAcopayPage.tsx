@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { formatSessionClock, phantomBrowseUrl } from "../config/otc";
 import { explorerTransfersUrl, TOKEN } from "../config/token";
@@ -15,6 +15,12 @@ import { AddrHighlight } from "../components/AddrHighlight";
 
 /** Expected confirm window (matches client + bot RPC retries). */
 const CONFIRM_WAIT_MS = 45_000;
+
+/**
+ * Kevin 2026-07-29: When Phantom is already available, skip the “Duyệt chuyển”
+ * 3-step page and open Phantom “Xác nhận giao dịch” immediately.
+ * Signing order unchanged (Saul #278183): simulate → Phantom sign → OPERATOR cosign.
+ */
 
 function isUnsupportedDesktopBrowser(): boolean {
   if (typeof navigator === "undefined") return false;
@@ -75,6 +81,7 @@ export function SendAcopayPage() {
   const [now, setNow] = useState(() => Date.now());
   const [copied, setCopied] = useState(false);
   const [copiedUrl, setCopiedUrl] = useState(false);
+  const autoStartedRef = useRef(false);
 
   useEffect(() => {
     if (!confirming || confirmStartedAt == null) return;
@@ -232,6 +239,16 @@ export function SendAcopayPage() {
     }
   }, [missing, expired, badBrowser, from, to, amount, tg, pid, exp, t]);
 
+  // Phantom provider present → open “Xác nhận giao dịch” immediately (skip 3-step UI).
+  useEffect(() => {
+    if (autoStartedRef.current) return;
+    if (missing || expired || badBrowser || needsOpenInPhantom) return;
+    if (!hasPhantomExtension()) return;
+    if (signature) return;
+    autoStartedRef.current = true;
+    void send();
+  }, [missing, expired, badBrowser, needsOpenInPhantom, signature, send]);
+
   async function copyPaysok() {
     if (!paysokLine) return;
     try {
@@ -244,12 +261,17 @@ export function SendAcopayPage() {
   }
 
   const pageTitle = !signature
-    ? t("sendAcopay.title")
+    ? hasProvider || busy
+      ? t("sendAcopay.waitingPhantom")
+      : t("sendAcopay.title")
     : confirming
       ? t("sendAcopay.pendingTitle")
       : tgConfirmed
         ? t("sendAcopay.successTitle")
         : t("sendAcopay.onChainOkTitle");
+
+  /** Hide instructional steps when Phantom can sign now (or signing in progress). */
+  const skipApproveSteps = hasProvider || busy || Boolean(signature);
 
   return (
     <section className="section-pad">
@@ -437,22 +459,24 @@ export function SendAcopayPage() {
           </div>
         ) : null}
 
-        {/* —— Pre-sign approve UI —— */}
+        {/* —— Pre-sign: skip 3-step “Duyệt chuyển” when Phantom is connected —— */}
         {!signature ? (
           <>
-            <ol className="mt-5 space-y-2.5">
-              {[t("sendAcopay.step1"), t("sendAcopay.step2"), t("sendAcopay.step3")].map((step, i) => (
-                <li key={i} className="flex gap-3 text-[14px] leading-snug text-[var(--acopay-fg)]">
-                  <span
-                    className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--acopay-brand)]/15 text-xs font-bold text-[var(--acopay-brand)]"
-                    aria-hidden
-                  >
-                    {i + 1}
-                  </span>
-                  <span className="text-[var(--acopay-muted)]">{step}</span>
-                </li>
-              ))}
-            </ol>
+            {!skipApproveSteps && (
+              <ol className="mt-5 space-y-2.5">
+                {[t("sendAcopay.step1"), t("sendAcopay.step2"), t("sendAcopay.step3")].map((step, i) => (
+                  <li key={i} className="flex gap-3 text-[14px] leading-snug text-[var(--acopay-fg)]">
+                    <span
+                      className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--acopay-brand)]/15 text-xs font-bold text-[var(--acopay-brand)]"
+                      aria-hidden
+                    >
+                      {i + 1}
+                    </span>
+                    <span className="text-[var(--acopay-muted)]">{step}</span>
+                  </li>
+                ))}
+              </ol>
+            )}
 
             {badBrowser && (
               <div className="mt-6 space-y-3 rounded-2xl border border-amber-500/40 bg-amber-500/15 p-4 text-sm text-[var(--acopay-fg)]">
@@ -480,12 +504,6 @@ export function SendAcopayPage() {
                   <hr className="send-bill-divider" />
                   <div className="send-bill-section">
                     <div>
-                      <span className="send-bill-label">📤 {t("sendAcopay.fromLabel")}</span>
-                      <code className="send-bill-addr">
-                        <AddrHighlight addr={from} />
-                      </code>
-                    </div>
-                    <div>
                       <span className="send-bill-label">📥 {t("sendAcopay.toLabel")}</span>
                       <code className="send-bill-addr">
                         <AddrHighlight addr={to} />
@@ -509,15 +527,21 @@ export function SendAcopayPage() {
                   </div>
                 )}
 
-                {!needsOpenInPhantom && (
+                {!needsOpenInPhantom && !busy && (
                   <button
                     type="button"
-                    disabled={busy || expired || badBrowser}
+                    disabled={expired || badBrowser}
                     onClick={() => void send()}
                     className="btn-orca-primary flex w-full !rounded-xl items-center justify-center disabled:opacity-50"
                   >
-                    {busy ? t("sendAcopay.waitingPhantom") : t("sendAcopay.connectSend")}
+                    {t("sendAcopay.connectSend")}
                   </button>
+                )}
+
+                {busy && (
+                  <p className="text-center text-sm font-medium text-[var(--acopay-muted)]">
+                    {t("sendAcopay.waitingPhantom")}
+                  </p>
                 )}
 
                 {error && (
