@@ -14,6 +14,10 @@ import {
 import { AddrHighlight } from "../components/AddrHighlight";
 import { BrandLogo } from "../components/BrandLogo";
 import { ACOPAY_WEB_DECIMALS, looksLikeTelegramUsername } from "../lib/payWebSession";
+import {
+  buildPayPaidUrl,
+  openPayReturnInExternalBrowser,
+} from "../lib/payPhantomReturn";
 
 /** Expected confirm window (matches client + bot RPC retries). */
 const CONFIRM_WAIT_MS = 45_000;
@@ -78,6 +82,7 @@ export function SendAcopayPage() {
   const exp = (params.get("exp") || "").trim();
   const langParam = (params.get("lang") || "").trim();
   const labelParam = (params.get("label") || "").trim();
+  const returnToPay = (params.get("ret") || "").trim() === "pay";
   /** @username when user sent by Telegram handle; else short wallet. */
   const recipientDisplay = useMemo(() => {
     const fromUrl = normalizeRecipientLabel(labelParam);
@@ -111,6 +116,7 @@ export function SendAcopayPage() {
   const [copied, setCopied] = useState(false);
   const [copiedUrl, setCopiedUrl] = useState(false);
   const autoStartedRef = useRef(false);
+  const returnedToPayRef = useRef(false);
 
   useEffect(() => {
     if (!confirming || confirmStartedAt == null) return;
@@ -278,6 +284,38 @@ export function SendAcopayPage() {
     void send();
   }, [missing, expired, badBrowser, needsOpenInPhantom, signature, send]);
 
+  // Web /pay mobile: after confirm, bounce bill back to Safari (not stay in Phantom).
+  useEffect(() => {
+    if (!returnToPay || !signature || !tgConfirmed || returnedToPayRef.current) return;
+    returnedToPayRef.current = true;
+    const payUrl = buildPayPaidUrl({
+      signature,
+      from,
+      to,
+      label: labelParam || recipientDisplay,
+      transferred: String(bill.transferred),
+      fee: String(bill.fee),
+      feePct: String(bill.feePct),
+      openFee: String(bill.openFee || "0"),
+      total: String(bill.total),
+      isFirstAtaOpen: Boolean(bill.openFee && Number(bill.openFee) > 0),
+    });
+    openPayReturnInExternalBrowser(payUrl);
+  }, [
+    returnToPay,
+    signature,
+    tgConfirmed,
+    from,
+    to,
+    labelParam,
+    recipientDisplay,
+    bill.transferred,
+    bill.fee,
+    bill.feePct,
+    bill.openFee,
+    bill.total,
+  ]);
+
   async function copyPaysok() {
     if (!paysokLine) return;
     try {
@@ -360,7 +398,47 @@ export function SendAcopayPage() {
         ) : null}
 
         {/* —— Success bill (only after Telegram confirms) —— */}
-        {signature && tgConfirmed ? (
+        {signature && tgConfirmed && returnToPay ? (
+          <div className="mt-8 space-y-4 text-center send-confirm-reveal">
+            <p className="text-sm text-[var(--acopay-muted)]">{t("sendAcopay.confirmWaitBody")}</p>
+            <a
+              href={buildPayPaidUrl({
+                signature,
+                from,
+                to,
+                label: labelParam || recipientDisplay,
+                transferred: String(bill.transferred),
+                fee: String(bill.fee),
+                feePct: String(bill.feePct),
+                openFee: String(bill.openFee || "0"),
+                total: String(bill.total),
+                isFirstAtaOpen: Boolean(bill.openFee && Number(bill.openFee) > 0),
+              })}
+              className="btn-orca-primary inline-flex w-full !rounded-xl !py-3.5 text-sm font-semibold"
+              onClick={(e) => {
+                e.preventDefault();
+                openPayReturnInExternalBrowser(
+                  buildPayPaidUrl({
+                    signature,
+                    from,
+                    to,
+                    label: labelParam || recipientDisplay,
+                    transferred: String(bill.transferred),
+                    fee: String(bill.fee),
+                    feePct: String(bill.feePct),
+                    openFee: String(bill.openFee || "0"),
+                    total: String(bill.total),
+                    isFirstAtaOpen: Boolean(bill.openFee && Number(bill.openFee) > 0),
+                  }),
+                );
+              }}
+            >
+              {t("sendAcopay.successTitle")}
+            </a>
+          </div>
+        ) : null}
+
+        {signature && tgConfirmed && !returnToPay ? (
           <div className="mt-8 space-y-4 send-confirm-reveal">
             <div className="send-bill send-bill--success space-y-3 text-sm">
               <div className="send-bill-row">

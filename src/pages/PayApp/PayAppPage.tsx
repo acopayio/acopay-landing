@@ -16,6 +16,7 @@ import {
   setPaySession,
   type PayMe,
 } from "../../lib/payWebSession";
+import { loadPayPhantomPending, parsePayPaidQuery } from "../../lib/payPhantomReturn";
 import { PayHistoryPanel } from "./PayHistoryPanel";
 import { PayReceivePanel } from "./PayReceivePanel";
 import { PaySendPanel } from "./PaySendPanel";
@@ -23,10 +24,17 @@ import { PaySendPanel } from "./PaySendPanel";
 type Phase = "boot" | "login" | "polling" | "home";
 type Panel = "home" | "send" | "receive" | "history";
 
+function initialPayPanel(): Panel {
+  if (typeof window === "undefined") return "home";
+  if (parsePayPaidQuery(window.location.search)) return "send";
+  if (loadPayPhantomPending()) return "send";
+  return "home";
+}
+
 export function PayAppPage() {
   const { t } = useI18n();
   const [phase, setPhase] = useState<Phase>("boot");
-  const [panel, setPanel] = useState<Panel>("home");
+  const [panel, setPanel] = useState<Panel>(initialPayPanel);
   const [me, setMe] = useState<PayMe | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [botUrl, setBotUrl] = useState<string | null>(null);

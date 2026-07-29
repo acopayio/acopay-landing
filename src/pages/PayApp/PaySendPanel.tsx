@@ -1,14 +1,24 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AddrHighlight } from "../../components/AddrHighlight";
 import { BrandLogo } from "../../components/BrandLogo";
 import { phantomBrowseUrl } from "../../config/otc";
 import { useI18n } from "../../i18n/LanguageProvider";
 import { hasPhantomExtension, isMobileUa } from "../../lib/phantomPay";
 import {
+  clearPayPaidQueryFromUrl,
+  clearPayPhantomPending,
+  loadPayPhantomPending,
+  parsePayPaidQuery,
+  savePayPhantomPending,
+  withPayReturnParam,
+  type PayPhantomPending,
+} from "../../lib/payPhantomReturn";
+import {
   confirmPhantomPayInTelegram,
   sendAcopayWithPhantom,
 } from "../../lib/sendAcopay";
 import {
+  fetchPayHistory,
   formatAcopay,
   formatAmountInput,
   looksLikeTelegramUsername,
@@ -79,6 +89,25 @@ function shortAddr(a: string): string {
  * - Phantom linked → CTA 🔐 Sign on Phantom (no extra Confirm) → success bill
  * Same bill UI either way (no “paid from …” labels).
  */
+function pendingToSuccess(p: PayPhantomPending, explorer: string, signature?: string): SuccessState {
+  return {
+    explorer,
+    signature,
+    label: p.label,
+    to: p.to,
+    transferred: p.transferred,
+    fee: p.fee,
+    feePct: p.feePct,
+    openFee: p.openFee,
+    total: p.total,
+    isFirstAtaOpen: p.isFirstAtaOpen,
+  };
+}
+
+function amountsClose(a: number, b: number): boolean {
+  return Math.abs(a - b) <= Math.max(1e-6, Math.abs(b) * 1e-9);
+}
+
 export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
   const { t } = useI18n();
   const [to, setTo] = useState("");
@@ -88,10 +117,140 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
   const [step, setStep] = useState<Step>("form");
   const [success, setSuccess] = useState<SuccessState | null>(null);
   const [signingPhase, setSigningPhase] = useState<"idle" | "approve" | "confirming">("idle");
+  const [awaitingPhantomReturn, setAwaitingPhantomReturn] = useState(false);
+  const pollBusyRef = useRef(false);
+  const hydratedPaidRef = useRef(false);
+  const resumedPendingRef = useRef(false);
 
   const amountNum = useMemo(() => parseAmountInput(amount), [amount]);
   const toIsUsername = looksLikeTelegramUsername(to);
   const isPhantomMode = preview?.mode === "phantom";
+
+  function finishSuccess(s: SuccessState) {
+    clearPayPhantomPending();
+    setAwaitingPhantomReturn(false);
+    setSuccess(s);
+    setStep("success");
+    setSigningPhase("idle");
+    setBusy(false);
+    onSentBot(s.explorer);
+  }
+
+  /** Hydrate success bill from /pay?paid=1… (Phantom → Safari redirect). */
+  useEffect(() => {
+    if (hydratedPaidRef.current) return;
+    if (typeof window === "undefined") return;
+    const paid = parsePayPaidQuery(window.location.search);
+    if (!paid) return;
+    hydratedPaidRef.current = true;
+    const explorer = `https://solscan.io/tx/${paid.signature}`;
+    finishSuccess({
+      explorer,
+      signature: paid.signature,
+      label: paid.label,
+      to: paid.to,
+      transferred: paid.transferred,
+      fee: paid.fee,
+      feePct: paid.feePct,
+      openFee: paid.openFee,
+      total: paid.total,
+      isFirstAtaOpen: paid.isFirstAtaOpen,
+    });
+    clearPayPaidQueryFromUrl();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- one-shot URL hydrate
+  }, []);
+
+  /** Resume Safari poll if user left for Phantom and came back (or page stayed alive). */
+  useEffect(() => {
+    if (resumedPendingRef.current || step === "success") return;
+    const pending = loadPayPhantomPending();
+    if (!pending) return;
+    if (Date.now() - pending.startedAt > 20 * 60 * 1000) {
+      clearPayPhantomPending();
+      return;
+    }
+    resumedPendingRef.current = true;
+    setAwaitingPhantomReturn(true);
+    setSigningPhase("confirming");
+    setBusy(true);
+    setStep("confirm");
+    setPreview({
+      ok: true,
+      mode: "phantom",
+      from: pending.from,
+      recipient: {
+        to: pending.to,
+        label: pending.label,
+        kind: looksLikeTelegramUsername(pending.label) ? "username" : "address",
+        username: looksLikeTelegramUsername(pending.label) ? pending.label.replace(/^@/, "") : null,
+      },
+      amount: Number(pending.amount),
+      plan: {
+        transferred: pending.transferred,
+        fee: pending.fee,
+        feePct: pending.feePct,
+        openFee: pending.openFee,
+        total: pending.total,
+        isFirstAtaOpen: pending.isFirstAtaOpen,
+      },
+      balance: typeof balance === "number" ? balance : 0,
+      enough: true,
+    });
+  }, [step, balance]);
+
+  useEffect(() => {
+    if (!awaitingPhantomReturn || step === "success") return;
+
+    const tryMatch = async () => {
+      if (pollBusyRef.current) return;
+      const pending = loadPayPhantomPending();
+      if (!pending) {
+        setAwaitingPhantomReturn(false);
+        setBusy(false);
+        setSigningPhase("idle");
+        return;
+      }
+      pollBusyRef.current = true;
+      try {
+        const hist = await fetchPayHistory({ period: "td", page: 0 });
+        const wantAmt = Number(pending.amount);
+        const match = hist.items.find((row) => {
+          if (row.kind !== "send" || !row.sig || !row.to) return false;
+          if (row.to !== pending.to) return false;
+          if (row.amount == null || !amountsClose(Number(row.amount), wantAmt)) return false;
+          if (row.at) {
+            const ts = Date.parse(row.at);
+            if (Number.isFinite(ts) && ts + 120_000 < pending.startedAt) return false;
+          }
+          return true;
+        });
+        if (!match?.sig) return;
+        finishSuccess(
+          pendingToSuccess(pending, `https://solscan.io/tx/${match.sig}`, match.sig),
+        );
+      } catch {
+        /* keep polling */
+      } finally {
+        pollBusyRef.current = false;
+      }
+    };
+
+    void tryMatch();
+    const id = window.setInterval(() => void tryMatch(), 2500);
+    const onVis = () => {
+      if (document.visibilityState === "visible") void tryMatch();
+    };
+    document.addEventListener("visibilitychange", onVis);
+    window.addEventListener("pageshow", onVis);
+    window.addEventListener("focus", onVis);
+    return () => {
+      window.clearInterval(id);
+      document.removeEventListener("visibilitychange", onVis);
+      window.removeEventListener("pageshow", onVis);
+      window.removeEventListener("focus", onVis);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- poll while awaiting
+  }, [awaitingPhantomReturn, step]);
 
   async function onPreview() {
     onError("");
@@ -155,10 +314,8 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
       s.openFee = open > 0 ? String(res.plan.summary.openFee) : "0";
       s.isFirstAtaOpen = open > 0;
     }
-    setSuccess(s);
-    setStep("success");
-    setSigningPhase("idle");
-    onSentBot(explorer);
+    clearPayPhantomPending();
+    finishSuccess(s);
   }
 
   /** Bot: confirm → bill. Phantom: sign CTA → bill (no intermediate Confirm). */
@@ -167,14 +324,13 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
     onError("");
     setBusy(true);
     setSigningPhase("idle");
+    let keepBusyForPhantomReturn = false;
     try {
       const r = await sendPay(preview.recipient.to, preview.amount);
 
       if (r.mode === "bot" && (r.explorer || r.signature)) {
         const explorer = r.explorer || `https://solscan.io/tx/${r.signature}`;
-        setSuccess(previewToSuccess(preview, explorer, r.signature));
-        setStep("success");
-        onSentBot(explorer);
+        finishSuccess(previewToSuccess(preview, explorer, r.signature));
         return;
       }
 
@@ -185,9 +341,29 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
           return;
         }
 
-        // Mobile without extension: open Phantom in-app browser (/send fallback).
+        // Mobile without extension: open Phantom browse; Safari stays on /pay and polls.
         if (isMobileUa() && !hasPhantomExtension()) {
-          window.location.assign(phantomBrowseUrl(sess.sendUrl));
+          const pending: PayPhantomPending = {
+            pid: sess.pid,
+            from: sess.from,
+            to: sess.to,
+            amount: sess.amount,
+            tg: sess.tg,
+            label: preview.recipient.label,
+            transferred: String(preview.plan.transferred),
+            fee: String(preview.plan.fee),
+            feePct: preview.plan.feePct,
+            openFee: String(preview.plan.openFee),
+            total: String(preview.plan.total),
+            isFirstAtaOpen: preview.plan.isFirstAtaOpen,
+            startedAt: Date.now(),
+          };
+          savePayPhantomPending(pending);
+          keepBusyForPhantomReturn = true;
+          setAwaitingPhantomReturn(true);
+          setSigningPhase("confirming");
+          const browseTarget = withPayReturnParam(sess.sendUrl);
+          window.location.assign(phantomBrowseUrl(browseTarget));
           return;
         }
 
@@ -221,7 +397,7 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
       onError(e instanceof Error ? e.message : String(e));
       setSigningPhase("idle");
     } finally {
-      setBusy(false);
+      if (!keepBusyForPhantomReturn) setBusy(false);
     }
   }
 
@@ -243,8 +419,8 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
   const headerTitle = step === "success" ? t("payApp.sendDone") : t("payApp.sendTitle");
 
   const primaryLabel = (() => {
-    if (busy) {
-      if (signingPhase === "confirming") return t("payApp.billConfirming");
+    if (busy || awaitingPhantomReturn) {
+      if (signingPhase === "confirming" || awaitingPhantomReturn) return t("payApp.billConfirming");
       if (signingPhase === "approve") return t("payApp.loading");
       return t("payApp.loading");
     }
@@ -366,11 +542,14 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
             <div className="flex gap-2">
               <button
                 type="button"
-                disabled={busy}
+                disabled={busy || awaitingPhantomReturn}
                 onClick={() => {
+                  clearPayPhantomPending();
+                  setAwaitingPhantomReturn(false);
                   setStep("form");
                   setPreview(null);
                   setSigningPhase("idle");
+                  setBusy(false);
                 }}
                 className="btn-orca-secondary flex-1 !rounded-xl !py-3 text-sm"
               >
@@ -378,7 +557,7 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
               </button>
               <button
                 type="button"
-                disabled={busy || !billPlan.enough}
+                disabled={busy || awaitingPhantomReturn || !billPlan.enough}
                 onClick={() => void onPrimaryAction()}
                 className="btn-orca-primary flex-[1.4] !rounded-xl !py-3 text-sm font-semibold disabled:opacity-50"
               >
