@@ -4,6 +4,66 @@
  */
 const SESSION_KEY = "acopay_pay_session_v1";
 
+function isMobileUa(): boolean {
+  if (typeof navigator === "undefined") return false;
+  return /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+}
+
+/** https://t.me/Bot?start=payload → tg://resolve?domain=Bot&start=payload */
+export function telegramHttpsToAppScheme(httpsUrl: string): string | null {
+  try {
+    const u = new URL(httpsUrl);
+    if (!/(^|\.)t\.me$/i.test(u.hostname)) return null;
+    const domain = u.pathname.replace(/^\//, "").split("/")[0];
+    if (!domain || !/^[A-Za-z0-9_]+$/.test(domain)) return null;
+    const start = u.searchParams.get("start") || "";
+    return start
+      ? `tg://resolve?domain=${domain}&start=${encodeURIComponent(start)}`
+      : `tg://resolve?domain=${domain}`;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Open Telegram bot deep-link.
+ * Mobile: prefer tg:// (opens app, keeps Safari tab for poll). Fallback https://t.me in a new tab.
+ * Desktop: new tab https://t.me.
+ * Never rely on window.open alone on iOS — it is blocked after await.
+ */
+export function openTelegramBotLink(httpsUrl: string): void {
+  if (typeof window === "undefined") return;
+  const app = telegramHttpsToAppScheme(httpsUrl);
+
+  if (isMobileUa() && app) {
+    const started = Date.now();
+    window.location.href = app;
+    window.setTimeout(() => {
+      if (document.visibilityState === "visible" && Date.now() - started < 2500) {
+        const a = document.createElement("a");
+        a.href = httpsUrl;
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      }
+    }, 900);
+    return;
+  }
+
+  const w = window.open(httpsUrl, "_blank", "noopener,noreferrer");
+  if (!w) {
+    const a = document.createElement("a");
+    a.href = httpsUrl;
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  }
+}
+
 export type PayMe = {
   ok: boolean;
   telegramId: string;
