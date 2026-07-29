@@ -119,10 +119,11 @@ export function PayHistoryPanel({ onBack, onError }: Props) {
                 <div className="min-w-0 flex-1">
                   <div className="flex items-start justify-between gap-2">
                     <p className={`text-sm font-semibold ${kindTone(row.kind)}`}>{kindLabel(row.kind)}</p>
-                    <p className="shrink-0 text-sm font-bold tabular-nums text-[var(--acopay-fg)]">
+                    <p className="inline-flex shrink-0 items-center gap-1 text-sm font-bold tabular-nums text-[var(--acopay-fg)]">
                       {row.kind === "send" ? "−" : "+"}
                       {formatAcopay(row.amount)}
-                      <span className="ml-1 text-[11px] font-semibold text-[var(--acopay-brand)]">ACOPAY</span>
+                      <BrandLogo className="h-3.5 w-3.5" alt="" />
+                      <span className="text-[11px] font-semibold text-[var(--acopay-brand)]">ACOPAY</span>
                     </p>
                   </div>
                   <p className="mt-0.5 text-[11px] text-[var(--acopay-faint)]">

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { AddrHighlight } from "../../components/AddrHighlight";
+import { BrandLogo } from "../../components/BrandLogo";
 import { TOKEN } from "../../config/token";
 import { useI18n } from "../../i18n/LanguageProvider";
 import {
@@ -228,11 +229,14 @@ export function PayAppPage() {
                       <span aria-hidden>💰</span>
                       {t("payApp.balanceLabel")}
                     </p>
-                    <p className="mt-1 flex flex-wrap items-baseline gap-x-2">
+                    <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1">
                       <span className="text-3xl font-bold tabular-nums text-[var(--acopay-success)] lg:text-4xl">
                         {hasWallet ? formatAcopay(bal) : "—"}
                       </span>
-                      <span className="text-base font-bold text-[var(--acopay-brand)]">ACOPAY</span>
+                      <span className="inline-flex items-center gap-1.5 text-base font-bold text-[var(--acopay-brand)]">
+                        <BrandLogo className="h-5 w-5" alt="" />
+                        ACOPAY
+                      </span>
                     </p>
                   </div>
                   <div className="mt-5 border-t border-[color:var(--acopay-border)] pt-4 lg:mt-0 lg:w-72 lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0">

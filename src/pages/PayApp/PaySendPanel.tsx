@@ -1,5 +1,6 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { AddrHighlight } from "../../components/AddrHighlight";
+import { BrandLogo } from "../../components/BrandLogo";
 import { useI18n } from "../../i18n/LanguageProvider";
 import {
   formatAcopay,
@@ -11,7 +12,7 @@ import {
   type PayPreview,
 } from "../../lib/payWebSession";
 
-const PRESETS = [10, 50, 100, 250, 500, 1000, 2000]; // cf-bust 2026-07-29h-amt9
+const PRESETS = [10, 50, 100, 250, 500, 1000, 2000]; // cf-bust 2026-07-29h-amt9b
 
 
 type Props = {
@@ -78,7 +79,10 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
             <h2 className="text-xl font-bold tracking-tight text-[var(--acopay-fg)]">
               {t("payApp.sendTitle")}
             </h2>
-            <p className="mt-1 text-sm text-[var(--acopay-muted)]">{t("payApp.sendSubtitle")}</p>
+            {/* Hint only on form — Kevin: hide on confirm after amount entered */}
+            {step === "form" && (
+              <p className="mt-1 text-sm text-[var(--acopay-muted)]">{t("payApp.sendSubtitle")}</p>
+            )}
           </div>
           <button type="button" onClick={onBack} className="shrink-0 text-xs font-semibold text-[var(--acopay-brand)]">
             ← {t("payApp.historyBack")}
@@ -110,7 +114,8 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
                 </label>
                 <span className="inline-flex items-center gap-1 text-[11px] font-semibold tabular-nums text-[var(--acopay-success)]">
                   <span aria-hidden>💰</span>
-                  {t("payApp.balanceLabel")}: {formatAcopay(balance)} ACOPAY
+                  {t("payApp.balanceLabel")}: {formatAcopay(balance)}
+                  <AcopayTicker className="h-3 w-3" />
                 </span>
               </div>
               <div className="mt-2 flex items-center gap-2 rounded-2xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-surface)] px-4 py-3 focus-within:border-[color:var(--acopay-brand)]">
@@ -126,7 +131,8 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
                   placeholder="0.0"
                   className="min-w-0 flex-1 bg-transparent text-3xl font-bold tabular-nums tracking-tight text-[var(--acopay-fg)] outline-none"
                 />
-                <span className="shrink-0 rounded-lg bg-[var(--acopay-brand-soft)] px-2.5 py-1 text-xs font-bold text-[var(--acopay-brand)]">
+                <span className="inline-flex shrink-0 items-center gap-1 rounded-lg bg-[var(--acopay-brand-soft)] px-2 py-1 text-xs font-bold text-[var(--acopay-brand)]">
+                  <AcopayTicker className="h-3.5 w-3.5" label={false} />
                   ACOPAY
                 </span>
               </div>
@@ -172,7 +178,9 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
               </p>
               <Row
                 label={t("payApp.sendAmountLabel")}
-                value={`${formatAcopay(parseAmountInput(String(preview.plan.transferred)))} ACOPAY`}
+                value={
+                  <AcopayAmount value={formatAcopay(parseAmountInput(String(preview.plan.transferred)))} />
+                }
               />
               <Row
                 label={t("payApp.sendFee")}
@@ -181,18 +189,26 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
               {preview.plan.isFirstAtaOpen && parseAmountInput(String(preview.plan.openFee)) > 0 && (
                 <Row
                   label={t("payApp.sendOpenFee")}
-                  value={`${formatAcopay(parseAmountInput(String(preview.plan.openFee)))} ACOPAY`}
+                  value={
+                    <AcopayAmount value={formatAcopay(parseAmountInput(String(preview.plan.openFee)))} />
+                  }
                 />
               )}
               <div className="border-t border-[color:var(--acopay-border)] pt-2.5">
                 <Row
                   label={t("payApp.sendTotal")}
-                  value={`${formatAcopay(parseAmountInput(String(preview.plan.total)))} ACOPAY`}
+                  value={
+                    <AcopayAmount
+                      value={formatAcopay(parseAmountInput(String(preview.plan.total)))}
+                      strong
+                    />
+                  }
                   strong
                 />
               </div>
-              <p className="text-[11px] font-semibold tabular-nums text-[var(--acopay-success)]">
-                <span aria-hidden>💰</span> {t("payApp.balanceLabel")}: {formatAcopay(preview.balance)} ACOPAY
+              <p className="inline-flex flex-wrap items-center gap-1 text-[11px] font-semibold tabular-nums text-[var(--acopay-success)]">
+                <span aria-hidden>💰</span> {t("payApp.balanceLabel")}: {formatAcopay(preview.balance)}
+                <AcopayTicker className="h-3 w-3" />
                 {!preview.enough ? ` — ${t("payApp.sendInsufficient")}` : ""}
               </p>
             </div>
@@ -229,6 +245,35 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
   );
 }
 
+/** Round ACOPAY mark + optional ticker text (coin-style). */
+function AcopayTicker({
+  className = "h-3.5 w-3.5",
+  label = true,
+}: {
+  className?: string;
+  label?: boolean;
+}) {
+  return (
+    <span className="inline-flex items-center gap-1">
+      <BrandLogo className={className} alt="" />
+      {label ? <span className="font-bold text-[var(--acopay-brand)]">ACOPAY</span> : null}
+    </span>
+  );
+}
+
+function AcopayAmount({ value, strong }: { value: string; strong?: boolean }) {
+  return (
+    <span
+      className={`inline-flex items-center gap-1 tabular-nums ${
+        strong ? "text-sm font-bold text-[var(--acopay-fg)]" : "text-sm font-semibold text-[var(--acopay-fg)]"
+      }`}
+    >
+      {value}
+      <AcopayTicker className="h-3.5 w-3.5" />
+    </span>
+  );
+}
+
 function Row({
   label,
   value,
@@ -236,24 +281,28 @@ function Row({
   username,
 }: {
   label: string;
-  value: string;
+  value: ReactNode;
   strong?: boolean;
   username?: boolean;
 }) {
   return (
     <div className="flex items-baseline justify-between gap-3">
       <span className="text-xs text-[var(--acopay-muted)]">{label}</span>
-      <span
-        className={`text-right tabular-nums ${
-          username
-            ? "pay-tg-username pay-tg-username--inline"
-            : strong
-              ? "text-sm font-bold text-[var(--acopay-fg)]"
-              : "text-sm font-semibold text-[var(--acopay-fg)]"
-        }`}
-      >
-        {value}
-      </span>
+      {typeof value === "string" ? (
+        <span
+          className={`text-right tabular-nums ${
+            username
+              ? "pay-tg-username pay-tg-username--inline"
+              : strong
+                ? "text-sm font-bold text-[var(--acopay-fg)]"
+                : "text-sm font-semibold text-[var(--acopay-fg)]"
+          }`}
+        >
+          {value}
+        </span>
+      ) : (
+        <span className="text-right">{value}</span>
+      )}
     </div>
   );
 }
