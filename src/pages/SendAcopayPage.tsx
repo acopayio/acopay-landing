@@ -12,9 +12,30 @@ import {
   sendAcopayWithPhantom,
 } from "../lib/sendAcopay";
 import { AddrHighlight } from "../components/AddrHighlight";
+import { BrandLogo } from "../components/BrandLogo";
+import { looksLikeTelegramUsername } from "../lib/payWebSession";
 
 /** Expected confirm window (matches client + bot RPC retries). */
 const CONFIRM_WAIT_MS = 45_000;
+
+/** Amount + ACOPAY logo + ticker (same pattern as Markets / Pay bill). */
+function AcopayCoinMark({ className = "h-3.5 w-3.5" }: { className?: string }) {
+  return (
+    <span className="inline-flex items-center gap-1">
+      <BrandLogo className={className} alt="" />
+      <span className="send-bill-ticker">ACOPAY</span>
+    </span>
+  );
+}
+
+function normalizeRecipientLabel(raw: string): string {
+  const s = raw.trim();
+  if (!s) return "";
+  if (looksLikeTelegramUsername(s)) {
+    return s.startsWith("@") ? s : `@${s}`;
+  }
+  return s;
+}
 
 /**
  * Kevin 2026-07-29: When Phantom is already available, skip the “Duyệt chuyển”
@@ -56,6 +77,14 @@ export function SendAcopayPage() {
   const pid = (params.get("pid") || "").trim();
   const exp = (params.get("exp") || "").trim();
   const langParam = (params.get("lang") || "").trim();
+  const labelParam = (params.get("label") || "").trim();
+  /** @username when user sent by Telegram handle; else short wallet. */
+  const recipientDisplay = useMemo(() => {
+    const fromUrl = normalizeRecipientLabel(labelParam);
+    if (fromUrl) return fromUrl;
+    return shortAddr(to);
+  }, [labelParam, to]);
+  const recipientIsUsername = looksLikeTelegramUsername(recipientDisplay);
 
   useEffect(() => {
     if (isSupportedLocale(langParam)) {
@@ -277,7 +306,7 @@ export function SendAcopayPage() {
     <section className="section-pad">
       <div className="page-wrap mx-auto max-w-lg">
         <p className="label-orca">{t("sendAcopay.kicker")}</p>
-        <h1 className="mt-2 text-3xl font-bold tracking-tight text-[var(--acopay-fg)]">{pageTitle}</h1>
+        <h1 className="send-page-title mt-2 font-bold tracking-tight text-[var(--acopay-fg)]">{pageTitle}</h1>
 
         {/* —— Waiting: countdown only (no bill yet) —— */}
         {signature && confirming ? (
@@ -312,13 +341,19 @@ export function SendAcopayPage() {
               <div className="send-bill-row">
                 <span className="send-bill-label">{t("sendAcopay.amountLabel")}</span>
                 <span className="send-bill-value">
-                  {fmtAcopayDisplay(bill.transferred)} <span className="send-bill-ticker">ACOPAY</span>
+                  {fmtAcopayDisplay(bill.transferred)} <AcopayCoinMark />
                 </span>
               </div>
               <hr className="send-bill-divider" />
               <div className="send-bill-row">
                 <span className="send-bill-label">{t("sendAcopay.recipientLabel")}</span>
-                <span className="send-bill-value send-bill-value--plain">{shortAddr(to)}</span>
+                <span
+                  className={`send-bill-value send-bill-value--plain ${
+                    recipientIsUsername ? "pay-tg-username pay-tg-username--inline" : ""
+                  }`}
+                >
+                  {recipientDisplay}
+                </span>
               </div>
             </div>
           </div>
@@ -331,21 +366,21 @@ export function SendAcopayPage() {
               <div className="send-bill-row">
                 <span className="send-bill-label">💸 {t("sendAcopay.transferredLabel")}</span>
                 <span className="send-bill-value">
-                  {fmtAcopayDisplay(bill.transferred)} <span className="send-bill-ticker">ACOPAY</span>
+                  {fmtAcopayDisplay(bill.transferred)} <AcopayCoinMark />
                 </span>
               </div>
               <div className="send-bill-row">
                 <span className="send-bill-label">💸 {t("sendAcopay.feeLabel")}</span>
-                <span className="send-bill-value send-bill-value--plain">
-                  {fmtAcopayDisplay(bill.fee)} ACOPAY{" "}
+                <span className="send-bill-value send-bill-value--plain inline-flex flex-wrap items-center justify-end gap-1">
+                  {fmtAcopayDisplay(bill.fee)} <AcopayCoinMark className="h-3 w-3" />
                   <span className="send-bill-meta">({bill.feePct})</span>
                 </span>
               </div>
               {bill.openFee ? (
                 <div className="send-bill-row">
                   <span className="send-bill-label">🆕 {t("sendAcopay.openFeeLabel")}</span>
-                  <span className="send-bill-value send-bill-value--plain">
-                    {fmtAcopayDisplay(bill.openFee)} ACOPAY
+                  <span className="send-bill-value send-bill-value--plain inline-flex items-center gap-1">
+                    {fmtAcopayDisplay(bill.openFee)} <AcopayCoinMark className="h-3 w-3" />
                   </span>
                 </div>
               ) : null}
@@ -355,7 +390,7 @@ export function SendAcopayPage() {
                   🧾 {t("sendAcopay.totalLabel")}
                 </span>
                 <span className="send-bill-value">
-                  {fmtAcopayDisplay(bill.total)} <span className="send-bill-ticker">ACOPAY</span>
+                  {fmtAcopayDisplay(bill.total)} <AcopayCoinMark />
                 </span>
               </div>
 
@@ -363,7 +398,11 @@ export function SendAcopayPage() {
               <div className="send-bill-section">
                 <p>
                   <span className="send-bill-label">👤 {t("sendAcopay.recipientLabel")}: </span>
-                  <span className="font-semibold text-[var(--acopay-fg)]">{shortAddr(to)}</span>
+                  {recipientIsUsername ? (
+                    <span className="pay-tg-username pay-tg-username--inline">{recipientDisplay}</span>
+                  ) : (
+                    <span className="font-semibold text-[var(--acopay-fg)]">{recipientDisplay}</span>
+                  )}
                 </p>
                 <div>
                   <span className="send-bill-label">👛 {t("sendAcopay.receiveAddrLabel")}</span>
@@ -406,12 +445,18 @@ export function SendAcopayPage() {
               <div className="send-bill-row">
                 <span className="send-bill-label">💸 {t("sendAcopay.transferredLabel")}</span>
                 <span className="send-bill-value">
-                  {fmtAcopayDisplay(bill.transferred)} <span className="send-bill-ticker">ACOPAY</span>
+                  {fmtAcopayDisplay(bill.transferred)} <AcopayCoinMark />
                 </span>
               </div>
               <div className="send-bill-row">
                 <span className="send-bill-label">👤 {t("sendAcopay.recipientLabel")}</span>
-                <span className="send-bill-value send-bill-value--plain">{shortAddr(to)}</span>
+                <span
+                  className={`send-bill-value send-bill-value--plain ${
+                    recipientIsUsername ? "pay-tg-username pay-tg-username--inline" : ""
+                  }`}
+                >
+                  {recipientDisplay}
+                </span>
               </div>
               <hr className="send-bill-divider" />
               <p className="send-bill-status--pending">{t("sendAcopay.tgFailedStatus")}</p>
@@ -498,11 +543,17 @@ export function SendAcopayPage() {
                   <div className="send-bill-row">
                     <span className="send-bill-label">💸 {t("sendAcopay.amountLabel")}</span>
                     <span className="send-bill-value">
-                      {amount} <span className="send-bill-ticker">ACOPAY</span>
+                      {amount} <AcopayCoinMark />
                     </span>
                   </div>
                   <hr className="send-bill-divider" />
                   <div className="send-bill-section">
+                    {recipientIsUsername ? (
+                      <p>
+                        <span className="send-bill-label">👤 {t("sendAcopay.recipientLabel")}: </span>
+                        <span className="pay-tg-username pay-tg-username--inline">{recipientDisplay}</span>
+                      </p>
+                    ) : null}
                     <div>
                       <span className="send-bill-label">📥 {t("sendAcopay.toLabel")}</span>
                       <code className="send-bill-addr">

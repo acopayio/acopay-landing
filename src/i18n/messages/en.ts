@@ -485,7 +485,7 @@ export const en = {
     copyPaysok: "📋 Copy command",
     copied: "✅ Copied",
     openTelegram: "📲 Open Telegram Pay ↗",
-    successTitle: "✅ ACOPAY transfer successful",
+    successTitle: "✅ Transfer successful",
     pendingTitle: "Confirming transfer",
     onChainOkTitle: "✅ Transfer sent — receipt pending",
     confirmWaitLabel: "Confirming",

@@ -915,6 +915,23 @@ a.btn-orca-primary:disabled:hover {
   }
 }
 
+/* /send + /pay success titles — one line on narrow phones */
+.send-page-title {
+  font-size: clamp(1.05rem, 0.55rem + 2.4vw, 1.875rem);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+@media (min-width: 640px) {
+  .send-page-title {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+  }
+}
+
 /* Pay receipt — high-contrast bill (Light + Dark) */
 .send-bill {
   border-radius: 1rem;

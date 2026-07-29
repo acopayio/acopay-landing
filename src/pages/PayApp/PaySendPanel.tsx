@@ -256,7 +256,9 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
       <div className="otc-panel-inner !p-5 sm:!p-6">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <h2 className="text-xl font-bold tracking-tight text-[var(--acopay-fg)]">{headerTitle}</h2>
+            <h2 className="send-page-title text-xl font-bold tracking-tight text-[var(--acopay-fg)] sm:text-xl">
+              {headerTitle}
+            </h2>
             {step === "form" && (
               <p className="mt-1 text-sm text-[var(--acopay-muted)]">{t("payApp.sendSubtitle")}</p>
             )}
@@ -351,6 +353,7 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
               brand={t("payApp.billBrand")}
               network={t("payApp.billNetwork")}
               toLabel={t("payApp.sendToLabel")}
+              receiveAddrLabel={t("payApp.receiveAddressLabel")}
               amountLabel={t("payApp.sendAmountLabel")}
               feeLabel={t("payApp.sendFee")}
               openFeeLabel={t("payApp.sendOpenFee")}
@@ -392,6 +395,7 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
               brand={t("payApp.billBrand")}
               network={t("payApp.billNetwork")}
               toLabel={t("payApp.sendToLabel")}
+              receiveAddrLabel={t("payApp.receiveAddressLabel")}
               amountLabel={t("payApp.sendAmountLabel")}
               feeLabel={t("payApp.sendFee")}
               openFeeLabel={t("payApp.sendOpenFee")}
@@ -445,6 +449,7 @@ function TransferBill({
   brand,
   network,
   toLabel,
+  receiveAddrLabel,
   amountLabel,
   feeLabel,
   openFeeLabel,
@@ -460,6 +465,7 @@ function TransferBill({
   brand: string;
   network: string;
   toLabel: string;
+  receiveAddrLabel?: string;
   amountLabel: string;
   feeLabel: string;
   openFeeLabel: string;
@@ -489,6 +495,11 @@ function TransferBill({
           )}
         </p>
         <div>
+          {labelIsUser && receiveAddrLabel ? (
+            <span className="mb-1 block text-[11px] font-semibold text-[var(--acopay-muted)]">
+              {receiveAddrLabel}
+            </span>
+          ) : null}
           <code className="send-bill-addr">
             <AddrHighlight addr={plan.to} />
           </code>
@@ -509,16 +520,24 @@ function TransferBill({
       </div>
       <div className="send-bill-row">
         <span className="send-bill-label">{feeLabel}</span>
-        <span className="send-bill-value send-bill-value--plain">
-          {formatAcopay(parseAmountInput(String(plan.fee)))} ACOPAY{" "}
+        <span className="send-bill-value send-bill-value--plain inline-flex flex-wrap items-center justify-end gap-1">
+          {formatAcopay(parseAmountInput(String(plan.fee)))}{" "}
+          <span className="inline-flex items-center gap-1">
+            <BrandLogo className="h-3 w-3" alt="" />
+            <span className="send-bill-ticker">ACOPAY</span>
+          </span>
           <span className="send-bill-meta">({plan.feePct})</span>
         </span>
       </div>
       {plan.isFirstAtaOpen && parseAmountInput(String(plan.openFee)) > 0 && (
         <div className="send-bill-row">
           <span className="send-bill-label">{openFeeLabel}</span>
-          <span className="send-bill-value send-bill-value--plain">
-            {formatAcopay(parseAmountInput(String(plan.openFee)))} ACOPAY
+          <span className="send-bill-value send-bill-value--plain inline-flex items-center gap-1">
+            {formatAcopay(parseAmountInput(String(plan.openFee)))}{" "}
+            <span className="inline-flex items-center gap-1">
+              <BrandLogo className="h-3 w-3" alt="" />
+              <span className="send-bill-ticker">ACOPAY</span>
+            </span>
           </span>
         </div>
       )}
