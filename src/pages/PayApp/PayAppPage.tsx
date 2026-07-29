@@ -7,7 +7,6 @@ import {
   fetchPayMe,
   formatAcopay,
   getPaySession,
-  loginWithTelegramWidget,
   logoutPay,
   pollTelegramAuth,
   requestTelegramAuth,
@@ -15,16 +14,11 @@ import {
   type PayMe,
 } from "../../lib/payWebSession";
 
-type Phase = "boot" | "login" | "polling" | "home" | "error";
-
-declare global {
-  interface Window {
-    onTelegramAuth?: (user: Record<string, unknown>) => void;
-  }
-}
+type Phase = "boot" | "login" | "polling" | "home";
 
 /**
  * Phase 0 Web Pay — Telegram Pay wallet only (no Phantom).
+ * Sign-in = open bot deep-link (no Login Widget on public UI).
  */
 export function PayAppPage() {
   const { t, locale } = useI18n();
@@ -34,7 +28,6 @@ export function PayAppPage() {
   const [botUrl, setBotUrl] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const pollRef = useRef<number | null>(null);
-  const widgetHost = useRef<HTMLDivElement | null>(null);
 
   const clearPoll = () => {
     if (pollRef.current != null) {
@@ -72,38 +65,6 @@ export function PayAppPage() {
       clearPoll();
     };
   }, [loadMe]);
-
-  // Telegram Login Widget (optional — needs BotFather /setdomain acopay.net)
-  useEffect(() => {
-    if (phase !== "login" || !widgetHost.current) return;
-    const host = widgetHost.current;
-    host.innerHTML = "";
-
-    window.onTelegramAuth = async (user) => {
-      try {
-        await loginWithTelegramWidget(user);
-        await loadMe();
-      } catch (e) {
-        setError(e instanceof Error ? e.message : String(e));
-        setPhase("login");
-      }
-    };
-
-    const script = document.createElement("script");
-    script.src = "https://telegram.org/js/telegram-widget.js?22";
-    script.async = true;
-    script.setAttribute("data-telegram-login", TOKEN.telegramBot);
-    script.setAttribute("data-size", "large");
-    script.setAttribute("data-radius", "8");
-    script.setAttribute("data-onauth", "onTelegramAuth(user)");
-    script.setAttribute("data-request-access", "write");
-    host.appendChild(script);
-
-    return () => {
-      delete window.onTelegramAuth;
-      host.innerHTML = "";
-    };
-  }, [phase, loadMe]);
 
   async function startDeepLinkLogin() {
     setError(null);
@@ -200,22 +161,14 @@ export function PayAppPage() {
             {phase === "polling" && botUrl && (
               <p className="text-center text-xs text-[var(--acopay-faint)]">
                 {t("payApp.pollingHint")}{" "}
-                <a href={botUrl} className="font-medium text-[var(--acopay-brand)] underline-offset-2 hover:underline">
+                <a
+                  href={botUrl}
+                  className="font-medium text-[var(--acopay-brand)] underline-offset-2 hover:underline"
+                >
                   {t("payApp.openAgain")}
                 </a>
               </p>
             )}
-
-            <div className="relative flex items-center gap-3 py-1">
-              <div className="h-px flex-1 bg-[color:var(--acopay-border)]" />
-              <span className="text-[11px] uppercase tracking-wide text-[var(--acopay-faint)]">
-                {t("payApp.or")}
-              </span>
-              <div className="h-px flex-1 bg-[color:var(--acopay-border)]" />
-            </div>
-
-            <div className="flex min-h-[44px] justify-center" ref={widgetHost} />
-            <p className="text-center text-[11px] text-[var(--acopay-faint)]">{t("payApp.widgetHint")}</p>
           </div>
         )}
 
