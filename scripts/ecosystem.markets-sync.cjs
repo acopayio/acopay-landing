@@ -3,7 +3,7 @@ module.exports = {
     {
       name: "acopay-markets",
       script: "scripts/vps-markets-sync.mjs",
-      cwd: "/root/acopay-markets",
+      cwd: "/home/acopay/acopay-markets",
       instances: 1,
       exec_mode: "fork",
       autorestart: true,

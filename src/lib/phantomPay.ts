@@ -84,7 +84,7 @@ function friendlyRpcError(err: unknown): string {
   return msg;
 }
 
-async function getWorkingConnection(): Promise<Connection> {
+export async function getWorkingConnection(): Promise<Connection> {
   let lastErr: unknown;
   for (const rpc of RPC_CANDIDATES) {
     if (!rpc) continue;

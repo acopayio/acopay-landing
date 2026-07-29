@@ -52,6 +52,9 @@ export function OtcBuyPanel() {
   const [baselineAcopay, setBaselineAcopay] = useState<number | null>(null);
   const [settleStatus, setSettleStatus] = useState<"idle" | "settling" | "complete">("idle");
   const [creditedAcopay, setCreditedAcopay] = useState<number | null>(null);
+  /** Cursor: OTC USDT ATA sig before this session — QR/mobile auto-detect. */
+  const [watchAfterSig, setWatchAfterSig] = useState<string | null>(null);
+  const [sessionStartedAt, setSessionStartedAt] = useState<number | null>(null);
 
   const draftAmount = useMemo(() => {
     const n = Number(amountStr.replace(",", "."));
@@ -138,9 +141,27 @@ export function OtcBuyPanel() {
     let cancelled = false;
     const need = receive;
     const base = baselineAcopay ?? 0;
+    const since = sessionStartedAt ?? Date.now() - 60_000;
 
     async function tick() {
-      const { getAcopayUiBalance } = await import("../lib/phantomPay");
+      const [{ getAcopayUiBalance }, { findAcopayCreditFromOtc }] = await Promise.all([
+        import("../lib/phantomPay"),
+        import("../lib/otcDepositWatch"),
+      ]);
+
+      // On-chain ACOPAY credit from OTC (covers QR race where bot settled before baseline)
+      const credited = await findAcopayCreditFromOtc({
+        buyer: buyerPubkey!,
+        amountAcopay: need,
+        sinceMs: since,
+      });
+      if (cancelled) return;
+      if (credited) {
+        setCreditedAcopay(need);
+        setSettleStatus("complete");
+        return;
+      }
+
       const bal = await getAcopayUiBalance(buyerPubkey!);
       if (cancelled || bal == null) return;
       const gained = bal - base;
@@ -156,7 +177,54 @@ export function OtcBuyPanel() {
       cancelled = true;
       window.clearInterval(id);
     };
-  }, [settleStatus, buyerPubkey, baselineAcopay, activeValid, receive]);
+  }, [settleStatus, buyerPubkey, baselineAcopay, activeValid, receive, sessionStartedAt]);
+
+  /** QR / mobile / manual USDT → same Settling→Success as desktop Phantom button. */
+  useEffect(() => {
+    if (phase !== "paying" || settleStatus !== "idle" || !activeValid || sessionStartedAt == null) {
+      return;
+    }
+    let cancelled = false;
+    const amount = activeAmount;
+
+    async function tick() {
+      const { findUsdtDepositToOtc, findAcopayCreditFromOtc } = await import("../lib/otcDepositWatch");
+      const { getAcopayUiBalance } = await import("../lib/phantomPay");
+      const hit = await findUsdtDepositToOtc({
+        amountUsdt: amount,
+        afterSigExclusive: watchAfterSig,
+        sinceMs: sessionStartedAt!,
+      });
+      if (cancelled || !hit) return;
+
+      setPaidSig(hit.signature);
+      setBuyerPubkey(hit.buyer);
+
+      const already = await findAcopayCreditFromOtc({
+        buyer: hit.buyer,
+        amountAcopay: otcAcopayForUsdt(amount),
+        sinceMs: sessionStartedAt!,
+      });
+      if (cancelled) return;
+      if (already) {
+        setCreditedAcopay(otcAcopayForUsdt(amount));
+        setSettleStatus("complete");
+        return;
+      }
+
+      const before = await getAcopayUiBalance(hit.buyer);
+      if (cancelled) return;
+      setBaselineAcopay(before ?? 0);
+      setSettleStatus("settling");
+    }
+
+    void tick();
+    const id = window.setInterval(() => void tick(), 5000);
+    return () => {
+      cancelled = true;
+      window.clearInterval(id);
+    };
+  }, [phase, settleStatus, activeValid, activeAmount, sessionStartedAt, watchAfterSig]);
 
   useEffect(() => {
     if (phase !== "paying" || sessionEndsAt == null) return;
@@ -198,44 +266,66 @@ export function OtcBuyPanel() {
     };
   }, [payUrl, phase, settleStatus, t]);
 
-  function startSession() {
+  async function startSession() {
     if (!draftValid) return;
     const ends = Date.now() + OTC_SESSION_MS;
+    const started = Date.now();
     setSessionAmount(draftAmount);
     setSessionEndsAt(ends);
-    setNow(Date.now());
+    setSessionStartedAt(started);
+    setNow(started);
     setPaidSig(null);
     setBuyerPubkey(null);
+    setBaselineAcopay(null);
     setSettleStatus("idle");
     setCreditedAcopay(null);
     setWalletError(null);
     setPhase("paying");
+    try {
+      const { snapshotOtcUsdtLatestSig } = await import("../lib/otcDepositWatch");
+      const cursor = await snapshotOtcUsdtLatestSig();
+      setWatchAfterSig(cursor);
+    } catch {
+      setWatchAfterSig(null);
+    }
     window.setTimeout(() => {
       payAnchorRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 80);
   }
 
-  function refreshSession() {
+  async function refreshSession() {
     if (sessionAmount == null || sessionAmount < OTC.minUsdt) {
       setPhase("setup");
       return;
     }
     const ends = Date.now() + OTC_SESSION_MS;
+    const started = Date.now();
     setSessionEndsAt(ends);
-    setNow(Date.now());
+    setSessionStartedAt(started);
+    setNow(started);
     setPaidSig(null);
     setBuyerPubkey(null);
+    setBaselineAcopay(null);
     setSettleStatus("idle");
     setCreditedAcopay(null);
     setPhase("paying");
+    try {
+      const { snapshotOtcUsdtLatestSig } = await import("../lib/otcDepositWatch");
+      setWatchAfterSig(await snapshotOtcUsdtLatestSig());
+    } catch {
+      setWatchAfterSig(null);
+    }
   }
 
   function changeAmount() {
     setPhase("setup");
     setSessionEndsAt(null);
+    setSessionStartedAt(null);
+    setWatchAfterSig(null);
     setQrDataUrl(null);
     setPaidSig(null);
     setBuyerPubkey(null);
+    setBaselineAcopay(null);
     setSettleStatus("idle");
     setCreditedAcopay(null);
     if (sessionAmount != null) setAmountStr(String(sessionAmount));
