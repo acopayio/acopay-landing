@@ -9,7 +9,10 @@ type Props = {
   onBack: () => void;
 };
 
-/** Receive ACOPAY — QR (center logo) + Solana address + Telegram Pay username. */
+/**
+ * Receive layout (Kevin 2026-07-29):
+ * QR (+ logo) → wallet address under QR → Telegram @username → Copy
+ */
 export function PayReceivePanel({ address, username, onBack }: Props) {
   const { t } = useI18n();
   const [qr, setQr] = useState<string | null>(null);
@@ -17,7 +20,6 @@ export function PayReceivePanel({ address, username, onBack }: Props) {
 
   useEffect(() => {
     let cancelled = false;
-    // H correction — logo overlay still scannable
     void QRCode.toDataURL(address, {
       margin: 2,
       width: 280,
@@ -56,65 +58,67 @@ export function PayReceivePanel({ address, username, onBack }: Props) {
           <button
             type="button"
             onClick={onBack}
-            className="shrink-0 text-xs font-semibold text-[var(--acopay-brand)]"
+            className="shrink-0 rounded-lg px-2 py-1 text-xs font-semibold text-[var(--acopay-brand)] hover:bg-[var(--acopay-brand-soft)]"
           >
             ← {t("payApp.historyBack")}
           </button>
         </div>
 
-        {/* QR + round brand mark */}
-        <div className="otc-qr-stage mt-5 !py-5">
-          {qr ? (
-            <div className="otc-qr-frame relative mx-auto inline-block">
-              <img src={qr} alt="" className="block h-[220px] w-[220px] bg-white" />
-              <img
-                src="/assets/logo-circle.png"
-                alt=""
-                className="otc-qr-logo otc-qr-logo--circle"
-                width={44}
-                height={44}
-                draggable={false}
-              />
-            </div>
-          ) : (
-            <div className="mx-auto h-[220px] w-[220px] animate-pulse rounded-2xl bg-[var(--acopay-bg)]" />
-          )}
-        </div>
-
-        {/* Address directly under QR + network */}
-        <div className="mt-4 rounded-2xl border border-[color:var(--acopay-border)] bg-[var(--acopay-bg)]/60 px-3.5 py-3.5 sm:px-4">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <p className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--acopay-faint)]">
-              <span aria-hidden>📍</span>
-              {t("payApp.receiveAddressLabel")}
-            </p>
-            <span className="inline-flex items-center gap-1 rounded-full border border-[color-mix(in_srgb,var(--acopay-brand)_30%,transparent)] bg-[var(--acopay-brand-soft)] px-2.5 py-0.5 text-[10px] font-bold tracking-wide text-[var(--acopay-brand)]">
-              <span aria-hidden>◎</span>
-              {t("payApp.receiveNetwork")}
-            </span>
+        {/* QR + address as one receive unit */}
+        <div className="pay-recv-stage mt-5">
+          <div className="pay-recv-qr">
+            {qr ? (
+              <div className="otc-qr-frame relative inline-block">
+                <img src={qr} alt="" className="block h-[200px] w-[200px] bg-white sm:h-[220px] sm:w-[220px]" />
+                <img
+                  src="/assets/logo-circle.png"
+                  alt=""
+                  className="otc-qr-logo otc-qr-logo--circle"
+                  width={44}
+                  height={44}
+                  draggable={false}
+                />
+              </div>
+            ) : (
+              <div className="mx-auto h-[200px] w-[200px] animate-pulse rounded-2xl bg-[var(--acopay-bg)] sm:h-[220px] sm:w-[220px]" />
+            )}
           </div>
-          <code className="mt-2.5 block break-all font-mono text-[13px] leading-relaxed text-[var(--acopay-fg)]">
-            <AddrHighlight addr={address} />
-          </code>
+
+          <div className="pay-recv-addr">
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              <p className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--acopay-faint)]">
+                <span aria-hidden>📍</span>
+                {t("payApp.receiveAddressLabel")}
+              </p>
+              <span className="inline-flex items-center gap-1 rounded-full border border-[color-mix(in_srgb,var(--acopay-brand)_32%,transparent)] bg-[var(--acopay-brand-soft)] px-2.5 py-0.5 text-[10px] font-bold tracking-wide text-[var(--acopay-brand)]">
+                <span aria-hidden>◎</span>
+                {t("payApp.receiveNetwork")}
+              </span>
+            </div>
+            <code className="pay-recv-addr-code mt-2.5">
+              <AddrHighlight addr={address} />
+            </code>
+          </div>
         </div>
 
-        <button
-          type="button"
-          onClick={() => void copy()}
-          className="btn-orca-primary mt-3.5 w-full !rounded-xl !py-3 text-sm font-semibold"
-        >
-          {copied ? `✅ ${t("payApp.copied")}` : `📋 ${t("payApp.copy")}`}
-        </button>
-
+        {/* Telegram username — above Copy */}
         {username ? (
-          <div className="mt-4 rounded-2xl border border-[color-mix(in_srgb,var(--acopay-brand)_28%,transparent)] bg-[var(--acopay-brand-soft)] px-3.5 py-3.5 text-center sm:px-4">
+          <div className="pay-recv-tg mt-4">
             <p className="inline-flex items-center justify-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--acopay-brand-dim)]">
               <span aria-hidden>📱</span>
               {t("payApp.receiveByUsername")}
             </p>
-            <p className="pay-tg-username mt-2 truncate text-center">@{username}</p>
+            <p className="pay-tg-username mt-1.5 truncate text-center">@{username}</p>
           </div>
         ) : null}
+
+        <button
+          type="button"
+          onClick={() => void copy()}
+          className="btn-orca-primary mt-4 w-full !rounded-xl !py-3.5 text-sm font-semibold"
+        >
+          {copied ? `✅ ${t("payApp.copied")}` : `📋 ${t("payApp.copy")}`}
+        </button>
       </div>
     </div>
   );
