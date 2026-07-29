@@ -93,8 +93,8 @@ const enBase: PaySection = {
   histYesterday: "Yesterday",
   histThisWeek: "This week",
   histLastWeek: "Last week",
-  histThisMonth: "This month",
-  histLastMonth: "Last month",
+  histMonth: "Month {n}",
+  histYear: "Year {y}",
   histDays7: "7 days",
   histPage: "Page {n}/{m}",
 };
@@ -179,8 +179,8 @@ export const PAY_APP_PARTIALS: Partials = {
     histYesterday: "Hôm qua",
     histThisWeek: "Tuần này",
     histLastWeek: "Tuần trước",
-    histThisMonth: "Tháng này",
-    histLastMonth: "Tháng trước",
+    histMonth: "Tháng {n}",
+    histYear: "Năm {y}",
     histDays7: "7 ngày",
     histPage: "Trang {n}/{m}",
   }),
@@ -249,6 +249,8 @@ export const PAY_APP_PARTIALS: Partials = {
     billErrWrongWallet: "Phantom 钱包不匹配。请切换到 {addr}。",
     billErrCancelled: "已取消批准。",
     billErrSimulateFailed: "模拟失败。该转账在 Solana 上不会成功 — 请重试或在 Telegram 中重新发起转账。",
+    histMonth: "{n} 月",
+    histYear: "{y} 年",
   }),
   ja: L({
     kicker: "送金",
@@ -315,6 +317,8 @@ export const PAY_APP_PARTIALS: Partials = {
     billErrWrongWallet: "Phantom ウォレットが違います。{addr} に切り替えてください。",
     billErrCancelled: "承認がキャンセルされました。",
     billErrSimulateFailed: "シミュレーションに失敗しました。Solana上では送金できません — 再試行するか、Telegramで送金をやり直してください。",
+    histMonth: "{n}月",
+    histYear: "{y}年",
   }),
   ko: L({
     kicker: "전송",
@@ -381,6 +385,8 @@ export const PAY_APP_PARTIALS: Partials = {
     billErrWrongWallet: "잘못된 Phantom 지갑입니다. {addr}(으)로 전환하세요.",
     billErrCancelled: "승인이 취소되었습니다.",
     billErrSimulateFailed: "시뮬레이션에 실패했습니다. Solana에서 전송이 성공하지 않습니다 — 다시 시도하거나 Telegram에서 송금을 다시 시작하세요.",
+    histMonth: "{n}월",
+    histYear: "{y}년",
   }),
   th: L({
     kicker: "โอน",
@@ -447,6 +453,8 @@ export const PAY_APP_PARTIALS: Partials = {
     billErrWrongWallet: "กระเป๋า Phantom ผิด สลับเป็น {addr}",
     billErrCancelled: "ยกเลิกการอนุมัติแล้ว",
     billErrSimulateFailed: "จำลองล้มเหลว การโอนจะไม่สำเร็จบน Solana — ลองอีกครั้งหรือเริ่มโอนใหม่ใน Telegram",
+    histMonth: "เดือน {n}",
+    histYear: "ปี {y}",
   }),
   id: L({
     kicker: "Transfer",
@@ -513,6 +521,8 @@ export const PAY_APP_PARTIALS: Partials = {
     billErrWrongWallet: "Dompet Phantom salah. Beralih ke {addr}.",
     billErrCancelled: "Persetujuan dibatalkan.",
     billErrSimulateFailed: "Simulasi gagal. Transfer tidak akan berhasil di Solana — coba lagi atau mulai Transfer lagi di Telegram.",
+    histMonth: "Bulan {n}",
+    histYear: "Tahun {y}",
   }),
   ms: L({
     kicker: "Pemindahan",
@@ -579,6 +589,8 @@ export const PAY_APP_PARTIALS: Partials = {
     billErrWrongWallet: "Dompet Phantom salah. Tukar ke {addr}.",
     billErrCancelled: "Kelulusan dibatalkan.",
     billErrSimulateFailed: "Simulasi gagal. Pemindahan tidak akan berjaya di Solana — cuba lagi atau mulakan Transfer semula dalam Telegram.",
+    histMonth: "Bulan {n}",
+    histYear: "Tahun {y}",
   }),
   hi: L({
     kicker: "ट्रांसफ़र",
@@ -645,6 +657,8 @@ export const PAY_APP_PARTIALS: Partials = {
     billErrWrongWallet: "गलत Phantom वॉलेट। {addr} पर स्विच करें।",
     billErrCancelled: "स्वीकृति रद्द।",
     billErrSimulateFailed: "सिमुलेशन विफल। Solana पर ट्रांसफर सफल नहीं होगा — फिर कोशिश करें या Telegram में Transfer फिर शुरू करें।",
+    histMonth: "महीना {n}",
+    histYear: "वर्ष {y}",
   }),
   es: L({
     kicker: "Transferencias",
@@ -711,6 +725,8 @@ export const PAY_APP_PARTIALS: Partials = {
     billErrWrongWallet: "Phantom incorrecto. Cambia a {addr}.",
     billErrCancelled: "Aprobación cancelada.",
     billErrSimulateFailed: "La simulación falló. La transferencia no tendría éxito en Solana — inténtalo de nuevo o inicia Transfer otra vez en Telegram.",
+    histMonth: "Mes {n}",
+    histYear: "Año {y}",
   }),
   pt: L({
     kicker: "Transferências",
@@ -777,6 +793,8 @@ export const PAY_APP_PARTIALS: Partials = {
     billErrWrongWallet: "Phantom errada. Mude para {addr}.",
     billErrCancelled: "Aprovação cancelada.",
     billErrSimulateFailed: "A simulação falhou. A transferência não teria sucesso na Solana — tente de novo ou inicie Transfer novamente no Telegram.",
+    histMonth: "Mês {n}",
+    histYear: "Ano {y}",
   }),
   fr: L({
     kicker: "Transferts",
@@ -843,6 +861,8 @@ export const PAY_APP_PARTIALS: Partials = {
     billErrWrongWallet: "Mauvaise Phantom. Passez à {addr}.",
     billErrCancelled: "Approbation annulée.",
     billErrSimulateFailed: "Échec de la simulation. Le transfert n'aboutirait pas sur Solana — réessayez ou relancez Transfer dans Telegram.",
+    histMonth: "Mois {n}",
+    histYear: "Année {y}",
   }),
   de: L({
     kicker: "Transfers",
@@ -909,6 +929,8 @@ export const PAY_APP_PARTIALS: Partials = {
     billErrWrongWallet: "Falsche Phantom. Zu {addr} wechseln.",
     billErrCancelled: "Genehmigung abgebrochen.",
     billErrSimulateFailed: "Simulation fehlgeschlagen. Die Überweisung würde auf Solana scheitern — erneut versuchen oder Transfer in Telegram neu starten.",
+    histMonth: "Monat {n}",
+    histYear: "Jahr {y}",
   }),
   nl: L({
     kicker: "Transfers",
@@ -975,6 +997,8 @@ export const PAY_APP_PARTIALS: Partials = {
     billErrWrongWallet: "Verkeerde Phantom. Schakel naar {addr}.",
     billErrCancelled: "Goedkeuring geannuleerd.",
     billErrSimulateFailed: "Simulatie mislukt. De overdracht zou op Solana mislukken — probeer opnieuw of start Transfer opnieuw in Telegram.",
+    histMonth: "Maand {n}",
+    histYear: "Jaar {y}",
   }),
   it: L({
     kicker: "Trasferimenti",
@@ -1041,6 +1065,8 @@ export const PAY_APP_PARTIALS: Partials = {
     billErrWrongWallet: "Phantom sbagliata. Passa a {addr}.",
     billErrCancelled: "Approvazione annullata.",
     billErrSimulateFailed: "Simulazione non riuscita. Il trasferimento non andrebbe a buon fine su Solana — riprova o riavvia Transfer in Telegram.",
+    histMonth: "Mese {n}",
+    histYear: "Anno {y}",
   }),
   ru: L({
     kicker: "Переводы",
@@ -1107,6 +1133,8 @@ export const PAY_APP_PARTIALS: Partials = {
     billErrWrongWallet: "Неверный Phantom. Переключитесь на {addr}.",
     billErrCancelled: "Подтверждение отменено.",
     billErrSimulateFailed: "Симуляция не удалась. Перевод не прошёл бы в Solana — повторите или начните Transfer снова в Telegram.",
+    histMonth: "Месяц {n}",
+    histYear: "Год {y}",
   }),
   uk: L({
     kicker: "Перекази",
@@ -1173,6 +1201,8 @@ export const PAY_APP_PARTIALS: Partials = {
     billErrWrongWallet: "Невірний Phantom. Перейдіть на {addr}.",
     billErrCancelled: "Підтвердження скасовано.",
     billErrSimulateFailed: "Симуляція не вдалася. Переказ не пройшов би в Solana — спробуйте ще раз або почніть Transfer знову в Telegram.",
+    histMonth: "Місяць {n}",
+    histYear: "Рік {y}",
   }),
   pl: L({
     kicker: "Przelewy",
@@ -1239,6 +1269,8 @@ export const PAY_APP_PARTIALS: Partials = {
     billErrWrongWallet: "Zły Phantom. Przełącz na {addr}.",
     billErrCancelled: "Zatwierdzenie anulowane.",
     billErrSimulateFailed: "Symulacja nie powiodła się. Przelew nie udałby się na Solana — spróbuj ponownie lub uruchom Transfer w Telegram.",
+    histMonth: "Miesiąc {n}",
+    histYear: "Rok {y}",
   }),
   tr: L({
     kicker: "Transferler",
@@ -1305,6 +1337,8 @@ export const PAY_APP_PARTIALS: Partials = {
     billErrWrongWallet: "Yanlış Phantom. {addr} adresine geçin.",
     billErrCancelled: "Onay iptal edildi.",
     billErrSimulateFailed: "Simülasyon başarısız. Transfer Solana'da başarısız olurdu — tekrar deneyin veya Telegram'da Transfer'i yeniden başlatın.",
+    histMonth: "Ay {n}",
+    histYear: "Yıl {y}",
   }),
   ar: L({
     kicker: "التحويلات",
@@ -1371,5 +1405,7 @@ export const PAY_APP_PARTIALS: Partials = {
     billErrWrongWallet: "محفظة Phantom خاطئة. انتقل إلى {addr}.",
     billErrCancelled: "أُلغيت الموافقة.",
     billErrSimulateFailed: "فشلت المحاكاة. لن تنجح التحويلة على Solana — أعد المحاولة أو ابدأ التحويل من جديد في Telegram.",
+    histMonth: "شهر {n}",
+    histYear: "سنة {y}",
   }),
 };

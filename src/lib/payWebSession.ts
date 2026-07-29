@@ -211,11 +211,13 @@ export type PayHistoryPage = {
 export async function fetchPayHistory(opts?: {
   period?: string;
   page?: number;
+  pageSize?: number;
 }): Promise<PayHistoryPage> {
   const period = opts?.period || "d7";
   const page = opts?.page ?? 0;
+  const pageSize = opts?.pageSize ?? 20;
   const res = await fetch(
-    `/api/pay/history?period=${encodeURIComponent(period)}&page=${page}`,
+    `/api/pay/history?period=${encodeURIComponent(period)}&page=${page}&pageSize=${pageSize}`,
     { method: "GET", headers: headers() },
   );
   const data = (await res.json()) as PayHistoryPage & { ok?: boolean; error?: string };

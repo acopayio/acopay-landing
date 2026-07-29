@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AddrHighlight } from "../../components/AddrHighlight";
 import { BrandLogo } from "../../components/BrandLogo";
 import { useI18n } from "../../i18n/LanguageProvider";
@@ -9,19 +9,17 @@ type Props = {
   onError: (msg: string) => void;
 };
 
-const PERIODS = [
-  { id: "td", labelKey: "payApp.histToday" },
-  { id: "yd", labelKey: "payApp.histYesterday" },
-  { id: "tw", labelKey: "payApp.histThisWeek" },
-  { id: "lw", labelKey: "payApp.histLastWeek" },
-  { id: "cm", labelKey: "payApp.histThisMonth" },
-  { id: "pm", labelKey: "payApp.histLastMonth" },
-  { id: "d7", labelKey: "payApp.histDays7" },
-] as const;
+/** GMT+7 calendar parts — same TZ as VPS history filters. */
+function gmt7Parts(date = new Date()) {
+  const d = new Date(date.getTime() + 7 * 60 * 60 * 1000);
+  return { y: d.getUTCFullYear(), m: d.getUTCMonth() };
+}
 
-/** History with period filters + 6/page (Telegram Pay parity). */
+const WEB_HIST_PAGE_SIZE = 20;
+
+/** History with period filters + 20/page (web). Bot stays at 6/page. */
 export function PayHistoryPanel({ onBack, onError }: Props) {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const [period, setPeriod] = useState("d7");
   const [page, setPage] = useState(0);
   const [pageCount, setPageCount] = useState(1);
@@ -29,10 +27,29 @@ export function PayHistoryPanel({ onBack, onError }: Props) {
   const [items, setItems] = useState<PayHistoryItem[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const periodTabs = useMemo(() => {
+    const { y, m } = gmt7Parts();
+    const curM = m + 1;
+    const prevM = m === 0 ? 12 : m;
+    const curY = y;
+    const prevY = y - 1;
+    return [
+      { id: "td", label: t("payApp.histToday") },
+      { id: "yd", label: t("payApp.histYesterday") },
+      { id: "tw", label: t("payApp.histThisWeek") },
+      { id: "lw", label: t("payApp.histLastWeek") },
+      { id: "pm", label: t("payApp.histMonth", { n: String(prevM) }) },
+      { id: "cm", label: t("payApp.histMonth", { n: String(curM) }) },
+      { id: "py", label: t("payApp.histYear", { y: String(prevY) }) },
+      { id: "cy", label: t("payApp.histYear", { y: String(curY) }) },
+      { id: "d7", label: t("payApp.histDays7") },
+    ];
+  }, [t]);
+
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    void fetchPayHistory({ period, page })
+    void fetchPayHistory({ period, page, pageSize: WEB_HIST_PAGE_SIZE })
       .then((data) => {
         if (cancelled) return;
         setItems(data.items);
@@ -63,6 +80,25 @@ export function PayHistoryPanel({ onBack, onError }: Props) {
     return "text-emerald-700 dark:text-emerald-300";
   }
 
+  /** Amount: send red, receive green, buy neutral. */
+  function amountTone(kind: string) {
+    if (kind === "send") return "text-red-600 dark:text-red-300";
+    if (kind === "buy") return "text-[var(--acopay-fg)]";
+    return "text-emerald-700 dark:text-emerald-300";
+  }
+
+  function formatHistAt(iso: string) {
+    const loc = locale === "zh" ? "zh-CN" : locale;
+    return new Date(iso).toLocaleString(loc, {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
+  }
+
   return (
     <div className="otc-panel">
       <div className="otc-panel-inner !p-5 sm:!p-6">
@@ -81,7 +117,7 @@ export function PayHistoryPanel({ onBack, onError }: Props) {
         </div>
 
         <div className="mt-4 flex gap-1.5 overflow-x-auto pb-1">
-          {PERIODS.map((p) => (
+          {periodTabs.map((p) => (
             <button
               key={p.id}
               type="button"
@@ -95,7 +131,7 @@ export function PayHistoryPanel({ onBack, onError }: Props) {
                   : "border border-[color:var(--acopay-border)] bg-[var(--acopay-bg)] text-[var(--acopay-muted)]"
               }`}
             >
-              {t(p.labelKey)}
+              {p.label}
             </button>
           ))}
         </div>
@@ -120,7 +156,9 @@ export function PayHistoryPanel({ onBack, onError }: Props) {
                 <div className="min-w-0 flex-1">
                   <div className="flex items-start justify-between gap-2">
                     <p className={`text-sm font-semibold ${kindTone(row.kind)}`}>{kindLabel(row.kind)}</p>
-                    <p className="inline-flex shrink-0 items-center gap-1 text-sm font-bold tabular-nums text-[var(--acopay-fg)]">
+                    <p
+                      className={`inline-flex shrink-0 items-center gap-1 text-sm font-bold tabular-nums ${amountTone(row.kind)}`}
+                    >
                       {row.kind === "send" ? "−" : "+"}
                       {formatAcopay(row.amount)}
                       <BrandLogo className="h-3.5 w-3.5" alt="" />
@@ -128,12 +166,7 @@ export function PayHistoryPanel({ onBack, onError }: Props) {
                     </p>
                   </div>
                   <p className="mt-0.5 text-[11px] text-[var(--acopay-faint)]">
-                    {row.at
-                      ? new Date(row.at).toLocaleString(undefined, {
-                          dateStyle: "medium",
-                          timeStyle: "short",
-                        })
-                      : "—"}
+                    {row.at ? formatHistAt(row.at) : "—"}
                   </p>
                   {row.to && (
                     <p className="mt-1 truncate font-mono text-[11px] text-[var(--acopay-muted)]">
