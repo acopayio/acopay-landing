@@ -209,7 +209,7 @@ export function PayAppPage() {
                       <p
                         className={
                           me.username
-                            ? "truncate text-base font-bold tracking-tight text-[var(--acopay-brand)] sm:text-lg"
+                            ? "min-w-0 truncate text-lg font-extrabold leading-snug tracking-tight text-[var(--acopay-brand)] sm:text-xl"
                             : "truncate text-sm font-medium text-[var(--acopay-muted)]"
                         }
                       >
@@ -218,8 +218,9 @@ export function PayAppPage() {
                       <button
                         type="button"
                         onClick={() => void onLogout()}
-                        className="text-xs font-medium text-[var(--acopay-faint)] hover:text-[var(--acopay-fg)]"
+                        className="inline-flex shrink-0 items-center gap-1 rounded-lg px-1.5 py-1 text-xs font-semibold text-[var(--acopay-danger)] hover:bg-[var(--acopay-danger-bg)]"
                       >
+                        <span aria-hidden>🚪</span>
                         {t("payApp.logout")}
                       </button>
                     </div>
@@ -273,6 +274,7 @@ export function PayAppPage() {
                   <ActionTile
                     label={t("payApp.send")}
                     icon={<SendIcon />}
+                    tone="brand"
                     disabled={!hasWallet}
                     onClick={() => {
                       setError(null);
@@ -282,6 +284,7 @@ export function PayAppPage() {
                   <ActionTile
                     label={t("payApp.receive")}
                     icon={<RecvIcon />}
+                    tone="success"
                     disabled={!hasWallet || !receivePk}
                     onClick={() => {
                       setError(null);
@@ -291,6 +294,7 @@ export function PayAppPage() {
                   <ActionTile
                     label={t("payApp.history")}
                     icon={<HistIcon />}
+                    tone="brand"
                     disabled={!hasWallet}
                     onClick={() => {
                       setError(null);
@@ -304,7 +308,7 @@ export function PayAppPage() {
                     <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--acopay-surface)] text-[var(--acopay-brand)]">
                       <BuyIcon />
                     </span>
-                    <span className="text-xs font-semibold">{t("payApp.buy")}</span>
+                    <span className="text-xs font-semibold text-[var(--acopay-brand)]">{t("payApp.buy")}</span>
                   </Link>
                 </div>
               </>
@@ -354,25 +358,42 @@ export function PayAppPage() {
 function ActionTile({
   label,
   icon,
+  tone = "brand",
   disabled,
   onClick,
 }: {
   label: string;
   icon: ReactNode;
+  tone?: "brand" | "success";
   disabled?: boolean;
   onClick?: () => void;
 }) {
+  const isSuccess = tone === "success";
   return (
     <button
       type="button"
       disabled={disabled}
       onClick={onClick}
-      className="flex flex-col items-center gap-1.5 rounded-xl border border-[color:var(--acopay-border)] bg-[var(--acopay-surface)] px-2 py-3 text-center transition enabled:hover:border-[color:var(--acopay-brand)] disabled:cursor-not-allowed disabled:opacity-55"
+      className={`flex flex-col items-center gap-1.5 rounded-xl px-2 py-3 text-center transition disabled:cursor-not-allowed disabled:opacity-55 ${
+        isSuccess
+          ? "border border-[color:var(--acopay-success-ring)] bg-[var(--acopay-success-bg)] enabled:hover:opacity-90"
+          : "border border-[color-mix(in_srgb,var(--acopay-brand)_35%,transparent)] bg-[var(--acopay-brand-soft)] enabled:hover:opacity-90"
+      }`}
     >
-      <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--acopay-bg)] text-[var(--acopay-muted)]">
+      <span
+        className={`flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--acopay-surface)] ${
+          isSuccess ? "text-[var(--acopay-success)]" : "text-[var(--acopay-brand)]"
+        }`}
+      >
         {icon}
       </span>
-      <span className="text-xs font-semibold text-[var(--acopay-fg)]">{label}</span>
+      <span
+        className={`text-xs font-semibold ${
+          isSuccess ? "text-[var(--acopay-success)]" : "text-[var(--acopay-brand)]"
+        }`}
+      >
+        {label}
+      </span>
     </button>
   );
 }
