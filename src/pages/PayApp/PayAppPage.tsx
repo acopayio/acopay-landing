@@ -162,20 +162,19 @@ export function PayAppPage() {
         )}
 
         {(phase === "login" || phase === "polling") && (
-          <div className="lg:flex lg:min-h-[min(32rem,70vh)] lg:items-center lg:justify-center">
-            <div className="w-full overflow-hidden rounded-2xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-surface)] shadow-[0_12px_40px_-24px_rgba(12,16,23,0.35)] lg:max-w-md lg:px-0">
-              <div className="px-5 py-6 sm:px-6 lg:px-8 lg:py-9 lg:text-center">
-                <div className="mb-4 hidden justify-center lg:flex">
+          <div className="flex min-h-[min(28rem,70vh)] items-center justify-center sm:min-h-[min(32rem,70vh)]">
+            <div className="w-full max-w-md overflow-hidden rounded-2xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-surface)] shadow-[0_12px_40px_-24px_rgba(12,16,23,0.35)]">
+              <div className="px-5 py-7 text-center sm:px-8 sm:py-9">
+                <div className="mb-4 flex justify-center">
                   <span className="inline-flex rounded-full bg-[var(--acopay-brand-soft)] p-3 ring-1 ring-[color:var(--acopay-brand)]/25">
                     <BrandLogo className="h-12 w-12" alt="" />
                   </span>
                 </div>
-                <h2 className="text-base font-semibold text-[var(--acopay-fg)] lg:text-xl">{t("payApp.loginTitle")}</h2>
-                <p className="mt-2 text-sm leading-relaxed text-[var(--acopay-muted)] lg:mx-auto lg:max-w-sm">
+                <p className="mx-auto max-w-sm text-sm leading-relaxed text-[var(--acopay-muted)]">
                   {t("payApp.loginHint")}
                 </p>
 
-                <ul className="mt-5 hidden gap-2.5 text-left lg:mx-auto lg:mt-6 lg:grid lg:max-w-sm lg:gap-2">
+                <ul className="mx-auto mt-5 grid max-w-sm gap-2 text-left sm:mt-6">
                   {[t("payApp.step1"), t("payApp.step2"), t("payApp.step3")]
                     .filter((s) => Boolean(s && String(s).trim()))
                     .map((line) => (
@@ -188,14 +187,14 @@ export function PayAppPage() {
                     ))}
                 </ul>
 
-                <div className="mt-5 flex flex-col gap-2.5 lg:mt-8 lg:items-center">
+                <div className="mt-6 flex flex-col items-center gap-2.5 sm:mt-8">
                   <button
                     type="button"
                     onClick={() => void startDeepLinkLogin()}
                     disabled={phase === "polling"}
-                    className="btn-orca-primary flex w-full items-center justify-center gap-2 !rounded-xl !py-3.5 text-sm font-semibold disabled:opacity-70 lg:max-w-sm"
+                    className="btn-orca-primary flex w-full max-w-sm items-center justify-center gap-2 !rounded-xl !py-3.5 text-sm font-semibold disabled:opacity-70"
                   >
-                    {phase === "polling" ? t("payApp.waitingTelegram") : t("payApp.openTelegram")}
+                    {phase === "polling" ? t("payApp.waitingTelegram") : t("payApp.loginTitle")}
                   </button>
                   {phase === "polling" && botUrl && (
                     <button
@@ -207,7 +206,7 @@ export function PayAppPage() {
                     </button>
                   )}
                   {phase === "polling" ? (
-                    <p className="text-xs text-[var(--acopay-faint)] lg:max-w-sm">{t("payApp.pollingHint")}</p>
+                    <p className="max-w-sm text-xs text-[var(--acopay-faint)]">{t("payApp.pollingHint")}</p>
                   ) : null}
                 </div>
               </div>
