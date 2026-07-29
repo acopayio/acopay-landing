@@ -2,21 +2,17 @@
  * Shared CF Pages → VPS Pay proxy (secret header + optional session).
  * Not a route (leading underscore).
  *
- * Upstream hostname MUST come from CF Pages env (not committed):
+ * Upstream hostname from CF Pages env only (not in git):
  *   PAY_UPSTREAM_BASE  = http://<pay-host>     (no trailing slash)
  *   or PAY_SPONSOR_URL = http://<pay-host>/pay/sponsor
  *
- * Temporary FALLBACK keeps LIVE up until Kevin sets the env above, then delete FALLBACK.
- * (Workers cannot fetch bare IPs — CF error 1003 — use hostname, not IP.)
+ * Workers cannot fetch bare IPs (CF error 1003) — use hostname in the secret.
  */
 type PagesEnv = {
   PAY_SPONSOR_URL?: string;
   PAY_SPONSOR_SECRET?: string;
   PAY_UPSTREAM_BASE?: string;
 };
-
-/** @deprecated Set PAY_UPSTREAM_BASE / PAY_SPONSOR_URL in CF Pages, then remove this. */
-const FALLBACK_BASE = "http://vmi3457424.contaboserver.net";
 
 export function json(status: number, body: unknown): Response {
   return new Response(JSON.stringify(body), {
@@ -33,9 +29,7 @@ export function upstreamBase(env: PagesEnv): string {
   if (fromSponsor.includes("/pay/")) {
     return fromSponsor.replace(/\/pay\/[^/]+\/?$/, "").replace(/\/$/, "");
   }
-  const fromBase = String(env.PAY_UPSTREAM_BASE || "").trim().replace(/\/$/, "");
-  if (fromBase) return fromBase;
-  return FALLBACK_BASE;
+  return String(env.PAY_UPSTREAM_BASE || "").trim().replace(/\/$/, "");
 }
 
 export function upstreamPath(env: PagesEnv, path: string): string {
@@ -49,8 +43,15 @@ export async function proxyPay(
   path: string,
   opts: { method?: string; forwardBody?: boolean; maxBody?: number } = {},
 ): Promise<Response> {
+  const base = upstreamBase(context.env);
+  if (!base) {
+    return json(503, {
+      error: "Pay upstream not configured (set PAY_UPSTREAM_BASE on Cloudflare Pages).",
+    });
+  }
+
   const method = opts.method || context.request.method;
-  const url = upstreamPath(context.env, path);
+  const url = `${base}${path.startsWith("/") ? path : `/${path}`}`;
   const secret = String(context.env.PAY_SPONSOR_SECRET || "").trim();
 
   const headers: Record<string, string> = {
