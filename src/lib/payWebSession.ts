@@ -194,20 +194,31 @@ export type PayHistoryItem = {
   amount: number | null;
   sig: string | null;
   to: string | null;
+  from?: string | null;
   fromTg: string | null;
   toTg: string | null;
+  label?: string | null;
 };
 
-export async function fetchPayHistory(limit = 20): Promise<PayHistoryItem[]> {
-  const res = await fetch(`/api/pay/history?limit=${limit}`, {
-    method: "GET",
-    headers: headers(),
-  });
-  const data = (await res.json()) as {
-    ok?: boolean;
-    items?: PayHistoryItem[];
-    error?: string;
-  };
+export type PayHistoryPage = {
+  items: PayHistoryItem[];
+  period: string;
+  page: number;
+  pageCount: number;
+  total: number;
+};
+
+export async function fetchPayHistory(opts?: {
+  period?: string;
+  page?: number;
+}): Promise<PayHistoryPage> {
+  const period = opts?.period || "d7";
+  const page = opts?.page ?? 0;
+  const res = await fetch(
+    `/api/pay/history?period=${encodeURIComponent(period)}&page=${page}`,
+    { method: "GET", headers: headers() },
+  );
+  const data = (await res.json()) as PayHistoryPage & { ok?: boolean; error?: string };
   if (res.status === 401) {
     setPaySession(null);
     throw new Error("session_expired");
@@ -215,7 +226,74 @@ export async function fetchPayHistory(limit = 20): Promise<PayHistoryItem[]> {
   if (!res.ok || !data.ok) {
     throw new Error(data.error || "Could not load history.");
   }
-  return Array.isArray(data.items) ? data.items : [];
+  return {
+    items: Array.isArray(data.items) ? data.items : [],
+    period: data.period || period,
+    page: Number(data.page) || 0,
+    pageCount: Number(data.pageCount) || 1,
+    total: Number(data.total) || 0,
+  };
+}
+
+export type PayPreview = {
+  ok: boolean;
+  mode: "bot" | "phantom";
+  from: string;
+  recipient: { to: string; label: string; kind: string; username: string | null };
+  amount: number;
+  plan: {
+    transferred: string;
+    fee: string;
+    feePct: string;
+    openFee: string;
+    total: string;
+    isFirstAtaOpen: boolean;
+  };
+  balance: number;
+  enough: boolean;
+};
+
+export async function previewPay(to: string, amount: number | string): Promise<PayPreview> {
+  const res = await fetch("/api/pay/preview", {
+    method: "POST",
+    headers: headers(),
+    body: JSON.stringify({ to, amount }),
+  });
+  const data = (await res.json()) as PayPreview & { error?: string };
+  if (res.status === 401) {
+    setPaySession(null);
+    throw new Error("session_expired");
+  }
+  if (!res.ok || !data.ok) {
+    throw new Error(data.error || "Preview failed.");
+  }
+  return data;
+}
+
+export type PaySendResult = {
+  ok: boolean;
+  mode: "bot" | "phantom";
+  signature?: string;
+  explorer?: string;
+  sendUrl?: string;
+  pid?: string;
+};
+
+export async function sendPay(to: string, amount: number | string): Promise<PaySendResult> {
+  const res = await fetch("/api/pay/send", {
+    method: "POST",
+    headers: headers(),
+    body: JSON.stringify({ to, amount }),
+  });
+  const data = (await res.json()) as PaySendResult & { error?: string };
+  if (res.status === 401) {
+    setPaySession(null);
+    throw new Error("session_expired");
+  }
+  if (!res.ok || !data.ok) {
+    throw new Error(data.error || "Send failed.");
+  }
+  return data;
 }
 
 export async function logoutPay(): Promise<void> {
