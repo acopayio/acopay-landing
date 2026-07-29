@@ -17,7 +17,7 @@ type NavItem = {
 const TRADE_NAV: NavItem[] = [
   { to: "/", labelKey: "nav.home", end: true, icon: HomeIcon },
   { to: "/buy", labelKey: "nav.buy", end: false, icon: BuyIcon },
-  /** Giao dịch = P2P ACOPAY wallet (/pay) — not Jupiter swap (swap = Markets tab). */
+  /* Giao dịch / Transfers → /pay (P2P). No separate Pay tab. Swap = Markets. */
   { to: "/pay", labelKey: "nav.trade", end: false, icon: SwapIcon },
   { to: "/markets", labelKey: "nav.markets", end: false, icon: PoolsIcon },
 ];
