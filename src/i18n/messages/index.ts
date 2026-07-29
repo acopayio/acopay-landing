@@ -6,6 +6,7 @@ import { CORE_UI_GAPS } from "./coreUiGaps";
 import { CHROME_NATIVE_FIX } from "./chromeNativeFix";
 import { LINK_WALLET_PARTIALS } from "./linkWallet";
 import { SEND_ACOPAY_PARTIALS } from "./sendAcopay";
+import { PAY_APP_PARTIALS } from "./payApp";
 
 export { en };
 export type { Messages } from "./en";
@@ -1926,6 +1927,12 @@ for (const [code, content] of Object.entries(LINK_WALLET_PARTIALS)) {
 
 // Send ACOPAY (Phantom sign) — every UI locale (overrides EN inheritance)
 for (const [code, content] of Object.entries(SEND_ACOPAY_PARTIALS)) {
+  if (code === "en") continue;
+  partials[code] = mergePartial(partials[code], content as DeepPartialMessages);
+}
+
+// Web Pay `/pay` Phase 0 (Telegram-only)
+for (const [code, content] of Object.entries(PAY_APP_PARTIALS)) {
   if (code === "en") continue;
   partials[code] = mergePartial(partials[code], content as DeepPartialMessages);
 }

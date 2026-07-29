@@ -11,6 +11,7 @@ import { BuyPage } from "./pages/BuyPage";
 import { TradePage } from "./pages/TradePage";
 import { LinkWalletPage } from "./pages/LinkWalletPage";
 import { SendAcopayPage } from "./pages/SendAcopayPage";
+import { PayAppPage } from "./pages/PayApp/PayAppPage";
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
         <Route element={<OrcaLayout />}>
           <Route index element={<HomePage />} />
           <Route path="buy" element={<BuyPage />} />
+          <Route path="pay" element={<PayAppPage />} />
           <Route path="link-wallet" element={<LinkWalletPage />} />
           <Route path="send" element={<SendAcopayPage />} />
           <Route path="token" element={<TokenPage />} />

@@ -17,6 +17,7 @@ type NavItem = {
 const TRADE_NAV: NavItem[] = [
   { to: "/", labelKey: "nav.home", end: true, icon: HomeIcon },
   { to: "/buy", labelKey: "nav.buy", end: false, icon: BuyIcon },
+  { to: "/pay", labelKey: "nav.pay", end: false, icon: PayIcon },
   { to: "/trade", labelKey: "nav.trade", end: false, icon: SwapIcon },
   { to: "/markets", labelKey: "nav.markets", end: false, icon: PoolsIcon },
 ];
@@ -30,7 +31,7 @@ const INFO_NAV: NavItem[] = [
 const MOBILE_NAV: NavItem[] = [
   { to: "/", labelKey: "nav.home", end: true, icon: HomeIcon },
   { to: "/buy", labelKey: "nav.buy", end: false, icon: BuyIcon },
-  { to: "/trade", labelKey: "nav.trade", end: false, icon: SwapIcon },
+  { to: "/pay", labelKey: "nav.pay", end: false, icon: PayIcon },
   { to: "/markets", labelKey: "nav.markets", end: false, icon: PoolsIcon },
   { to: "/token", labelKey: "nav.token", end: false, icon: TokenIcon },
 ];
@@ -138,6 +139,15 @@ function BuyIcon() {
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
       <rect x="3" y="6" width="18" height="13" rx="2" />
       <path d="M3 10h18M8 14h4" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function PayIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <path d="M3 10h18M7 15h4" strokeLinecap="round" />
     </svg>
   );
 }
