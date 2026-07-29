@@ -701,6 +701,7 @@ a.btn-orca-primary:disabled:hover {
   background:
     radial-gradient(ellipse at 50% 20%, rgba(52, 211, 153, 0.12), transparent 55%),
     color-mix(in srgb, var(--acopay-bg-2) 82%, transparent);
+  min-height: 0;
 }
 
 .otc-qr-stage-settling {
@@ -712,8 +713,8 @@ a.btn-orca-primary:disabled:hover {
   width: 100%;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 1.25rem 1rem 1.5rem;
+  justify-content: flex-start;
+  padding: 1rem 1rem 1.1rem;
   animation: otc-success-in 0.55s ease both;
 }
 
@@ -735,7 +736,7 @@ a.btn-orca-primary:disabled:hover {
 }
 
 .otc-success-kicker {
-  margin-top: 1.15rem;
+  margin-top: 0.85rem;
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.14em;
@@ -752,7 +753,7 @@ a.btn-orca-primary:disabled:hover {
 }
 
 .otc-success-amount {
-  margin-top: 1rem;
+  margin-top: 0.75rem;
   font-size: 2.15rem;
   font-weight: 700;
   letter-spacing: -0.03em;
@@ -766,17 +767,8 @@ a.btn-orca-primary:disabled:hover {
   color: var(--acopay-brand);
 }
 
-.otc-success-sub {
-  margin-top: 0.55rem;
-  max-width: 16rem;
-  text-align: center;
-  font-size: 0.75rem;
-  line-height: 1.45;
-  color: var(--acopay-faint);
-}
-
 .otc-success-actions {
-  margin-top: 1.35rem;
+  margin-top: 0.75rem;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;

@@ -517,18 +517,15 @@ export function OtcBuyPanel() {
           <p className="otc-success-amount">
             +{formatUsdt(creditedAcopay ?? receive)} <span>ACOPAY</span>
           </p>
-          <p className="otc-success-sub">
-            {t("otc.paidLine", { amount: formatUsdt(activeAmount) })}
-          </p>
           {buyerPubkey ? (
-            <div className="otc-success-credit mt-4 w-full max-w-sm text-left">
+            <div className="otc-success-credit mt-3 w-full max-w-sm text-left">
               <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--acopay-faint)]">
                 {t("otc.acopaySentTo")}
               </p>
               <div className="mt-1.5 break-all rounded-xl border border-[var(--acopay-line)] bg-[var(--acopay-elevated)] px-3 py-2.5 text-xs text-[var(--acopay-fg)]">
                 <AddrHighlight addr={buyerPubkey} />
               </div>
-              <p className="mt-2 text-[11px] text-[var(--acopay-faint)]">
+              <p className="mt-1.5 text-[11px] text-[var(--acopay-faint)]">
                 {t("otc.creditedNetworkLabel")}: {t("otc.networkValue")}
               </p>
             </div>
@@ -938,8 +935,7 @@ export function OtcBuyPanel() {
           )}
 
           {settleStatus === "complete" && (
-            <div className="mt-auto space-y-3 pt-2">
-              <p className="text-xs leading-relaxed text-[var(--acopay-faint)]">{t("otc.settleNote")}</p>
+            <div className="mt-3">
               <button
                 type="button"
                 onClick={changeAmount}
