@@ -1,79 +1,15 @@
 /**
- * Same-origin proxy: browser → /api/pay/sponsor → VPS builds UNSIGNED tx (feePayer=OPERATOR).
- * Phantom signs first in the browser; then POST /api/pay/cosign for OPERATOR partialSign.
- * Markets data still never hits VPS; this path is Pay-only.
- *
- * Auth = pending Phantom pay on VPS (tg/pid/from/to/amount). Optional CF env:
- *   PAY_SPONSOR_URL    override upstream (default Contabo volume sponsor)
- *   PAY_SPONSOR_SECRET optional shared secret header if set on VPS
+ * Same-origin proxy: browser → /api/pay/sponsor → VPS (unsigned tx, feePayer=OPERATOR).
+ * Upstream host: CF env PAY_UPSTREAM_BASE / PAY_SPONSOR_URL (see _proxy.ts).
  */
-type PagesContext = {
-  request: Request;
-  env: {
-    PAY_SPONSOR_URL?: string;
-    PAY_SPONSOR_SECRET?: string;
-  };
-};
+import { corsOptions, proxyPay } from "./_proxy";
 
-/** Default: VPS hostname (Workers cannot fetch bare IPs — CF error 1003). */
-const DEFAULT_UPSTREAM = "http://vmi3457424.contaboserver.net/pay/sponsor";
+type Ctx = { request: Request; env: Record<string, string | undefined> };
 
-function json(status: number, body: unknown): Response {
-  return new Response(JSON.stringify(body), {
-    status,
-    headers: {
-      "Content-Type": "application/json; charset=utf-8",
-      "Cache-Control": "no-store",
-    },
-  });
+export async function onRequestPost(context: Ctx) {
+  return proxyPay(context, "/pay/sponsor", { method: "POST" });
 }
 
-export async function onRequestPost(context: PagesContext): Promise<Response> {
-  const upstream = String(context.env.PAY_SPONSOR_URL || DEFAULT_UPSTREAM).trim();
-  const secret = String(context.env.PAY_SPONSOR_SECRET || "").trim();
-
-  let bodyText: string;
-  try {
-    bodyText = await context.request.text();
-  } catch {
-    return json(400, { error: "Invalid body" });
-  }
-
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-  };
-  if (secret) headers["X-Acopay-Pay-Secret"] = secret;
-
-  try {
-    const upstreamRes = await fetch(upstream, {
-      method: "POST",
-      headers,
-      body: bodyText || "{}",
-    });
-    const text = await upstreamRes.text();
-    return new Response(text, {
-      status: upstreamRes.status,
-      headers: {
-        "Content-Type": "application/json; charset=utf-8",
-        "Cache-Control": "no-store",
-        "X-Acopay-Pay": "sponsor-proxy",
-      },
-    });
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err);
-    return json(502, { error: `Sponsor upstream unreachable: ${msg}` });
-  }
-}
-
-export async function onRequestOptions(): Promise<Response> {
-  return new Response(null, {
-    status: 204,
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type",
-      "Access-Control-Max-Age": "86400",
-    },
-  });
+export async function onRequestOptions() {
+  return corsOptions("POST, OPTIONS");
 }

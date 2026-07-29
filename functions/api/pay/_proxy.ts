@@ -1,6 +1,13 @@
 /**
  * Shared CF Pages → VPS Pay proxy (secret header + optional session).
  * Not a route (leading underscore).
+ *
+ * Upstream hostname MUST come from CF Pages env (not committed):
+ *   PAY_UPSTREAM_BASE  = http://<pay-host>     (no trailing slash)
+ *   or PAY_SPONSOR_URL = http://<pay-host>/pay/sponsor
+ *
+ * Temporary FALLBACK keeps LIVE up until Kevin sets the env above, then delete FALLBACK.
+ * (Workers cannot fetch bare IPs — CF error 1003 — use hostname, not IP.)
  */
 type PagesEnv = {
   PAY_SPONSOR_URL?: string;
@@ -8,7 +15,8 @@ type PagesEnv = {
   PAY_UPSTREAM_BASE?: string;
 };
 
-const DEFAULT_BASE = "http://vmi3457424.contaboserver.net";
+/** @deprecated Set PAY_UPSTREAM_BASE / PAY_SPONSOR_URL in CF Pages, then remove this. */
+const FALLBACK_BASE = "http://vmi3457424.contaboserver.net";
 
 export function json(status: number, body: unknown): Response {
   return new Response(JSON.stringify(body), {
@@ -22,19 +30,27 @@ export function json(status: number, body: unknown): Response {
 
 export function upstreamBase(env: PagesEnv): string {
   const fromSponsor = String(env.PAY_SPONSOR_URL || "").trim();
-  if (fromSponsor.includes("/pay/sponsor")) {
-    return fromSponsor.replace(/\/pay\/sponsor\/?$/, "");
+  if (fromSponsor.includes("/pay/")) {
+    return fromSponsor.replace(/\/pay\/[^/]+\/?$/, "").replace(/\/$/, "");
   }
-  return String(env.PAY_UPSTREAM_BASE || DEFAULT_BASE).replace(/\/$/, "");
+  const fromBase = String(env.PAY_UPSTREAM_BASE || "").trim().replace(/\/$/, "");
+  if (fromBase) return fromBase;
+  return FALLBACK_BASE;
+}
+
+export function upstreamPath(env: PagesEnv, path: string): string {
+  const base = upstreamBase(env);
+  const p = path.startsWith("/") ? path : `/${path}`;
+  return `${base}${p}`;
 }
 
 export async function proxyPay(
   context: { request: Request; env: PagesEnv },
   path: string,
-  opts: { method?: string; forwardBody?: boolean } = {},
+  opts: { method?: string; forwardBody?: boolean; maxBody?: number } = {},
 ): Promise<Response> {
   const method = opts.method || context.request.method;
-  const url = `${upstreamBase(context.env)}${path.startsWith("/") ? path : `/${path}`}`;
+  const url = upstreamPath(context.env, path);
   const secret = String(context.env.PAY_SPONSOR_SECRET || "").trim();
 
   const headers: Record<string, string> = {
@@ -60,7 +76,6 @@ export async function proxyPay(
     headers["Content-Type"] = "application/json";
   }
 
-  // Preserve query string for poll
   const incoming = new URL(context.request.url);
   const target = new URL(url);
   incoming.searchParams.forEach((v, k) => target.searchParams.set(k, v));
