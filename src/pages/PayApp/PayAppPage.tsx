@@ -139,17 +139,11 @@ export function PayAppPage() {
     <section className="relative overflow-x-clip px-4 py-6 sm:px-6 lg:py-8">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-56 bg-[radial-gradient(ellipse_at_50%_0%,_rgba(0,229,255,0.12),_transparent_65%)]" />
       <div className="relative mx-auto w-full max-w-lg lg:max-w-3xl">
-        <header className="mb-5 flex items-baseline justify-between gap-3 lg:mb-6">
-          <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--acopay-brand)]">
-              {t("payApp.kicker")}
-            </p>
-            {/* Kevin 2026-07-29: no redundant "Ví/Wallet" H1 under GIAO DỊCH — kicker is enough */}
-          </div>
-          {phase === "home" && panel === "home" && (
+        {phase === "home" && panel === "home" ? (
+          <header className="mb-5 flex items-baseline justify-end gap-3 lg:mb-6">
             <p className="hidden text-right text-sm text-[var(--acopay-muted)] sm:block">{t("payApp.subtitle")}</p>
-          )}
-        </header>
+          </header>
+        ) : null}
 
         {error && (
           <div
