@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AddrHighlight } from "../../components/AddrHighlight";
 import { BrandLogo } from "../../components/BrandLogo";
-import { phantomBrowseUrl } from "../../config/otc";
+import { formatSessionClock, phantomBrowseUrl } from "../../config/otc";
+import { explorerTransfersUrl } from "../../config/token";
 import { useI18n } from "../../i18n/LanguageProvider";
 import { hasPhantomExtension, isMobileUa } from "../../lib/phantomPay";
 import {
@@ -29,6 +30,8 @@ import {
 } from "../../lib/payWebSession";
 
 const PRESETS = [10, 50, 100, 250, 500, 1000];
+/** Same window as `/send` Phantom confirm countdown. */
+const CONFIRM_WAIT_MS = 45_000;
 
 type Props = {
   balance: number | null | undefined;
@@ -37,7 +40,7 @@ type Props = {
   onSentBot: (explorer: string) => void;
 };
 
-type Step = "form" | "confirm" | "success";
+type Step = "form" | "confirm" | "waiting" | "success";
 
 type PhantomSession = {
   from: string;
@@ -52,6 +55,7 @@ type PhantomSession = {
 type SuccessState = {
   explorer: string;
   signature?: string;
+  from: string;
   label: string;
   to: string;
   transferred: string;
@@ -93,6 +97,7 @@ function pendingToSuccess(p: PayPhantomPending, explorer: string, signature?: st
   return {
     explorer,
     signature,
+    from: p.from,
     label: p.label,
     to: p.to,
     transferred: p.transferred,
@@ -118,6 +123,8 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
   const [success, setSuccess] = useState<SuccessState | null>(null);
   const [signingPhase, setSigningPhase] = useState<"idle" | "approve" | "confirming">("idle");
   const [awaitingPhantomReturn, setAwaitingPhantomReturn] = useState(false);
+  const [confirmStartedAt, setConfirmStartedAt] = useState<number | null>(null);
+  const [now, setNow] = useState(() => Date.now());
   const pollBusyRef = useRef(false);
   const hydratedPaidRef = useRef(false);
   const resumedPendingRef = useRef(false);
@@ -129,6 +136,7 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
   function finishSuccess(s: SuccessState) {
     clearPayPhantomPending();
     setAwaitingPhantomReturn(false);
+    setConfirmStartedAt(null);
     setSuccess(s);
     setStep("success");
     setSigningPhase("idle");
@@ -147,6 +155,7 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
     finishSuccess({
       explorer,
       signature: paid.signature,
+      from: paid.from,
       label: paid.label,
       to: paid.to,
       transferred: paid.transferred,
@@ -171,9 +180,12 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
     }
     resumedPendingRef.current = true;
     setAwaitingPhantomReturn(true);
+    const started = pending.startedAt || Date.now();
+    setConfirmStartedAt(started);
+    setNow(Date.now());
+    setStep("waiting");
     setSigningPhase("confirming");
     setBusy(true);
-    setStep("confirm");
     setPreview({
       ok: true,
       mode: "phantom",
@@ -270,6 +282,7 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
     return {
       explorer,
       signature,
+      from: p.from,
       label: p.recipient.label,
       to: p.recipient.to,
       transferred: String(p.plan.transferred),
@@ -281,6 +294,31 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
     };
   }
 
+  function beginWaiting() {
+    const started = Date.now();
+    setConfirmStartedAt(started);
+    setNow(started);
+    setStep("waiting");
+    setSigningPhase("confirming");
+    setBusy(true);
+  }
+
+  useEffect(() => {
+    if (step !== "waiting" || confirmStartedAt == null) return;
+    const id = window.setInterval(() => setNow(Date.now()), 200);
+    return () => window.clearInterval(id);
+  }, [step, confirmStartedAt]);
+
+  const msLeft =
+    step === "waiting" && confirmStartedAt != null
+      ? Math.max(0, confirmStartedAt + CONFIRM_WAIT_MS - now)
+      : CONFIRM_WAIT_MS;
+  const confirmProgress =
+    step === "waiting" && confirmStartedAt != null
+      ? Math.min(1, Math.max(0, msLeft / CONFIRM_WAIT_MS))
+      : 1;
+  const confirmPastWindow = step === "waiting" && msLeft <= 0;
+
   async function runPhantomInline(sess: PhantomSession, p: PayPreview) {
     setSigningPhase("approve");
     const res = await sendAcopayWithPhantom({
@@ -291,7 +329,7 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
       pid: sess.pid,
       exp: sess.exp,
     });
-    setSigningPhase("confirming");
+    beginWaiting();
     let explorer = `https://solscan.io/tx/${res.signature}`;
     try {
       const conf = await confirmPhantomPayInTelegram({
@@ -318,21 +356,31 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
     finishSuccess(s);
   }
 
-  /** Bot: confirm → bill. Phantom: sign CTA → bill (no intermediate Confirm). */
+  /** Bot: confirm → 45s wait UI → bill. Phantom: sign → wait → bill (same bill). */
   async function onPrimaryAction() {
     if (!preview) return;
     onError("");
-    setBusy(true);
     setSigningPhase("idle");
     let keepBusyForPhantomReturn = false;
     try {
-      const r = await sendPay(preview.recipient.to, preview.amount);
-
-      if (r.mode === "bot" && (r.explorer || r.signature)) {
-        const explorer = r.explorer || `https://solscan.io/tx/${r.signature}`;
-        finishSuccess(previewToSuccess(preview, explorer, r.signature));
+      // Bot / custodial: show 45s clock immediately (no “Loading…” on the CTA).
+      if (preview.mode === "bot") {
+        beginWaiting();
+        const r = await sendPay(preview.recipient.to, preview.amount);
+        if (r.mode === "bot" && (r.explorer || r.signature)) {
+          const explorer = r.explorer || `https://solscan.io/tx/${r.signature}`;
+          finishSuccess(previewToSuccess(preview, explorer, r.signature));
+          return;
+        }
+        onError("Unexpected send response.");
+        setStep("confirm");
+        setSigningPhase("idle");
+        setBusy(false);
         return;
       }
+
+      setBusy(true);
+      const r = await sendPay(preview.recipient.to, preview.amount);
 
       if (r.mode === "phantom" && r.sendUrl) {
         const sess = parsePhantomSendUrl(r.sendUrl);
@@ -341,7 +389,6 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
           return;
         }
 
-        // Mobile without extension: open Phantom browse; Safari stays on /pay and polls.
         if (isMobileUa() && !hasPhantomExtension()) {
           const pending: PayPhantomPending = {
             pid: sess.pid,
@@ -361,7 +408,7 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
           savePayPhantomPending(pending);
           keepBusyForPhantomReturn = true;
           setAwaitingPhantomReturn(true);
-          setSigningPhase("confirming");
+          beginWaiting();
           const browseTarget = withPayReturnParam(sess.sendUrl);
           window.location.assign(phantomBrowseUrl(browseTarget));
           return;
@@ -387,17 +434,22 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
           } else {
             onError(msg);
           }
+          setStep("confirm");
           setSigningPhase("idle");
+          setBusy(false);
         }
         return;
       }
 
       onError("Unexpected send response.");
+      setStep("confirm");
+      setSigningPhase("idle");
+      setBusy(false);
     } catch (e) {
       onError(e instanceof Error ? e.message : String(e));
+      setStep("confirm");
       setSigningPhase("idle");
-    } finally {
-      if (!keepBusyForPhantomReturn) setBusy(false);
+      setBusy(false);
     }
   }
 
@@ -416,16 +468,26 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
       }
     : null;
 
-  const headerTitle = step === "success" ? t("payApp.sendDone") : t("payApp.sendTitle");
+  const headerTitle =
+    step === "success"
+      ? t("sendAcopay.successTitle")
+      : step === "waiting"
+        ? t("sendAcopay.pendingTitle")
+        : t("payApp.sendTitle");
 
-  const primaryLabel = (() => {
-    if (busy || awaitingPhantomReturn) {
-      if (signingPhase === "confirming" || awaitingPhantomReturn) return t("payApp.billConfirming");
-      if (signingPhase === "approve") return t("payApp.loading");
-      return t("payApp.loading");
-    }
-    return isPhantomMode ? t("payApp.sendPhantom") : t("payApp.sendConfirm");
-  })();
+  const primaryLabel = isPhantomMode ? t("payApp.sendPhantom") : t("payApp.sendConfirm");
+  const waitBill = billPlan || (success
+    ? {
+        label: success.label,
+        to: success.to,
+        transferred: success.transferred,
+        fee: success.fee,
+        feePct: success.feePct,
+        openFee: success.openFee,
+        total: success.total,
+        isFirstAtaOpen: success.isFirstAtaOpen,
+      }
+    : null);
 
   return (
     <div className="otc-panel">
@@ -439,7 +501,7 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
               <p className="mt-1 text-sm text-[var(--acopay-muted)]">{t("payApp.sendSubtitle")}</p>
             )}
           </div>
-          {step !== "success" && (
+          {step !== "success" && step !== "waiting" && (
             <button type="button" onClick={onBack} className="shrink-0 text-xs font-semibold text-[var(--acopay-brand)]">
               ← {t("payApp.historyBack")}
             </button>
@@ -542,7 +604,7 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
             <div className="flex gap-2">
               <button
                 type="button"
-                disabled={busy || awaitingPhantomReturn}
+                disabled={busy}
                 onClick={() => {
                   clearPayPhantomPending();
                   setAwaitingPhantomReturn(false);
@@ -557,7 +619,7 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
               </button>
               <button
                 type="button"
-                disabled={busy || awaitingPhantomReturn || !billPlan.enough}
+                disabled={busy || !billPlan.enough}
                 onClick={() => void onPrimaryAction()}
                 className="btn-orca-primary flex-[1.4] !rounded-xl !py-3 text-sm font-semibold disabled:opacity-50"
               >
@@ -567,35 +629,63 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
           </div>
         )}
 
+        {step === "waiting" && (
+          <div className="mt-10 flex flex-col items-center text-center" aria-live="polite">
+            <div className="otc-session-timer send-confirm-timer">
+              <div
+                className="otc-timer-ring"
+                style={{
+                  background: `conic-gradient(#00E5FF ${confirmProgress * 360}deg, rgba(255,255,255,0.08) 0)`,
+                }}
+              >
+                <div className="otc-timer-core">
+                  <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--acopay-faint)]">
+                    {t("sendAcopay.confirmWaitLabel")}
+                  </p>
+                  <p
+                    className={`font-mono text-2xl font-bold tabular-nums tracking-tight ${
+                      confirmPastWindow ? "text-amber-300" : "text-[var(--acopay-fg)]"
+                    }`}
+                  >
+                    {confirmPastWindow ? "…" : formatSessionClock(msLeft)}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <p className="mt-6 max-w-sm text-[15px] font-medium leading-snug text-[var(--acopay-fg)]">
+              {confirmPastWindow ? t("sendAcopay.confirmWaitTimeout") : t("sendAcopay.confirmWaitBody")}
+            </p>
+
+            {waitBill ? (
+              <div className="mt-8 w-full max-w-sm send-bill text-left text-sm">
+                <div className="send-bill-row">
+                  <span className="send-bill-label">{t("sendAcopay.amountLabel")}</span>
+                  <span className="send-bill-value">
+                    {formatAcopay(parseAmountInput(String(waitBill.transferred)))} <AcopayCoinMark />
+                  </span>
+                </div>
+                <hr className="send-bill-divider" />
+                <div className="send-bill-row">
+                  <span className="send-bill-label">{t("sendAcopay.recipientLabel")}</span>
+                  <span
+                    className={`send-bill-value send-bill-value--plain ${
+                      looksLikeTelegramUsername(waitBill.label)
+                        ? "pay-tg-username pay-tg-username--inline"
+                        : ""
+                    }`}
+                  >
+                    {waitBill.label}
+                  </span>
+                </div>
+              </div>
+            ) : null}
+          </div>
+        )}
+
         {step === "success" && success && (
           <div className="mt-5 space-y-4 send-confirm-reveal">
-            <TransferBill
-              variant="success"
-              brand={t("payApp.billBrand")}
-              network={t("payApp.billNetwork")}
-              toLabel={t("payApp.sendToLabel")}
-              receiveAddrLabel={t("payApp.receiveAddressLabel")}
-              amountLabel={t("payApp.sendAmountLabel")}
-              feeLabel={t("payApp.sendFee")}
-              openFeeLabel={t("payApp.sendOpenFee")}
-              totalLabel={t("payApp.sendTotal")}
-              balanceLabel={t("payApp.balanceLabel")}
-              insufficient=""
-              plan={{
-                label: success.label,
-                to: success.to,
-                transferred: success.transferred,
-                fee: success.fee,
-                feePct: success.feePct,
-                openFee: success.openFee,
-                total: success.total,
-                isFirstAtaOpen: success.isFirstAtaOpen,
-              }}
-              status={t("payApp.billSuccessStatus")}
-              explorerHref={success.explorer}
-              explorerLabel={t("payApp.openExplorer")}
-            />
-
+            <PhantomParitySuccessBill success={success} />
             <button
               type="button"
               onClick={onBack}
@@ -622,6 +712,95 @@ type BillPlan = {
   balance?: number;
   enough?: boolean;
 };
+
+/** Same success layout as `/send` Phantom bill — used for bot + Phantom on `/pay`. */
+function PhantomParitySuccessBill({ success }: { success: SuccessState }) {
+  const { t } = useI18n();
+  const labelIsUser = looksLikeTelegramUsername(success.label);
+  const transfersUrl = explorerTransfersUrl();
+  const openFeeN = parseAmountInput(String(success.openFee || "0"));
+
+  return (
+    <div className="send-bill send-bill--success space-y-3 text-sm">
+      <div className="send-bill-row">
+        <span className="send-bill-label">💸 {t("sendAcopay.transferredLabel")}</span>
+        <span className="send-bill-value">
+          {formatAcopay(parseAmountInput(String(success.transferred)))} <AcopayCoinMark />
+        </span>
+      </div>
+      <div className="send-bill-row">
+        <span className="send-bill-label">
+          💸 {t("sendAcopay.feeLabel")}{" "}
+          <span className="send-bill-meta">({success.feePct})</span>
+        </span>
+        <span className="send-bill-value send-bill-value--plain inline-flex items-center gap-1">
+          {formatAcopay(parseAmountInput(String(success.fee)))} <AcopayCoinMark />
+        </span>
+      </div>
+      {success.isFirstAtaOpen && openFeeN > 0 ? (
+        <div className="send-bill-row">
+          <span className="send-bill-label">🆕 {t("sendAcopay.openFeeLabel")}</span>
+          <span className="send-bill-value send-bill-value--plain inline-flex items-center gap-1">
+            {formatAcopay(openFeeN)} <AcopayCoinMark />
+          </span>
+        </div>
+      ) : null}
+      <hr className="send-bill-divider" />
+      <div className="send-bill-row">
+        <span className="send-bill-label send-bill-label--strong">🧾 {t("sendAcopay.totalLabel")}</span>
+        <span className="send-bill-value">
+          {formatAcopay(parseAmountInput(String(success.total)))} <AcopayCoinMark />
+        </span>
+      </div>
+
+      <hr className="send-bill-divider" />
+      <div className="send-bill-section">
+        <p>
+          <span className="send-bill-label">👤 {t("sendAcopay.recipientLabel")}: </span>
+          {labelIsUser ? (
+            <span className="pay-tg-username pay-tg-username--inline">{success.label}</span>
+          ) : (
+            <span className="font-semibold text-[var(--acopay-fg)]">{success.label}</span>
+          )}
+        </p>
+        <div>
+          <span className="send-bill-label">👛 {t("sendAcopay.receiveAddrLabel")}</span>
+          <code className="send-bill-addr">
+            <AddrHighlight addr={success.to} />
+          </code>
+        </div>
+        {success.from ? (
+          <div>
+            <span className="send-bill-label">📤 {t("sendAcopay.fromWalletLabel")}</span>
+            <code className="send-bill-addr">
+              <AddrHighlight addr={success.from} />
+            </code>
+          </div>
+        ) : null}
+      </div>
+
+      <hr className="send-bill-divider" />
+      <div className="space-y-2">
+        <p className="send-bill-status">📲 {t("sendAcopay.tgConfirmedStatus")}</p>
+        <a href={success.explorer} className="send-bill-link" target="_blank" rel="noopener noreferrer">
+          🔎 {t("sendAcopay.viewTx")}
+        </a>
+        <a href={transfersUrl} className="send-bill-link" target="_blank" rel="noopener noreferrer">
+          📋 {t("sendAcopay.viewRecentTransfers")}
+        </a>
+      </div>
+    </div>
+  );
+}
+
+function AcopayCoinMark() {
+  return (
+    <span className="inline-flex items-center gap-1">
+      <BrandLogo className="send-bill-logo" alt="" />
+      <span className="send-bill-ticker">ACOPAY</span>
+    </span>
+  );
+}
 
 function TransferBill({
   variant,

@@ -40,7 +40,6 @@ export function PayAppPage() {
   const [botUrl, setBotUrl] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [mobile, setMobile] = useState(false);
-  const [flash, setFlash] = useState<string | null>(null);
   const pollRef = useRef<number | null>(null);
 
   useEffect(() => {
@@ -159,16 +158,12 @@ export function PayAppPage() {
           )}
         </header>
 
-        {(error || flash) && (
+        {error && (
           <div
             role="alert"
-            className={`mb-4 rounded-xl px-3.5 py-2.5 text-sm ${
-              error
-                ? "border border-[color:var(--acopay-danger-ring)] bg-[var(--acopay-danger-bg)] text-[var(--acopay-danger)]"
-                : "border border-[color:var(--acopay-success-ring)] bg-[var(--acopay-success-bg)] text-[var(--acopay-success)]"
-            }`}
+            className="mb-4 rounded-xl border border-[color:var(--acopay-danger-ring)] bg-[var(--acopay-danger-bg)] px-3.5 py-2.5 text-sm text-[var(--acopay-danger)]"
           >
-            {error || flash}
+            {error}
           </div>
         )}
 
@@ -331,11 +326,9 @@ export function PayAppPage() {
                 balance={bal}
                 onBack={() => setPanel("home")}
                 onError={(m) => setError(m || null)}
-                onSentBot={(explorer) => {
-                  // Success bill stays inside PaySendPanel; refresh balance + soft flash.
-                  setFlash(`${t("payApp.sendDone")} — ${explorer}`);
+                onSentBot={() => {
+                  // Bill is inside PaySendPanel (same as Phantom); only refresh balance.
                   void loadMe();
-                  window.setTimeout(() => setFlash(null), 6000);
                 }}
               />
             )}
