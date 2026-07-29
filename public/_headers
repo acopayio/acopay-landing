@@ -40,7 +40,7 @@
   Cache-Control: public, max-age=300, must-revalidate
   X-Content-Type-Options: nosniff
 
-/assets/title-icon-512.png
+/assets/logo-circle.png
   Cache-Control: public, max-age=300, must-revalidate
   X-Content-Type-Options: nosniff
 
