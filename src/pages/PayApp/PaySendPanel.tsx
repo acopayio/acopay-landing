@@ -21,7 +21,7 @@ type Props = {
   onSentBot: (explorer: string) => void;
 };
 
-/** Send ACOPAY — Buy-desk style form → preview → confirm. */
+/** Transfer ACOPAY — Buy-desk style form → preview → confirm. */
 export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
   const { t } = useI18n();
   const [to, setTo] = useState("");
