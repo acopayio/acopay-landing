@@ -181,26 +181,30 @@ export function TransfersExplorer() {
           <h3 className="text-lg font-semibold text-[var(--acopay-fg)]">{t("markets.transfersTitle")}</h3>
           <p className="text-sm leading-relaxed text-[var(--acopay-muted)]">{t("markets.transfersSubtitle")}</p>
         </div>
-        <p className="text-xs text-[var(--acopay-faint)]">
-          {!backfillComplete ? `${t("markets.loadingHistory")} · ` : ""}
-          {t("markets.updated")} {updated}
-          <button
-            type="button"
-            onClick={() => refresh()}
-            disabled={busy}
-            className="ml-2 font-medium text-[var(--acopay-brand)] hover:underline disabled:opacity-50"
-          >
-            {busy ? t("markets.refreshing") : t("markets.refresh")}
-          </button>
-          <a
-            href={explorerTransfersUrl()}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="ml-3 font-medium text-[var(--acopay-brand)] hover:underline"
-          >
-            {t("markets.solscanToken")}
-          </a>
-        </p>
+        <div className="space-y-1 text-xs">
+          <p className="text-[var(--acopay-faint)]">
+            {!backfillComplete ? `${t("markets.loadingHistory")} · ` : ""}
+            {t("markets.updated")} {updated}
+          </p>
+          <p className="flex flex-wrap items-center gap-x-3 gap-y-1">
+            <button
+              type="button"
+              onClick={() => refresh()}
+              disabled={busy}
+              className="font-medium text-[var(--acopay-brand)] hover:underline disabled:opacity-50"
+            >
+              {busy ? t("markets.refreshing") : t("markets.refresh")}
+            </button>
+            <a
+              href={explorerTransfersUrl()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-[var(--acopay-brand)] hover:underline"
+            >
+              {t("markets.solscanToken")}
+            </a>
+          </p>
+        </div>
       </div>
 
       <fieldset className="flex flex-wrap gap-x-4 gap-y-2 rounded-xl border border-[color:var(--acopay-border)] bg-[var(--acopay-bg)]/50 px-3 py-2.5 text-xs text-[var(--acopay-muted)]">
