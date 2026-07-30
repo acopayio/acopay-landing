@@ -27,7 +27,7 @@ function replaceAfterTitle(path, title, items) {
 replaceAfterTitle("src/i18n/messages/index.ts", "Lançamento", [
   "ACOPAY Token-2022 na Solana Mainnet",
   "Pool ACOPAY/USDT na Raydium",
-  "Comprar ACOPAY 1:1 com USDT em Acopay.net e Telegram Pay",
+  "Comprar ACOPAY (1 USDT = 10 ACOPAY) com USDT em Acopay.net e Telegram Pay",
   "Telegram Pay — envie por @usuário ou endereço de carteira",
   "Associação Phantom e Web Pay (/pay)",
 ]);
@@ -35,7 +35,7 @@ replaceAfterTitle("src/i18n/messages/index.ts", "Lançamento", [
 replaceAfterTitle("src/i18n/messages/index.ts", "Peluncuran", [
   "ACOPAY Token-2022 di Solana Mainnet",
   "Pool ACOPAY/USDT di Raydium",
-  "Beli ACOPAY 1:1 dengan USDT di Acopay.net dan Telegram Pay",
+  "Beli ACOPAY (1 USDT = 10 ACOPAY) dengan USDT di Acopay.net dan Telegram Pay",
   "Telegram Pay — kirim lewat @username atau alamat dompet",
   "Tautan Phantom dan Web Pay (/pay)",
 ]);

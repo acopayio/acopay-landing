@@ -1,11 +1,11 @@
-/** Official Buy page — USDT → ACOPAY 1:1 (auto settle). */
+﻿/** Official Buy page — 1 USDT = 10 ACOPAY (auto settle). */
 import { USDT_MINT } from "./token";
 
 export const OTC = {
   /** Seller wallet — receives USDT; bot sends ACOPAY. */
   address: "FQwBxdMmPHt7aJTMpsvb2V1rV4UfdGLgrihrGS4Awpii",
   usdtMint: USDT_MINT,
-  rate: 1,
+  rate: 10,
   minUsdt: 1,
   label: "ACOPAY",
   message: "ACOPAY — USDT to ACOPAY",
