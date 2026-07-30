@@ -158,7 +158,6 @@ export async function pollTelegramAuth(
 ): Promise<{
   status: string;
   token?: string;
-  needsClaim?: boolean;
   username?: string | null;
 }> {
   const q = encodeURIComponent(requestId);
@@ -172,7 +171,6 @@ export async function pollTelegramAuth(
     ok?: boolean;
     status?: string;
     token?: string;
-    needsClaim?: boolean;
     username?: string | null;
     error?: string;
     errorCode?: string;
@@ -181,30 +179,8 @@ export async function pollTelegramAuth(
   return {
     status: String(data.status || "unknown"),
     token: data.token,
-    needsClaim: Boolean(data.needsClaim),
     username: data.username,
   };
-}
-
-/** Finish login via one-time ?webclaim= from Telegram (P0 login-race fix). */
-export async function claimTelegramAuth(claimCode: string): Promise<string> {
-  const res = await fetch("/api/pay/auth-claim", {
-    method: "POST",
-    headers: headers(null),
-    credentials: fetchCred,
-    body: JSON.stringify({ claimCode }),
-  });
-  const data = (await res.json()) as {
-    ok?: boolean;
-    token?: string;
-    error?: string;
-    errorCode?: string;
-  };
-  if (!res.ok || !data.ok || !data.token) {
-    throwPayApiError(data, "auth_login", data.error || "Login claim failed.");
-  }
-  setPaySession(data.token);
-  return data.token;
 }
 
 /** Telegram Login Widget callback payload → session token. */

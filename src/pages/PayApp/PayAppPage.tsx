@@ -6,7 +6,6 @@ import { BrandLogo } from "../../components/BrandLogo";
 import { TOKEN } from "../../config/token";
 import { useI18n } from "../../i18n/LanguageProvider";
 import {
-  claimTelegramAuth,
   fetchPayMe,
   formatAcopayBalance,
   logoutPay,
@@ -80,26 +79,6 @@ export function PayAppPage() {
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      // P0: one-time claim from Telegram button (?webclaim=)
-      try {
-        const params = new URLSearchParams(window.location.search);
-        const claim = (params.get("webclaim") || "").trim();
-        if (claim) {
-          await claimTelegramAuth(claim);
-          params.delete("webclaim");
-          const next = `${window.location.pathname}${params.toString() ? `?${params}` : ""}${window.location.hash || ""}`;
-          window.history.replaceState({}, "", next);
-          if (!cancelled) await loadMe();
-          return;
-        }
-      } catch (e) {
-        if (!cancelled) {
-          setPaySession(null);
-          showErr(e);
-          setPhase("login");
-        }
-        return;
-      }
       // Cookie HttpOnly may exist without in-memory token after reload.
       try {
         await loadMe();
@@ -114,7 +93,7 @@ export function PayAppPage() {
       cancelled = true;
       clearPoll();
     };
-  }, [loadMe, showErr]);
+  }, [loadMe]);
 
   const receivePk = me?.publicKey || me?.linkedPublicKey || null;
   const hasWallet = Boolean(receivePk || me?.walletReady);
@@ -147,17 +126,6 @@ export function PayAppPage() {
               clearPoll();
               setPaySession(st.token);
               await loadMe();
-              return;
-            }
-            // P0: token only via Telegram claim link — keep polling /me (same browser cookie)
-            if (st.status === "ok" && st.needsClaim) {
-              try {
-                await loadMe();
-                clearPoll();
-                return;
-              } catch {
-                /* wait until user opens claim link from Telegram */
-              }
               return;
             }
             if (st.status === "forbidden") {
