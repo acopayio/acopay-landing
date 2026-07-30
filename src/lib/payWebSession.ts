@@ -393,6 +393,9 @@ export function withThousands(intPart: string): string {
  */
 export const ACOPAY_WEB_DECIMALS = 6;
 
+/** Home wallet balance UI — 4 decimals (ví); bill/send vẫn dùng `formatAcopay` 6. */
+export const ACOPAY_BALANCE_DECIMALS = 4;
+
 /**
  * ACOPAY amount / balance display on Web Pay:
  * - `,` = thousand separator
@@ -400,8 +403,17 @@ export const ACOPAY_WEB_DECIMALS = 6;
  * Independent of UI language (VI/EN/…).
  */
 export function formatAcopay(n: number | null | undefined): string {
+  return formatAcopayPlaces(n, ACOPAY_WEB_DECIMALS);
+}
+
+/** Home card balance — max 4 fractional digits (wallet-style). */
+export function formatAcopayBalance(n: number | null | undefined): string {
+  return formatAcopayPlaces(n, ACOPAY_BALANCE_DECIMALS);
+}
+
+function formatAcopayPlaces(n: number | null | undefined, places: number): string {
   if (n == null || !Number.isFinite(n)) return "—";
-  const trimmed = n.toFixed(ACOPAY_WEB_DECIMALS).replace(/0+$/, "").replace(/\.$/, "");
+  const trimmed = n.toFixed(places).replace(/0+$/, "").replace(/\.$/, "");
   const [intPart, dec] = trimmed.split(".");
   return withThousands(intPart) + (dec != null ? `.${dec}` : "");
 }

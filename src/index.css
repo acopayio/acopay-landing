@@ -51,6 +51,8 @@ html[data-theme="light"] {
   --acopay-success: #047857;
   --acopay-success-bg: rgba(4, 120, 87, 0.12);
   --acopay-success-ring: rgba(4, 120, 87, 0.28);
+  /* Pay home: darker cyan (balance / @user / mint) — đỡ chói hơn neon */
+  --acopay-pay-accent: #0e7490;
   --acopay-danger: #b91c1c;
   --acopay-danger-bg: rgba(185, 28, 28, 0.1);
   --acopay-danger-ring: rgba(185, 28, 28, 0.25);
@@ -80,6 +82,8 @@ html[data-theme="dark"] {
   --acopay-success: #6ee7b7;
   --acopay-success-bg: rgba(16, 185, 129, 0.15);
   --acopay-success-ring: rgba(16, 185, 129, 0.3);
+  /* Soft cyan for large Pay balance — không dùng #00E5FF trên số lớn */
+  --acopay-pay-accent: #22d3ee;
   --acopay-danger: #fca5a5;
   --acopay-danger-bg: rgba(239, 68, 68, 0.15);
   --acopay-danger-ring: rgba(239, 68, 68, 0.3);
@@ -899,7 +903,7 @@ a.btn-orca-primary:disabled:hover {
   font-size: 1.125rem;
   line-height: 1.25;
   letter-spacing: -0.02em;
-  color: var(--acopay-brand);
+  color: var(--acopay-pay-accent);
 }
 @media (min-width: 640px) {
   .pay-tg-username {
