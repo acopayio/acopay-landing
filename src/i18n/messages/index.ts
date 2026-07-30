@@ -201,11 +201,11 @@ const partials: Record<string, DeepPartialMessages> = {
       title: "Lộ trình",
       subtitle: "Các cột mốc đến năm 2030.",
       m2026Title: "Ra mắt",
-      m2026Item0: "Token ACOPAY (Token-2022) trên Solana Mainnet",
-      m2026Item1: "Pool ACOPAY/USDT trên Raydium",
-      m2026Item2: "Mua ACOPAY 1:1 bằng USDT trên Acopay.net và Telegram Pay",
-      m2026Item3: "Telegram Pay — chuyển theo @username hoặc địa chỉ ví",
-      m2026Item4: "Liên kết Phantom và Web Pay (/pay)",
+      m2026Item0: "Giao dịch cặp ACOPAY/USDT trên Raydium và Jupiter",
+      m2026Item1: "Tích hợp ACOPAY vào Telegram Pay",
+      m2026Item2: "Chuyển ACOPAY qua Phantom hoặc Telegram Pay",
+      m2026Item3: "Thanh toán qua Web Pay",
+
 
       m2026Alt: "Minh họa 3D pool thanh khoản ACOPAY",
       m2027Title: "Ứng dụng Pay",
@@ -491,11 +491,11 @@ const partials: Record<string, DeepPartialMessages> = {
   zh: {
     roadmap: {
       m2026Title: "启航",
-      m2026Item0: "Solana Mainnet 上线 ACOPAY Token-2022",
-      m2026Item1: "Raydium 上线 ACOPAY/USDT 流动性池",
-      m2026Item2: "在 Acopay.net 与 Telegram Pay 以 USDT 1:1 购买 ACOPAY",
-      m2026Item3: "Telegram Pay — 按 @用户名或钱包地址转账",
-      m2026Item4: "关联 Phantom 与 Web Pay（/pay）",
+      m2026Item0: "在 Raydium 与 Jupiter 交易 ACOPAY/USDT",
+      m2026Item1: "将 ACOPAY 集成到 Telegram Pay",
+      m2026Item2: "通过 Phantom 或 Telegram Pay 转账 ACOPAY",
+      m2026Item3: "通过 Web Pay 支付",
+
 
       m2027Title: "支付应用",
       m2027Item0: "推出 ACOPAY 手机应用 — 在 ACOPAY 网络内用户之间点对点支付",
@@ -613,11 +613,11 @@ const partials: Record<string, DeepPartialMessages> = {
   ja: {
     roadmap: {
       m2026Title: "ローンチ",
-      m2026Item0: "Solana Mainnet で ACOPAY Token-2022 を公開",
-      m2026Item1: "Raydium に ACOPAY/USDT プール",
-      m2026Item2: "Acopay.net と Telegram Pay で USDT 1:1 購入",
-      m2026Item3: "Telegram Pay — @ユーザー名またはウォレットアドレスで送金",
-      m2026Item4: "Phantom 連携と Web Pay（/pay）",
+      m2026Item0: "Raydium と Jupiter で ACOPAY/USDT を取引",
+      m2026Item1: "ACOPAY を Telegram Pay に統合",
+      m2026Item2: "Phantom または Telegram Pay で ACOPAY を送金",
+      m2026Item3: "Web Pay で支払い",
+
 
       m2027Title: "Payアプリ",
       m2027Item0: "ACOPAYモバイルアプリを公開 — ACOPAYネットワーク内でユーザー同士のP2P決済",
@@ -730,11 +730,11 @@ const partials: Record<string, DeepPartialMessages> = {
   ko: {
     roadmap: {
       m2026Title: "런칭",
-      m2026Item0: "Solana Mainnet에 ACOPAY Token-2022 출시",
-      m2026Item1: "Raydium ACOPAY/USDT 풀",
-      m2026Item2: "Acopay.net 및 Telegram Pay에서 USDT 1:1로 ACOPAY 구매",
-      m2026Item3: "Telegram Pay — @사용자명 또는 지갑 주소로 송금",
-      m2026Item4: "Phantom 연동 및 Web Pay(/pay)",
+      m2026Item0: "Raydium과 Jupiter에서 ACOPAY/USDT 거래",
+      m2026Item1: "ACOPAY를 Telegram Pay에 통합",
+      m2026Item2: "Phantom 또는 Telegram Pay로 ACOPAY 전송",
+      m2026Item3: "Web Pay로 결제",
+
 
       m2027Title: "Pay 앱",
       m2027Item0: "ACOPAY 모바일 앱 출시 — ACOPAY 네트워크 내 사용자 간 P2P 결제",
@@ -847,11 +847,11 @@ const partials: Record<string, DeepPartialMessages> = {
   es: {
     roadmap: {
       m2026Title: "Lanzamiento",
-      m2026Item0: "ACOPAY Token-2022 en Solana Mainnet",
-      m2026Item1: "Pool ACOPAY/USDT en Raydium",
-      m2026Item2: "Comprar ACOPAY 1:1 con USDT en Acopay.net y Telegram Pay",
-      m2026Item3: "Telegram Pay — envía por @usuario o dirección de billetera",
-      m2026Item4: "Vinculación de Phantom y Web Pay (/pay)",
+      m2026Item0: "Operar ACOPAY/USDT en Raydium y Jupiter",
+      m2026Item1: "ACOPAY integrado en Telegram Pay",
+      m2026Item2: "Transferir ACOPAY vía Phantom o Telegram Pay",
+      m2026Item3: "Pagos en Web Pay",
+
 
       m2027Title: "App Pay",
       m2027Item0: "Lanzar la app móvil ACOPAY — pagos entre usuarios dentro de la red ACOPAY",
@@ -964,11 +964,11 @@ const partials: Record<string, DeepPartialMessages> = {
   pt: {
     roadmap: {
       m2026Title: "Lançamento",
-      m2026Item0: "ACOPAY Token-2022 na Solana Mainnet",
-      m2026Item1: "Pool ACOPAY/USDT na Raydium",
-      m2026Item2: "Comprar ACOPAY 1:1 com USDT em Acopay.net e Telegram Pay",
-      m2026Item3: "Telegram Pay — envie por @usuário ou endereço de carteira",
-      m2026Item4: "Associação Phantom e Web Pay (/pay)",
+      m2026Item0: "Negociar ACOPAY/USDT na Raydium e Jupiter",
+      m2026Item1: "ACOPAY integrado ao Telegram Pay",
+      m2026Item2: "Transferir ACOPAY via Phantom ou Telegram Pay",
+      m2026Item3: "Pagamentos no Web Pay",
+
 m2027Title: "App Pay",
       m2027Item0: "Lançar o app móvel ACOPAY — pagamentos entre usuários na rede ACOPAY",
       m2027Item1: "Pagamento carteira a carteira no app — liquidação na Solana dentro do sistema ACOPAY",
@@ -1080,11 +1080,11 @@ m2027Title: "App Pay",
   fr: {
     roadmap: {
       m2026Title: "Lancement",
-      m2026Item0: "ACOPAY Token-2022 sur Solana Mainnet",
-      m2026Item1: "Pool ACOPAY/USDT sur Raydium",
-      m2026Item2: "Acheter ACOPAY 1:1 en USDT sur Acopay.net et Telegram Pay",
-      m2026Item3: "Telegram Pay — envoyer par @utilisateur ou adresse de portefeuille",
-      m2026Item4: "Liaison Phantom et Web Pay (/pay)",
+      m2026Item0: "Échanger ACOPAY/USDT sur Raydium et Jupiter",
+      m2026Item1: "ACOPAY intégré à Telegram Pay",
+      m2026Item2: "Transférer ACOPAY via Phantom ou Telegram Pay",
+      m2026Item3: "Paiements sur Web Pay",
+
 
       m2027Title: "App Pay",
       m2027Item0: "Lancer l’app mobile ACOPAY — paiements entre utilisateurs dans le réseau ACOPAY",
@@ -1197,11 +1197,11 @@ m2027Title: "App Pay",
   de: {
     roadmap: {
       m2026Title: "Start",
-      m2026Item0: "ACOPAY Token-2022 auf Solana Mainnet",
-      m2026Item1: "ACOPAY/USDT-Pool auf Raydium",
-      m2026Item2: "ACOPAY 1:1 mit USDT kaufen auf Acopay.net und Telegram Pay",
-      m2026Item3: "Telegram Pay — senden per @Benutzername oder Wallet-Adresse",
-      m2026Item4: "Phantom-Verknüpfung und Web Pay (/pay)",
+      m2026Item0: "ACOPAY/USDT auf Raydium und Jupiter handeln",
+      m2026Item1: "ACOPAY in Telegram Pay integriert",
+      m2026Item2: "ACOPAY über Phantom oder Telegram Pay senden",
+      m2026Item3: "Zahlungen über Web Pay",
+
 
       m2027Title: "Pay-App",
       m2027Item0: "ACOPAY-Mobile-App starten — Peer-to-Peer-Zahlungen zwischen Nutzern im ACOPAY-Netzwerk",
@@ -1314,11 +1314,11 @@ m2027Title: "App Pay",
   ru: {
     roadmap: {
       m2026Title: "Запуск",
-      m2026Item0: "ACOPAY Token-2022 в Solana Mainnet",
-      m2026Item1: "Пул ACOPAY/USDT на Raydium",
-      m2026Item2: "Покупка ACOPAY 1:1 за USDT на Acopay.net и в Telegram Pay",
-      m2026Item3: "Telegram Pay — перевод по @username или адресу кошелька",
-      m2026Item4: "Привязка Phantom и Web Pay (/pay)",
+      m2026Item0: "Торговля ACOPAY/USDT на Raydium и Jupiter",
+      m2026Item1: "ACOPAY интегрирован в Telegram Pay",
+      m2026Item2: "Перевод ACOPAY через Phantom или Telegram Pay",
+      m2026Item3: "Платежи через Web Pay",
+
 
       m2027Title: "Pay-приложение",
       m2027Item0: "Запуск мобильного приложения ACOPAY — P2P-платежи между пользователями в сети ACOPAY",
@@ -1431,11 +1431,11 @@ m2027Title: "App Pay",
   ar: {
     roadmap: {
       m2026Title: "الإطلاق",
-      m2026Item0: "ACOPAY Token-2022 على Solana Mainnet",
-      m2026Item1: "مجمع ACOPAY/USDT على Raydium",
-      m2026Item2: "شراء ACOPAY بنسبة 1:1 بـ USDT على Acopay.net وTelegram Pay",
-      m2026Item3: "Telegram Pay — تحويل عبر @اسم_المستخدم أو عنوان المحفظة",
-      m2026Item4: "ربط Phantom وWeb Pay (/pay)",
+      m2026Item0: "تداول ACOPAY/USDT على Raydium وJupiter",
+      m2026Item1: "دمج ACOPAY في Telegram Pay",
+      m2026Item2: "تحويل ACOPAY عبر Phantom أو Telegram Pay",
+      m2026Item3: "المدفوعات عبر Web Pay",
+
 
       m2027Title: "تطبيق الدفع",
       m2027Item0: "إطلاق تطبيق ACOPAY للجوال — مدفوعات بين المستخدمين داخل شبكة ACOPAY",
@@ -1548,11 +1548,11 @@ m2027Title: "App Pay",
   th: {
     roadmap: {
       m2026Title: "เปิดตัว",
-      m2026Item0: "ACOPAY Token-2022 บน Solana Mainnet",
-      m2026Item1: "พูล ACOPAY/USDT บน Raydium",
-      m2026Item2: "ซื้อ ACOPAY 1:1 ด้วย USDT บน Acopay.net และ Telegram Pay",
-      m2026Item3: "Telegram Pay — ส่งด้วย @username หรือที่อยู่กระเป๋า",
-      m2026Item4: "เชื่อม Phantom และ Web Pay (/pay)",
+      m2026Item0: "เทรด ACOPAY/USDT บน Raydium และ Jupiter",
+      m2026Item1: "ผสาน ACOPAY เข้ากับ Telegram Pay",
+      m2026Item2: "โอน ACOPAY ผ่าน Phantom หรือ Telegram Pay",
+      m2026Item3: "ชำระเงินผ่าน Web Pay",
+
 
       m2027Title: "แอป Pay",
       m2027Item0: "เปิดตัวแอปมือถือ ACOPAY — ชำระเงินระหว่างผู้ใช้ในเครือข่าย ACOPAY",
@@ -1665,11 +1665,11 @@ m2027Title: "App Pay",
   id: {
     roadmap: {
       m2026Title: "Peluncuran",
-      m2026Item0: "ACOPAY Token-2022 di Solana Mainnet",
-      m2026Item1: "Pool ACOPAY/USDT di Raydium",
-      m2026Item2: "Beli ACOPAY 1:1 dengan USDT di Acopay.net dan Telegram Pay",
-      m2026Item3: "Telegram Pay — kirim lewat @username atau alamat dompet",
-      m2026Item4: "Tautan Phantom dan Web Pay (/pay)",
+      m2026Item0: "Perdagangkan ACOPAY/USDT di Raydium dan Jupiter",
+      m2026Item1: "ACOPAY terintegrasi ke Telegram Pay",
+      m2026Item2: "Transfer ACOPAY via Phantom atau Telegram Pay",
+      m2026Item3: "Pembayaran lewat Web Pay",
+
 m2027Title: "Aplikasi Pay",
       m2027Item0: "Luncurkan aplikasi seluler ACOPAY — pembayaran peer-to-peer antar pengguna di jaringan ACOPAY",
       m2027Item1: "Bayar antar dompet di aplikasi — penyelesaian di Solana dalam sistem ACOPAY",
@@ -1781,11 +1781,11 @@ m2027Title: "Aplikasi Pay",
   hi: {
     roadmap: {
       m2026Title: "लॉन्च",
-      m2026Item0: "Solana Mainnet पर ACOPAY Token-2022",
-      m2026Item1: "Raydium पर ACOPAY/USDT पूल",
-      m2026Item2: "Acopay.net और Telegram Pay पर USDT से ACOPAY 1:1 खरीदें",
-      m2026Item3: "Telegram Pay — @username या वॉलेट पते से भेजें",
-      m2026Item4: "Phantom लिंकिंग और Web Pay (/pay)",
+      m2026Item0: "Raydium और Jupiter पर ACOPAY/USDT ट्रेड करें",
+      m2026Item1: "ACOPAY को Telegram Pay में एकीकृत",
+      m2026Item2: "Phantom या Telegram Pay से ACOPAY ट्रांसफर करें",
+      m2026Item3: "Web Pay पर भुगतान",
+
 
       m2027Title: "पे ऐप",
       m2027Item0: "ACOPAY मोबाइल ऐप लॉन्च — ACOPAY नेटवर्क में उपयोगकर्ताओं के बीच पीयर-टू-पीयर भुगतान",

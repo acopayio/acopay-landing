@@ -102,11 +102,11 @@ export const CORE_UI_GAPS: Record<string, object> = {
     common: { buy: "Купити", learnMore: "Дізнатися більше" },
     roadmap: {
       m2026Title: "Запуск",
-      m2026Item0: "ACOPAY Token-2022 у Solana Mainnet",
-      m2026Item1: "Пул ACOPAY/USDT на Raydium",
-      m2026Item2: "Купівля ACOPAY 1:1 за USDT на Acopay.net і в Telegram Pay",
-      m2026Item3: "Telegram Pay — переказ за @username або адресою гаманця",
-      m2026Item4: "Прив’язка Phantom і Web Pay (/pay)",
+      m2026Item0: "Торгівля ACOPAY/USDT на Raydium і Jupiter",
+      m2026Item1: "ACOPAY інтегровано в Telegram Pay",
+      m2026Item2: "Переказ ACOPAY через Phantom або Telegram Pay",
+      m2026Item3: "Платежі через Web Pay",
+
 
       m2027Title: "Pay-застосунок",
       m2027Item0: "Запуск мобільного застосунку ACOPAY — P2P-платежі між користувачами в мережі ACOPAY",
@@ -224,11 +224,11 @@ export const CORE_UI_GAPS: Record<string, object> = {
     common: { buy: "Kopen", learnMore: "Meer info" },
     roadmap: {
       m2026Title: "Lancering",
-      m2026Item0: "ACOPAY Token-2022 op Solana Mainnet",
-      m2026Item1: "ACOPAY/USDT-pool op Raydium",
-      m2026Item2: "Koop ACOPAY 1:1 met USDT op Acopay.net en Telegram Pay",
-      m2026Item3: "Telegram Pay — stuur via @gebruikersnaam of walletadres",
-      m2026Item4: "Phantom-koppeling en Web Pay (/pay)",
+      m2026Item0: "Handel ACOPAY/USDT op Raydium en Jupiter",
+      m2026Item1: "ACOPAY geïntegreerd in Telegram Pay",
+      m2026Item2: "ACOPAY overmaken via Phantom of Telegram Pay",
+      m2026Item3: "Betalingen via Web Pay",
+
 
       m2027Title: "Pay-app",
       m2027Item0: "ACOPAY-mobiele app lanceren — peer-to-peer-betalingen tussen gebruikers in het ACOPAY-netwerk",
@@ -346,11 +346,11 @@ export const CORE_UI_GAPS: Record<string, object> = {
     common: { buy: "Kup", learnMore: "Dowiedz się więcej" },
     roadmap: {
       m2026Title: "Premiera",
-      m2026Item0: "ACOPAY Token-2022 na Solana Mainnet",
-      m2026Item1: "Pula ACOPAY/USDT na Raydium",
-      m2026Item2: "Kup ACOPAY 1:1 za USDT na Acopay.net i Telegram Pay",
-      m2026Item3: "Telegram Pay — wyślij przez @użytkownika lub adres portfela",
-      m2026Item4: "Połączenie Phantom i Web Pay (/pay)",
+      m2026Item0: "Handluj ACOPAY/USDT na Raydium i Jupiter",
+      m2026Item1: "ACOPAY zintegrowany z Telegram Pay",
+      m2026Item2: "Przelewaj ACOPAY przez Phantom lub Telegram Pay",
+      m2026Item3: "Płatności przez Web Pay",
+
 
       m2027Title: "Aplikacja Pay",
       m2027Item0: "Uruchomienie aplikacji mobilnej ACOPAY — płatności P2P między użytkownikami w sieci ACOPAY",
@@ -467,11 +467,11 @@ export const CORE_UI_GAPS: Record<string, object> = {
     common: { buy: "Satın Al", learnMore: "Daha fazla bilgi" },
     roadmap: {
       m2026Title: "Lansman",
-      m2026Item0: "Solana Mainnet’te ACOPAY Token-2022",
-      m2026Item1: "Raydium’da ACOPAY/USDT havuzu",
-      m2026Item2: "Acopay.net ve Telegram Pay’de USDT ile ACOPAY 1:1 satın al",
-      m2026Item3: "Telegram Pay — @kullanıcı adı veya cüzdan adresiyle gönder",
-      m2026Item4: "Phantom bağlantısı ve Web Pay (/pay)",
+      m2026Item0: "Raydium ve Jupiter’de ACOPAY/USDT işlem yap",
+      m2026Item1: "ACOPAY Telegram Pay’e entegre",
+      m2026Item2: "Phantom veya Telegram Pay ile ACOPAY gönder",
+      m2026Item3: "Web Pay ile ödeme",
+
 
       m2027Title: "Pay uygulaması",
       m2027Item0: "ACOPAY mobil uygulamasını başlat — ACOPAY ağında kullanıcılar arası P2P ödemeler",
@@ -590,11 +590,11 @@ export const CORE_UI_GAPS: Record<string, object> = {
     common: { buy: "Compra", learnMore: "Scopri di più" },
     roadmap: {
       m2026Title: "Lancio",
-      m2026Item0: "ACOPAY Token-2022 su Solana Mainnet",
-      m2026Item1: "Pool ACOPAY/USDT su Raydium",
-      m2026Item2: "Acquista ACOPAY 1:1 con USDT su Acopay.net e Telegram Pay",
-      m2026Item3: "Telegram Pay — invia per @username o indirizzo portafoglio",
-      m2026Item4: "Collegamento Phantom e Web Pay (/pay)",
+      m2026Item0: "Scambia ACOPAY/USDT su Raydium e Jupiter",
+      m2026Item1: "ACOPAY integrato in Telegram Pay",
+      m2026Item2: "Trasferisci ACOPAY via Phantom o Telegram Pay",
+      m2026Item3: "Pagamenti su Web Pay",
+
 
       m2027Title: "App Pay",
       m2027Item0: "Lanciare l'app mobile ACOPAY — pagamenti P2P tra utenti nella rete ACOPAY",
@@ -715,11 +715,11 @@ export const CORE_UI_GAPS: Record<string, object> = {
     common: { buy: "Beli", learnMore: "Ketahui lebih lanjut" },
     roadmap: {
       m2026Title: "Pelancaran",
-      m2026Item0: "ACOPAY Token-2022 di Solana Mainnet",
-      m2026Item1: "Kolam ACOPAY/USDT di Raydium",
-      m2026Item2: "Beli ACOPAY 1:1 dengan USDT di Acopay.net dan Telegram Pay",
-      m2026Item3: "Telegram Pay — hantar melalui @nama pengguna atau alamat dompet",
-      m2026Item4: "Pautan Phantom dan Web Pay (/pay)",
+      m2026Item0: "Dagangkan ACOPAY/USDT di Raydium dan Jupiter",
+      m2026Item1: "ACOPAY disepadukan ke Telegram Pay",
+      m2026Item2: "Pindahkan ACOPAY melalui Phantom atau Telegram Pay",
+      m2026Item3: "Bayaran melalui Web Pay",
+
 
       m2027Title: "Aplikasi Pay",
       m2027Item0: "Lancarkan aplikasi mudah alih ACOPAY — pembayaran rakan sebaya antara pengguna dalam rangkaian ACOPAY",

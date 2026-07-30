@@ -1259,11 +1259,11 @@ export const SITE_CONTENT_PARTIALS: Record<string, object> = {
       title: "रोडमैप",
       subtitle: "2030 तक की उपलब्धियाँ।",
       m2026Title: "लॉन्च",
-      m2026Item0: "Solana Mainnet पर ACOPAY Token-2022",
-      m2026Item1: "Raydium पर ACOPAY/USDT पूल",
-      m2026Item2: "Acopay.net और Telegram Pay पर USDT से ACOPAY 1:1 खरीदें",
-      m2026Item3: "Telegram Pay — @username या वॉलेट पते से भेजें",
-      m2026Item4: "Phantom लिंकिंग और Web Pay (/pay)",
+      m2026Item0: "Raydium और Jupiter पर ACOPAY/USDT ट्रेड करें",
+      m2026Item1: "ACOPAY को Telegram Pay में एकीकृत",
+      m2026Item2: "Phantom या Telegram Pay से ACOPAY ट्रांसफर करें",
+      m2026Item3: "Web Pay पर भुगतान",
+
 
       m2026Alt: "ACOPAY लिक्विडिटी पूल का 3D चित्रण",
       m2027Title: "पे ऐप",
