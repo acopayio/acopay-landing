@@ -192,14 +192,21 @@ export function PayAppPage() {
     await beginAuthSession({ openApp: true });
   }
 
-  /** Copy plain QR (https://t.me… deep-link) so paste into Telegram detects & opens bot. */
+  /** Copy deep-link URL (+ QR image when possible) so paste in Telegram connects web Pay. */
   async function copyLoginQrImage() {
-    if (!loginQr) return;
+    if (!botUrl && !loginQr) return;
     try {
-      const res = await fetch(loginQr);
-      const blob = await res.blob();
-      if (typeof ClipboardItem !== "undefined" && navigator.clipboard?.write) {
-        await navigator.clipboard.write([new ClipboardItem({ [blob.type || "image/png"]: blob })]);
+      const items: Record<string, Blob> = {};
+      if (botUrl) {
+        items["text/plain"] = new Blob([botUrl], { type: "text/plain" });
+      }
+      if (loginQr) {
+        const res = await fetch(loginQr);
+        const blob = await res.blob();
+        items[blob.type || "image/png"] = blob;
+      }
+      if (typeof ClipboardItem !== "undefined" && navigator.clipboard?.write && Object.keys(items).length) {
+        await navigator.clipboard.write([new ClipboardItem(items)]);
       } else if (botUrl && navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(botUrl);
       } else {
