@@ -60,8 +60,7 @@ export const en = {
     spotSubtitle:
       "Global USDT spot prices for reference (sourced from Binance public data). Buy ACOPAY on /buy or Telegram Pay.",
     transfersTitle: "Token Transactions",
-    transfersSubtitle:
-      "ACOPAY wallet transfers on Solana from the last 72 hours. Explore on Solscan for full history.",
+    transfersSubtitle: "ACOPAY wallet transfers on Solana from the last 72 hours.",
     transfersCount: "{n} transactions",
     loadingHistory: "loading history…",
     solscanToken: "ACOPAY on Solana Explorer ↗",
