@@ -9,7 +9,7 @@
     { "trait_type": "Token Standard", "value": "Token-2022" },
     { "trait_type": "Transfer Fee", "value": "0.01% (1 bps)" },
     { "trait_type": "Decimals", "value": "9" },
-    { "trait_type": "Total Supply", "value": "200000000" },
+    { "trait_type": "Total Supply", "value": "500000000" },
     { "trait_type": "DEX Pair", "value": "ACOPAY/USDT Raydium" },
     { "trait_type": "Freeze Authority", "value": "Revoked" },
     { "trait_type": "Mint Authority", "value": "Active" },
