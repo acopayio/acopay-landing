@@ -35,7 +35,8 @@ export function telegramHttpsToAppScheme(httpsUrl: string): string | null {
 
 /**
  * Open Telegram bot deep-link.
- * Mobile: prefer tg:// (opens app, keeps Safari tab for poll). Fallback https://t.me in a new tab.
+ * Mobile: **only** `tg://` — Safari/Chrome shows one “Open in Telegram?” on acopay.
+ *   Do NOT auto-fallback to https://t.me (that opens a 2nd prompt + START BOT page — Kevin 2026-07-30).
  * Desktop: new tab https://t.me.
  * Never rely on window.open alone on iOS — it is blocked after await.
  */
@@ -51,19 +52,7 @@ export function openTelegramBotLink(httpsUrl: string): void {
   const app = telegramHttpsToAppScheme(httpsUrl);
 
   if (isMobileUa() && app) {
-    const started = Date.now();
     window.location.href = app;
-    window.setTimeout(() => {
-      if (document.visibilityState === "visible" && Date.now() - started < 2500) {
-        const a = document.createElement("a");
-        a.href = httpsUrl;
-        a.target = "_blank";
-        a.rel = "noopener noreferrer";
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-      }
-    }, 900);
     return;
   }
 
