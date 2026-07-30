@@ -217,15 +217,6 @@ export function PayAppPage() {
     <section className="relative overflow-x-clip px-4 py-6 sm:px-6 lg:py-8">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-56 bg-[radial-gradient(ellipse_at_50%_0%,_rgba(0,229,255,0.12),_transparent_65%)]" />
       <div className="relative mx-auto w-full max-w-lg">
-        {phase === "home" && panel === "home" ? (
-          <header className="mb-4 hidden items-baseline justify-between gap-3 sm:mb-5 sm:flex">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--acopay-pay-accent)]">
-              ACOPAY Pay
-            </p>
-            <p className="text-right text-sm text-[var(--acopay-muted)]">{t("payApp.subtitle")}</p>
-          </header>
-        ) : null}
-
         {error && (
           <div
             role="alert"
