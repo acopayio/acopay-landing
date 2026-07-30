@@ -199,20 +199,14 @@ const partials: Record<string, DeepPartialMessages> = {
     common: { buy: "Mua", learnMore: "Tìm hiểu thêm", done: "Xong", field: "Trường", details: "Chi tiết", value: "Giá trị", metric: "Chỉ số", pending: "Đang chờ", live: "Trực tiếp" },
     roadmap: {
       title: "Lộ trình",
-      subtitle: "Các cột mốc chính đến năm 2030.",
+      subtitle: "Các cột mốc đến năm 2030.",
       m2026Title: "Ra mắt",
-      m2026Item0:
-        "Token ACOPAY (Token-2022) trên Solana Mainnet; thanh khoản ACOPAY/USDT trên Raydium (phí chuyển 0.01%)",
-      m2026Item1:
-        "Website chính thức Acopay.net — Thị trường (bể thanh khoản, giá spot, giao dịch, hoán đổi) và minh bạch hợp đồng trên chuỗi",
-      m2026Item2:
-        "Mua ACOPAY tỷ lệ 1:1 bằng USDT trên website (QR và Phantom) và qua Telegram Pay",
-      m2026Item3:
-        "Telegram Pay — chuyển theo @username hoặc địa chỉ ví; tạo ví bot hoặc liên kết Phantom",
-      m2026Item4:
-        "Pay liên kết Phantom với phí gas do hệ thống hỗ trợ — ký trên Phantom, tất toán trên Solana",
-      m2026Item5:
-        "Web Pay tại /pay — Chuyển, Nhận và Lịch sử, đăng nhập bằng Telegram",
+      m2026Item0: "Token ACOPAY (Token-2022) trên Solana Mainnet",
+      m2026Item1: "Pool ACOPAY/USDT trên Raydium",
+      m2026Item2: "Mua ACOPAY 1:1 bằng USDT trên Acopay.net và Telegram Pay",
+      m2026Item3: "Telegram Pay — chuyển theo @username hoặc địa chỉ ví",
+      m2026Item4: "Liên kết Phantom và Web Pay (/pay)",
+
       m2026Alt: "Minh họa 3D pool thanh khoản ACOPAY",
       m2027Title: "Ứng dụng Pay",
       m2027Item0: "Ra mắt app mobile ACOPAY — thanh toán ngang hàng giữa người dùng trong hệ thống ACOPAY",
@@ -497,12 +491,12 @@ const partials: Record<string, DeepPartialMessages> = {
   zh: {
     roadmap: {
       m2026Title: "启航",
-      m2026Item0: "Solana Mainnet 上线 ACOPAY Token-2022；Raydium 提供 ACOPAY/USDT 流动性（转账费 0.01%）",
-      m2026Item1: "官网 Acopay.net — 市场（资金池、现货、转账、兑换）与链上合约透明",
-      m2026Item2: "购买台：网站（二维码与 Phantom）及 Telegram Pay 以 USDT 1:1 购买 ACOPAY",
-      m2026Item3: "Telegram Pay — 按 @用户名或钱包地址转账；创建机器人钱包或关联 Phantom",
-      m2026Item4: "关联 Phantom 的 Pay，由 Operator 承担 gas — 在 Phantom 签名，在 Solana 结算",
-      m2026Item5: "Web Pay（/pay）— 转账、收款与历史，通过 Telegram 登录",
+      m2026Item0: "Solana Mainnet 上线 ACOPAY Token-2022",
+      m2026Item1: "Raydium 上线 ACOPAY/USDT 流动性池",
+      m2026Item2: "在 Acopay.net 与 Telegram Pay 以 USDT 1:1 购买 ACOPAY",
+      m2026Item3: "Telegram Pay — 按 @用户名或钱包地址转账",
+      m2026Item4: "关联 Phantom 与 Web Pay（/pay）",
+
       m2027Title: "支付应用",
       m2027Item0: "推出 ACOPAY 手机应用 — 在 ACOPAY 网络内用户之间点对点支付",
       m2027Item1: "应用内钱包到钱包支付 — 在 Solana 上于 ACOPAY 体系内结算",
@@ -619,12 +613,12 @@ const partials: Record<string, DeepPartialMessages> = {
   ja: {
     roadmap: {
       m2026Title: "ローンチ",
-      m2026Item0: "Solana Mainnet で ACOPAY Token-2022 を公開。Raydium に ACOPAY/USDT 流動性（送金手数料 0.01%）",
-      m2026Item1: "公式サイト Acopay.net — マーケット（プール・スポット・送金・スワップ）とオンチェーンの契約透明性",
-      m2026Item2: "購入デスク：ウェブサイト（QR と Phantom）および Telegram Pay で USDT 1:1 購入",
-      m2026Item3: "Telegram Pay — @ユーザー名またはウォレットアドレスで送金。ボットウォレット作成または Phantom 連携",
-      m2026Item4: "Phantom 連携 Pay（Operator がガス負担）— Phantom で署名し Solana で決済",
-      m2026Item5: "Web Pay（/pay）— 送金・受取・履歴。Telegram でサインイン",
+      m2026Item0: "Solana Mainnet で ACOPAY Token-2022 を公開",
+      m2026Item1: "Raydium に ACOPAY/USDT プール",
+      m2026Item2: "Acopay.net と Telegram Pay で USDT 1:1 購入",
+      m2026Item3: "Telegram Pay — @ユーザー名またはウォレットアドレスで送金",
+      m2026Item4: "Phantom 連携と Web Pay（/pay）",
+
       m2027Title: "Payアプリ",
       m2027Item0: "ACOPAYモバイルアプリを公開 — ACOPAYネットワーク内でユーザー同士のP2P決済",
       m2027Item1: "アプリ内ウォレット間送金 — Solana上でACOPAYシステム内決済",
@@ -736,12 +730,12 @@ const partials: Record<string, DeepPartialMessages> = {
   ko: {
     roadmap: {
       m2026Title: "런칭",
-      m2026Item0: "Solana Mainnet에 ACOPAY Token-2022 출시. Raydium ACOPAY/USDT 유동성(전송 수수료 0.01%)",
-      m2026Item1: "공식 사이트 Acopay.net — 마켓(풀·스팟·전송·스왑)과 온체인 계약 투명성",
-      m2026Item2: "구매 데스크: 웹사이트(QR·Phantom) 및 Telegram Pay에서 USDT 1:1로 ACOPAY 구매",
-      m2026Item3: "Telegram Pay — @사용자명 또는 지갑 주소로 송금. 봇 지갑 생성 또는 Phantom 연동",
-      m2026Item4: "Phantom 연동 Pay(Operator 가스 지원) — Phantom에서 서명, Solana에서 정산",
-      m2026Item5: "Web Pay(/pay) — 송금·수신·내역, Telegram 로그인",
+      m2026Item0: "Solana Mainnet에 ACOPAY Token-2022 출시",
+      m2026Item1: "Raydium ACOPAY/USDT 풀",
+      m2026Item2: "Acopay.net 및 Telegram Pay에서 USDT 1:1로 ACOPAY 구매",
+      m2026Item3: "Telegram Pay — @사용자명 또는 지갑 주소로 송금",
+      m2026Item4: "Phantom 연동 및 Web Pay(/pay)",
+
       m2027Title: "Pay 앱",
       m2027Item0: "ACOPAY 모바일 앱 출시 — ACOPAY 네트워크 내 사용자 간 P2P 결제",
       m2027Item1: "앱 내 지갑 간 결제 — Solana에서 ACOPAY 시스템 내 정산",
@@ -853,12 +847,12 @@ const partials: Record<string, DeepPartialMessages> = {
   es: {
     roadmap: {
       m2026Title: "Lanzamiento",
-      m2026Item0: "ACOPAY Token-2022 en Solana Mainnet con liquidez ACOPAY/USDT en Raydium (comisión de transferencia 0.01%)",
-      m2026Item1: "Sitio oficial Acopay.net — Mercados (pools, spot, transferencias, swap) y claridad del contrato en cadena",
-      m2026Item2: "Mesa de compra: USDT → ACOPAY 1:1 en el sitio (QR y Phantom) y vía Telegram Pay",
-      m2026Item3: "Telegram Pay — envía por @usuario o dirección de billetera; crea billetera bot o vincula Phantom",
-      m2026Item4: "Pay con Phantom vinculado y gas patrocinado por Operator — firma en Phantom, liquida en Solana",
-      m2026Item5: "Web Pay en /pay — Transferir, Recibir e Historial con inicio de sesión de Telegram",
+      m2026Item0: "ACOPAY Token-2022 en Solana Mainnet",
+      m2026Item1: "Pool ACOPAY/USDT en Raydium",
+      m2026Item2: "Comprar ACOPAY 1:1 con USDT en Acopay.net y Telegram Pay",
+      m2026Item3: "Telegram Pay — envía por @usuario o dirección de billetera",
+      m2026Item4: "Vinculación de Phantom y Web Pay (/pay)",
+
       m2027Title: "App Pay",
       m2027Item0: "Lanzar la app móvil ACOPAY — pagos entre usuarios dentro de la red ACOPAY",
       m2027Item1: "Pago billetera a billetera en la app — liquidación en Solana dentro del sistema ACOPAY",
@@ -970,13 +964,12 @@ const partials: Record<string, DeepPartialMessages> = {
   pt: {
     roadmap: {
       m2026Title: "Lançamento",
-      m2026Item0: "ACOPAY Token-2022 na Solana Mainnet com liquidez ACOPAY/USDT na Raydium (taxa de transferência 0.01%)",
-      m2026Item1: "Site oficial Acopay.net — Mercados (pools, spot, transferências, swap) e clareza do contrato em cadeia",
-      m2026Item2: "Mesa de compra: USDT → ACOPAY 1:1 no site (QR e Phantom) e via Telegram Pay",
-      m2026Item3: "Telegram Pay — envie por @usuário ou endereço de carteira; crie carteira do bot ou associe Phantom",
-      m2026Item4: "Pay com Phantom associado e gas patrocinado pelo Operator — assine no Phantom, liquide na Solana",
-      m2026Item5: "Web Pay em /pay — Transferir, Receber e Histórico com login Telegram",
-      m2027Title: "App Pay",
+      m2026Item0: "ACOPAY Token-2022 na Solana Mainnet",
+      m2026Item1: "Pool ACOPAY/USDT na Raydium",
+      m2026Item2: "Comprar ACOPAY 1:1 com USDT em Acopay.net e Telegram Pay",
+      m2026Item3: "Telegram Pay — envie por @usuário ou endereço de carteira",
+      m2026Item4: "Associação Phantom e Web Pay (/pay)",
+m2027Title: "App Pay",
       m2027Item0: "Lançar o app móvel ACOPAY — pagamentos entre usuários na rede ACOPAY",
       m2027Item1: "Pagamento carteira a carteira no app — liquidação na Solana dentro do sistema ACOPAY",
       m2027Alt: "Ilustração 3D de pagamentos P2P móveis ACOPAY",
@@ -1087,12 +1080,12 @@ const partials: Record<string, DeepPartialMessages> = {
   fr: {
     roadmap: {
       m2026Title: "Lancement",
-      m2026Item0: "ACOPAY Token-2022 sur Solana Mainnet avec liquidité ACOPAY/USDT sur Raydium (frais de transfert 0.01 %)",
-      m2026Item1: "Site officiel Acopay.net — Marchés (pools, spot, transferts, swap) et clarté du contrat sur la chaîne",
-      m2026Item2: "Bureau d'achat : USDT → ACOPAY 1:1 sur le site (QR et Phantom) et via Telegram Pay",
-      m2026Item3: "Telegram Pay — envoyez par @nom d'utilisateur ou adresse de portefeuille ; créez un portefeuille bot ou liez Phantom",
-      m2026Item4: "Pay lié à Phantom avec gaz pris en charge par l'Operator — signez dans Phantom, réglez sur Solana",
-      m2026Item5: "Web Pay sur /pay — Transférer, Recevoir et Historique avec connexion Telegram",
+      m2026Item0: "ACOPAY Token-2022 sur Solana Mainnet",
+      m2026Item1: "Pool ACOPAY/USDT sur Raydium",
+      m2026Item2: "Acheter ACOPAY 1:1 en USDT sur Acopay.net et Telegram Pay",
+      m2026Item3: "Telegram Pay — envoyer par @utilisateur ou adresse de portefeuille",
+      m2026Item4: "Liaison Phantom et Web Pay (/pay)",
+
       m2027Title: "App Pay",
       m2027Item0: "Lancer l’app mobile ACOPAY — paiements entre utilisateurs dans le réseau ACOPAY",
       m2027Item1: "Paiement portefeuille à portefeuille dans l’app — règlement sur Solana dans le système ACOPAY",
@@ -1204,12 +1197,12 @@ const partials: Record<string, DeepPartialMessages> = {
   de: {
     roadmap: {
       m2026Title: "Start",
-      m2026Item0: "ACOPAY Token-2022 auf Solana Mainnet mit ACOPAY/USDT-Liquidität auf Raydium (Überweisungsgebühr 0.01 %)",
-      m2026Item1: "Offizielle Website Acopay.net — Märkte (Pools, Spot, Transfers, Swap) und Klarheit des Vertrags auf der Blockchain",
-      m2026Item2: "Kaufpult: USDT → ACOPAY 1:1 auf der Website (QR und Phantom) sowie über Telegram Pay",
-      m2026Item3: "Telegram Pay — senden per @Benutzername oder Wallet-Adresse; Bot-Wallet erstellen oder Phantom verknüpfen",
-      m2026Item4: "Phantom-verknüpftes Pay mit Operator-gesponsertem Gas — in Phantom signieren, auf Solana abwickeln",
-      m2026Item5: "Web Pay unter /pay — Überweisen, Empfangen und Verlauf mit Telegram-Anmeldung",
+      m2026Item0: "ACOPAY Token-2022 auf Solana Mainnet",
+      m2026Item1: "ACOPAY/USDT-Pool auf Raydium",
+      m2026Item2: "ACOPAY 1:1 mit USDT kaufen auf Acopay.net und Telegram Pay",
+      m2026Item3: "Telegram Pay — senden per @Benutzername oder Wallet-Adresse",
+      m2026Item4: "Phantom-Verknüpfung und Web Pay (/pay)",
+
       m2027Title: "Pay-App",
       m2027Item0: "ACOPAY-Mobile-App starten — Peer-to-Peer-Zahlungen zwischen Nutzern im ACOPAY-Netzwerk",
       m2027Item1: "Wallet-zu-Wallet-Pay in der App — Abwicklung auf Solana im ACOPAY-System",
@@ -1321,12 +1314,12 @@ const partials: Record<string, DeepPartialMessages> = {
   ru: {
     roadmap: {
       m2026Title: "Запуск",
-      m2026Item0: "ACOPAY Token-2022 в Solana Mainnet с ликвидностью ACOPAY/USDT на Raydium (комиссия перевода 0.01%)",
-      m2026Item1: "Официальный сайт Acopay.net — рынки (пулы, спот, переводы, своп) и прозрачность контракта в блокчейне",
-      m2026Item2: "Стойка покупки: USDT → ACOPAY 1:1 на сайте (QR и Phantom) и через Telegram Pay",
-      m2026Item3: "Telegram Pay — перевод по @username или адресу кошелька; создайте бот-кошелёк или привяжите Phantom",
-      m2026Item4: "Pay с привязанным Phantom и газом за счёт Operator — подпись в Phantom, расчёт в Solana",
-      m2026Item5: "Web Pay на /pay — перевод, получение и история со входом через Telegram",
+      m2026Item0: "ACOPAY Token-2022 в Solana Mainnet",
+      m2026Item1: "Пул ACOPAY/USDT на Raydium",
+      m2026Item2: "Покупка ACOPAY 1:1 за USDT на Acopay.net и в Telegram Pay",
+      m2026Item3: "Telegram Pay — перевод по @username или адресу кошелька",
+      m2026Item4: "Привязка Phantom и Web Pay (/pay)",
+
       m2027Title: "Pay-приложение",
       m2027Item0: "Запуск мобильного приложения ACOPAY — P2P-платежи между пользователями в сети ACOPAY",
       m2027Item1: "Оплата кошелёк–кошелёк в приложении — расчёт в Solana внутри системы ACOPAY",
@@ -1438,12 +1431,12 @@ const partials: Record<string, DeepPartialMessages> = {
   ar: {
     roadmap: {
       m2026Title: "الإطلاق",
-      m2026Item0: "ACOPAY Token-2022 على Solana Mainnet مع سيولة ACOPAY/USDT على Raydium (رسوم التحويل 0.01%)",
-      m2026Item1: "الموقع الرسمي Acopay.net — الأسواق (المجمعات، الفوري، التحويلات، المبادلة) ووضوح العقد على السلسلة",
-      m2026Item2: "مكتب الشراء: USDT → ACOPAY بنسبة 1:1 على الموقع (QR وPhantom) وعبر Telegram Pay",
-      m2026Item3: "Telegram Pay — أرسل عبر @اسم_المستخدم أو عنوان المحفظة؛ أنشئ محفظة البوت أو اربط Phantom",
-      m2026Item4: "Pay مرتبط بـ Phantom مع غاز يتحمله Operator — وقّع في Phantom وسوِّ على Solana",
-      m2026Item5: "Web Pay على /pay — تحويل واستلام وسجل مع تسجيل الدخول عبر Telegram",
+      m2026Item0: "ACOPAY Token-2022 على Solana Mainnet",
+      m2026Item1: "مجمع ACOPAY/USDT على Raydium",
+      m2026Item2: "شراء ACOPAY بنسبة 1:1 بـ USDT على Acopay.net وTelegram Pay",
+      m2026Item3: "Telegram Pay — تحويل عبر @اسم_المستخدم أو عنوان المحفظة",
+      m2026Item4: "ربط Phantom وWeb Pay (/pay)",
+
       m2027Title: "تطبيق الدفع",
       m2027Item0: "إطلاق تطبيق ACOPAY للجوال — مدفوعات بين المستخدمين داخل شبكة ACOPAY",
       m2027Item1: "دفع محفظة إلى محفظة داخل التطبيق — تسوية على Solana ضمن نظام ACOPAY",
@@ -1555,12 +1548,12 @@ const partials: Record<string, DeepPartialMessages> = {
   th: {
     roadmap: {
       m2026Title: "เปิดตัว",
-      m2026Item0: "ACOPAY Token-2022 บน Solana Mainnet พร้อมสภาพคล่อง ACOPAY/USDT บน Raydium (ค่าธรรมเนียมโอน 0.01%)",
-      m2026Item1: "เว็บไซต์อย่างเป็นทางการ Acopay.net — ตลาด (พูล สปอต โอน สวอป) และความชัดเจนของสัญญาบนเชน",
-      m2026Item2: "โต๊ะซื้อ: USDT → ACOPAY 1:1 บนเว็บไซต์ (QR และ Phantom) และผ่าน Telegram Pay",
-      m2026Item3: "Telegram Pay — ส่งด้วย @username หรือที่อยู่กระเป๋า สร้างกระเป๋าบอทหรือเชื่อม Phantom",
-      m2026Item4: "Pay ที่เชื่อม Phantom โดย Operator รับผิดชอบค่าแก๊ส — ลงนามใน Phantom ชำระบน Solana",
-      m2026Item5: "Web Pay ที่ /pay — โอน รับ และประวัติ ด้วยการเข้าสู่ระบบ Telegram",
+      m2026Item0: "ACOPAY Token-2022 บน Solana Mainnet",
+      m2026Item1: "พูล ACOPAY/USDT บน Raydium",
+      m2026Item2: "ซื้อ ACOPAY 1:1 ด้วย USDT บน Acopay.net และ Telegram Pay",
+      m2026Item3: "Telegram Pay — ส่งด้วย @username หรือที่อยู่กระเป๋า",
+      m2026Item4: "เชื่อม Phantom และ Web Pay (/pay)",
+
       m2027Title: "แอป Pay",
       m2027Item0: "เปิดตัวแอปมือถือ ACOPAY — ชำระเงินระหว่างผู้ใช้ในเครือข่าย ACOPAY",
       m2027Item1: "จ่ายกระเป๋าถึงกระเป๋าในแอป — ชำระบน Solana ภายในระบบ ACOPAY",
@@ -1672,13 +1665,12 @@ const partials: Record<string, DeepPartialMessages> = {
   id: {
     roadmap: {
       m2026Title: "Peluncuran",
-      m2026Item0: "ACOPAY Token-2022 di Solana Mainnet dengan likuiditas ACOPAY/USDT di Raydium (biaya transfer 0.01%)",
-      m2026Item1: "Situs resmi Acopay.net — Pasar (pool, spot, transfer, swap) dan kejelasan kontrak di blockchain",
-      m2026Item2: "Meja beli: USDT → ACOPAY 1:1 di situs (QR dan Phantom) serta via Telegram Pay",
-      m2026Item3: "Telegram Pay — kirim lewat @username atau alamat dompet; buat dompet bot atau tautkan Phantom",
-      m2026Item4: "Pay tertaut Phantom dengan gas ditanggung Operator — tanda tangan di Phantom, selesaikan di Solana",
-      m2026Item5: "Web Pay di /pay — Transfer, Terima, dan Riwayat dengan masuk Telegram",
-      m2027Title: "Aplikasi Pay",
+      m2026Item0: "ACOPAY Token-2022 di Solana Mainnet",
+      m2026Item1: "Pool ACOPAY/USDT di Raydium",
+      m2026Item2: "Beli ACOPAY 1:1 dengan USDT di Acopay.net dan Telegram Pay",
+      m2026Item3: "Telegram Pay — kirim lewat @username atau alamat dompet",
+      m2026Item4: "Tautan Phantom dan Web Pay (/pay)",
+m2027Title: "Aplikasi Pay",
       m2027Item0: "Luncurkan aplikasi seluler ACOPAY — pembayaran peer-to-peer antar pengguna di jaringan ACOPAY",
       m2027Item1: "Bayar antar dompet di aplikasi — penyelesaian di Solana dalam sistem ACOPAY",
       m2027Alt: "Ilustrasi 3D pembayaran P2P seluler ACOPAY",
@@ -1789,12 +1781,12 @@ const partials: Record<string, DeepPartialMessages> = {
   hi: {
     roadmap: {
       m2026Title: "लॉन्च",
-      m2026Item0: "Solana Mainnet पर ACOPAY Token-2022; Raydium पर ACOPAY/USDT तरलता (ट्रांसफर शुल्क 0.01%)",
-      m2026Item1: "आधिकारिक साइट Acopay.net — बाज़ार (पूल, स्पॉट, ट्रांसफर, स्वैप) और ब्लॉकचेन पर अनुबंध स्पष्टता",
-      m2026Item2: "खरीद डेस्क: वेबसाइट (QR और Phantom) तथा Telegram Pay पर USDT से ACOPAY 1:1",
-      m2026Item3: "Telegram Pay — @username या वॉलेट पते से भेजें; बॉट वॉलेट बनाएँ या Phantom लिंक करें",
-      m2026Item4: "Phantom-लिंक Pay, Operator द्वारा गैस — Phantom में हस्ताक्षर, Solana पर निपटान",
-      m2026Item5: "Web Pay (/pay) — स्थानांतरण, प्राप्ति और इतिहास, Telegram साइन-इन",
+      m2026Item0: "Solana Mainnet पर ACOPAY Token-2022",
+      m2026Item1: "Raydium पर ACOPAY/USDT पूल",
+      m2026Item2: "Acopay.net और Telegram Pay पर USDT से ACOPAY 1:1 खरीदें",
+      m2026Item3: "Telegram Pay — @username या वॉलेट पते से भेजें",
+      m2026Item4: "Phantom लिंकिंग और Web Pay (/pay)",
+
       m2027Title: "पे ऐप",
       m2027Item0: "ACOPAY मोबाइल ऐप लॉन्च — ACOPAY नेटवर्क में उपयोगकर्ताओं के बीच पीयर-टू-पीयर भुगतान",
       m2027Item1: "ऐप में वॉलेट से वॉलेट भुगतान — ACOPAY सिस्टम में Solana पर निपटान",
