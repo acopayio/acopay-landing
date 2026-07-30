@@ -26,7 +26,8 @@ export const ACOPAY_TREASURY = "287s1e5LVRwQ1sfXuFGKwLog7n2vLBJDAm5buW5T3WSQ";
 const DECIMALS = TOKEN.decimals;
 const FEE_BPS = 1; // 0.01%
 const MAX_FEE_ACOPAY = 1_000_000;
-const MIN_TRANSFER = 0.1;
+/** Sync config/fees.json — DOCS/96–97. First-time recipient needs ≥ open+min (=2). */
+const MIN_TRANSFER = 1;
 const FIRST_ATA_OPEN_FEE = 1;
 
 const RPC_CANDIDATES = [

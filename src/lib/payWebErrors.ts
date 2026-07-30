@@ -29,6 +29,7 @@ const CODE_TO_KEY: Record<string, string> = {
   no_address: "payApp.errNoAddress",
   self_send: "payApp.errSelfSend",
   min_amount: "payApp.errMinAmount",
+  first_ata_min2: "payApp.firstAtaMin2",
   insufficient_balance: "payApp.errInsufficient",
   phantom_not_linked: "payApp.errPhantomNotLinked",
   custodial_missing: "payApp.errCustodialMissing",
@@ -93,6 +94,10 @@ function codeFromEnglishMessage(msg: string): { code: string; vars: PayErrorVars
 
   const min = m.match(/^Minimum\s+([\d.]+)\s+ACOPAY/i);
   if (min) return { code: "min_amount", vars: { min: min[1] } };
+
+  if (/First-time ACOPAY wallet|minimum 2 ACOPAY.*account open/i.test(m)) {
+    return { code: "first_ata_min2", vars: {} };
+  }
 
   const insuff = m.match(
     /Insufficient balance\.\s*Need\s+([\d.]+)\s+ACOPAY\s*\(have\s+([\d.]+)\)/i,

@@ -17,7 +17,7 @@
     "onChainBasisPoints": 1,
     "onChainPercent": 0.01,
     "maximumFeeAcopay": 1000000,
-    "minTransferAcopay": 0.1,
+    "minTransferAcopay": 1,
     "firstAtaOpenFeeAcopay": 1,
     "paidBy": "sender",
     "openFeeTreasury": "287s1e5LVRwQ1sfXuFGKwLog7n2vLBJDAm5buW5T3WSQ",

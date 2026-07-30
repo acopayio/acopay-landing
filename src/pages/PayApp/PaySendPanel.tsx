@@ -605,7 +605,7 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
 
             <button
               type="button"
-              disabled={busy || !to.trim() || !(amountNum >= 0.1)}
+              disabled={busy || !to.trim() || !(amountNum >= 1)}
               onClick={() => void onPreview()}
               className="btn-orca-primary w-full !rounded-xl !py-3.5 text-sm font-semibold disabled:opacity-50"
             >
