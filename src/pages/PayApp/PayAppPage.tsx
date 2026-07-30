@@ -269,7 +269,7 @@ export function PayAppPage() {
                   <button
                     type="button"
                     onClick={() => void onOpenTelegramLogin()}
-                    className="btn-orca-primary inline-flex w-auto max-w-full items-center justify-center gap-2 !rounded-xl !px-5 !py-2.5 text-sm font-semibold"
+                    className="btn-orca-primary inline-flex w-auto min-w-[14.5rem] max-w-full items-center justify-center gap-2 !rounded-xl !px-7 !py-2.5 text-sm font-semibold"
                   >
                     {t("payApp.loginTitle")}
                   </button>
