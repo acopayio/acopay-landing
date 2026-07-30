@@ -10,6 +10,7 @@ const MILESTONES = [
       "roadmap.m2026Item2",
       "roadmap.m2026Item3",
       "roadmap.m2026Item4",
+      "roadmap.m2026Item5",
     ],
     art: "/assets/roadmap/2026-pool.png",
     altKey: "roadmap.m2026Alt",

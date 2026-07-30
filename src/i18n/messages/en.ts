@@ -162,13 +162,20 @@ export const en = {
   },
   roadmap: {
     title: "Roadmap",
-    subtitle: "Milestones through 2030.",
+    subtitle: "Key milestones through 2030.",
     m2026Title: "Launch",
-    m2026Item0: "ACOPAY/USDT pool live on Raydium",
-    m2026Item1: "Buy ACOPAY directly on the website",
-    m2026Item2: "Buy ACOPAY via Telegram Pay",
-    m2026Item3: "Link Phantom with Telegram Pay",
-    m2026Item4: "Telegram Pay uses a linked Phantom wallet",
+    m2026Item0:
+      "ACOPAY Token-2022 on Solana Mainnet with ACOPAY/USDT liquidity on Raydium (0.01% transfer fee)",
+    m2026Item1:
+      "Official site Acopay.net — Markets (pools, spot, transfers, swap) and on-chain contract clarity",
+    m2026Item2:
+      "Buy desk: USDT → ACOPAY at 1:1 on the website (QR and Phantom) and via Telegram Pay",
+    m2026Item3:
+      "Telegram Pay — send by @username or wallet address; create a bot wallet or link Phantom",
+    m2026Item4:
+      "Phantom-linked Pay with Operator-sponsored gas — sign in Phantom, settle on Solana",
+    m2026Item5:
+      "Web Pay at /pay — Transfer, Receive, and History with Telegram sign-in",
     m2026Alt: "3D illustration of ACOPAY liquidity pool",
     m2027Title: "Pay App",
     m2027Item0: "Launch the ACOPAY mobile app for peer-to-peer payments between users inside the ACOPAY network",
