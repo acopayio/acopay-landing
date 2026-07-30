@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
+import QRCode from "qrcode";
 import { AddrHighlight } from "../../components/AddrHighlight";
 import { BrandLogo } from "../../components/BrandLogo";
 import { TOKEN } from "../../config/token";
@@ -37,10 +38,18 @@ export function PayAppPage() {
   const [me, setMe] = useState<PayMe | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [botUrl, setBotUrl] = useState<string | null>(null);
+  const [loginQr, setLoginQr] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const pollRef = useRef<number | null>(null);
+  const authGenRef = useRef(0);
+  const loginAuthBusyRef = useRef(false);
+  const autoLoginStartedRef = useRef(false);
+  const botUrlRef = useRef<string | null>(null);
 
-  const showErr = (e: unknown) => setError(mapPayApiError(e, t, locale));
+  const showErr = useCallback(
+    (e: unknown) => setError(mapPayApiError(e, t, locale)),
+    [t, locale],
+  );
 
   const clearPoll = () => {
     if (pollRef.current != null) {
@@ -48,6 +57,16 @@ export function PayAppPage() {
       pollRef.current = null;
     }
   };
+
+  const resetLoginAuth = useCallback(() => {
+    clearPoll();
+    loginAuthBusyRef.current = false;
+    autoLoginStartedRef.current = false;
+    authGenRef.current += 1;
+    botUrlRef.current = null;
+    setBotUrl(null);
+    setLoginQr(null);
+  }, []);
 
   const loadMe = useCallback(async () => {
     const profile = await fetchPayMe();
@@ -78,43 +97,104 @@ export function PayAppPage() {
   const receivePk = me?.publicKey || me?.linkedPublicKey || null;
   const hasWallet = Boolean(receivePk || me?.walletReady);
 
-  async function startDeepLinkLogin() {
-    setError(null);
-    clearPoll();
-    try {
-      const { requestId, botUrl: url } = await requestTelegramAuth();
-      setBotUrl(url);
-      setPhase("polling");
-      openTelegramBotLink(url);
-      pollRef.current = window.setInterval(async () => {
-        try {
-          const st = await pollTelegramAuth(requestId);
-          if (st.status === "ok" && st.token) {
+  const beginAuthSession = useCallback(
+    async (opts: { openApp: boolean }) => {
+      if (loginAuthBusyRef.current) {
+        if (opts.openApp && botUrlRef.current) openTelegramBotLink(botUrlRef.current);
+        return;
+      }
+      setError(null);
+      clearPoll();
+      loginAuthBusyRef.current = true;
+      const gen = ++authGenRef.current;
+      try {
+        const { requestId, botUrl: url } = await requestTelegramAuth();
+        if (gen !== authGenRef.current) return;
+        botUrlRef.current = url;
+        setBotUrl(url);
+        setPhase("polling");
+        if (opts.openApp) openTelegramBotLink(url);
+        pollRef.current = window.setInterval(async () => {
+          if (gen !== authGenRef.current) {
             clearPoll();
-            setPaySession(st.token);
-            await loadMe();
-          } else if (st.status === "expired" || st.status === "unknown") {
+            return;
+          }
+          try {
+            const st = await pollTelegramAuth(requestId);
+            if (st.status === "ok" && st.token) {
+              clearPoll();
+              setPaySession(st.token);
+              await loadMe();
+            } else if (st.status === "expired" || st.status === "unknown") {
+              clearPoll();
+              loginAuthBusyRef.current = false;
+              autoLoginStartedRef.current = false;
+              botUrlRef.current = null;
+              setBotUrl(null);
+              setLoginQr(null);
+              setError(t("payApp.errExpired"));
+              setPhase("login");
+            }
+          } catch (e) {
             clearPoll();
-            setError(t("payApp.errExpired"));
+            loginAuthBusyRef.current = false;
+            autoLoginStartedRef.current = false;
+            botUrlRef.current = null;
+            setBotUrl(null);
+            setLoginQr(null);
+            showErr(e);
             setPhase("login");
           }
-        } catch (e) {
-          clearPoll();
-          showErr(e);
-          setPhase("login");
-        }
-      }, 2000);
-    } catch (e) {
-      showErr(e);
-      setPhase("login");
+        }, 2000);
+      } catch (e) {
+        if (gen !== authGenRef.current) return;
+        loginAuthBusyRef.current = false;
+        showErr(e);
+        setPhase("login");
+      }
+    },
+    [loadMe, showErr, t],
+  );
+
+  // Auto-create Telegram deep-link + QR as soon as login screen shows (PC + mobile).
+  useEffect(() => {
+    if (phase !== "login") return;
+    if (autoLoginStartedRef.current) return;
+    autoLoginStartedRef.current = true;
+    void beginAuthSession({ openApp: false });
+  }, [phase, beginAuthSession]);
+
+  useEffect(() => {
+    if (!botUrl) {
+      setLoginQr(null);
+      return;
     }
+    let cancelled = false;
+    void QRCode.toDataURL(botUrl, {
+      margin: 2,
+      width: 280,
+      color: { dark: "#0c1017", light: "#ffffff" },
+      errorCorrectionLevel: "H",
+    }).then((dataUrl) => {
+      if (!cancelled) setLoginQr(dataUrl);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [botUrl]);
+
+  async function onOpenTelegramLogin() {
+    if (botUrl) {
+      openTelegramBotLink(botUrl);
+      return;
+    }
+    await beginAuthSession({ openApp: true });
   }
 
   async function onLogout() {
-    clearPoll();
+    resetLoginAuth();
     await logoutPay();
     setMe(null);
-    setBotUrl(null);
     setPanel("home");
     setPhase("login");
   }
@@ -166,12 +246,34 @@ export function PayAppPage() {
           <div className="flex min-h-[min(28rem,70vh)] items-center justify-center sm:min-h-[min(32rem,70vh)]">
             <div className="w-full max-w-md overflow-hidden rounded-2xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-surface)] shadow-[0_12px_40px_-24px_rgba(12,16,23,0.35)]">
               <div className="px-5 py-7 text-center sm:px-8 sm:py-9">
-                <div className="mb-4 flex justify-center">
-                  <span className="inline-flex rounded-full bg-[var(--acopay-brand-soft)] p-3 ring-1 ring-[color:var(--acopay-brand)]/25">
-                    <BrandLogo className="h-12 w-12" alt="" />
-                  </span>
+                <div className="mb-3 flex justify-center sm:mb-4">
+                  {loginQr ? (
+                    <div className="otc-qr-frame pay-login-qr relative inline-block">
+                      <img
+                        src={loginQr}
+                        alt={t("payApp.loginScanHint")}
+                        className="block h-[188px] w-[188px] bg-white sm:h-[220px] sm:w-[220px]"
+                      />
+                      <img
+                        src="/assets/logo-circle.png"
+                        alt=""
+                        className="otc-qr-logo otc-qr-logo--circle"
+                        width={48}
+                        height={48}
+                        draggable={false}
+                      />
+                    </div>
+                  ) : (
+                    <div className="flex h-[188px] w-[188px] flex-col items-center justify-center gap-2 rounded-2xl border border-[color:var(--acopay-border)] bg-[var(--acopay-bg)] sm:h-[220px] sm:w-[220px]">
+                      <span className="h-5 w-5 animate-spin rounded-full border-2 border-[color:var(--acopay-pay-accent)] border-t-transparent" />
+                      <p className="text-xs text-[var(--acopay-muted)]">{t("payApp.loading")}</p>
+                    </div>
+                  )}
                 </div>
-                <p className="mx-auto max-w-sm text-sm leading-relaxed text-[var(--acopay-muted)]">
+                <p className="mx-auto max-w-sm text-sm font-semibold text-[var(--acopay-pay-accent)]">
+                  {t("payApp.loginScanHint")}
+                </p>
+                <p className="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-[var(--acopay-muted)]">
                   {t("payApp.loginHint")}
                 </p>
 
@@ -191,23 +293,17 @@ export function PayAppPage() {
                 <div className="mt-6 flex flex-col items-center gap-2.5 sm:mt-8">
                   <button
                     type="button"
-                    onClick={() => void startDeepLinkLogin()}
-                    disabled={phase === "polling"}
-                    className="btn-orca-primary flex w-full max-w-sm items-center justify-center gap-2 !rounded-xl !py-3.5 text-sm font-semibold disabled:opacity-70"
+                    onClick={() => void onOpenTelegramLogin()}
+                    className="btn-orca-primary flex w-full max-w-sm items-center justify-center gap-2 !rounded-xl !py-3.5 text-sm font-semibold"
                   >
-                    {phase === "polling" ? t("payApp.waitingTelegram") : t("payApp.loginTitle")}
+                    {phase === "polling" && botUrl
+                      ? t("payApp.openTelegram")
+                      : t("payApp.loginTitle")}
                   </button>
-                  {phase === "polling" && botUrl && (
-                    <button
-                      type="button"
-                      onClick={() => openTelegramBotLink(botUrl)}
-                      className="text-sm font-semibold text-[var(--acopay-brand)]"
-                    >
-                      {t("payApp.openAgain")}
-                    </button>
-                  )}
                   {phase === "polling" ? (
-                    <p className="max-w-sm text-xs text-[var(--acopay-faint)]">{t("payApp.pollingHint")}</p>
+                    <p className="max-w-sm text-xs text-[var(--acopay-faint)]">
+                      {t("payApp.waitingTelegram")} · {t("payApp.pollingHint")}
+                    </p>
                   ) : null}
                 </div>
               </div>
