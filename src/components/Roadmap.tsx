@@ -4,12 +4,7 @@ const MILESTONES = [
   {
     year: "2026",
     titleKey: "roadmap.m2026Title",
-    itemKeys: [
-      "roadmap.m2026Item0",
-      "roadmap.m2026Item1",
-      "roadmap.m2026Item2",
-      "roadmap.m2026Item3",
-    ],
+    itemKeys: ["roadmap.m2026Item0", "roadmap.m2026Item1"],
     art: "/assets/roadmap/2026-pool.png",
     altKey: "roadmap.m2026Alt",
     done: true,
@@ -25,7 +20,7 @@ const MILESTONES = [
   {
     year: "2028",
     titleKey: "roadmap.m2028Title",
-    itemKeys: ["roadmap.m2028Item0"],
+    itemKeys: ["roadmap.m2028Item0", "roadmap.m2028Item1"],
     art: "/assets/roadmap/2027-web.png",
     altKey: "roadmap.m2028Alt",
     done: false,
@@ -44,6 +39,14 @@ const MILESTONES = [
     itemKeys: ["roadmap.m2030Item0", "roadmap.m2030Item1"],
     art: "/assets/roadmap/2030-gateway.png",
     altKey: "roadmap.m2030Alt",
+    done: false,
+  },
+  {
+    year: "2031",
+    titleKey: "roadmap.m2031Title",
+    itemKeys: ["roadmap.m2031Item0", "roadmap.m2031Item1"],
+    art: "/assets/roadmap/2030-gateway.png",
+    altKey: "roadmap.m2031Alt",
     done: false,
   },
 ] as const;
