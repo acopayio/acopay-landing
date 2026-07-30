@@ -122,6 +122,7 @@ export function setPaySession(token: string | null) {
 
 export async function requestTelegramAuth(): Promise<{
   requestId: string;
+  pollSecret: string;
   botUrl: string;
   expiresAt: number;
 }> {
@@ -134,28 +135,35 @@ export async function requestTelegramAuth(): Promise<{
   const data = (await res.json()) as {
     ok?: boolean;
     requestId?: string;
+    pollSecret?: string;
     botUrl?: string;
     expiresAt?: number;
     error?: string;
     errorCode?: string;
   };
-  if (!res.ok || !data.ok || !data.requestId || !data.botUrl) {
+  if (!res.ok || !data.ok || !data.requestId || !data.botUrl || !data.pollSecret) {
     throwPayApiError(data, "auth_start", "Could not start Telegram login.");
   }
   return {
     requestId: data.requestId,
+    pollSecret: data.pollSecret,
     botUrl: data.botUrl,
     expiresAt: Number(data.expiresAt) || Date.now() + 600_000,
   };
 }
 
-export async function pollTelegramAuth(requestId: string): Promise<{
+export async function pollTelegramAuth(
+  requestId: string,
+  pollSecret: string,
+): Promise<{
   status: string;
   token?: string;
+  needsClaim?: boolean;
   username?: string | null;
 }> {
   const q = encodeURIComponent(requestId);
-  const res = await fetch(`/api/pay/auth-poll?requestId=${q}`, {
+  const ps = encodeURIComponent(pollSecret);
+  const res = await fetch(`/api/pay/auth-poll?requestId=${q}&pollSecret=${ps}`, {
     method: "GET",
     headers: headers(null),
     credentials: fetchCred,
@@ -164,6 +172,7 @@ export async function pollTelegramAuth(requestId: string): Promise<{
     ok?: boolean;
     status?: string;
     token?: string;
+    needsClaim?: boolean;
     username?: string | null;
     error?: string;
     errorCode?: string;
@@ -172,8 +181,30 @@ export async function pollTelegramAuth(requestId: string): Promise<{
   return {
     status: String(data.status || "unknown"),
     token: data.token,
+    needsClaim: Boolean(data.needsClaim),
     username: data.username,
   };
+}
+
+/** Finish login via one-time ?webclaim= from Telegram (P0 login-race fix). */
+export async function claimTelegramAuth(claimCode: string): Promise<string> {
+  const res = await fetch("/api/pay/auth-claim", {
+    method: "POST",
+    headers: headers(null),
+    credentials: fetchCred,
+    body: JSON.stringify({ claimCode }),
+  });
+  const data = (await res.json()) as {
+    ok?: boolean;
+    token?: string;
+    error?: string;
+    errorCode?: string;
+  };
+  if (!res.ok || !data.ok || !data.token) {
+    throwPayApiError(data, "auth_login", data.error || "Login claim failed.");
+  }
+  setPaySession(data.token);
+  return data.token;
 }
 
 /** Telegram Login Widget callback payload → session token. */

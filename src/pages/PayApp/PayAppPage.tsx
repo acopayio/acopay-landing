@@ -6,6 +6,7 @@ import { BrandLogo } from "../../components/BrandLogo";
 import { TOKEN } from "../../config/token";
 import { useI18n } from "../../i18n/LanguageProvider";
 import {
+  claimTelegramAuth,
   fetchPayMe,
   formatAcopayBalance,
   logoutPay,
@@ -79,6 +80,26 @@ export function PayAppPage() {
   useEffect(() => {
     let cancelled = false;
     (async () => {
+      // P0: one-time claim from Telegram button (?webclaim=)
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const claim = (params.get("webclaim") || "").trim();
+        if (claim) {
+          await claimTelegramAuth(claim);
+          params.delete("webclaim");
+          const next = `${window.location.pathname}${params.toString() ? `?${params}` : ""}${window.location.hash || ""}`;
+          window.history.replaceState({}, "", next);
+          if (!cancelled) await loadMe();
+          return;
+        }
+      } catch (e) {
+        if (!cancelled) {
+          setPaySession(null);
+          showErr(e);
+          setPhase("login");
+        }
+        return;
+      }
       // Cookie HttpOnly may exist without in-memory token after reload.
       try {
         await loadMe();
@@ -93,7 +114,7 @@ export function PayAppPage() {
       cancelled = true;
       clearPoll();
     };
-  }, [loadMe]);
+  }, [loadMe, showErr]);
 
   const receivePk = me?.publicKey || me?.linkedPublicKey || null;
   const hasWallet = Boolean(receivePk || me?.walletReady);
@@ -109,7 +130,7 @@ export function PayAppPage() {
       loginAuthBusyRef.current = true;
       const gen = ++authGenRef.current;
       try {
-        const { requestId, botUrl: url } = await requestTelegramAuth();
+        const { requestId, pollSecret, botUrl: url } = await requestTelegramAuth();
         if (gen !== authGenRef.current) return;
         botUrlRef.current = url;
         setBotUrl(url);
@@ -121,12 +142,36 @@ export function PayAppPage() {
             return;
           }
           try {
-            const st = await pollTelegramAuth(requestId);
+            const st = await pollTelegramAuth(requestId, pollSecret);
             if (st.status === "ok" && st.token) {
               clearPoll();
               setPaySession(st.token);
               await loadMe();
-            } else if (st.status === "expired" || st.status === "unknown") {
+              return;
+            }
+            // P0: token only via Telegram claim link — keep polling /me (same browser cookie)
+            if (st.status === "ok" && st.needsClaim) {
+              try {
+                await loadMe();
+                clearPoll();
+                return;
+              } catch {
+                /* wait until user opens claim link from Telegram */
+              }
+              return;
+            }
+            if (st.status === "forbidden") {
+              clearPoll();
+              loginAuthBusyRef.current = false;
+              autoLoginStartedRef.current = false;
+              botUrlRef.current = null;
+              setBotUrl(null);
+              setLoginQr(null);
+              setError(t("payApp.errAuthPoll"));
+              setPhase("login");
+              return;
+            }
+            if (st.status === "expired" || st.status === "unknown" || st.status === "consumed") {
               clearPoll();
               loginAuthBusyRef.current = false;
               autoLoginStartedRef.current = false;

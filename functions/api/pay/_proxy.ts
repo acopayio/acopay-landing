@@ -125,7 +125,10 @@ export async function proxyPay(
 
     // Auth success → set HttpOnly cookie (token still in JSON for one-shot handoff).
     const isAuthOk =
-      (path === "/pay/auth/poll" || path === "/pay/auth/telegram") && upstreamRes.ok;
+      (path === "/pay/auth/poll" ||
+        path === "/pay/auth/telegram" ||
+        path === "/pay/auth/claim") &&
+      upstreamRes.ok;
     const isLogout = path === "/pay/auth/logout";
     if (isLogout) {
       outHeaders["Set-Cookie"] = clearSessionCookie();
