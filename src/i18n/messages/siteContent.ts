@@ -565,7 +565,7 @@ export const SITE_CONTENT_PARTIALS: Record<string, object> = {
   th: {
     theme: { menu: "ธีม", dark: "มืด", light: "สว่าง", aria: "เลือกธีม" },
     lang: { menu: "ภาษา", choose: "เลือกภาษา", hint: "ค่าเริ่มต้นคือภาษาอังกฤษ ปัจจุบัน: {lang}" },
-    hero: { eyebrow: "Solana · Token-2022", feeLabel: "ค่าธรรมเนียมโอน on-chain:" },
+    hero: { eyebrow: "Solana · Token-2022", feeLabel: "ค่าธรรมเนียมโอนบนเชน:" },
     common: {
       learnMore: "ดูเพิ่มเติม",
       done: "เสร็จสิ้น",
@@ -748,7 +748,7 @@ export const SITE_CONTENT_PARTIALS: Record<string, object> = {
   id: {
     theme: { menu: "Tema", dark: "Gelap", light: "Terang", aria: "Pilih tema" },
     lang: { menu: "Bahasa", choose: "Pilih bahasa", hint: "Default adalah Bahasa Inggris. Saat ini: {lang}." },
-    hero: { eyebrow: "Solana · Token-2022", feeLabel: "Biaya transfer on-chain:" },
+    hero: { eyebrow: "Solana · Token-2022", feeLabel: "Biaya transfer di blockchain:" },
     common: {
       learnMore: "Pelajari lebih lanjut",
       done: "Selesai",
@@ -815,7 +815,7 @@ export const SITE_CONTENT_PARTIALS: Record<string, object> = {
     faq: {
       title: "FAQ",
       q1: "Apa itu ACOPAY?",
-      a1: "ACOPAY adalah token utilitas pembayaran di Solana (Token-2022) untuk transfer dan settlement antar dompet.",
+      a1: "ACOPAY adalah token utilitas pembayaran di Solana (Token-2022) untuk transfer dan penyelesaian antar dompet.",
       q2: "Di mana alamat kontrak?",
       a2: "Mint resmi: {mint}. Selalu konfirmasi di Acopay.net dan Solscan sebelum mengirim dana. Abaikan DM atau situs yang menampilkan mint berbeda.",
       q3: "Bagaimana cara membeli?",
@@ -931,7 +931,7 @@ export const SITE_CONTENT_PARTIALS: Record<string, object> = {
   ms: {
     theme: { menu: "Tema", dark: "Gelap", light: "Cerah", aria: "Pilih tema" },
     lang: { menu: "Bahasa", choose: "Pilih bahasa", hint: "Lalai ialah Bahasa Inggeris. Semasa: {lang}." },
-    hero: { eyebrow: "Solana · Token-2022", feeLabel: "Yuran pindahan on-chain:" },
+    hero: { eyebrow: "Solana · Token-2022", feeLabel: "Yuran pindahan di rantaian:" },
     common: {
       learnMore: "Ketahui lebih lanjut",
       done: "Selesai",
@@ -1247,13 +1247,13 @@ export const SITE_CONTENT_PARTIALS: Record<string, object> = {
     about: {
       label: "परिचय",
       title: "ACOPAY क्या है?",
-      body: "ACOPAY, Solana पर एक पेमेंट यूटिलिटी है। भुगतान, सेटलमेंट, या वॉलेट के बीच फंड भेजने के लिए उपयोग करें — और जब लिक्विडिटी चाहिए तो ACOPAY/USDT ट्रेड करें।",
+      body: "ACOPAY, Solana पर एक भुगतान उपयोगिता है। भुगतान, निपटान, या वॉलेट के बीच फंड भेजने के लिए उपयोग करें — और जब तरलता चाहिए तो ACOPAY/USDT जोड़ी का व्यापार करें।",
       f1Title: "भुगतान",
-      f1Desc: "स्पष्ट ऑन-चेन ट्रांसफर शुल्क के साथ Solana पर वॉलेट-टू-वॉलेट मूल्य भेजें और सेटल करें।",
-      f2Title: "ट्रेड",
+      f1Desc: "Solana पर वॉलेट के बीच स्पष्ट ब्लॉकचेन शुल्क के साथ मूल्य भेजें और निपटान करें।",
+      f2Title: "व्यापार",
       f2Desc: "Raydium और Jupiter पर USDT के मुकाबले ACOPAY खरीदें और बेचें।",
-      f3Title: "ऑन-चेन स्पष्टता",
-      f3Desc: "नाम, लोगो, सप्लाई और कॉन्ट्रैक्ट एड्रेस Solana एक्सप्लोरर पर प्रकाशित हैं।",
+      f3Title: "ब्लॉकचेन पर स्पष्टता",
+      f3Desc: "नाम, लोगो, आपूर्ति और अनुबंध पता Solana एक्सप्लोरर पर प्रकाशित हैं।",
     },
     roadmap: {
       title: "रोडमैप",
@@ -1267,11 +1267,11 @@ export const SITE_CONTENT_PARTIALS: Record<string, object> = {
       m2026Alt: "ACOPAY लिक्विडिटी पूल का 3D चित्रण",
       m2027Title: "पे ऐप",
       m2027Item0: "ACOPAY मोबाइल ऐप लॉन्च — ACOPAY नेटवर्क में उपयोगकर्ताओं के बीच पीयर-टू-पीयर भुगतान",
-      m2027Item1: "ऐप में वॉलेट-टू-वॉलेट पे — ACOPAY सिस्टम में Solana पर सेटल",
+      m2027Item1: "ऐप में वॉलेट से वॉलेट भुगतान — ACOPAY सिस्टम में Solana पर निपटान",
       m2027Alt: "ACOPAY मोबाइल पीयर भुगतान का 3D चित्रण",
-      m2028Title: "पे नेटवर्क",
-      m2028Item0: "ACOPAY पेमेंट नेटवर्क खोलें — दुनिया भर के मर्चेंट और पार्टनर ACOPAY से सेटल करें",
-      m2028Alt: "ACOPAY वैश्विक पेमेंट नेटवर्क का 3D चित्रण",
+      m2028Title: "भुगतान नेटवर्क",
+      m2028Item0: "ACOPAY भुगतान नेटवर्क खोलें — दुनिया भर के व्यापारी और भागीदार ACOPAY से निपटान करें",
+      m2028Alt: "ACOPAY वैश्विक भुगतान नेटवर्क का 3D चित्रण",
       m2029Title: "मार्केट्स",
       m2029Item0: "CoinGecko पर लिस्टिंग",
       m2029Alt: "मार्केट लिस्टिंग ग्रोथ का 3D चित्रण",
@@ -1283,7 +1283,7 @@ export const SITE_CONTENT_PARTIALS: Record<string, object> = {
     faq: {
       title: "सामान्य प्रश्न",
       q1: "ACOPAY क्या है?",
-      a1: "ACOPAY, Solana पर वॉलेट-टू-वॉलेट ट्रांसफर और सेटलमेंट के लिए एक पेमेंट यूटिलिटी टोकन (Token-2022) है।",
+      a1: "ACOPAY, Solana पर वॉलेट के बीच स्थानांतरण और निपटान के लिए एक भुगतान उपयोगिता टोकन (Token-2022) है।",
       q2: "कॉन्ट्रैक्ट एड्रेस कहाँ है?",
       a2: "आधिकारिक mint: {mint}। फंड भेजने से पहले हमेशा Acopay.net और Solscan पर पुष्टि करें। अलग mint दिखाने वाले DM या साइट को नज़रअंदाज़ करें।",
       q3: "मैं कैसे खरीदूं?",
@@ -1593,7 +1593,7 @@ export const SITE_CONTENT_PARTIALS: Record<string, object> = {
       },
       hero: {
           eyebrow: "Solana · Token-2022",
-          feeLabel: "Comisión de transferencia on-chain:",
+          feeLabel: "Comisión de transferencia en cadena:",
       },
       common: {
           learnMore: "Más información",
@@ -1793,7 +1793,7 @@ export const SITE_CONTENT_PARTIALS: Record<string, object> = {
       },
       hero: {
           eyebrow: "Solana · Token-2022",
-          feeLabel: "Taxa de transferência on-chain:",
+          feeLabel: "Taxa de transferência em cadeia:",
       },
       common: {
           learnMore: "Saiba mais",
@@ -1982,7 +1982,7 @@ export const SITE_CONTENT_PARTIALS: Record<string, object> = {
   fr: {
     theme: { menu: "Thème", dark: "Sombre", light: "Clair", aria: "Choisir le thème" },
     lang: { menu: "Langue", choose: "Choisir la langue", hint: "L'anglais est la langue par défaut. Actuelle : {lang}." },
-    hero: { eyebrow: "Solana · Token-2022", feeLabel: "Frais de transfert on-chain :" },
+    hero: { eyebrow: "Solana · Token-2022", feeLabel: "Frais de transfert sur la chaîne :" },
     common: {
       learnMore: "En savoir plus",
       done: "Terminé",
@@ -2415,7 +2415,7 @@ theme: { menu: "Thema", dark: "Donker", light: "Licht", aria: "Thema kiezen" },
     faq: {
       title: "FAQ",
       q1: "Wat is ACOPAY?",
-      a1: "ACOPAY is een betalingsutility-token op Solana (Token-2022) voor wallet-naar-wallet transfers en settlement.",
+      a1: "ACOPAY is een betalingsutility-token op Solana (Token-2022) voor transfers tussen wallets en afwikkeling.",
       q2: "Waar is het contractadres?",
       a2: "Officiële mint: {mint}. Bevestig altijd op Acopay.net en Solscan voordat u geld verstuurt. Negeer DM's of sites met een andere mint.",
       q3: "Hoe koop ik?",
@@ -2531,7 +2531,7 @@ theme: { menu: "Thema", dark: "Donker", light: "Licht", aria: "Thema kiezen" },
   it: {
 theme: { menu: "Tema", dark: "Scuro", light: "Chiaro", aria: "Scegli tema" },
     lang: { menu: "Lingua", choose: "Scegli lingua", hint: "La lingua predefinita è l'inglese. Attuale: {lang}." },
-    hero: { eyebrow: "Solana · Token-2022", feeLabel: "Commissione di trasferimento on-chain:" },
+    hero: { eyebrow: "Solana · Token-2022", feeLabel: "Commissione di trasferimento sulla catena:" },
     common: {
       learnMore: "Scopri di più",
       done: "Fatto",
@@ -2714,7 +2714,7 @@ theme: { menu: "Tema", dark: "Scuro", light: "Chiaro", aria: "Scegli tema" },
   pl: {
 theme: { menu: "Motyw", dark: "Ciemny", light: "Jasny", aria: "Wybierz motyw" },
     lang: { menu: "Język", choose: "Wybierz język", hint: "Domyślnie jest angielski. Obecnie: {lang}." },
-    hero: { eyebrow: "Solana · Token-2022", feeLabel: "Opłata za transfer on-chain:" },
+    hero: { eyebrow: "Solana · Token-2022", feeLabel: "Opłata za transfer w łańcuchu:" },
     common: {
       learnMore: "Dowiedz się więcej",
       done: "Gotowe",
@@ -2964,7 +2964,7 @@ theme: { menu: "Tema", dark: "Koyu", light: "Açık", aria: "Tema seç" },
     faq: {
       title: "SSS",
       q1: "ACOPAY nedir?",
-      a1: "ACOPAY, cüzdanlar arası transfer ve settlement için Solana üzerinde bir ödeme yardımcı token'ıdır (Token-2022).",
+      a1: "ACOPAY, cüzdanlar arası transfer ve mutabakat için Solana üzerinde bir ödeme yardımcı token'ıdır (Token-2022).",
       q2: "Kontrat adresi nerede?",
       a2: "Resmi mint: {mint}. Fon göndermeden önce her zaman Acopay.net ve Solscan'de doğrulayın. Farklı mint gösteren DM veya siteleri yok sayın.",
       q3: "Nasıl satın alırım?",
@@ -3080,7 +3080,7 @@ theme: { menu: "Tema", dark: "Koyu", light: "Açık", aria: "Tema seç" },
   ru: {
 theme: { menu: "Тема", dark: "Тёмная", light: "Светлая", aria: "Выбрать тему" },
     lang: { menu: "Язык", choose: "Выбрать язык", hint: "По умолчанию английский. Сейчас: {lang}." },
-    hero: { eyebrow: "Solana · Token-2022", feeLabel: "Комиссия за on-chain перевод:" },
+    hero: { eyebrow: "Solana · Token-2022", feeLabel: "Комиссия за перевод в блокчейне:" },
     common: {
       learnMore: "Подробнее",
       done: "Готово",
@@ -3263,7 +3263,7 @@ theme: { menu: "Тема", dark: "Тёмная", light: "Светлая", aria: 
   uk: {
 theme: { menu: "Тема", dark: "Темна", light: "Світла", aria: "Обрати тему" },
     lang: { menu: "Мова", choose: "Обрати мову", hint: "За замовчуванням англійська. Зараз: {lang}." },
-    hero: { eyebrow: "Solana · Token-2022", feeLabel: "Комісія за on-chain переказ:" },
+    hero: { eyebrow: "Solana · Token-2022", feeLabel: "Комісія за переказ у блокчейні:" },
     common: {
       learnMore: "Дізнатися більше",
       done: "Готово",
