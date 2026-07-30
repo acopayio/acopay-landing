@@ -231,9 +231,9 @@ export function PayAppPage() {
                       <button
                         type="button"
                         onClick={() => void onLogout()}
-                        className="inline-flex shrink-0 items-center gap-1 rounded-lg px-1.5 py-1 text-xs font-semibold text-[var(--acopay-muted)] hover:bg-[var(--acopay-hover)] hover:text-[var(--acopay-fg)]"
+                        className="inline-flex shrink-0 items-center gap-1.5 rounded-lg px-1.5 py-1 text-xs font-semibold text-[var(--acopay-danger)] hover:bg-[var(--acopay-danger-bg)]"
                       >
-                        <span aria-hidden>🚪</span>
+                        <PowerIcon />
                         {t("payApp.logout")}
                       </button>
                     </div>
@@ -409,6 +409,14 @@ function ActionTile({
   );
 }
 
+function PowerIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden>
+      <path d="M12 2v10" strokeLinecap="round" />
+      <path d="M6.7 5.5a8 8 0 1 0 10.6 0" strokeLinecap="round" />
+    </svg>
+  );
+}
 function SendIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>

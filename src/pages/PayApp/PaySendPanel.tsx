@@ -532,7 +532,7 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
             )}
           </div>
           {step !== "success" && step !== "waiting" && (
-            <button type="button" onClick={onBack} className="shrink-0 text-xs font-semibold text-[var(--acopay-brand)]">
+            <button type="button" onClick={onBack} className="shrink-0 text-xs font-semibold text-[var(--acopay-danger)] hover:bg-[var(--acopay-danger-bg)] rounded-lg px-1.5 py-1">
               ← {t("payApp.historyBack")}
             </button>
           )}
@@ -642,7 +642,7 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
                   setPreview(null);
                   setBusy(false);
                 }}
-                className="btn-orca-secondary flex-1 !rounded-xl !py-3 text-sm"
+                className="flex-1 !rounded-xl !py-3 text-sm font-semibold text-[var(--acopay-danger)] border border-[color:var(--acopay-danger-ring)] bg-[var(--acopay-danger-bg)] hover:opacity-90"
               >
                 ← {t("payApp.historyBack")}
               </button>
