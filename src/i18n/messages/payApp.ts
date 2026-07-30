@@ -151,7 +151,7 @@ export const PAY_APP_PARTIALS: Partials = {
     openTelegram: "📲 Mở Telegram",
     recipientTgUser: "Người dùng Telegram Pay",
     waitingTelegram: "Đang chờ xác nhận…",
-    pollingHint: "Xác nhận trong Telegram, rồi quay lại.",
+    pollingHint: "Xác nhận trong Telegram, rồi nhấn Mở Web Pay trong bot.",
     openAgain: "Mở lại",
     balanceLabel: "Số dư",
     logout: "Đăng xuất",
