@@ -604,7 +604,7 @@ export const en = {
     errNoAddress: "No receive address.",
     errSelfSend: "Cannot send to yourself.",
     errMinAmount: "Minimum {min} ACOPAY.",
-    firstAtaMin2: "First-time ACOPAY wallet — minimum 2 ACOPAY (1 account open fee + 1 for recipient).",
+    firstAtaMin2: "You are transferring to a first-time ACOPAY recipient — minimum 2 ACOPAY.",
     errInsufficient: "Insufficient balance. Need {need} ACOPAY (have {have}).",
     errPhantomNotLinked: "Phantom wallet not linked.",
     errCustodialMissing: "Custodial wallet missing. Open Telegram Pay to create one, or link Phantom.",

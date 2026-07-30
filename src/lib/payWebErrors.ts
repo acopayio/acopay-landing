@@ -95,7 +95,9 @@ function codeFromEnglishMessage(msg: string): { code: string; vars: PayErrorVars
   const min = m.match(/^Minimum\s+([\d.]+)\s+ACOPAY/i);
   if (min) return { code: "min_amount", vars: { min: min[1] } };
 
-  if (/First-time ACOPAY wallet|minimum 2 ACOPAY.*account open/i.test(m)) {
+  if (
+    /First-time ACOPAY wallet|first-time ACOPAY recipient|minimum 2 ACOPAY.*account open/i.test(m)
+  ) {
     return { code: "first_ata_min2", vars: {} };
   }
 
