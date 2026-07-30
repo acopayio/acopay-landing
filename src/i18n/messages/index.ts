@@ -203,7 +203,7 @@ const partials: Record<string, DeepPartialMessages> = {
       m2026Title: "Ra mắt",
       m2026Item0: "Giao dịch cặp ACOPAY/USDT trên Raydium và Jupiter",
       m2026Item1: "Tích hợp ACOPAY vào Telegram Pay",
-      m2026Item2: "Chuyển ACOPAY qua Phantom hoặc Telegram Pay",
+      m2026Item2: "Giao dịch ACOPAY qua Phantom hoặc Telegram Pay",
       m2026Item3: "Thanh toán qua Web Pay",
 
 
@@ -493,7 +493,7 @@ const partials: Record<string, DeepPartialMessages> = {
       m2026Title: "启航",
       m2026Item0: "在 Raydium 与 Jupiter 交易 ACOPAY/USDT",
       m2026Item1: "将 ACOPAY 集成到 Telegram Pay",
-      m2026Item2: "通过 Phantom 或 Telegram Pay 转账 ACOPAY",
+      m2026Item2: "通过 Phantom 或 Telegram Pay 交易 ACOPAY",
       m2026Item3: "通过 Web Pay 支付",
 
 
@@ -615,7 +615,7 @@ const partials: Record<string, DeepPartialMessages> = {
       m2026Title: "ローンチ",
       m2026Item0: "Raydium と Jupiter で ACOPAY/USDT を取引",
       m2026Item1: "ACOPAY を Telegram Pay に統合",
-      m2026Item2: "Phantom または Telegram Pay で ACOPAY を送金",
+      m2026Item2: "Phantom または Telegram Pay で ACOPAY を取引",
       m2026Item3: "Web Pay で支払い",
 
 
@@ -732,7 +732,7 @@ const partials: Record<string, DeepPartialMessages> = {
       m2026Title: "런칭",
       m2026Item0: "Raydium과 Jupiter에서 ACOPAY/USDT 거래",
       m2026Item1: "ACOPAY를 Telegram Pay에 통합",
-      m2026Item2: "Phantom 또는 Telegram Pay로 ACOPAY 전송",
+      m2026Item2: "Phantom 또는 Telegram Pay로 ACOPAY 거래",
       m2026Item3: "Web Pay로 결제",
 
 
@@ -849,7 +849,7 @@ const partials: Record<string, DeepPartialMessages> = {
       m2026Title: "Lanzamiento",
       m2026Item0: "Operar ACOPAY/USDT en Raydium y Jupiter",
       m2026Item1: "ACOPAY integrado en Telegram Pay",
-      m2026Item2: "Transferir ACOPAY vía Phantom o Telegram Pay",
+      m2026Item2: "Operar ACOPAY vía Phantom o Telegram Pay",
       m2026Item3: "Pagos en Web Pay",
 
 
@@ -966,7 +966,7 @@ const partials: Record<string, DeepPartialMessages> = {
       m2026Title: "Lançamento",
       m2026Item0: "Negociar ACOPAY/USDT na Raydium e Jupiter",
       m2026Item1: "ACOPAY integrado ao Telegram Pay",
-      m2026Item2: "Transferir ACOPAY via Phantom ou Telegram Pay",
+      m2026Item2: "Negociar ACOPAY via Phantom ou Telegram Pay",
       m2026Item3: "Pagamentos no Web Pay",
 
 m2027Title: "App Pay",
@@ -1082,7 +1082,7 @@ m2027Title: "App Pay",
       m2026Title: "Lancement",
       m2026Item0: "Échanger ACOPAY/USDT sur Raydium et Jupiter",
       m2026Item1: "ACOPAY intégré à Telegram Pay",
-      m2026Item2: "Transférer ACOPAY via Phantom ou Telegram Pay",
+      m2026Item2: "Transacter ACOPAY via Phantom ou Telegram Pay",
       m2026Item3: "Paiements sur Web Pay",
 
 
@@ -1199,7 +1199,7 @@ m2027Title: "App Pay",
       m2026Title: "Start",
       m2026Item0: "ACOPAY/USDT auf Raydium und Jupiter handeln",
       m2026Item1: "ACOPAY in Telegram Pay integriert",
-      m2026Item2: "ACOPAY über Phantom oder Telegram Pay senden",
+      m2026Item2: "ACOPAY über Phantom oder Telegram Pay handeln",
       m2026Item3: "Zahlungen über Web Pay",
 
 
@@ -1316,7 +1316,7 @@ m2027Title: "App Pay",
       m2026Title: "Запуск",
       m2026Item0: "Торговля ACOPAY/USDT на Raydium и Jupiter",
       m2026Item1: "ACOPAY интегрирован в Telegram Pay",
-      m2026Item2: "Перевод ACOPAY через Phantom или Telegram Pay",
+      m2026Item2: "Операции с ACOPAY через Phantom или Telegram Pay",
       m2026Item3: "Платежи через Web Pay",
 
 
@@ -1433,7 +1433,7 @@ m2027Title: "App Pay",
       m2026Title: "الإطلاق",
       m2026Item0: "تداول ACOPAY/USDT على Raydium وJupiter",
       m2026Item1: "دمج ACOPAY في Telegram Pay",
-      m2026Item2: "تحويل ACOPAY عبر Phantom أو Telegram Pay",
+      m2026Item2: "تداول ACOPAY عبر Phantom أو Telegram Pay",
       m2026Item3: "المدفوعات عبر Web Pay",
 
 
@@ -1550,7 +1550,7 @@ m2027Title: "App Pay",
       m2026Title: "เปิดตัว",
       m2026Item0: "เทรด ACOPAY/USDT บน Raydium และ Jupiter",
       m2026Item1: "ผสาน ACOPAY เข้ากับ Telegram Pay",
-      m2026Item2: "โอน ACOPAY ผ่าน Phantom หรือ Telegram Pay",
+      m2026Item2: "ทำธุรกรรม ACOPAY ผ่าน Phantom หรือ Telegram Pay",
       m2026Item3: "ชำระเงินผ่าน Web Pay",
 
 
@@ -1667,7 +1667,7 @@ m2027Title: "App Pay",
       m2026Title: "Peluncuran",
       m2026Item0: "Perdagangkan ACOPAY/USDT di Raydium dan Jupiter",
       m2026Item1: "ACOPAY terintegrasi ke Telegram Pay",
-      m2026Item2: "Transfer ACOPAY via Phantom atau Telegram Pay",
+      m2026Item2: "Transaksi ACOPAY via Phantom atau Telegram Pay",
       m2026Item3: "Pembayaran lewat Web Pay",
 
 m2027Title: "Aplikasi Pay",
@@ -1783,7 +1783,7 @@ m2027Title: "Aplikasi Pay",
       m2026Title: "लॉन्च",
       m2026Item0: "Raydium और Jupiter पर ACOPAY/USDT ट्रेड करें",
       m2026Item1: "ACOPAY को Telegram Pay में एकीकृत",
-      m2026Item2: "Phantom या Telegram Pay से ACOPAY ट्रांसफर करें",
+      m2026Item2: "Phantom या Telegram Pay से ACOPAY लेन-देन करें",
       m2026Item3: "Web Pay पर भुगतान",
 
 

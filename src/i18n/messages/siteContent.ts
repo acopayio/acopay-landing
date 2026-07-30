@@ -1261,7 +1261,7 @@ export const SITE_CONTENT_PARTIALS: Record<string, object> = {
       m2026Title: "लॉन्च",
       m2026Item0: "Raydium और Jupiter पर ACOPAY/USDT ट्रेड करें",
       m2026Item1: "ACOPAY को Telegram Pay में एकीकृत",
-      m2026Item2: "Phantom या Telegram Pay से ACOPAY ट्रांसफर करें",
+      m2026Item2: "Phantom या Telegram Pay से ACOPAY लेन-देन करें",
       m2026Item3: "Web Pay पर भुगतान",
 
 

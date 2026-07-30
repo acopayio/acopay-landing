@@ -166,7 +166,7 @@ export const en = {
     m2026Title: "Launch",
     m2026Item0: "Trade ACOPAY/USDT on Raydium and Jupiter",
     m2026Item1: "ACOPAY integrated into Telegram Pay",
-    m2026Item2: "Transfer ACOPAY via Phantom or Telegram Pay",
+    m2026Item2: "Transact ACOPAY via Phantom or Telegram Pay",
     m2026Item3: "Payments on Web Pay",
     m2026Alt: "3D illustration of ACOPAY liquidity pool",
     m2027Title: "Pay App",

@@ -104,7 +104,7 @@ export const CORE_UI_GAPS: Record<string, object> = {
       m2026Title: "Запуск",
       m2026Item0: "Торгівля ACOPAY/USDT на Raydium і Jupiter",
       m2026Item1: "ACOPAY інтегровано в Telegram Pay",
-      m2026Item2: "Переказ ACOPAY через Phantom або Telegram Pay",
+      m2026Item2: "Операції з ACOPAY через Phantom або Telegram Pay",
       m2026Item3: "Платежі через Web Pay",
 
 
@@ -226,7 +226,7 @@ export const CORE_UI_GAPS: Record<string, object> = {
       m2026Title: "Lancering",
       m2026Item0: "Handel ACOPAY/USDT op Raydium en Jupiter",
       m2026Item1: "ACOPAY geïntegreerd in Telegram Pay",
-      m2026Item2: "ACOPAY overmaken via Phantom of Telegram Pay",
+      m2026Item2: "ACOPAY transacteren via Phantom of Telegram Pay",
       m2026Item3: "Betalingen via Web Pay",
 
 
@@ -348,7 +348,7 @@ export const CORE_UI_GAPS: Record<string, object> = {
       m2026Title: "Premiera",
       m2026Item0: "Handluj ACOPAY/USDT na Raydium i Jupiter",
       m2026Item1: "ACOPAY zintegrowany z Telegram Pay",
-      m2026Item2: "Przelewaj ACOPAY przez Phantom lub Telegram Pay",
+      m2026Item2: "Transakcje ACOPAY przez Phantom lub Telegram Pay",
       m2026Item3: "Płatności przez Web Pay",
 
 
@@ -469,7 +469,7 @@ export const CORE_UI_GAPS: Record<string, object> = {
       m2026Title: "Lansman",
       m2026Item0: "Raydium ve Jupiter’de ACOPAY/USDT işlem yap",
       m2026Item1: "ACOPAY Telegram Pay’e entegre",
-      m2026Item2: "Phantom veya Telegram Pay ile ACOPAY gönder",
+      m2026Item2: "Phantom veya Telegram Pay ile ACOPAY işlemi",
       m2026Item3: "Web Pay ile ödeme",
 
 
@@ -592,7 +592,7 @@ export const CORE_UI_GAPS: Record<string, object> = {
       m2026Title: "Lancio",
       m2026Item0: "Scambia ACOPAY/USDT su Raydium e Jupiter",
       m2026Item1: "ACOPAY integrato in Telegram Pay",
-      m2026Item2: "Trasferisci ACOPAY via Phantom o Telegram Pay",
+      m2026Item2: "Operare ACOPAY via Phantom o Telegram Pay",
       m2026Item3: "Pagamenti su Web Pay",
 
 
@@ -717,7 +717,7 @@ export const CORE_UI_GAPS: Record<string, object> = {
       m2026Title: "Pelancaran",
       m2026Item0: "Dagangkan ACOPAY/USDT di Raydium dan Jupiter",
       m2026Item1: "ACOPAY disepadukan ke Telegram Pay",
-      m2026Item2: "Pindahkan ACOPAY melalui Phantom atau Telegram Pay",
+      m2026Item2: "Urus niaga ACOPAY melalui Phantom atau Telegram Pay",
       m2026Item3: "Bayaran melalui Web Pay",
 
 
