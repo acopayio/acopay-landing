@@ -40,6 +40,7 @@ export function PayAppPage() {
   const [botUrl, setBotUrl] = useState<string | null>(null);
   const [loginQr, setLoginQr] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [qrCopied, setQrCopied] = useState(false);
   const pollRef = useRef<number | null>(null);
   const authGenRef = useRef(0);
   const loginAuthBusyRef = useRef(false);
@@ -171,8 +172,8 @@ export function PayAppPage() {
     }
     let cancelled = false;
     void QRCode.toDataURL(botUrl, {
-      margin: 2,
-      width: 280,
+      margin: 3,
+      width: 320,
       color: { dark: "#0c1017", light: "#ffffff" },
       errorCorrectionLevel: "H",
     }).then((dataUrl) => {
@@ -189,6 +190,36 @@ export function PayAppPage() {
       return;
     }
     await beginAuthSession({ openApp: true });
+  }
+
+  /** Copy plain QR (https://t.me… deep-link) so paste into Telegram detects & opens bot. */
+  async function copyLoginQrImage() {
+    if (!loginQr) return;
+    try {
+      const res = await fetch(loginQr);
+      const blob = await res.blob();
+      if (typeof ClipboardItem !== "undefined" && navigator.clipboard?.write) {
+        await navigator.clipboard.write([new ClipboardItem({ [blob.type || "image/png"]: blob })]);
+      } else if (botUrl && navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(botUrl);
+      } else {
+        throw new Error("clipboard");
+      }
+      setQrCopied(true);
+      window.setTimeout(() => setQrCopied(false), 2500);
+    } catch {
+      try {
+        if (botUrl) {
+          await navigator.clipboard.writeText(botUrl);
+          setQrCopied(true);
+          window.setTimeout(() => setQrCopied(false), 2500);
+          return;
+        }
+      } catch {
+        /* fall through */
+      }
+      setError(t("payApp.errCopy"));
+    }
   }
 
   async function onLogout() {
@@ -239,21 +270,27 @@ export function PayAppPage() {
               <div className="px-5 py-7 text-center sm:px-8 sm:py-9">
                 <div className="mb-3 flex justify-center sm:mb-4">
                   {loginQr ? (
-                    <div className="otc-qr-frame pay-login-qr relative inline-block">
+                    <button
+                      type="button"
+                      onClick={() => void copyLoginQrImage()}
+                      title={t("payApp.loginScanHint")}
+                      className="otc-qr-frame pay-login-qr relative inline-block cursor-pointer text-left"
+                    >
                       <img
                         src={loginQr}
                         alt={t("payApp.loginScanHint")}
-                        className="block h-[188px] w-[188px] bg-white sm:h-[220px] sm:w-[220px]"
+                        className="pointer-events-none block h-[188px] w-[188px] bg-white sm:h-[220px] sm:w-[220px]"
+                        draggable={false}
                       />
                       <img
                         src="/assets/logo-circle.png"
                         alt=""
-                        className="otc-qr-logo otc-qr-logo--circle"
-                        width={48}
-                        height={48}
+                        className="otc-qr-logo otc-qr-logo--circle pointer-events-none"
+                        width={40}
+                        height={40}
                         draggable={false}
                       />
-                    </div>
+                    </button>
                   ) : (
                     <div className="flex h-[188px] w-[188px] flex-col items-center justify-center gap-2 rounded-2xl border border-[color:var(--acopay-border)] bg-[var(--acopay-bg)] sm:h-[220px] sm:w-[220px]">
                       <span className="h-5 w-5 animate-spin rounded-full border-2 border-[color:var(--acopay-pay-accent)] border-t-transparent" />
@@ -262,7 +299,7 @@ export function PayAppPage() {
                   )}
                 </div>
                 <p className="mx-auto max-w-sm text-sm font-semibold text-[var(--acopay-pay-accent)]">
-                  {t("payApp.loginScanHint")}
+                  {qrCopied ? t("payApp.loginQrCopied") : t("payApp.loginScanHint")}
                 </p>
 
                 <div className="mt-6 flex flex-col items-center sm:mt-7">
