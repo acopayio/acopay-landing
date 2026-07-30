@@ -1082,7 +1082,7 @@ m2027Title: "App Pay",
       m2026Title: "Lancement",
       m2026Item0: "Échanger ACOPAY/USDT sur Raydium et Jupiter",
       m2026Item1: "ACOPAY intégré à Telegram Pay",
-      m2026Item2: "Transacter ACOPAY via Phantom ou Telegram Pay",
+      m2026Item2: "Transactions ACOPAY via Phantom ou Telegram Pay",
       m2026Item3: "Paiements sur Web Pay",
 
 
@@ -1199,7 +1199,7 @@ m2027Title: "App Pay",
       m2026Title: "Start",
       m2026Item0: "ACOPAY/USDT auf Raydium und Jupiter handeln",
       m2026Item1: "ACOPAY in Telegram Pay integriert",
-      m2026Item2: "ACOPAY über Phantom oder Telegram Pay handeln",
+      m2026Item2: "ACOPAY-Transaktionen über Phantom oder Telegram Pay",
       m2026Item3: "Zahlungen über Web Pay",
 
 

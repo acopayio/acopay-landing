@@ -226,7 +226,7 @@ export const CORE_UI_GAPS: Record<string, object> = {
       m2026Title: "Lancering",
       m2026Item0: "Handel ACOPAY/USDT op Raydium en Jupiter",
       m2026Item1: "ACOPAY geïntegreerd in Telegram Pay",
-      m2026Item2: "ACOPAY transacteren via Phantom of Telegram Pay",
+      m2026Item2: "ACOPAY-transacties via Phantom of Telegram Pay",
       m2026Item3: "Betalingen via Web Pay",
 
 
