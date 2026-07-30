@@ -273,38 +273,15 @@ export function PayAppPage() {
                 <p className="mx-auto max-w-sm text-sm font-semibold text-[var(--acopay-pay-accent)]">
                   {t("payApp.loginScanHint")}
                 </p>
-                <p className="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-[var(--acopay-muted)]">
-                  {t("payApp.loginHint")}
-                </p>
 
-                <ul className="mx-auto mt-5 grid max-w-sm gap-2 text-left sm:mt-6">
-                  {[t("payApp.step1"), t("payApp.step2"), t("payApp.step3")]
-                    .filter((s) => Boolean(s && String(s).trim()))
-                    .map((line) => (
-                      <li
-                        key={line}
-                        className="rounded-xl border border-[color:var(--acopay-border)] bg-[var(--acopay-bg)] px-3.5 py-2.5 text-sm font-medium text-[var(--acopay-fg)]"
-                      >
-                        {line}
-                      </li>
-                    ))}
-                </ul>
-
-                <div className="mt-6 flex flex-col items-center gap-2.5 sm:mt-8">
+                <div className="mt-6 flex flex-col items-center sm:mt-7">
                   <button
                     type="button"
                     onClick={() => void onOpenTelegramLogin()}
                     className="btn-orca-primary flex w-full max-w-sm items-center justify-center gap-2 !rounded-xl !py-3.5 text-sm font-semibold"
                   >
-                    {phase === "polling" && botUrl
-                      ? t("payApp.openTelegram")
-                      : t("payApp.loginTitle")}
+                    {t("payApp.loginTitle")}
                   </button>
-                  {phase === "polling" ? (
-                    <p className="max-w-sm text-xs text-[var(--acopay-faint)]">
-                      {t("payApp.waitingTelegram")} · {t("payApp.pollingHint")}
-                    </p>
-                  ) : null}
                 </div>
               </div>
             </div>
