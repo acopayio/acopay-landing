@@ -35,9 +35,10 @@ export function telegramHttpsToAppScheme(httpsUrl: string): string | null {
 
 /**
  * Open Telegram bot deep-link.
- * Mobile: **only** `tg://` — Safari/Chrome shows one “Open in Telegram?” on acopay.
- *   Do NOT auto-fallback to https://t.me (that opens a 2nd prompt + START BOT page — Kevin 2026-07-30).
- * Desktop: new tab https://t.me.
+ * All devices: prefer `tg://resolve?…` so OS shows one “Open Telegram?” on acopay
+ * (Desktop app / mobile app). Do NOT auto-open https://t.me — that causes a 2nd prompt
+ * + START BOT page (Kevin 2026-07-30 mobile; same risk on PC).
+ * QR codes still use https://t.me (camera scan). Fallback without Telegram app: scan QR.
  * Never rely on window.open alone on iOS — it is blocked after await.
  */
 export function openTelegramBotLink(httpsUrl: string): void {
@@ -50,8 +51,7 @@ export function openTelegramBotLink(httpsUrl: string): void {
     return;
   }
   const app = telegramHttpsToAppScheme(httpsUrl);
-
-  if (isMobileUa() && app) {
+  if (app) {
     window.location.href = app;
     return;
   }
