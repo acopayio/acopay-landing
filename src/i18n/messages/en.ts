@@ -520,7 +520,7 @@ export const en = {
     title: "Wallet",
     subtitle: "Transfer & receive ACOPAY",
     loading: "Loading…",
-    loginTitle: "✈️ Link Telegram Pay",
+    loginTitle: "🔗 Link Telegram Pay",
     loginHint: "Scan the QR with your camera, or tap Connect — finish in @AcopayNetwork_bot to pay with ACOPAY on the web.",
     loginScanHint: "Scan QR to confirm in Telegram",
     loginHintMobile: "",
