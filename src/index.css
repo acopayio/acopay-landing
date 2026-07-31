@@ -53,9 +53,10 @@ html[data-theme="light"] {
   --acopay-success-ring: rgba(4, 120, 87, 0.28);
   /* Pay home: darker cyan (balance / @user / mint) — đỡ chói hơn neon */
   --acopay-pay-accent: #0e7490;
-  --acopay-danger: #b91c1c;
-  --acopay-danger-bg: rgba(185, 28, 28, 0.1);
-  --acopay-danger-ring: rgba(185, 28, 28, 0.25);
+  /* Đỏ cờ VN — logout / Quay lại (Kevin 2026-07-31) */
+  --acopay-danger: #da251d;
+  --acopay-danger-bg: rgba(218, 37, 29, 0.1);
+  --acopay-danger-ring: rgba(218, 37, 29, 0.28);
   color-scheme: light;
 }
 
@@ -84,9 +85,10 @@ html[data-theme="dark"] {
   --acopay-success-ring: rgba(16, 185, 129, 0.3);
   /* Soft cyan for large Pay balance — không dùng #00E5FF trên số lớn */
   --acopay-pay-accent: #22d3ee;
-  --acopay-danger: #fca5a5;
-  --acopay-danger-bg: rgba(239, 68, 68, 0.15);
-  --acopay-danger-ring: rgba(239, 68, 68, 0.3);
+  /* Cùng đỏ cờ VN — không dùng hồng nhạt #fca5a5 */
+  --acopay-danger: #da251d;
+  --acopay-danger-bg: rgba(218, 37, 29, 0.18);
+  --acopay-danger-ring: rgba(218, 37, 29, 0.35);
   color-scheme: dark;
 }
 

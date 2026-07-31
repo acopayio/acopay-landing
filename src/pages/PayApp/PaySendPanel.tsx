@@ -933,7 +933,7 @@ function TransferBill({
           <span className="send-bill-label">{balanceLabel}</span>
           <span
             className={`send-bill-value inline-flex items-center gap-1 ${
-              plan.enough === false ? "text-[var(--acopay-danger,#b91c1c)]" : ""
+              plan.enough === false ? "text-[var(--acopay-danger,#da251d)]" : ""
             }`}
           >
             <AcopayAmount>{formatAcopay(plan.balance)}</AcopayAmount>
