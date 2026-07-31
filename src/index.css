@@ -41,6 +41,7 @@ html[data-theme="light"] {
   --acopay-brand: #008ba8;
   --acopay-brand-hover: #00a8c9;
   --acopay-brand-dim: #007a94;
+  --acopay-brand-strong: #00e5ff;
   --acopay-brand-soft: rgba(0, 139, 168, 0.12);
   --acopay-border: rgba(11, 18, 32, 0.08);
   --acopay-border-strong: rgba(11, 18, 32, 0.14);
@@ -73,12 +74,16 @@ html[data-theme="dark"] {
   --acopay-fg: #f3f4f6;
   --acopay-muted: #9ca3af;
   --acopay-faint: #6b7280;
-  --acopay-brand: #00e5ff;
-  --acopay-brand-hover: #5eefff;
-  --acopay-brand-dim: #00b8d4;
-  --acopay-brand-soft: rgba(0, 229, 255, 0.1);
-  --acopay-border: rgba(255, 255, 255, 0.06);
-  --acopay-border-strong: rgba(255, 255, 255, 0.12);
+  /* Cyan cho CHỮ dịu hơn neon (#00E5FF ≈ 12:1 trên nền tối → halation).
+     Neon gốc giữ cho nền nút / logo / đồ họa: --acopay-brand-strong. */
+  --acopay-brand: #5fd6e8;
+  --acopay-brand-hover: #8ce6f3;
+  --acopay-brand-dim: #4bb9cc;
+  --acopay-brand-strong: #00e5ff;
+  --acopay-brand-soft: rgba(95, 214, 232, 0.1);
+  /* Viền rõ hơn để bố cục có chiều sâu khi bớt màu */
+  --acopay-border: rgba(255, 255, 255, 0.09);
+  --acopay-border-strong: rgba(255, 255, 255, 0.15);
   --acopay-hover: rgba(255, 255, 255, 0.04);
   --acopay-btn-fg: #0c1017;
   --acopay-glow-a: rgba(0, 229, 255, 0.09);
@@ -87,7 +92,7 @@ html[data-theme="dark"] {
   --acopay-success-bg: rgba(16, 185, 129, 0.15);
   --acopay-success-ring: rgba(16, 185, 129, 0.3);
   /* Soft cyan for large Pay balance — không dùng #00E5FF trên số lớn */
-  --acopay-pay-accent: #22d3ee;
+  --acopay-pay-accent: #5fd6e8;
   --acopay-danger: #f87171;
   --acopay-danger-bg: rgba(239, 68, 68, 0.15);
   --acopay-danger-ring: rgba(239, 68, 68, 0.32);
@@ -243,6 +248,10 @@ a.btn-orca-primary:disabled:hover {
   text-transform: uppercase;
   letter-spacing: 0.14em;
   color: var(--acopay-brand);
+}
+/* Dark: nhãn chữ hoa là metadata, không phải link → xám thay vì cyan */
+html[data-theme="dark"] .label-orca {
+  color: var(--acopay-muted);
 }
 
 .pools-table {
@@ -605,6 +614,11 @@ a.btn-orca-primary:disabled:hover {
   text-transform: uppercase;
   color: #00e5ff;
   line-height: 1;
+}
+html[data-theme="dark"] .otc-live-pill {
+  color: var(--acopay-brand);
+  border-color: color-mix(in srgb, var(--acopay-brand) 32%, transparent);
+  background: color-mix(in srgb, var(--acopay-brand) 10%, transparent);
 }
 
 .otc-live-pill::before {
@@ -1185,14 +1199,7 @@ a.btn-orca-primary:disabled:hover {
   background: radial-gradient(ellipse at 50% 0%, rgba(0, 229, 255, 0.12), transparent 65%);
 }
 
-/* —— Dark: hạ neon trên chữ, cyan chỉ giữ cho hành động + nhãn nhỏ ——
-   Nền tối + cyan bão hòa ≈ 12:1 gây halation; chữ chính dùng trung tính.
-   Scope `.pay-app-scope` = chỉ /pay; phần còn lại của site chưa đổi. */
-html[data-theme="dark"] .pay-app-scope {
-  --acopay-brand: #5fd6e8;
-  --acopay-brand-soft: rgba(95, 214, 232, 0.12);
-  --acopay-pay-accent: #5fd6e8;
-}
+/* —— Dark /pay: chữ chính trung tính, cyan chỉ cho hành động —— */
 html[data-theme="dark"] .pay-tg-username {
   color: #e8edf4;
 }
