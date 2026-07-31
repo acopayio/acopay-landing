@@ -1165,6 +1165,70 @@ a.btn-orca-primary:disabled:hover {
   }
 }
 
+.pay-login-hint {
+  margin-inline: auto;
+  max-width: 24rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--acopay-pay-accent);
+}
+
+.pay-mint-link {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  color: var(--acopay-pay-accent);
+}
+.pay-mint-link:hover {
+  opacity: 0.8;
+}
+
+.pay-glow {
+  background: radial-gradient(ellipse at 50% 0%, rgba(0, 229, 255, 0.12), transparent 65%);
+}
+
+/* —— Dark: hạ neon trên chữ, cyan chỉ giữ cho hành động + nhãn nhỏ ——
+   Nền tối + cyan bão hòa ≈ 12:1 gây halation; chữ chính dùng trung tính.
+   Scope `.pay-app-scope` = chỉ /pay; phần còn lại của site chưa đổi. */
+html[data-theme="dark"] .pay-app-scope {
+  --acopay-brand: #5fd6e8;
+  --acopay-brand-soft: rgba(95, 214, 232, 0.12);
+  --acopay-pay-accent: #5fd6e8;
+}
+html[data-theme="dark"] .pay-tg-username {
+  color: #e8edf4;
+}
+html[data-theme="dark"] .pay-home-bal-num {
+  color: #f2f7fb;
+}
+html[data-theme="dark"] .pay-home-copy {
+  color: var(--acopay-fg);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+html[data-theme="dark"] .pay-home-copy:hover {
+  color: var(--acopay-pay-accent);
+  background: color-mix(in srgb, var(--acopay-pay-accent) 14%, transparent);
+  border-color: color-mix(in srgb, var(--acopay-pay-accent) 30%, transparent);
+}
+html[data-theme="dark"] .pay-login-hint {
+  color: var(--acopay-fg);
+}
+html[data-theme="dark"] .pay-mint-link {
+  color: var(--acopay-muted);
+}
+html[data-theme="dark"] .pay-mint-link:hover {
+  color: var(--acopay-pay-accent);
+  opacity: 1;
+}
+html[data-theme="dark"] .pay-glow {
+  background: radial-gradient(ellipse at 50% 0%, rgba(0, 229, 255, 0.06), transparent 65%);
+}
+html[data-theme="dark"] .pay-home-card {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+html[data-theme="dark"] .pay-action-tile {
+  border-color: rgba(255, 255, 255, 0.09);
+}
+
 /* /send + /pay success titles — one line on narrow phones */
 .send-page-title {
   font-size: clamp(1.05rem, 0.55rem + 2.4vw, 1.875rem);

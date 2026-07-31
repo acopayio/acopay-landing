@@ -265,8 +265,8 @@ export function PayAppPage() {
   const mint = me?.mint || TOKEN.mintAddress;
 
   return (
-    <section className="relative overflow-x-clip px-4 py-6 sm:px-6 lg:py-8">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-56 bg-[radial-gradient(ellipse_at_50%_0%,_rgba(0,229,255,0.12),_transparent_65%)]" />
+    <section className="pay-app-scope relative overflow-x-clip px-4 py-6 sm:px-6 lg:py-8">
+      <div className="pay-glow pointer-events-none absolute inset-x-0 top-0 h-56" />
       <div className="relative mx-auto w-full max-w-lg">
         {error && (
           <div
@@ -318,7 +318,7 @@ export function PayAppPage() {
                     </div>
                   )}
                 </div>
-                <p className="mx-auto max-w-sm text-sm font-semibold text-[var(--acopay-pay-accent)]">
+                <p className="pay-login-hint">
                   {qrCopied ? t("payApp.loginQrCopied") : t("payApp.loginScanHint")}
                 </p>
 
@@ -473,7 +473,7 @@ export function PayAppPage() {
                 href={`https://solscan.io/token/${mint}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-mono text-[var(--acopay-pay-accent)] hover:opacity-80"
+                className="pay-mint-link"
               >
                 <AddrHighlight addr={mint} />
               </a>
