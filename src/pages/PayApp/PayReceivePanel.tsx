@@ -58,7 +58,7 @@ export function PayReceivePanel({ address, username, onBack }: Props) {
           <button
             type="button"
             onClick={onBack}
-            className="shrink-0 rounded-lg px-2 py-1 text-xs font-semibold text-[var(--acopay-danger)] hover:bg-[var(--acopay-danger-bg)]"
+            className="shrink-0 rounded-lg px-2 py-1 text-xs font-semibold text-[var(--acopay-pay-exit)] hover:bg-[var(--acopay-pay-exit-bg)]"
           >
             ← {t("payApp.historyBack")}
           </button>

@@ -111,7 +111,7 @@ export function PayHistoryPanel({ onBack, onError }: Props) {
               {total} · {t("payApp.histPage", { n: String(page + 1), m: String(pageCount) })}
             </p>
           </div>
-          <button type="button" onClick={onBack} className="shrink-0 rounded-lg px-1.5 py-1 text-xs font-semibold text-[var(--acopay-danger)] hover:bg-[var(--acopay-danger-bg)]">
+          <button type="button" onClick={onBack} className="shrink-0 rounded-lg px-1.5 py-1 text-xs font-semibold text-[var(--acopay-pay-exit)] hover:bg-[var(--acopay-pay-exit-bg)]">
             ← {t("payApp.historyBack")}
           </button>
         </div>
