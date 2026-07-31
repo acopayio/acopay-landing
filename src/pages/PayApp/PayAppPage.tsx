@@ -265,7 +265,7 @@ export function PayAppPage() {
   const mint = me?.mint || TOKEN.mintAddress;
 
   return (
-    <section className="pay-app-scope relative overflow-x-clip px-4 py-6 sm:px-6 lg:py-8">
+    <section className="relative overflow-x-clip px-4 py-6 sm:px-6 lg:py-8">
       <div className="pay-glow pointer-events-none absolute inset-x-0 top-0 h-56" />
       <div className="relative mx-auto w-full max-w-lg">
         {error && (
