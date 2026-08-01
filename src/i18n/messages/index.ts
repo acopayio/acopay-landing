@@ -7,6 +7,7 @@ import { CHROME_NATIVE_FIX } from "./chromeNativeFix";
 import { LINK_WALLET_PARTIALS } from "./linkWallet";
 import { SEND_ACOPAY_PARTIALS } from "./sendAcopay";
 import { PAY_APP_PARTIALS } from "./payApp";
+import { DOWNLOAD_PAGE_PARTIALS } from "./downloadPage";
 
 export { en };
 export type { Messages } from "./en";
@@ -2054,6 +2055,12 @@ for (const [code, content] of Object.entries(SEND_ACOPAY_PARTIALS)) {
 
 // Web Pay `/pay` Phase 0 (Telegram-only)
 for (const [code, content] of Object.entries(PAY_APP_PARTIALS)) {
+  if (code === "en") continue;
+  partials[code] = mergePartial(partials[code], content as DeepPartialMessages);
+}
+
+// `/download` Android APK page
+for (const [code, content] of Object.entries(DOWNLOAD_PAGE_PARTIALS)) {
   if (code === "en") continue;
   partials[code] = mergePartial(partials[code], content as DeepPartialMessages);
 }

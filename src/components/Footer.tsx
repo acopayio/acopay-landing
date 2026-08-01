@@ -5,6 +5,7 @@ import { BrandLogo } from "./BrandLogo";
 import { TELEGRAM_PAY_LABEL } from "./TelegramPayButton";
 
 const PRODUCT_LINKS = [
+  { to: "/download", labelKey: "nav.download" },
   { to: "/token", labelKey: "nav.token" },
   { to: "/markets", labelKey: "nav.markets" },
   { to: "/pay", labelKey: "nav.trade" },

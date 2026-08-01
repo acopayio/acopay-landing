@@ -23,6 +23,7 @@ const TRADE_NAV: NavItem[] = [
 ];
 
 const INFO_NAV: NavItem[] = [
+  { to: "/download", labelKey: "nav.download", end: false, icon: DownloadIcon },
   { to: "/token", labelKey: "nav.token", end: false, icon: TokenIcon },
   { to: "/contract", labelKey: "nav.contract", end: false, icon: ContractIcon },
   { to: "/roadmap", labelKey: "nav.roadmap", end: false, icon: RoadmapIcon },
@@ -174,6 +175,15 @@ function ContractIcon() {
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
       <rect x="5" y="3" width="14" height="18" rx="2" />
       <path d="M9 8h6M9 12h6M9 16h4" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function DownloadIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+      <path d="M12 3v11M8 10.5l4 4 4-4" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" strokeLinecap="round" />
     </svg>
   );
 }
