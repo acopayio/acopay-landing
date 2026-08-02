@@ -3,7 +3,7 @@
  * 1) www → apex
  * 2) Country cookie (language detect — no VPS)
  * 3) /data/*.json → proxy raw GitHub (fresh from VPS push; no CF rebuild wait)
- * 4) /api/pay/username* + /api/pay/auth-wallet-* → VPS (inject secret; works without per-file Functions)
+ * 4) /api/pay/username* + /api/pay/auth-wallet-* + onchain-history → VPS (inject secret; works without per-file Functions)
  * 5) SPA fallback
  * 6) Real 404 for missing static assets
  *
@@ -32,6 +32,8 @@ const PAY_MW_PATHS: Record<string, { vps: string; methods: string[] }> = {
   "/api/pay/username-claim": { vps: "/pay/username/claim", methods: ["POST", "OPTIONS"] },
   "/api/pay/auth-wallet-challenge": { vps: "/pay/auth/wallet-challenge", methods: ["POST", "OPTIONS"] },
   "/api/pay/auth-wallet-verify": { vps: "/pay/auth/wallet-verify", methods: ["POST", "OPTIONS"] },
+  /** Mobile Setup/History — VPS Webshare RPC (per-file Function was 404 on apex). */
+  "/api/pay/onchain-history": { vps: "/pay/onchain-history", methods: ["GET", "OPTIONS"] },
 };
 
 function withCountryCookie(request: Request, response: Response): Response {
@@ -167,10 +169,11 @@ export async function onRequest(context: PagesContext): Promise<Response> {
     // fall through to static asset / 404
   }
 
-  // Username claim + wallet-auth — handle in middleware (secret inject) before SPA fallback.
+  // Username / wallet-auth / onchain-history — middleware proxy (secret inject) before SPA fallback.
   if (
     url.pathname.startsWith("/api/pay/username") ||
-    url.pathname.startsWith("/api/pay/auth-wallet")
+    url.pathname.startsWith("/api/pay/auth-wallet") ||
+    url.pathname === "/api/pay/onchain-history"
   ) {
     const payMwRes = await proxyPayMw(context.request, context.env, url);
     if (payMwRes) return withCountryCookie(context.request, payMwRes);
