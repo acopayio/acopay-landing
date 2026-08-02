@@ -6,10 +6,10 @@
  * trust it.
  */
 export const ANDROID_APP = {
-  version: "1.0.8",
+  version: "1.0.9",
   /** Human-readable, shown next to the button. */
   size: "48 MB",
-  sha256: "2f956a7f5b2cd5e17cd0c698f687e0914804f02b82b8a4b22b178726e7c2e343",
+  sha256: "0699f53a6c661d535804fa70ca005aaef7fc39ca837667b663106d395e39922e",
   /** Pages Function that streams the file from the VPS. */
   url: "/download/android",
 } as const;
