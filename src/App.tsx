@@ -12,6 +12,7 @@ import { LinkWalletPage } from "./pages/LinkWalletPage";
 import { SendAcopayPage } from "./pages/SendAcopayPage";
 import { PayAppPage } from "./pages/PayApp/PayAppPage";
 import { DownloadPage } from "./pages/DownloadPage";
+import { LegalPage } from "./pages/LegalPage";
 
 export default function App() {
   return (
@@ -33,6 +34,10 @@ export default function App() {
           <Route path="faq" element={<FAQPage />} />
           {/* /download/android is a Pages Function serving the APK, not a route. */}
           <Route path="download" element={<DownloadPage />} />
+          {/* Store / Play required public URLs */}
+          <Route path="privacy" element={<LegalPage kind="privacy" />} />
+          <Route path="terms" element={<LegalPage kind="terms" />} />
+          <Route path="delete-account" element={<LegalPage kind="delete-account" />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>
