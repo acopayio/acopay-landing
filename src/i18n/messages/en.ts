@@ -664,6 +664,97 @@ export const en = {
     iosBody: "Open acopay.net/pay in Safari to use Web Pay. The iOS app is being prepared.",
     openWebPay: "Open Web Pay",
   },
+  legal: {
+    privacyTitle: "Privacy Policy",
+    termsTitle: "Terms of Service",
+    deleteTitle: "Delete account & data",
+    lastUpdated: "Last updated: 2 August 2026",
+    privacyIntro:
+      "This Privacy Policy describes how ACOPAY (“we”, “us”) handles information when you use acopay.net and the ACOPAY mobile wallet application (the “Services”).",
+    privacyH1: "1. Product summary",
+    privacyP1:
+      "ACOPAY provides a non-custodial Solana wallet experience: you can create or import a wallet, view balances, and transfer SPL tokens (including ACOPAY, USDT, SOL, and other tokens you add). Recovery phrases and private keys stay on your device and are not collected by ACOPAY.",
+    privacyH2: "2. Data we process",
+    privacyLi1Label: "Wallet public addresses",
+    privacyLi1Rest:
+      " — needed to quote fees, build, simulate, and broadcast transfers you request.",
+    privacyLi2Label: "Transaction metadata",
+    privacyLi2Rest:
+      " — amounts, recipient addresses or usernames you enter, signatures, and confirmation status when you use ACOPAY-sponsored transfer APIs.",
+    privacyLi3Label: "Technical logs",
+    privacyLi3Rest:
+      " — standard web/server logs (IP, user agent, timestamps) for security and abuse prevention.",
+    privacyLi4Label: "Optional contact",
+    privacyLi4Before: " — if you email ",
+    privacyLi4After: ", we process the content of that correspondence.",
+    privacyH3: "3. Data we do not collect",
+    privacyP3:
+      "We do not collect your seed phrase, private key, or biometric templates. Biometric unlock (Face ID / fingerprint), if enabled, is handled by your device OS.",
+    privacyH4: "4. On-chain data",
+    privacyP4:
+      "Transfers you confirm are recorded on the Solana public blockchain. Blockchain data is public and outside ACOPAY’s control once broadcast.",
+    privacyH5: "5. Third parties",
+    privacyP5:
+      "We use infrastructure providers (hosting, CDN, RPC endpoints) to operate the Services. We do not sell personal data. We do not use advertising SDKs in the mobile app as of this date.",
+    privacyH6: "6. Retention",
+    privacyP6:
+      "Server-side session and operational logs are retained only as long as needed for security, support, and legal obligations, then deleted or anonymized.",
+    privacyH7: "7. Your choices",
+    privacyP7Before:
+      "You may stop using the Services at any time, uninstall the app, and wipe local wallet data from your device. See ",
+    privacyP7After: ".",
+    privacyH8: "8. Contact",
+    privacyContact: "Questions:",
+    termsIntro:
+      "By using acopay.net or the ACOPAY mobile wallet (“Services”), you agree to these Terms. If you do not agree, do not use the Services.",
+    termsH1: "1. Nature of the Services",
+    termsP1:
+      "ACOPAY is a non-custodial wallet and transfer utility for Solana tokens. We do not operate an exchange, do not custody your keys, and do not guarantee token prices or investment returns. The Services are not financial advice.",
+    termsH2: "2. Your responsibilities",
+    termsLi1: "You are solely responsible for securing your recovery phrase and private keys.",
+    termsLi2: "You are responsible for verifying recipient addresses before transferring.",
+    termsLi3: "You must comply with laws that apply to you (including crypto regulations).",
+    termsLi4: "You must be at least 18 years old to use the Services.",
+    termsH3: "3. Network fees",
+    termsP3:
+      "For supported ACOPAY transfers through ACOPAY’s sponsored flow, Solana network (gas) fees may be paid by ACOPAY/operator as disclosed in-product. For other tokens (for example USDT, SOL, or custom SPL tokens), you pay network fees from your wallet. Token transfer fees (for example the ACOPAY 0.01% on-chain fee) are separate from Solana gas and follow on-chain program rules.",
+    termsH4: "4. No custody; risk of loss",
+    termsP4:
+      "If you lose your recovery phrase or device without a backup, your assets may be permanently unrecoverable. Blockchain transactions are irreversible once confirmed.",
+    termsH5: "5. Prohibited use",
+    termsP5:
+      "You may not use the Services for unlawful activity, fraud, sanctions evasion, or abuse of infrastructure (spam, attacks, reverse engineering for harm).",
+    termsH6: "6. Disclaimer",
+    termsP6:
+      "THE SERVICES ARE PROVIDED “AS IS” WITHOUT WARRANTIES OF ANY KIND. TO THE MAXIMUM EXTENT PERMITTED BY LAW, ACOPAY IS NOT LIABLE FOR INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, OR FOR LOSSES ARISING FROM USER ERROR, BLOCKCHAIN FAILURES, OR THIRD-PARTY SERVICES.",
+    termsH7: "7. Changes",
+    termsP7:
+      "We may update these Terms. Continued use after changes constitutes acceptance of the updated Terms. Material changes will be reflected by updating the date above.",
+    termsH8: "8. Contact",
+    deleteIntro:
+      "Google Play and App Store require a public deletion path that does not require installing the app. Last updated: 2 August 2026",
+    deleteHWhat: "What “account” means here",
+    deletePWhat:
+      "The ACOPAY mobile wallet is non-custodial. Your keys live on your device. There is no central login account that holds your funds. Deletion means removing local wallet data and any server-side sessions / operational data tied to addresses you used with ACOPAY APIs.",
+    deleteHA: "A. Delete data on your device (instant)",
+    deleteA1: "Open the ACOPAY app → tap the ACOPAY logo → Sign out.",
+    deleteA2: "Uninstall the app from your device.",
+    deleteA3:
+      "Optional: clear app storage / SecureStore before uninstall if your OS provides that control.",
+    deleteWarnLabel: "Warning:",
+    deleteWarn:
+      " If you have not backed up your recovery phrase, signing out or uninstalling may make your funds unrecoverable.",
+    deleteHB: "B. Request server-side deletion",
+    deleteEmailBefore: "Email ",
+    deleteEmailMid: " with subject ",
+    deleteSubject: "Delete ACOPAY data",
+    deleteEmailAfter: " and include:",
+    deleteLi1: "Your Solana wallet address(es) used with ACOPAY",
+    deleteLi2: "Approximate dates of use (if known)",
+    deleteP2:
+      "We will delete or anonymize associated session records and support correspondence within 30 days, except data we must retain for legal or security reasons, and except public blockchain records which cannot be deleted.",
+    deleteHRelated: "Related",
+  },
 };
 
 export type Messages = {
