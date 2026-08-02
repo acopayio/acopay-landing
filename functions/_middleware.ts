@@ -32,7 +32,7 @@ const PAY_MW_PATHS: Record<string, { vps: string; methods: string[] }> = {
   "/api/pay/username-claim": { vps: "/pay/username/claim", methods: ["POST", "OPTIONS"] },
   "/api/pay/auth-wallet-challenge": { vps: "/pay/auth/wallet-challenge", methods: ["POST", "OPTIONS"] },
   "/api/pay/auth-wallet-verify": { vps: "/pay/auth/wallet-verify", methods: ["POST", "OPTIONS"] },
-  /** Mobile Setup/History — VPS Webshare RPC (per-file Function was 404 on apex). */
+  /** Mobile Setup/History — middleware-only (no per-file Pages Function). */
   "/api/pay/onchain-history": { vps: "/pay/onchain-history", methods: ["GET", "OPTIONS"] },
 };
 
