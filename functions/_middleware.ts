@@ -3,7 +3,7 @@
  * 1) www → apex
  * 2) Country cookie (language detect — no VPS)
  * 3) /data/*.json → proxy raw GitHub (fresh from VPS push; no CF rebuild wait)
- * 4) /api/pay/username* → VPS username claim (inject secret; works without per-file Functions)
+ * 4) /api/pay/username* + /api/pay/auth-wallet-* → VPS (inject secret; works without per-file Functions)
  * 5) SPA fallback
  * 6) Real 404 for missing static assets
  *
@@ -26,10 +26,12 @@ type PagesContext = {
 const GH_RAW =
   "https://raw.githubusercontent.com/acopayio/acopay-landing/main/public/data";
 
-const USERNAME_PATHS: Record<string, { vps: string; methods: string[] }> = {
+const PAY_MW_PATHS: Record<string, { vps: string; methods: string[] }> = {
   "/api/pay/username-lookup": { vps: "/pay/username/lookup", methods: ["GET", "OPTIONS"] },
   "/api/pay/username-challenge": { vps: "/pay/username/challenge", methods: ["POST", "OPTIONS"] },
   "/api/pay/username-claim": { vps: "/pay/username/claim", methods: ["POST", "OPTIONS"] },
+  "/api/pay/auth-wallet-challenge": { vps: "/pay/auth/wallet-challenge", methods: ["POST", "OPTIONS"] },
+  "/api/pay/auth-wallet-verify": { vps: "/pay/auth/wallet-verify", methods: ["POST", "OPTIONS"] },
 };
 
 function withCountryCookie(request: Request, response: Response): Response {
@@ -54,7 +56,7 @@ function upstreamBase(env: PagesEnv): string {
   return String(env.PAY_UPSTREAM_BASE || "").trim().replace(/\/$/, "");
 }
 
-function corsUsername(methods: string): Response {
+function corsPayMw(methods: string): Response {
   return new Response(null, {
     status: 204,
     headers: {
@@ -66,14 +68,14 @@ function corsUsername(methods: string): Response {
   });
 }
 
-async function proxyUsernamePay(
+async function proxyPayMw(
   request: Request,
   env: PagesEnv,
   url: URL,
 ): Promise<Response | null> {
-  const route = USERNAME_PATHS[url.pathname];
+  const route = PAY_MW_PATHS[url.pathname];
   if (!route) return null;
-  if (request.method === "OPTIONS") return corsUsername(route.methods.join(", "));
+  if (request.method === "OPTIONS") return corsPayMw(route.methods.join(", "));
   if (!route.methods.includes(request.method)) {
     return new Response(JSON.stringify({ error: "Method not allowed" }), {
       status: 405,
@@ -114,7 +116,7 @@ async function proxyUsernamePay(
       headers: {
         "Content-Type": "application/json; charset=utf-8",
         "Cache-Control": "no-store",
-        "X-Acopay-Pay": "username-middleware",
+        "X-Acopay-Pay": "pay-middleware",
       },
     });
   } catch {
@@ -165,10 +167,13 @@ export async function onRequest(context: PagesContext): Promise<Response> {
     // fall through to static asset / 404
   }
 
-  // Username claim — handle in middleware (secret inject) before SPA fallback.
-  if (url.pathname.startsWith("/api/pay/username")) {
-    const usernameRes = await proxyUsernamePay(context.request, context.env, url);
-    if (usernameRes) return withCountryCookie(context.request, usernameRes);
+  // Username claim + wallet-auth — handle in middleware (secret inject) before SPA fallback.
+  if (
+    url.pathname.startsWith("/api/pay/username") ||
+    url.pathname.startsWith("/api/pay/auth-wallet")
+  ) {
+    const payMwRes = await proxyPayMw(context.request, context.env, url);
+    if (payMwRes) return withCountryCookie(context.request, payMwRes);
   }
 
   const response = await context.next();
