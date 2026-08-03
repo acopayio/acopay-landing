@@ -302,6 +302,7 @@ export async function confirmPhantomPayInTelegram(opts: {
           signature: opts.signature,
           from: opts.from,
           username: opts.username,
+          client: "web",
         }),
       });
       let data: { ok?: boolean; signature?: string; explorer?: string; error?: string } = {};
