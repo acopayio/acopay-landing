@@ -20,7 +20,7 @@ const WEB_HIST_PAGE_SIZE = 20;
 /** History with period filters + 20/page (web). Bot stays at 6/page. */
 export function PayHistoryPanel({ onBack, onError }: Props) {
   const { t, locale } = useI18n();
-  const [period, setPeriod] = useState("d7");
+  const [period, setPeriod] = useState("cm");
   const [page, setPage] = useState(0);
   const [pageCount, setPageCount] = useState(1);
   const [total, setTotal] = useState(0);
@@ -33,15 +33,16 @@ export function PayHistoryPanel({ onBack, onError }: Props) {
     const prevM = m === 0 ? 12 : m;
     const curY = y;
     const prevY = y - 1;
+    // Kevin: mặc định + tab đầu = tháng hiện tại.
     return [
+      { id: "cm", label: t("payApp.histMonth", { n: String(curM) }) },
+      { id: "pm", label: t("payApp.histMonth", { n: String(prevM) }) },
       { id: "td", label: t("payApp.histToday") },
       { id: "yd", label: t("payApp.histYesterday") },
       { id: "tw", label: t("payApp.histThisWeek") },
       { id: "lw", label: t("payApp.histLastWeek") },
-      { id: "pm", label: t("payApp.histMonth", { n: String(prevM) }) },
-      { id: "cm", label: t("payApp.histMonth", { n: String(curM) }) },
-      { id: "py", label: t("payApp.histYear", { y: String(prevY) }) },
       { id: "cy", label: t("payApp.histYear", { y: String(curY) }) },
+      { id: "py", label: t("payApp.histYear", { y: String(prevY) }) },
       { id: "d7", label: t("payApp.histDays7") },
     ];
   }, [t]);
@@ -75,14 +76,14 @@ export function PayHistoryPanel({ onBack, onError }: Props) {
   }
 
   function kindTone(kind: string) {
-    if (kind === "send") return "text-red-600 dark:text-red-300";
+    if (kind === "send") return "text-[#DA251D]";
     if (kind === "buy") return "text-[var(--acopay-brand)]";
     return "text-emerald-700 dark:text-emerald-300";
   }
 
   /** Amount: send red, receive green, buy neutral. */
   function amountTone(kind: string) {
-    if (kind === "send") return "text-red-600 dark:text-red-300";
+    if (kind === "send") return "text-[#DA251D]";
     if (kind === "buy") return "text-[var(--acopay-fg)]";
     return "text-emerald-700 dark:text-emerald-300";
   }
