@@ -14,7 +14,7 @@ type PagesEnv = {
   PAY_SPONSOR_URL?: string;
 };
 
-const APK_FILE = "ACOPAY-Pay-v1.0.54.apk";
+const APK_FILE = "ACOPAY-Pay-v1.0.55.apk";
 
 function upstreamBase(env: PagesEnv): string {
   const fromSponsor = String(env.PAY_SPONSOR_URL || "").trim();
