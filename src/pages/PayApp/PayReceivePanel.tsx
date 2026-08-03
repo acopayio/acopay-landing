@@ -11,7 +11,7 @@ type Props = {
 
 /**
  * Receive layout (Kevin 2026-07-29):
- * QR (+ logo) → Solana badge + address → Telegram @username (no frame) → Copy
+ * QR (+ logo) → Solana badge + address → ACOPAY @username (if set on Web/App) → Copy
  */
 export function PayReceivePanel({ address, username, onBack }: Props) {
   const { t } = useI18n();
@@ -99,7 +99,6 @@ export function PayReceivePanel({ address, username, onBack }: Props) {
         {username ? (
           <div className="mt-4 text-center">
             <p className="inline-flex items-center justify-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--acopay-brand-dim)]">
-              <span aria-hidden>📱</span>
               {t("payApp.receiveByUsername")}
             </p>
             <p className="pay-tg-username mt-1.5 truncate text-center">@{username}</p>

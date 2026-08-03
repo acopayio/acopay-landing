@@ -72,6 +72,7 @@ export type PayMe = {
   ok: boolean;
   telegramId: string;
   username: string | null;
+  telegramUsername?: string | null;
   firstName: string | null;
   walletReady: boolean;
   publicKey: string | null;
@@ -219,6 +220,48 @@ export async function fetchPayMe(): Promise<PayMe> {
     throwPayApiError(data, "load_profile", "Could not load Pay profile.");
   }
   return data;
+}
+
+/** Create or rename ACOPAY pay username (session; Web Pay). */
+export async function setPayUsername(username: string): Promise<{ username: string }> {
+  const res = await fetch("/api/pay/username-set", {
+    method: "POST",
+    headers: headers(),
+    credentials: fetchCred,
+    body: JSON.stringify({ username }),
+  });
+  const data = (await res.json()) as {
+    ok?: boolean;
+    username?: string;
+    error?: string;
+    errorCode?: string;
+  };
+  if (res.status === 401) {
+    setPaySession(null);
+    throw new PayApiError("session_expired", "session_expired");
+  }
+  if (!res.ok || !data.ok || !data.username) {
+    throwPayApiError(data, "username_set", data.error || "Could not save username.");
+  }
+  return { username: data.username };
+}
+
+/** Clear ACOPAY pay username for this wallet (session; Web Pay). */
+export async function clearPayUsername(): Promise<void> {
+  const res = await fetch("/api/pay/username-clear", {
+    method: "POST",
+    headers: headers(),
+    credentials: fetchCred,
+    body: JSON.stringify({}),
+  });
+  const data = (await res.json()) as { ok?: boolean; error?: string; errorCode?: string };
+  if (res.status === 401) {
+    setPaySession(null);
+    throw new PayApiError("session_expired", "session_expired");
+  }
+  if (!res.ok || !data.ok) {
+    throwPayApiError(data, "username_clear", data.error || "Could not clear username.");
+  }
 }
 
 export type PayHistoryItem = {

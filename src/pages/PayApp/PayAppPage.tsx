@@ -6,6 +6,7 @@ import { BrandLogo } from "../../components/BrandLogo";
 import { TOKEN } from "../../config/token";
 import { useI18n } from "../../i18n/LanguageProvider";
 import {
+  clearPayUsername,
   fetchPayMe,
   formatAcopayBalance,
   logoutPay,
@@ -14,6 +15,7 @@ import {
   pollTelegramAuth,
   requestTelegramAuth,
   setPaySession,
+  setPayUsername,
   type PayMe,
 } from "../../lib/payWebSession";
 import { loadPayPhantomPending, parsePayPaidQuery } from "../../lib/payPhantomReturn";
@@ -41,6 +43,7 @@ export function PayAppPage() {
   const [loginQr, setLoginQr] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [qrCopied, setQrCopied] = useState(false);
+  const [userBusy, setUserBusy] = useState(false);
   const pollRef = useRef<number | null>(null);
   const authGenRef = useRef(0);
   const loginAuthBusyRef = useRef(false);
@@ -97,6 +100,34 @@ export function PayAppPage() {
 
   const receivePk = me?.publicKey || me?.linkedPublicKey || null;
   const hasWallet = Boolean(receivePk || me?.walletReady);
+
+  const onEditUsername = useCallback(async () => {
+    if (!hasWallet || userBusy) return;
+    const current = me?.username || "";
+    const next = window.prompt(t("payApp.usernamePrompt"), current.replace(/^@/, ""));
+    if (next == null) return;
+    const trimmed = next.trim().replace(/^@+/, "");
+    setUserBusy(true);
+    setError(null);
+    try {
+      if (!trimmed) {
+        if (current) {
+          const ok = window.confirm(t("payApp.usernameClearConfirm"));
+          if (ok) {
+            await clearPayUsername();
+            await loadMe();
+          }
+        }
+        return;
+      }
+      await setPayUsername(trimmed);
+      await loadMe();
+    } catch (e) {
+      showErr(e);
+    } finally {
+      setUserBusy(false);
+    }
+  }, [hasWallet, userBusy, me?.username, t, loadMe, showErr]);
 
   const beginAuthSession = useCallback(
     async (opts: { openApp: boolean }) => {
@@ -342,15 +373,23 @@ export function PayAppPage() {
               <div className="pay-home-card">
                 <div className="pay-home-top">
                   <div className="pay-home-identity">
-                    <p
+                    <button
+                      type="button"
+                      onClick={() => void onEditUsername()}
+                      disabled={!hasWallet || userBusy}
                       className={
                         me.username
-                          ? "pay-tg-username min-w-0 truncate"
-                          : "truncate text-sm font-medium text-[var(--acopay-muted)]"
+                          ? "pay-tg-username min-w-0 truncate text-left disabled:opacity-60"
+                          : "min-w-0 truncate text-left text-sm font-semibold text-[var(--acopay-brand)] disabled:opacity-60"
                       }
+                      title={t("payApp.usernameEditHint")}
                     >
-                      {me.username ? `@${me.username}` : me.telegramId || "—"}
-                    </p>
+                      {me.username
+                        ? `@${me.username}`
+                        : hasWallet
+                          ? t("payApp.usernameCreate")
+                          : me.telegramId || "—"}
+                    </button>
                     <button
                       type="button"
                       onClick={() => void onLogout()}

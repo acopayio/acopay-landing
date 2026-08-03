@@ -30,6 +30,8 @@ const PAY_MW_PATHS: Record<string, { vps: string; methods: string[] }> = {
   "/api/pay/username-lookup": { vps: "/pay/username/lookup", methods: ["GET", "OPTIONS"] },
   "/api/pay/username-challenge": { vps: "/pay/username/challenge", methods: ["POST", "OPTIONS"] },
   "/api/pay/username-claim": { vps: "/pay/username/claim", methods: ["POST", "OPTIONS"] },
+  "/api/pay/username-set": { vps: "/pay/username/set", methods: ["POST", "OPTIONS"] },
+  "/api/pay/username-clear": { vps: "/pay/username/clear", methods: ["POST", "OPTIONS"] },
   "/api/pay/auth-wallet-challenge": { vps: "/pay/auth/wallet-challenge", methods: ["POST", "OPTIONS"] },
   "/api/pay/auth-wallet-verify": { vps: "/pay/auth/wallet-verify", methods: ["POST", "OPTIONS"] },
   /** Mobile Setup/History — middleware-only (no per-file Pages Function). */
