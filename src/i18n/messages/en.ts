@@ -605,6 +605,8 @@ export const en = {
     errRecipientNoWallet: "That Telegram account does not have an ACOPAY wallet yet.",
     errMissingRecipient: "Missing recipient.",
     errInvalidAddress: "Invalid Solana address.",
+    errUnknownUsername:
+      "ACOPAY @username not found. Check the spelling, or ask them to create a username in Web Pay / the app.",
     errNeedWallet: "Create or link a wallet in Telegram first.",
     errNoAddress: "No receive address.",
     errSelfSend: "Cannot send to yourself.",
