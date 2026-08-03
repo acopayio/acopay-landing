@@ -33,16 +33,16 @@ export function PayHistoryPanel({ onBack, onError }: Props) {
     const prevM = m === 0 ? 12 : m;
     const curY = y;
     const prevY = y - 1;
-    // Kevin: mặc định + tab đầu = tháng hiện tại.
+    // Kevin: mặc định period = tháng hiện tại (cm). Thứ tự tab giữ như cũ.
     return [
-      { id: "cm", label: t("payApp.histMonth", { n: String(curM) }) },
-      { id: "pm", label: t("payApp.histMonth", { n: String(prevM) }) },
       { id: "td", label: t("payApp.histToday") },
       { id: "yd", label: t("payApp.histYesterday") },
       { id: "tw", label: t("payApp.histThisWeek") },
       { id: "lw", label: t("payApp.histLastWeek") },
-      { id: "cy", label: t("payApp.histYear", { y: String(curY) }) },
+      { id: "pm", label: t("payApp.histMonth", { n: String(prevM) }) },
+      { id: "cm", label: t("payApp.histMonth", { n: String(curM) }) },
       { id: "py", label: t("payApp.histYear", { y: String(prevY) }) },
+      { id: "cy", label: t("payApp.histYear", { y: String(curY) }) },
       { id: "d7", label: t("payApp.histDays7") },
     ];
   }, [t]);
