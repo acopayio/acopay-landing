@@ -427,34 +427,50 @@ export function withThousands(intPart: string): string {
 }
 
 /**
- * Web `/pay` amount precision — Kevin 2026-07-30: **6 decimals** on web
- * (Telegram bot `fmtAcopay` stays at 4; on-chain mint still 9 — display only).
+ * Web `/pay` amount precision — Kevin 2026-08-04:
+ * - History / bill / amounts: max **4** decimals, trim trailing zeros
+ * - Home hero balance: **2** decimals (fixed)
+ * (on-chain mint still 9 — display only).
  */
-export const ACOPAY_WEB_DECIMALS = 6;
+export const ACOPAY_WEB_DECIMALS = 4;
 
-/** Home wallet balance UI — 4 decimals (ví); bill/send vẫn dùng `formatAcopay` 6. */
-export const ACOPAY_BALANCE_DECIMALS = 4;
+/** Home wallet hero — always 2 decimals. */
+export const ACOPAY_BALANCE_DECIMALS = 2;
 
 /**
- * ACOPAY amount / balance display on Web Pay:
+ * ACOPAY amount / history / bill display:
  * - `,` = thousand separator
- * - `.` = decimal separator (max **6** places, trim trailing zeros)
+ * - `.` = decimal separator (max **4** places, trim trailing zeros)
  * Independent of UI language (VI/EN/…).
  */
 export function formatAcopay(n: number | null | undefined): string {
-  return formatAcopayPlaces(n, ACOPAY_WEB_DECIMALS);
+  return formatAcopayPlaces(n, ACOPAY_WEB_DECIMALS, true);
 }
 
-/** Home card balance — max 4 fractional digits (wallet-style). */
+/** Home card balance — always 2 fractional digits. */
 export function formatAcopayBalance(n: number | null | undefined): string {
-  return formatAcopayPlaces(n, ACOPAY_BALANCE_DECIMALS);
+  return formatAcopayPlaces(n, ACOPAY_BALANCE_DECIMALS, false);
 }
 
-function formatAcopayPlaces(n: number | null | undefined, places: number): string {
+/** TOKEN-style amount — max 4, trim zeros (parity App). */
+export function formatCoinAmount(n: number | null | undefined): string {
+  return formatAcopayPlaces(n, ACOPAY_WEB_DECIMALS, true);
+}
+
+function formatAcopayPlaces(
+  n: number | null | undefined,
+  places: number,
+  trim: boolean,
+): string {
   if (n == null || !Number.isFinite(n)) return "—";
-  const trimmed = n.toFixed(places).replace(/0+$/, "").replace(/\.$/, "");
-  const [intPart, dec] = trimmed.split(".");
-  return withThousands(intPart) + (dec != null ? `.${dec}` : "");
+  let core: string;
+  if (trim) {
+    core = n.toFixed(places).replace(/0+$/, "").replace(/\.$/, "");
+  } else {
+    core = n.toFixed(places);
+  }
+  const [intPart, dec] = core.split(".");
+  return withThousands(intPart) + (dec != null && dec.length > 0 ? `.${dec}` : "");
 }
 
 /** Parse amount field (strip thousand commas). */
