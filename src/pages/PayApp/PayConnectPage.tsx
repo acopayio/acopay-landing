@@ -4,9 +4,9 @@
  */
 import { useMemo } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { BrandLogo } from "../components/BrandLogo";
-import { useI18n } from "../i18n/LanguageProvider";
-import { openTelegramBotLink } from "../lib/payWebSession";
+import { BrandLogo } from "../../components/BrandLogo";
+import { useI18n } from "../../i18n/LanguageProvider";
+import { openTelegramBotLink } from "../../lib/payWebSession";
 
 const BOT = "AcopayNetwork_bot";
 
