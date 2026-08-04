@@ -2,22 +2,23 @@ import { useCallback, useEffect, useRef, useState, type ReactNode } from "react"
 import { Link } from "react-router-dom";
 import QRCode from "qrcode";
 import { AddrHighlight } from "../../components/AddrHighlight";
-import { BrandLogo } from "../../components/BrandLogo";
 import { TOKEN } from "../../config/token";
 import { useI18n } from "../../i18n/LanguageProvider";
 import {
   DISPLAY_CURRENCIES,
-  acopayToFiat,
-  fetchUsdRates,
-  formatFiatAmount,
   loadStoredCurrency,
   saveStoredCurrency,
   type DisplayCurrency,
 } from "../../lib/displayCurrency";
 import {
+  emptyQuotes,
+  fetchPortfolioQuotes,
+  formatPortfolioNumber,
+  type PortfolioQuotes,
+} from "../../lib/portfolioValue";
+import {
   clearPayUsername,
   fetchPayMe,
-  formatAcopayBalance,
   logoutPay,
   mapPayApiError,
   openTelegramBotLink,
@@ -55,7 +56,7 @@ export function PayAppPage() {
   const [qrCopied, setQrCopied] = useState(false);
   const [userBusy, setUserBusy] = useState(false);
   const [currency, setCurrency] = useState<DisplayCurrency>(() => loadStoredCurrency(locale));
-  const [ratesUsd, setRatesUsd] = useState<Record<string, number>>({ USD: 1 });
+  const [quotes, setQuotes] = useState<PortfolioQuotes>(() => emptyQuotes());
   const [fxOpen, setFxOpen] = useState(false);
   const pollRef = useRef<number | null>(null);
   const authGenRef = useRef(0);
@@ -71,13 +72,26 @@ export function PayAppPage() {
 
   useEffect(() => {
     let cancelled = false;
-    void fetchUsdRates().then((r) => {
-      if (!cancelled) setRatesUsd(r);
-    });
+    const start = window.setTimeout(() => {
+      void fetchPortfolioQuotes().then((q) => {
+        if (!cancelled) setQuotes(q);
+      });
+    }, 400);
     return () => {
       cancelled = true;
+      window.clearTimeout(start);
     };
   }, []);
+
+  // Keep currency default aligned when user switches UI language (no EN mix into chip).
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("acopay_display_currency");
+      if (!raw) setCurrency(loadStoredCurrency(locale));
+    } catch {
+      setCurrency(loadStoredCurrency(locale));
+    }
+  }, [locale]);
 
   const pickCurrency = useCallback((c: DisplayCurrency) => {
     setCurrency(c);
@@ -341,6 +355,14 @@ export function PayAppPage() {
   }
 
   const bal = me?.balance?.acopay;
+  const portfolioBal = {
+    acopay: Number(me?.balance?.acopay) || 0,
+    usdt: Number(me?.balance?.usdt) || 0,
+    sol: Number(me?.balance?.sol) || 0,
+  };
+  const fiatAmount = hasWallet
+    ? formatPortfolioNumber(portfolioBal, currency, quotes)
+    : "—";
   const mint = me?.mint || TOKEN.mintAddress;
 
   return (
@@ -465,19 +487,15 @@ export function PayAppPage() {
                       {currency}
                     </button>
                   </div>
-                  <p className="pay-home-bal-row">
-                    <span className="pay-home-bal-num">
-                      {hasWallet
-                        ? formatFiatAmount(acopayToFiat(Number(bal) || 0, currency, ratesUsd), currency)
-                        : "—"}
-                    </span>
-                  </p>
-                  <p className="pay-home-bal-secondary">
-                    <span>
-                      ≈ {hasWallet ? formatAcopayBalance(bal) : "—"} ACOPAY
-                    </span>
-                    <BrandLogo className="h-4 w-4" alt="" />
-                  </p>
+                  <button
+                    type="button"
+                    className="pay-home-bal-row pay-home-bal-row-btn"
+                    onClick={() => setFxOpen(true)}
+                    aria-label={t("payApp.chooseCurrency")}
+                  >
+                    <span className="pay-home-bal-num">{fiatAmount}</span>
+                    <span className="pay-home-bal-ccy">{currency}</span>
+                  </button>
                 </div>
 
                 {fxOpen ? (
@@ -501,7 +519,6 @@ export function PayAppPage() {
                           >
                             <span className="pay-fx-code">{c.code}</span>
                             <span className="pay-fx-name">{c.name}</span>
-                            <span className="pay-fx-sym">{c.symbol || c.code}</span>
                           </button>
                         );
                       })}

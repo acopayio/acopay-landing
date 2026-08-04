@@ -1060,6 +1060,17 @@ html[data-theme="dark"] .otc-live-pill {
   gap: 0.5rem 0.65rem;
 }
 
+.pay-home-bal-row-btn {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+}
+
 .pay-home-bal-num {
   font-size: 2rem;
   font-weight: 700;
@@ -1074,15 +1085,19 @@ html[data-theme="dark"] .otc-live-pill {
   }
 }
 
+.pay-home-bal-ccy {
+  flex-shrink: 0;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--acopay-brand);
+  background: color-mix(in srgb, var(--acopay-brand) 14%, transparent);
+  border-radius: 999px;
+  padding: 0.2rem 0.55rem;
+}
+
 .pay-home-bal-secondary {
-  margin: 0.35rem 0 0;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--acopay-muted);
-  font-variant-numeric: tabular-nums;
+  display: none; /* removed — portfolio fiat parity App 1.0.72 */
 }
 
 .pay-home-bal-ticker {

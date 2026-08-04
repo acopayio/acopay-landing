@@ -1,6 +1,6 @@
 /**
- * Display currency for Web Pay / landing hero (≈ fiat).
- * Parity with acopay-mobile/app/src/lib/displayCurrency.ts
+ * Display currency for Web Pay — parity App (ASCII ISO codes after amount).
+ * Portfolio math: portfolioValue.ts (ACOPAY 2600 VND + FX + Binance SOL).
  */
 
 export const OTC_ACOPAY_PER_USDT = 10;
@@ -29,6 +29,7 @@ export type DisplayCurrency =
 
 export type CurrencyMeta = {
   code: DisplayCurrency;
+  /** Unused for display — always ISO-after (parity App OEM-safe). */
   symbol: string;
   codeAfter?: boolean;
   decimals: number;
@@ -36,26 +37,26 @@ export type CurrencyMeta = {
 };
 
 export const DISPLAY_CURRENCIES: CurrencyMeta[] = [
-  { code: "USD", symbol: "$", decimals: 2, name: "US Dollar" },
-  { code: "EUR", symbol: "€", decimals: 2, name: "Euro" },
+  { code: "USD", symbol: "", codeAfter: true, decimals: 2, name: "US Dollar" },
+  { code: "EUR", symbol: "", codeAfter: true, decimals: 2, name: "Euro" },
   { code: "VND", symbol: "", codeAfter: true, decimals: 0, name: "Vietnamese Dong" },
-  { code: "CNY", symbol: "¥", decimals: 2, name: "Chinese Yuan" },
-  { code: "JPY", symbol: "¥", decimals: 0, name: "Japanese Yen" },
+  { code: "CNY", symbol: "", codeAfter: true, decimals: 2, name: "Chinese Yuan" },
+  { code: "JPY", symbol: "", codeAfter: true, decimals: 0, name: "Japanese Yen" },
   { code: "KRW", symbol: "", codeAfter: true, decimals: 0, name: "Korean Won" },
-  { code: "GBP", symbol: "£", decimals: 2, name: "British Pound" },
+  { code: "GBP", symbol: "", codeAfter: true, decimals: 2, name: "British Pound" },
   { code: "THB", symbol: "", codeAfter: true, decimals: 2, name: "Thai Baht" },
-  { code: "IDR", symbol: "Rp", decimals: 0, name: "Indonesian Rupiah" },
-  { code: "MYR", symbol: "RM", decimals: 2, name: "Malaysian Ringgit" },
+  { code: "IDR", symbol: "", codeAfter: true, decimals: 0, name: "Indonesian Rupiah" },
+  { code: "MYR", symbol: "", codeAfter: true, decimals: 2, name: "Malaysian Ringgit" },
   { code: "INR", symbol: "", codeAfter: true, decimals: 2, name: "Indian Rupee" },
-  { code: "BRL", symbol: "R$", decimals: 2, name: "Brazilian Real" },
+  { code: "BRL", symbol: "", codeAfter: true, decimals: 2, name: "Brazilian Real" },
   { code: "RUB", symbol: "", codeAfter: true, decimals: 2, name: "Russian Ruble" },
   { code: "TRY", symbol: "", codeAfter: true, decimals: 2, name: "Turkish Lira" },
   { code: "PLN", symbol: "", codeAfter: true, decimals: 2, name: "Polish Zloty" },
   { code: "UAH", symbol: "", codeAfter: true, decimals: 2, name: "Ukrainian Hryvnia" },
   { code: "SAR", symbol: "", codeAfter: true, decimals: 2, name: "Saudi Riyal" },
   { code: "PHP", symbol: "", codeAfter: true, decimals: 2, name: "Philippine Peso" },
-  { code: "SGD", symbol: "S$", decimals: 2, name: "Singapore Dollar" },
-  { code: "AUD", symbol: "A$", decimals: 2, name: "Australian Dollar" },
+  { code: "SGD", symbol: "", codeAfter: true, decimals: 2, name: "Singapore Dollar" },
+  { code: "AUD", symbol: "", codeAfter: true, decimals: 2, name: "Australian Dollar" },
 ];
 
 export const DISPLAY_CURRENCY_CODES = DISPLAY_CURRENCIES.map((c) => c.code);
@@ -94,6 +95,7 @@ export function defaultCurrencyForLocale(locale: string): DisplayCurrency {
   return map[locale] ?? "USD";
 }
 
+/** @deprecated OTC÷10 — use portfolioValue.acopayToUsdViaVnd for hero. */
 export function acopayToUsd(acopay: number): number {
   if (!Number.isFinite(acopay) || acopay === 0) return 0;
   return acopay / OTC_ACOPAY_PER_USDT;
@@ -118,8 +120,7 @@ export function formatFiatAmount(value: number, code: DisplayCurrency): string {
   try {
     const meta = currencyMeta(code);
     const num = formatFiatNumber(value, meta.decimals);
-    if (meta.codeAfter || !meta.symbol) return `${num} ${meta.code}`;
-    return `${meta.symbol}${num}`;
+    return `${num} ${meta.code}`;
   } catch {
     return formatFiatNumber(value, 2) + " USD";
   }
@@ -130,6 +131,7 @@ export function convertUsdToFiat(
   code: DisplayCurrency,
   ratesUsd: Record<string, number>,
 ): number {
+  if (!Number.isFinite(usd)) return 0;
   if (code === "USD") return usd;
   const rate = ratesUsd[code];
   if (!Number.isFinite(rate) || rate <= 0) return usd;
@@ -148,6 +150,7 @@ const FX_URL = "https://open.er-api.com/v6/latest/USD";
 const FX_TTL_MS = 60 * 60 * 1000;
 const LS_KEY = "acopay_display_currency";
 const LS_RATES = "acopay_fx_usd_v1";
+const VND_PER_USD_FALLBACK = 26_000;
 
 type FxCache = { at: number; rates: Record<string, number> };
 let memCache: FxCache | null = null;
@@ -195,6 +198,9 @@ export async function fetchUsdRates(): Promise<Record<string, number>> {
       const r = data.rates[c];
       if (Number.isFinite(r) && r > 0) rates[c] = r;
     }
+    if (!(Number.isFinite(rates.VND) && rates.VND! > 0)) {
+      rates.VND = VND_PER_USD_FALLBACK;
+    }
     memCache = { at: Date.now(), rates };
     try {
       localStorage.setItem(LS_RATES, JSON.stringify(memCache));
@@ -203,7 +209,7 @@ export async function fetchUsdRates(): Promise<Record<string, number>> {
     }
     return rates;
   } catch {
-    const fallback = { USD: 1 };
+    const fallback = { USD: 1, VND: VND_PER_USD_FALLBACK };
     memCache = { at: Date.now(), rates: fallback };
     return fallback;
   }
