@@ -74,3 +74,14 @@
 /assets/*
   Cache-Control: public, max-age=86400
   X-Content-Type-Options: nosniff
+
+# Android App Links + iOS Universal Links (Web Pay connect — Option A)
+/.well-known/assetlinks.json
+  Cache-Control: public, max-age=300, must-revalidate
+  Content-Type: application/json
+  Access-Control-Allow-Origin: *
+
+/.well-known/apple-app-site-association
+  Cache-Control: public, max-age=300, must-revalidate
+  Content-Type: application/json
+  Access-Control-Allow-Origin: *

@@ -11,6 +11,7 @@ import { BuyPage } from "./pages/BuyPage";
 import { LinkWalletPage } from "./pages/LinkWalletPage";
 import { SendAcopayPage } from "./pages/SendAcopayPage";
 import { PayAppPage } from "./pages/PayApp/PayAppPage";
+import { PayConnectPage } from "./pages/PayApp/PayConnectPage";
 import { DownloadPage } from "./pages/DownloadPage";
 import { LegalPage } from "./pages/LegalPage";
 
@@ -23,6 +24,7 @@ export default function App() {
           <Route index element={<HomePage />} />
           <Route path="buy" element={<BuyPage />} />
           <Route path="pay" element={<PayAppPage />} />
+          <Route path="pay/connect" element={<PayConnectPage />} />
           <Route path="trade" element={<Navigate to="/pay" replace />} />
           <Route path="link-wallet" element={<LinkWalletPage />} />
           <Route path="send" element={<SendAcopayPage />} />

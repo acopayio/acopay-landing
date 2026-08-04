@@ -40,6 +40,7 @@ export function PayAppPage() {
   const [me, setMe] = useState<PayMe | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [botUrl, setBotUrl] = useState<string | null>(null);
+  const [connectUrl, setConnectUrl] = useState<string | null>(null);
   const [loginQr, setLoginQr] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [qrCopied, setQrCopied] = useState(false);
@@ -49,6 +50,7 @@ export function PayAppPage() {
   const loginAuthBusyRef = useRef(false);
   const autoLoginStartedRef = useRef(false);
   const botUrlRef = useRef<string | null>(null);
+  const connectUrlRef = useRef<string | null>(null);
 
   const showErr = useCallback(
     (e: unknown) => setError(mapPayApiError(e, t, locale)),
@@ -68,7 +70,9 @@ export function PayAppPage() {
     autoLoginStartedRef.current = false;
     authGenRef.current += 1;
     botUrlRef.current = null;
+    connectUrlRef.current = null;
     setBotUrl(null);
+    setConnectUrl(null);
     setLoginQr(null);
   }, []);
 
@@ -140,10 +144,17 @@ export function PayAppPage() {
       loginAuthBusyRef.current = true;
       const gen = ++authGenRef.current;
       try {
-        const { requestId, pollSecret, botUrl: url } = await requestTelegramAuth();
+        const {
+          requestId,
+          pollSecret,
+          botUrl: url,
+          connectUrl: cUrl,
+        } = await requestTelegramAuth();
         if (gen !== authGenRef.current) return;
         botUrlRef.current = url;
+        connectUrlRef.current = cUrl;
         setBotUrl(url);
+        setConnectUrl(cUrl);
         setPhase("polling");
         if (opts.openApp) openTelegramBotLink(url);
         pollRef.current = window.setInterval(async () => {
@@ -164,7 +175,9 @@ export function PayAppPage() {
               loginAuthBusyRef.current = false;
               autoLoginStartedRef.current = false;
               botUrlRef.current = null;
+              connectUrlRef.current = null;
               setBotUrl(null);
+              setConnectUrl(null);
               setLoginQr(null);
               setError(t("payApp.errAuthPoll"));
               setPhase("login");
@@ -175,7 +188,9 @@ export function PayAppPage() {
               loginAuthBusyRef.current = false;
               autoLoginStartedRef.current = false;
               botUrlRef.current = null;
+              connectUrlRef.current = null;
               setBotUrl(null);
+              setConnectUrl(null);
               setLoginQr(null);
               setError(t("payApp.errExpired"));
               setPhase("login");
@@ -185,7 +200,9 @@ export function PayAppPage() {
             loginAuthBusyRef.current = false;
             autoLoginStartedRef.current = false;
             botUrlRef.current = null;
+            connectUrlRef.current = null;
             setBotUrl(null);
+            setConnectUrl(null);
             setLoginQr(null);
             showErr(e);
             setPhase("login");
@@ -209,13 +226,15 @@ export function PayAppPage() {
     void beginAuthSession({ openApp: false });
   }, [phase, beginAuthSession]);
 
+  // QR = App Links connectUrl (Option A). Telegram CTA still uses botUrl.
   useEffect(() => {
-    if (!botUrl) {
+    const qrTarget = connectUrl || botUrl;
+    if (!qrTarget) {
       setLoginQr(null);
       return;
     }
     let cancelled = false;
-    void QRCode.toDataURL(botUrl, {
+    void QRCode.toDataURL(qrTarget, {
       margin: 3,
       width: 320,
       color: { dark: "#0c1017", light: "#ffffff" },
@@ -226,7 +245,7 @@ export function PayAppPage() {
     return () => {
       cancelled = true;
     };
-  }, [botUrl]);
+  }, [connectUrl, botUrl]);
 
   async function onOpenTelegramLogin() {
     if (botUrl) {
@@ -236,13 +255,14 @@ export function PayAppPage() {
     await beginAuthSession({ openApp: true });
   }
 
-  /** Copy deep-link URL (+ QR image when possible) so paste in Telegram connects web Pay. */
+  /** Copy connect URL (+ QR image). Bot + app both parse acopay.net/pay/connect?t=webpay_… */
   async function copyLoginQrImage() {
-    if (!botUrl && !loginQr) return;
+    const copyText = connectUrl || botUrl;
+    if (!copyText && !loginQr) return;
     try {
       const items: Record<string, Blob> = {};
-      if (botUrl) {
-        items["text/plain"] = new Blob([botUrl], { type: "text/plain" });
+      if (copyText) {
+        items["text/plain"] = new Blob([copyText], { type: "text/plain" });
       }
       if (loginQr) {
         const res = await fetch(loginQr);
@@ -251,8 +271,8 @@ export function PayAppPage() {
       }
       if (typeof ClipboardItem !== "undefined" && navigator.clipboard?.write && Object.keys(items).length) {
         await navigator.clipboard.write([new ClipboardItem(items)]);
-      } else if (botUrl && navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(botUrl);
+      } else if (copyText && navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(copyText);
       } else {
         throw new Error("clipboard");
       }
@@ -260,8 +280,8 @@ export function PayAppPage() {
       window.setTimeout(() => setQrCopied(false), 2500);
     } catch {
       try {
-        if (botUrl) {
-          await navigator.clipboard.writeText(botUrl);
+        if (copyText) {
+          await navigator.clipboard.writeText(copyText);
           setQrCopied(true);
           window.setTimeout(() => setQrCopied(false), 2500);
           return;

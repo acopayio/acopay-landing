@@ -125,6 +125,8 @@ export async function requestTelegramAuth(): Promise<{
   requestId: string;
   pollSecret: string;
   botUrl: string;
+  /** App Links QR target (Option A). Falls back to botUrl if API older. */
+  connectUrl: string;
   expiresAt: number;
 }> {
   const res = await fetch("/api/pay/auth-request", {
@@ -138,6 +140,7 @@ export async function requestTelegramAuth(): Promise<{
     requestId?: string;
     pollSecret?: string;
     botUrl?: string;
+    connectUrl?: string;
     expiresAt?: number;
     error?: string;
     errorCode?: string;
@@ -145,10 +148,14 @@ export async function requestTelegramAuth(): Promise<{
   if (!res.ok || !data.ok || !data.requestId || !data.botUrl || !data.pollSecret) {
     throwPayApiError(data, "auth_start", "Could not start Telegram login.");
   }
+  const connectUrl =
+    String(data.connectUrl || "").trim() ||
+    `${typeof window !== "undefined" ? window.location.origin : "https://acopay.net"}/pay/connect?t=webpay_${data.requestId}`;
   return {
     requestId: data.requestId,
     pollSecret: data.pollSecret,
     botUrl: data.botUrl,
+    connectUrl,
     expiresAt: Number(data.expiresAt) || Date.now() + 600_000,
   };
 }

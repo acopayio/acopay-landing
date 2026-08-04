@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "net.acopay.pay",
+      "sha256_cert_fingerprints": [
+        "44FCE3C82696F2393F4DD213A8C2663ED2629159B77B31D041717B62B02857E1"
+      ]
+    }
+  }
+]

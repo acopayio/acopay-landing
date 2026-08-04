@@ -34,6 +34,7 @@ const PAY_MW_PATHS: Record<string, { vps: string; methods: string[] }> = {
   "/api/pay/username-clear": { vps: "/pay/username/clear", methods: ["POST", "OPTIONS"] },
   "/api/pay/auth-wallet-challenge": { vps: "/pay/auth/wallet-challenge", methods: ["POST", "OPTIONS"] },
   "/api/pay/auth-wallet-verify": { vps: "/pay/auth/wallet-verify", methods: ["POST", "OPTIONS"] },
+  "/api/pay/auth-wallet-claim": { vps: "/pay/auth/wallet-claim", methods: ["POST", "OPTIONS"] },
   /** Mobile Setup/History — middleware-only (no per-file Pages Function). */
   "/api/pay/onchain-history": { vps: "/pay/onchain-history", methods: ["GET", "OPTIONS"] },
 };
@@ -197,6 +198,11 @@ export async function onRequest(context: PagesContext): Promise<Response> {
   }
 
   if (path.startsWith("/data/") && path.endsWith(".json")) {
+    return withCountryCookie(context.request, response);
+  }
+
+  // Do not SPA-fallback discovery files (App Links / Universal Links).
+  if (path.startsWith("/.well-known/")) {
     return withCountryCookie(context.request, response);
   }
 

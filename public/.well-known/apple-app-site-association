@@ -1,0 +1,11 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "TEAMID.net.acopay.pay",
+        "paths": ["/pay/connect", "/pay/connect/*"]
+      }
+    ]
+  }
+}
