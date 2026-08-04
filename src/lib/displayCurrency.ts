@@ -30,7 +30,7 @@ export type DisplayCurrency =
 export type CurrencyMeta = {
   code: DisplayCurrency;
   symbol: string;
-  symbolAfter?: boolean;
+  codeAfter?: boolean;
   decimals: number;
   name: string;
 };
@@ -38,22 +38,22 @@ export type CurrencyMeta = {
 export const DISPLAY_CURRENCIES: CurrencyMeta[] = [
   { code: "USD", symbol: "$", decimals: 2, name: "US Dollar" },
   { code: "EUR", symbol: "€", decimals: 2, name: "Euro" },
-  { code: "VND", symbol: "₫", symbolAfter: true, decimals: 0, name: "Vietnamese Dong" },
+  { code: "VND", symbol: "", codeAfter: true, decimals: 0, name: "Vietnamese Dong" },
   { code: "CNY", symbol: "¥", decimals: 2, name: "Chinese Yuan" },
   { code: "JPY", symbol: "¥", decimals: 0, name: "Japanese Yen" },
-  { code: "KRW", symbol: "₩", symbolAfter: true, decimals: 0, name: "Korean Won" },
+  { code: "KRW", symbol: "", codeAfter: true, decimals: 0, name: "Korean Won" },
   { code: "GBP", symbol: "£", decimals: 2, name: "British Pound" },
-  { code: "THB", symbol: "฿", decimals: 2, name: "Thai Baht" },
+  { code: "THB", symbol: "", codeAfter: true, decimals: 2, name: "Thai Baht" },
   { code: "IDR", symbol: "Rp", decimals: 0, name: "Indonesian Rupiah" },
   { code: "MYR", symbol: "RM", decimals: 2, name: "Malaysian Ringgit" },
-  { code: "INR", symbol: "₹", decimals: 2, name: "Indian Rupee" },
+  { code: "INR", symbol: "", codeAfter: true, decimals: 2, name: "Indian Rupee" },
   { code: "BRL", symbol: "R$", decimals: 2, name: "Brazilian Real" },
-  { code: "RUB", symbol: "₽", symbolAfter: true, decimals: 2, name: "Russian Ruble" },
-  { code: "TRY", symbol: "₺", decimals: 2, name: "Turkish Lira" },
-  { code: "PLN", symbol: "zł", symbolAfter: true, decimals: 2, name: "Polish Zloty" },
-  { code: "UAH", symbol: "₴", symbolAfter: true, decimals: 2, name: "Ukrainian Hryvnia" },
-  { code: "SAR", symbol: "﷼", symbolAfter: true, decimals: 2, name: "Saudi Riyal" },
-  { code: "PHP", symbol: "₱", decimals: 2, name: "Philippine Peso" },
+  { code: "RUB", symbol: "", codeAfter: true, decimals: 2, name: "Russian Ruble" },
+  { code: "TRY", symbol: "", codeAfter: true, decimals: 2, name: "Turkish Lira" },
+  { code: "PLN", symbol: "", codeAfter: true, decimals: 2, name: "Polish Zloty" },
+  { code: "UAH", symbol: "", codeAfter: true, decimals: 2, name: "Ukrainian Hryvnia" },
+  { code: "SAR", symbol: "", codeAfter: true, decimals: 2, name: "Saudi Riyal" },
+  { code: "PHP", symbol: "", codeAfter: true, decimals: 2, name: "Philippine Peso" },
   { code: "SGD", symbol: "S$", decimals: 2, name: "Singapore Dollar" },
   { code: "AUD", symbol: "A$", decimals: 2, name: "Australian Dollar" },
 ];
@@ -115,10 +115,14 @@ export function formatFiatNumber(value: number, decimals: number): string {
 }
 
 export function formatFiatAmount(value: number, code: DisplayCurrency): string {
-  const meta = currencyMeta(code);
-  const num = formatFiatNumber(value, meta.decimals);
-  if (meta.symbolAfter) return `${num} ${meta.symbol}`;
-  return `${meta.symbol}${num}`;
+  try {
+    const meta = currencyMeta(code);
+    const num = formatFiatNumber(value, meta.decimals);
+    if (meta.codeAfter || !meta.symbol) return `${num} ${meta.code}`;
+    return `${meta.symbol}${num}`;
+  } catch {
+    return formatFiatNumber(value, 2) + " USD";
+  }
 }
 
 export function convertUsdToFiat(

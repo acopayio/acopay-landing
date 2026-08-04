@@ -501,7 +501,7 @@ export function PayAppPage() {
                           >
                             <span className="pay-fx-code">{c.code}</span>
                             <span className="pay-fx-name">{c.name}</span>
-                            <span className="pay-fx-sym">{c.symbol}</span>
+                            <span className="pay-fx-sym">{c.symbol || c.code}</span>
                           </button>
                         );
                       })}
