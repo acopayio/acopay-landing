@@ -478,14 +478,6 @@ export function PayAppPage() {
                       </p>
                       <p className="pay-home-bal-est">{t("payApp.fiatEstimated")}</p>
                     </div>
-                    <button
-                      type="button"
-                      className="pay-home-fx-chip"
-                      onClick={() => setFxOpen(true)}
-                      aria-label={t("payApp.currency")}
-                    >
-                      {currency}
-                    </button>
                   </div>
                   <button
                     type="button"
@@ -613,8 +605,22 @@ export function PayAppPage() {
                 onBack={() => setPanel("home")}
               />
             )}
-            {panel === "history" && (
-              <PayHistoryPanel onBack={() => setPanel("home")} onError={(m) => setError(m)} />
+            {panel === "history" && receivePk && (
+              <PayHistoryPanel
+                address={receivePk}
+                onBack={() => setPanel("home")}
+                onError={(m) => setError(m)}
+              />
+            )}
+            {panel === "history" && !receivePk && (
+              <div className="otc-panel">
+                <div className="otc-panel-inner !p-5">
+                  <p className="text-sm text-[var(--acopay-muted)]">{t("payApp.needWalletTitle")}</p>
+                  <button type="button" onClick={() => setPanel("home")} className="mt-3 text-sm font-semibold text-[var(--acopay-brand)]">
+                    ← {t("payApp.historyBack")}
+                  </button>
+                </div>
+              </div>
             )}
 
             <p className="text-center text-[10px] text-[var(--acopay-faint)]">

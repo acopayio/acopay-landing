@@ -582,6 +582,7 @@ export const en = {
     usernameEditHint: "Create or edit ACOPAY username",
     historyTitle: "Transfer history",
     historyEmpty: "No transfers in this period.",
+    historyEmptyHint: "Try another period (month or year), or check the wallet address above.",
     historyBack: "Back",
     kindSend: "Transferred",
     kindRecv: "Received",

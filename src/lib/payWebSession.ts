@@ -281,6 +281,10 @@ export type PayHistoryItem = {
   fromTg: string | null;
   toTg: string | null;
   label?: string | null;
+  fromHandle?: string | null;
+  toHandle?: string | null;
+  symbol?: string | null;
+  mint?: string | null;
 };
 
 export type PayHistoryPage = {
@@ -320,6 +324,49 @@ export async function fetchPayHistory(opts?: {
     period: data.period || period,
     page: Number(data.page) || 0,
     pageCount: Number(data.pageCount) || 1,
+    total: Number(data.total) || 0,
+  };
+}
+
+/** On-chain history — same API as App (`/api/pay/onchain-history`). No session required. */
+export async function fetchOnchainHistory(opts: {
+  address: string;
+  fromMs: number;
+  toMs: number;
+  page?: number;
+  pageSize?: number;
+}): Promise<PayHistoryPage> {
+  const page = opts.page ?? 0;
+  const pageSize = opts.pageSize ?? 20;
+  const q = new URLSearchParams({
+    address: opts.address,
+    from: String(opts.fromMs),
+    to: String(opts.toMs),
+    page: String(page),
+    pageSize: String(pageSize),
+  });
+  const res = await fetch(`/api/pay/onchain-history?${q}`, {
+    method: "GET",
+    headers: { Accept: "application/json" },
+    credentials: "omit",
+  });
+  const data = (await res.json()) as {
+    ok?: boolean;
+    items?: PayHistoryItem[];
+    page?: number;
+    pageCount?: number;
+    total?: number;
+    error?: string;
+    errorCode?: string;
+  };
+  if (!res.ok || data.ok === false) {
+    throwPayApiError(data, "load_history", "Could not load history.");
+  }
+  return {
+    items: Array.isArray(data.items) ? data.items : [],
+    period: "onchain",
+    page: Number(data.page) || 0,
+    pageCount: Math.max(1, Number(data.pageCount) || 1),
     total: Number(data.total) || 0,
   };
 }
