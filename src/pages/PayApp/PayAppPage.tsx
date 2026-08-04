@@ -6,6 +6,15 @@ import { BrandLogo } from "../../components/BrandLogo";
 import { TOKEN } from "../../config/token";
 import { useI18n } from "../../i18n/LanguageProvider";
 import {
+  DISPLAY_CURRENCIES,
+  acopayToFiat,
+  fetchUsdRates,
+  formatFiatAmount,
+  loadStoredCurrency,
+  saveStoredCurrency,
+  type DisplayCurrency,
+} from "../../lib/displayCurrency";
+import {
   clearPayUsername,
   fetchPayMe,
   formatAcopayBalance,
@@ -45,6 +54,9 @@ export function PayAppPage() {
   const [copied, setCopied] = useState(false);
   const [qrCopied, setQrCopied] = useState(false);
   const [userBusy, setUserBusy] = useState(false);
+  const [currency, setCurrency] = useState<DisplayCurrency>(() => loadStoredCurrency(locale));
+  const [ratesUsd, setRatesUsd] = useState<Record<string, number>>({ USD: 1 });
+  const [fxOpen, setFxOpen] = useState(false);
   const pollRef = useRef<number | null>(null);
   const authGenRef = useRef(0);
   const loginAuthBusyRef = useRef(false);
@@ -56,6 +68,22 @@ export function PayAppPage() {
     (e: unknown) => setError(mapPayApiError(e, t, locale)),
     [t, locale],
   );
+
+  useEffect(() => {
+    let cancelled = false;
+    void fetchUsdRates().then((r) => {
+      if (!cancelled) setRatesUsd(r);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const pickCurrency = useCallback((c: DisplayCurrency) => {
+    setCurrency(c);
+    saveStoredCurrency(c);
+    setFxOpen(false);
+  }, []);
 
   const clearPoll = () => {
     if (pollRef.current != null) {
@@ -420,20 +448,66 @@ export function PayAppPage() {
                     </button>
                   </div>
 
-                  <p className="pay-home-bal-label">
-                    <span aria-hidden>💰</span>
-                    {t("payApp.balanceLabel")}
-                  </p>
+                  <div className="pay-home-bal-head">
+                    <div className="pay-home-bal-label-col">
+                      <p className="pay-home-bal-label">
+                        <span aria-hidden>💰</span>
+                        {t("payApp.balanceLabel")}
+                      </p>
+                      <p className="pay-home-bal-est">{t("payApp.fiatEstimated")}</p>
+                    </div>
+                    <button
+                      type="button"
+                      className="pay-home-fx-chip"
+                      onClick={() => setFxOpen(true)}
+                      aria-label={t("payApp.currency")}
+                    >
+                      {currency}
+                    </button>
+                  </div>
                   <p className="pay-home-bal-row">
                     <span className="pay-home-bal-num">
-                      {hasWallet ? formatAcopayBalance(bal) : "—"}
-                    </span>
-                    <span className="pay-home-bal-ticker">
-                      <BrandLogo className="h-5 w-5" alt="" />
-                      ACOPAY
+                      {hasWallet
+                        ? formatFiatAmount(acopayToFiat(Number(bal) || 0, currency, ratesUsd), currency)
+                        : "—"}
                     </span>
                   </p>
+                  <p className="pay-home-bal-secondary">
+                    <span>
+                      ≈ {hasWallet ? formatAcopayBalance(bal) : "—"} ACOPAY
+                    </span>
+                    <BrandLogo className="h-4 w-4" alt="" />
+                  </p>
                 </div>
+
+                {fxOpen ? (
+                  <div className="pay-fx-sheet" role="dialog" aria-modal="true">
+                    <div className="pay-fx-sheet-head">
+                      <h3 className="pay-fx-sheet-title">{t("payApp.chooseCurrency")}</h3>
+                      <button type="button" className="pay-fx-sheet-close" onClick={() => setFxOpen(false)}>
+                        ×
+                      </button>
+                    </div>
+                    <p className="pay-fx-sheet-sub">{t("payApp.fiatEstimated")}</p>
+                    <div className="pay-fx-sheet-list">
+                      {DISPLAY_CURRENCIES.map((c) => {
+                        const on = c.code === currency;
+                        return (
+                          <button
+                            key={c.code}
+                            type="button"
+                            className={`pay-fx-row${on ? " pay-fx-row-on" : ""}`}
+                            onClick={() => pickCurrency(c.code)}
+                          >
+                            <span className="pay-fx-code">{c.code}</span>
+                            <span className="pay-fx-name">{c.name}</span>
+                            <span className="pay-fx-sym">{c.symbol}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ) : null}
 
                 <div className="pay-home-addr">
                   {!hasWallet || !receivePk ? (

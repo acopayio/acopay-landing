@@ -1000,8 +1000,23 @@ html[data-theme="dark"] .otc-live-pill {
   background: var(--acopay-pay-exit-bg);
 }
 
-.pay-home-bal-label {
+.pay-home-bal-head {
   margin-top: 1.15rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.pay-home-bal-label-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.pay-home-bal-label {
+  margin: 0;
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
@@ -1010,6 +1025,31 @@ html[data-theme="dark"] .otc-live-pill {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--acopay-faint);
+}
+
+.pay-home-bal-est {
+  margin: 0;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--acopay-faint);
+  opacity: 0.9;
+}
+
+.pay-home-fx-chip {
+  flex-shrink: 0;
+  border-radius: 999px;
+  border: 1px solid var(--acopay-border);
+  background: color-mix(in srgb, var(--acopay-surface) 80%, transparent);
+  color: var(--acopay-ink);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 0.28rem 0.7rem;
+  cursor: pointer;
+}
+.pay-home-fx-chip:hover {
+  border-color: var(--acopay-brand);
+  color: var(--acopay-brand);
 }
 
 .pay-home-bal-row {
@@ -1034,6 +1074,17 @@ html[data-theme="dark"] .otc-live-pill {
   }
 }
 
+.pay-home-bal-secondary {
+  margin: 0.35rem 0 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--acopay-muted);
+  font-variant-numeric: tabular-nums;
+}
+
 .pay-home-bal-ticker {
   display: inline-flex;
   align-items: center;
@@ -1041,6 +1092,90 @@ html[data-theme="dark"] .otc-live-pill {
   font-size: 0.9375rem;
   font-weight: 700;
   color: var(--acopay-pay-accent);
+}
+
+.pay-fx-sheet {
+  position: fixed;
+  inset: auto 0 0;
+  z-index: 80;
+  max-height: min(78vh, 32rem);
+  overflow: auto;
+  padding: 1rem 1rem 1.5rem;
+  border-radius: 1rem 1rem 0 0;
+  border: 1px solid var(--acopay-border);
+  background: var(--acopay-surface);
+  box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.18);
+}
+@media (min-width: 640px) {
+  .pay-fx-sheet {
+    inset: auto 50% 1.5rem;
+    transform: translateX(-50%);
+    width: min(24rem, calc(100vw - 2rem));
+    border-radius: 1rem;
+  }
+}
+.pay-fx-sheet-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+.pay-fx-sheet-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--acopay-ink);
+}
+.pay-fx-sheet-close {
+  border: 0;
+  background: transparent;
+  color: var(--acopay-muted);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.15rem 0.35rem;
+}
+.pay-fx-sheet-sub {
+  margin: 0.35rem 0 0.75rem;
+  font-size: 0.8125rem;
+  color: var(--acopay-faint);
+}
+.pay-fx-sheet-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.pay-fx-row {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  width: 100%;
+  text-align: left;
+  border: 0;
+  border-radius: 0.65rem;
+  background: transparent;
+  padding: 0.7rem 0.65rem;
+  cursor: pointer;
+  color: var(--acopay-ink);
+}
+.pay-fx-row:hover,
+.pay-fx-row-on {
+  background: color-mix(in srgb, var(--acopay-brand) 12%, transparent);
+}
+.pay-fx-code {
+  width: 2.75rem;
+  font-weight: 700;
+  font-size: 0.875rem;
+}
+.pay-fx-name {
+  flex: 1;
+  font-size: 0.8125rem;
+  color: var(--acopay-muted);
+}
+.pay-fx-sym {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--acopay-faint);
 }
 
 .pay-home-addr {
