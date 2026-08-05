@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { isBuyPublic } from "../config/siteSurface";
 import { TOKEN, isMintLive } from "../config/token";
 import { useT } from "../i18n/LanguageProvider";
 
@@ -94,9 +95,11 @@ export function LaunchStatus() {
               ))}
             </ul>
             <div className="mt-6 flex flex-wrap gap-2">
-              <Link to="/buy" className="btn-orca-secondary !py-2 !text-xs">
-                {t("launch.howToBuy")}
-              </Link>
+              {isBuyPublic() ? (
+                <Link to="/buy" className="btn-orca-secondary !py-2 !text-xs">
+                  {t("launch.howToBuy")}
+                </Link>
+              ) : null}
               <Link to="/contract" className="btn-orca-ghost !py-2 !text-xs">
                 {t("launch.contractCta")}
               </Link>

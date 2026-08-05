@@ -111,9 +111,9 @@ const partials: Record<string, DeepPartialMessages> = {
       searchCoins: "Tìm coin...",
       searchTokens: "Tìm token...",
       binanceSubtitle:
-        "Giá spot USDT toàn cầu để tham chiếu (nguồn dữ liệu công khai Binance). Mua ACOPAY tại /buy hoặc Telegram Pay.",
+        "Giá spot USDT toàn cầu để tham chiếu (nguồn dữ liệu công khai Binance).",
       spotSubtitle:
-        "Giá spot USDT toàn cầu để tham chiếu (nguồn dữ liệu công khai Binance). Mua ACOPAY tại /buy hoặc Telegram Pay.",
+        "Giá spot USDT toàn cầu để tham chiếu (nguồn dữ liệu công khai Binance).",
       transfersTitle: "Giao dịch token",
       transfersSubtitle: "Lịch sử chuyển token ACOPAY trên chuỗi trong 72 giờ.",
       transfersCount: "{n} giao dịch",
@@ -233,7 +233,7 @@ const partials: Record<string, DeepPartialMessages> = {
       q2: "Địa chỉ hợp đồng ở đâu?",
       a2: "Mint chính thức: {mint}. Luôn đối chiếu trên Acopay.net và Solscan trước khi gửi tiền. Bỏ qua tin nhắn hoặc site hiện mint khác.",
       q3: "Mua thế nào?",
-      a3: "Mua trên Acopay.net tại /buy (1 USDT = 10 ACOPAY). Cũng có thể hoán đổi trên Jupiter hoặc Raydium — luôn khớp mint trên Acopay.net.",
+      a3: "Hoán đổi USDT → ACOPAY trên Jupiter hoặc Raydium. Luôn khớp mint chính thức trên Acopay.net và Solscan trước khi gửi tiền.",
       q4: "Vì sao Phantom báo ACOPAY là spam?",
       a4: "Phantom thường gắn cờ token mới cho đến khi có trong danh sách tin cậy (như Jupiter Verified). Nhãn spam không có nghĩa token mất — vẫn còn trên chuỗi. Trong Phantom, mở Quản lý token / spam và hiện ACOPAY, hoặc kiểm tra số dư trên Solscan với mint chính thức. Chỉ dùng Acopay.net.",
       q5: "Có chuyển ACOPAY P2P được không?",

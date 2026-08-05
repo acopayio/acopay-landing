@@ -2,11 +2,13 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import { ANDROID_APP } from "../config/androidApp";
+import { isWebPayPublic } from "../config/siteSurface";
 import { useT } from "../i18n/LanguageProvider";
 
 export function DownloadPage() {
   const t = useT();
   const [copied, setCopied] = useState(false);
+  const webPayOn = isWebPayPublic();
 
   const copyChecksum = async () => {
     try {
@@ -14,7 +16,7 @@ export function DownloadPage() {
       setCopied(true);
       setTimeout(() => setCopied(false), 1800);
     } catch {
-      /* clipboard blocked — the value is selectable on screen anyway */
+      /* clipboard blocked — value remains selectable */
     }
   };
 
@@ -37,7 +39,6 @@ export function DownloadPage() {
           </p>
 
           <div className="mt-7 flex flex-col items-center gap-2">
-            {/* Native <a download> rather than a router Link: this is a file, not a route. */}
             <a href={ANDROID_APP.url} className="btn-orca-primary px-8" download>
               {t("download.cta")}
             </a>
@@ -91,7 +92,7 @@ export function DownloadPage() {
             <ul className="mt-4 space-y-3">
               {features.map((item) => (
                 <li key={item} className="flex gap-3">
-                  <span className="mt-1 text-[var(--acopay-brand)]">✦</span>
+                  <span className="mt-1 text-[var(--acopay-brand)]">·</span>
                   <span className="text-sm leading-relaxed text-[var(--acopay-muted)]">{item}</span>
                 </li>
               ))}
@@ -122,11 +123,27 @@ export function DownloadPage() {
           <div className="orca-card p-6">
             <h2 className="text-sm font-semibold text-[var(--acopay-fg)]">{t("download.iosTitle")}</h2>
             <p className="mt-2 text-sm leading-relaxed text-[var(--acopay-muted)]">{t("download.iosBody")}</p>
-            <Link to="/pay" className="btn-orca-secondary mt-4 !h-10 !text-xs">
-              {t("download.openWebPay")}
-            </Link>
+            {webPayOn ? (
+              <Link to="/pay" className="btn-orca-secondary mt-4 !h-10 !text-xs">
+                {t("download.openWebPay")}
+              </Link>
+            ) : null}
           </div>
         </div>
+
+        <p className="mx-auto max-w-3xl text-center text-xs leading-relaxed text-[var(--acopay-faint)]">
+          <Link to="/privacy" className="hover:text-[var(--acopay-brand)]">
+            {t("legal.privacyTitle")}
+          </Link>
+          {" · "}
+          <Link to="/terms" className="hover:text-[var(--acopay-brand)]">
+            {t("legal.termsTitle")}
+          </Link>
+          {" · "}
+          <Link to="/delete-account" className="hover:text-[var(--acopay-brand)]">
+            {t("legal.deleteTitle")}
+          </Link>
+        </p>
       </div>
     </section>
   );

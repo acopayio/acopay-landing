@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
+import { isTelegramPayCtaPublic, isWebPayPublic } from "../config/siteSurface";
 import { TOKEN, explorerUrl, jupiterSwapUrl, solscanUrl } from "../config/token";
 import { useT } from "../i18n/LanguageProvider";
 import { BrandLogo } from "./BrandLogo";
 import { TELEGRAM_PAY_LABEL } from "./TelegramPayButton";
 
-const PRODUCT_LINKS = [
+const PRODUCT_LINKS_ALL = [
   { to: "/download", labelKey: "nav.download" },
   { to: "/token", labelKey: "nav.token" },
   { to: "/markets", labelKey: "nav.markets" },
@@ -12,16 +13,20 @@ const PRODUCT_LINKS = [
   { to: "/contract", labelKey: "nav.contract" },
   { to: "/roadmap", labelKey: "nav.roadmap" },
   { to: "/faq", labelKey: "nav.faq" },
+  { to: "/privacy", labelKey: "legal.privacyTitle" },
+  { to: "/terms", labelKey: "legal.termsTitle" },
 ] as const;
 
 export function Footer() {
   const jup = jupiterSwapUrl();
   const t = useT();
+  const payOn = isWebPayPublic();
+  const tgPayOn = isTelegramPayCtaPublic();
+  const productLinks = PRODUCT_LINKS_ALL.filter((l) => (l.to === "/pay" ? payOn : true));
 
   return (
     <footer className="border-t border-[color:var(--acopay-border)] bg-[var(--acopay-bg-2)]/80 py-8 md:py-14">
       <div className="page-wrap">
-        {/* Mobile — compact */}
         <div className="md:hidden">
           <div className="flex items-center gap-2.5">
             <Link to="/" className="flex items-center gap-2.5">
@@ -77,24 +82,15 @@ export function Footer() {
               {t("hero.solscan")}
             </a>
 
-            <Link to="/pay" className="hover:text-[var(--acopay-brand)]">
-              {t("nav.trade")}
+            <Link to="/download" className="hover:text-[var(--acopay-brand)]">
+              {t("nav.download")}
             </Link>
-            <span className="select-none" aria-hidden="true" />
-            {jup ? (
-              <a
-                href={jup}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-[var(--acopay-brand)]"
-              >
-                Jupiter ↗
-              </a>
-            ) : (
-              <Link to="/pay" className="hover:text-[var(--acopay-brand)]">
-                {t("nav.trade")}
-              </Link>
-            )}
+            <Link to="/privacy" className="hover:text-[var(--acopay-brand)]">
+              {t("legal.privacyTitle")}
+            </Link>
+            <Link to="/terms" className="hover:text-[var(--acopay-brand)]">
+              {t("legal.termsTitle")}
+            </Link>
 
             <p className="text-[11px] leading-6 text-[var(--acopay-faint)]">© {TOKEN.founded} ACOPAY</p>
             <span className="select-none" aria-hidden="true" />
@@ -102,7 +98,6 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Desktop */}
         <div className="hidden gap-10 md:grid md:grid-cols-[1.4fr_1fr_1fr_1fr] md:items-stretch">
           <div className="flex flex-col">
             <Link to="/" className="inline-flex w-fit items-center gap-2.5">
@@ -132,7 +127,7 @@ export function Footer() {
           <div>
             <h4 className="label-orca">{t("footer.product")}</h4>
             <ul className="mt-4 space-y-2 text-sm">
-              {PRODUCT_LINKS.map((l) => (
+              {productLinks.map((l) => (
                 <li key={l.to}>
                   <Link to={l.to} className="text-[var(--acopay-muted)] hover:text-[var(--acopay-brand)]">
                     {t(l.labelKey)}
@@ -164,8 +159,8 @@ export function Footer() {
                   {t("hero.solscan")}
                 </a>
               </li>
-              <li>
-                {jup ? (
+              {jup ? (
+                <li>
                   <a
                     href={jup}
                     target="_blank"
@@ -174,22 +169,20 @@ export function Footer() {
                   >
                     Jupiter ↗
                   </a>
-                ) : (
-                  <Link to="/pay" className="text-[var(--acopay-muted)] hover:text-[var(--acopay-brand)]">
-                    {t("nav.trade")}
-                  </Link>
-                )}
-              </li>
-              <li>
-                <a
-                  href={TOKEN.telegramPayUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[var(--acopay-muted)] hover:text-[var(--acopay-brand)]"
-                >
-                  {TELEGRAM_PAY_LABEL} ↗
-                </a>
-              </li>
+                </li>
+              ) : null}
+              {tgPayOn ? (
+                <li>
+                  <a
+                    href={TOKEN.telegramPayUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[var(--acopay-muted)] hover:text-[var(--acopay-brand)]"
+                  >
+                    {TELEGRAM_PAY_LABEL} ↗
+                  </a>
+                </li>
+              ) : null}
             </ul>
           </div>
           <div>
@@ -202,18 +195,6 @@ export function Footer() {
                 >
                   <MailGlyph />
                   <span className="truncate">{TOKEN.email}</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  href={TOKEN.telegramUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex max-w-full items-center gap-2.5 text-sm text-[var(--acopay-fg)]/85 transition hover:text-[var(--acopay-fg)]"
-                  title="Telegram"
-                >
-                  <TelegramGlyph />
-                  <span className="truncate">@{TOKEN.telegramBot}</span>
                 </a>
               </li>
             </ul>
@@ -233,18 +214,6 @@ function MailGlyph() {
     >
       <rect x="3" y="5" width="18" height="14" rx="2" />
       <path d="m4 7 8 6 8-6" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-function TelegramGlyph() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      className="h-4 w-4 shrink-0 fill-current"
-      aria-hidden="true"
-    >
-      <path d="M21.5 3.1 2.9 10.3c-1.3.5-1.3 1.2-.2 1.5l4.7 1.5 1.8 5.5c.2.7.1.9.8.9.5 0 .7-.2 1-.5l2.7-2.6 5.6 4.1c1 .6 1.8.3 2-.9L23 4.3c.3-1.3-.5-1.9-1.5-1.2Zm-3.2 3.5-9.5 8.6-.4 3.8-1.9-5.9 11.8-6.5Z" />
     </svg>
   );
 }

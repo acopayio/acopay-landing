@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { AddrHighlight } from "./AddrHighlight";
+import { isBuyPublic } from "../config/siteSurface";
 import { TOKEN, explorerUrl, isMintLive, mintDisplay, solscanUrl } from "../config/token";
 import { useCopy } from "../hooks/useCopy";
 import { useT } from "../i18n/LanguageProvider";
@@ -97,9 +98,11 @@ export function Contract() {
               >
                 {t("hero.solscan")}
               </a>
-              <Link to="/buy" className="btn-orca-secondary !py-2 !text-xs">
-                {t("contractPage.howToBuy")}
-              </Link>
+              {isBuyPublic() ? (
+                <Link to="/buy" className="btn-orca-secondary !py-2 !text-xs">
+                  {t("contractPage.howToBuy")}
+                </Link>
+              ) : null}
             </div>
           </div>
 

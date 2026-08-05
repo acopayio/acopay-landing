@@ -15,21 +15,29 @@ import { PayConnectPage } from "./pages/PayApp/PayConnectPage";
 import { PayAppApprovePage } from "./pages/PayApp/PayAppApprovePage";
 import { DownloadPage } from "./pages/DownloadPage";
 import { LegalPage } from "./pages/LegalPage";
+import { isBuyPublic, isWebPayPublic } from "./config/siteSurface";
+
+function Hidden() {
+  return <Navigate to="/" replace />;
+}
 
 export default function App() {
+  const buyOn = isBuyPublic();
+  const payOn = isWebPayPublic();
+
   return (
     <BrowserRouter>
       <SeoManager />
       <Routes>
         <Route element={<OrcaLayout />}>
           <Route index element={<HomePage />} />
-          <Route path="buy" element={<BuyPage />} />
-          <Route path="pay" element={<PayAppPage />} />
-          <Route path="pay/connect" element={<PayConnectPage />} />
-          <Route path="pay/app-approve" element={<PayAppApprovePage />} />
-          <Route path="trade" element={<Navigate to="/pay" replace />} />
-          <Route path="link-wallet" element={<LinkWalletPage />} />
-          <Route path="send" element={<SendAcopayPage />} />
+          <Route path="buy" element={buyOn ? <BuyPage /> : <Hidden />} />
+          <Route path="pay" element={payOn ? <PayAppPage /> : <Hidden />} />
+          <Route path="pay/connect" element={payOn ? <PayConnectPage /> : <Hidden />} />
+          <Route path="pay/app-approve" element={payOn ? <PayAppApprovePage /> : <Hidden />} />
+          <Route path="trade" element={<Navigate to={payOn ? "/pay" : "/"} replace />} />
+          <Route path="link-wallet" element={payOn ? <LinkWalletPage /> : <Hidden />} />
+          <Route path="send" element={payOn ? <SendAcopayPage /> : <Hidden />} />
           <Route path="token" element={<TokenPage />} />
           <Route path="markets" element={<PoolsPage />} />
           <Route path="pools" element={<Navigate to="/markets" replace />} />

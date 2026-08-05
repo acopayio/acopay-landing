@@ -1,6 +1,9 @@
 /**
  * Privacy / Terms / Delete-account — every supported locale.
  *
+ * Store-grade (2026-08-06): non-custodial wallet framing; no OTC-in-app claims;
+ * dates aligned; Settings → Sign out for deletion path. Sync with `en.ts` legal.
+ *
  * Same shape as `downloadPage.ts`: an English base spread into each locale by `L()`,
  * so a key added to `en.ts` can never be silently missing anywhere.
  */
@@ -13,39 +16,39 @@ const enBase: LegalSection = {
   privacyTitle: "Privacy Policy",
   termsTitle: "Terms of Service",
   deleteTitle: "Delete account & data",
-  lastUpdated: "Last updated: 5 August 2026",
+  lastUpdated: "Last updated: 6 August 2026",
   privacyIntro:
-    "This Privacy Policy describes how ACOPAY (“we”, “us”) handles information when you use acopay.net and the ACOPAY mobile wallet application (the “Services”).",
+    "This Privacy Policy explains how ACOPAY (“we”, “us”) handles information when you use acopay.net and the ACOPAY mobile wallet application (together, the “Services”).",
   privacyH1: "1. Product summary",
   privacyP1:
-    "ACOPAY provides a non-custodial Solana wallet experience: you can create or import a wallet, view balances, and transfer SPL tokens (including ACOPAY, USDT, SOL, and other tokens you add). Recovery phrases and private keys stay on your device and are not collected by ACOPAY.",
+    "ACOPAY provides a non-custodial Solana wallet. You may create or import a wallet, view balances, and transfer SPL tokens (including ACOPAY, USDT, SOL, and tokens you add). Recovery phrases and private keys remain on your device and are not collected by ACOPAY.",
   privacyH2: "2. Data we process",
   privacyLi1Label: "Wallet public addresses",
-  privacyLi1Rest: " — needed to quote fees, build, simulate, and broadcast transfers you request.",
+  privacyLi1Rest: " — used to quote fees, build, simulate, and broadcast transfers you request.",
   privacyLi2Label: "Transaction metadata",
   privacyLi2Rest:
-    " — amounts, recipient addresses or usernames you enter, signatures, and confirmation status when you use ACOPAY-sponsored transfer APIs.",
+    " — amounts, recipient addresses or usernames you enter, signatures, and confirmation status when you use ACOPAY transfer APIs.",
   privacyLi3Label: "Technical logs",
   privacyLi3Rest:
-    " — standard web/server logs (IP, user agent, timestamps) for security and abuse prevention.",
+    " — standard web and server logs (IP address, user agent, timestamps) for security and abuse prevention.",
   privacyLi4Label: "Optional contact",
   privacyLi4Before: " — if you email ",
   privacyLi4After: ", we process the content of that correspondence.",
   privacyH3: "3. Data we do not collect",
   privacyP3:
-    "We do not collect your seed phrase, private key, or biometric templates. Biometric unlock (Face ID / fingerprint), if enabled, is handled by your device OS.",
+    "We do not collect your seed phrase, private key, or biometric templates. Biometric unlock (Face ID / fingerprint), if enabled, is handled by your device operating system.",
   privacyH4: "4. On-chain data",
   privacyP4:
-    "Transfers you confirm are recorded on the Solana public blockchain. Blockchain data is public and outside ACOPAY’s control once broadcast.",
+    "Transfers you confirm are recorded on the Solana public blockchain. Once broadcast, blockchain data is public and outside ACOPAY’s control.",
   privacyH5: "5. Third parties",
   privacyP5:
-    "We use infrastructure providers (hosting, CDN, RPC endpoints) to operate the Services. We do not sell personal data. We do not use advertising SDKs in the mobile app as of this date.",
+    "We use infrastructure providers (hosting, CDN, RPC endpoints) to operate the Services. We do not sell personal data. The mobile app does not include advertising SDKs as of the date above.",
   privacyH6: "6. Retention",
   privacyP6:
     "Server-side session and operational logs are retained only as long as needed for security, support, and legal obligations, then deleted or anonymized.",
   privacyH7: "7. Your choices",
   privacyP7Before:
-    "You may stop using the Services at any time, uninstall the app, and wipe local wallet data from your device. See ",
+    "You may stop using the Services at any time, uninstall the app, and remove local wallet data from your device. See ",
   privacyP7After: ".",
   privacyH8: "8. Contact",
   privacyContact: "Questions:",
@@ -53,38 +56,38 @@ const enBase: LegalSection = {
     "By using acopay.net or the ACOPAY mobile wallet (“Services”), you agree to these Terms. If you do not agree, do not use the Services.",
   termsH1: "1. Nature of the Services",
   termsP1:
-    "ACOPAY provides a non-custodial Solana wallet and transfer utility. The mobile app does not include cryptocurrency exchange, swap, or in-app OTC purchase. The website may offer a separate OTC desk to buy ACOPAY with USDT and may link to third-party DEX tools (for example Raydium or Jupiter); those website features are separate from the mobile wallet. We do not custody your keys and do not guarantee token prices or investment returns. The Services are not financial advice.",
+    "ACOPAY provides a non-custodial Solana wallet and transfer utility. The mobile application does not include cryptocurrency exchange, in-app swap, or in-app purchase of crypto. We do not custody your keys and do not guarantee token prices or investment returns. The Services are not financial advice.",
   termsH2: "2. Your responsibilities",
   termsLi1: "You are solely responsible for securing your recovery phrase and private keys.",
   termsLi2: "You are responsible for verifying recipient addresses before transferring.",
-  termsLi3: "You must comply with laws that apply to you (including crypto regulations).",
+  termsLi3: "You must comply with laws that apply to you, including applicable crypto regulations.",
   termsLi4: "You must be at least 18 years old to use the Services.",
   termsH3: "3. Network fees",
   termsP3:
-    "For supported ACOPAY transfers through ACOPAY’s sponsored flow, Solana network (gas) fees may be paid by ACOPAY/operator as disclosed in-product. For other tokens (for example USDT, SOL, or custom SPL tokens), you pay network fees from your wallet. Token transfer fees (for example the ACOPAY 0.01% on-chain fee) are separate from Solana gas and follow on-chain program rules.",
+    "For supported ACOPAY transfers through ACOPAY’s sponsored flow, Solana network (gas) fees may be paid by the operator as disclosed in the product. For other tokens (for example USDT, SOL, or custom SPL tokens), you pay network fees from your wallet. On-chain token transfer fees (for example the ACOPAY 0.01% fee) are separate from Solana gas and follow program rules on-chain.",
   termsH4: "4. No custody; risk of loss",
   termsP4:
     "If you lose your recovery phrase or device without a backup, your assets may be permanently unrecoverable. Blockchain transactions are irreversible once confirmed.",
   termsH5: "5. Prohibited use",
   termsP5:
-    "You may not use the Services for unlawful activity, fraud, sanctions evasion, or abuse of infrastructure (spam, attacks, reverse engineering for harm).",
+    "You may not use the Services for unlawful activity, fraud, sanctions evasion, or abuse of infrastructure (including spam, attacks, or reverse engineering for harm).",
   termsH6: "6. Disclaimer",
   termsP6:
     "THE SERVICES ARE PROVIDED “AS IS” WITHOUT WARRANTIES OF ANY KIND. TO THE MAXIMUM EXTENT PERMITTED BY LAW, ACOPAY IS NOT LIABLE FOR INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, OR FOR LOSSES ARISING FROM USER ERROR, BLOCKCHAIN FAILURES, OR THIRD-PARTY SERVICES.",
   termsH7: "7. Changes",
   termsP7:
-    "We may update these Terms. Continued use after changes constitutes acceptance of the updated Terms. Material changes will be reflected by updating the date above.",
+    "We may update these Terms. Continued use after changes constitutes acceptance of the updated Terms. Material changes are reflected by updating the date above.",
   termsH8: "8. Contact",
   deleteIntro:
-    "Google Play and App Store require a public deletion path that does not require installing the app. Last updated: 5 August 2026",
+    "Google Play and the App Store require a public deletion path that does not require installing the app. Last updated: 6 August 2026",
   deleteHWhat: "What “account” means here",
   deletePWhat:
-    "The ACOPAY mobile wallet is non-custodial. Your keys live on your device. There is no central login account that holds your funds. Deletion means removing local wallet data and any server-side sessions / operational data tied to addresses you used with ACOPAY APIs.",
+    "The ACOPAY mobile wallet is non-custodial. Your keys remain on your device. There is no central login account that holds your funds. Deletion means removing local wallet data and any server-side sessions or operational data tied to addresses you used with ACOPAY APIs.",
   deleteHA: "A. Delete data on your device (instant)",
-  deleteA1: "Open the ACOPAY app → Settings (gear icon) → Sign out.",
+  deleteA1: "Open the ACOPAY app → Settings → Sign out.",
   deleteA2: "Uninstall the app from your device.",
   deleteA3:
-    "Optional: clear app storage / SecureStore before uninstall if your OS provides that control.",
+    "Optional: clear app storage before uninstall if your operating system provides that control.",
   deleteWarnLabel: "Warning:",
   deleteWarn:
     " If you have not backed up your recovery phrase, signing out or uninstalling may make your funds unrecoverable.",
@@ -109,39 +112,39 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyTitle: "Chính sách quyền riêng tư",
     termsTitle: "Điều khoản dịch vụ",
     deleteTitle: "Xóa tài khoản & dữ liệu",
-    lastUpdated: "Cập nhật lần cuối: 5 tháng 8 năm 2026",
+    lastUpdated: "Cập nhật lần cuối: 6 tháng 8 năm 2026",
     privacyIntro:
-      "Chính sách quyền riêng tư này mô tả cách ACOPAY (\"chúng tôi\") xử lý thông tin khi bạn sử dụng acopay.net và ứng dụng ví di động ACOPAY (\"Dịch vụ\").",
+      "Chính sách quyền riêng tư này giải thích cách ACOPAY (\"chúng tôi\") xử lý thông tin khi bạn sử dụng acopay.net và ứng dụng ví di động ACOPAY (gọi chung là \"Dịch vụ\").",
     privacyH1: "1. Tóm tắt sản phẩm",
     privacyP1:
-      "ACOPAY cung cấp trải nghiệm ví Solana không lưu ký: bạn có thể tạo hoặc nhập ví, xem số dư và chuyển các token SPL (bao gồm ACOPAY, USDT, SOL và các token khác bạn thêm vào). Cụm từ khôi phục và private key luôn nằm trên thiết bị của bạn, ACOPAY không thu thập.",
+      "ACOPAY cung cấp ví Solana không lưu ký. Bạn có thể tạo hoặc nhập ví, xem số dư và chuyển token SPL (bao gồm ACOPAY, USDT, SOL và các token bạn thêm). Cụm từ khôi phục và private key luôn nằm trên thiết bị; ACOPAY không thu thập.",
     privacyH2: "2. Dữ liệu chúng tôi xử lý",
     privacyLi1Label: "Địa chỉ ví công khai",
-    privacyLi1Rest: " — cần để báo phí, tạo, mô phỏng và phát các giao dịch chuyển bạn yêu cầu.",
+    privacyLi1Rest: " — dùng để báo phí, tạo, mô phỏng và phát các lệnh chuyển bạn yêu cầu.",
     privacyLi2Label: "Siêu dữ liệu giao dịch",
     privacyLi2Rest:
-      " — số tiền, địa chỉ hoặc username người nhận bạn nhập, chữ ký và trạng thái xác nhận khi bạn dùng API chuyển tiền do ACOPAY tài trợ.",
+      " — số tiền, địa chỉ hoặc username người nhận bạn nhập, chữ ký và trạng thái xác nhận khi bạn dùng API chuyển của ACOPAY.",
     privacyLi3Label: "Nhật ký kỹ thuật",
     privacyLi3Rest:
-      " — nhật ký web/server tiêu chuẩn (IP, user agent, thời gian) để bảo mật và ngăn lạm dụng.",
+      " — nhật ký web và máy chủ tiêu chuẩn (địa chỉ IP, user agent, thời gian) để bảo mật và ngăn lạm dụng.",
     privacyLi4Label: "Liên hệ tùy chọn",
     privacyLi4Before: " — nếu bạn gửi email tới ",
     privacyLi4After: ", chúng tôi xử lý nội dung của email đó.",
     privacyH3: "3. Dữ liệu chúng tôi không thu thập",
     privacyP3:
-      "Chúng tôi không thu thập cụm từ khôi phục (seed phrase), private key hay mẫu sinh trắc học của bạn. Mở khóa sinh trắc học (Face ID / vân tay), nếu bật, do hệ điều hành thiết bị của bạn xử lý.",
+      "Chúng tôi không thu thập cụm từ khôi phục, private key hay mẫu sinh trắc học. Mở khóa sinh trắc học (Face ID / vân tay), nếu bật, do hệ điều hành thiết bị xử lý.",
     privacyH4: "4. Dữ liệu on-chain",
     privacyP4:
-      "Các giao dịch bạn xác nhận được ghi lại trên blockchain công khai Solana. Dữ liệu blockchain là công khai và nằm ngoài tầm kiểm soát của ACOPAY sau khi đã phát lên mạng.",
+      "Các giao dịch bạn xác nhận được ghi trên blockchain công khai Solana. Sau khi phát lên mạng, dữ liệu blockchain là công khai và nằm ngoài tầm kiểm soát của ACOPAY.",
     privacyH5: "5. Bên thứ ba",
     privacyP5:
-      "Chúng tôi dùng các nhà cung cấp hạ tầng (hosting, CDN, endpoint RPC) để vận hành Dịch vụ. Chúng tôi không bán dữ liệu cá nhân. Tính đến thời điểm này, chúng tôi không dùng SDK quảng cáo trong ứng dụng di động.",
+      "Chúng tôi dùng nhà cung cấp hạ tầng (hosting, CDN, endpoint RPC) để vận hành Dịch vụ. Chúng tôi không bán dữ liệu cá nhân. Ứng dụng di động không tích hợp SDK quảng cáo tính đến ngày nêu trên.",
     privacyH6: "6. Lưu trữ dữ liệu",
     privacyP6:
       "Nhật ký phiên và vận hành phía server chỉ được lưu trong thời gian cần thiết cho mục đích bảo mật, hỗ trợ và nghĩa vụ pháp lý, sau đó bị xóa hoặc ẩn danh.",
     privacyH7: "7. Lựa chọn của bạn",
     privacyP7Before:
-      "Bạn có thể ngừng sử dụng Dịch vụ bất kỳ lúc nào, gỡ ứng dụng và xóa dữ liệu ví cục bộ khỏi thiết bị. Xem ",
+      "Bạn có thể ngừng dùng Dịch vụ bất kỳ lúc nào, gỡ ứng dụng và xóa dữ liệu ví cục bộ trên thiết bị. Xem ",
     privacyP7After: ".",
     privacyH8: "8. Liên hệ",
     privacyContact: "Thắc mắc:",
@@ -149,37 +152,37 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
       "Khi sử dụng acopay.net hoặc ví di động ACOPAY (\"Dịch vụ\"), bạn đồng ý với các Điều khoản này. Nếu không đồng ý, vui lòng không sử dụng Dịch vụ.",
     termsH1: "1. Bản chất của Dịch vụ",
     termsP1:
-      "ACOPAY cung cấp ví Solana không lưu ký và công cụ chuyển token. Ứng dụng di động không có sàn giao dịch, swap hay mua OTC trong app. Website có thể có bàn OTC riêng để mua ACOPAY bằng USDT và liên kết công cụ DEX bên thứ ba (ví dụ Raydium, Jupiter); các tính năng website tách với ví mobile. Chúng tôi không giữ key của bạn và không đảm bảo giá token hay lợi nhuận đầu tư. Dịch vụ không phải tư vấn tài chính.",
+      "ACOPAY cung cấp ví Solana không lưu ký và tiện ích chuyển token. Ứng dụng di động không bao gồm sàn giao dịch tiền mã hóa, hoán đổi trong app, hay mua crypto trong app. Chúng tôi không giữ khóa của bạn và không bảo đảm giá token hay lợi nhuận đầu tư. Dịch vụ không phải tư vấn tài chính.",
     termsH2: "2. Trách nhiệm của bạn",
     termsLi1: "Bạn hoàn toàn chịu trách nhiệm bảo mật cụm từ khôi phục và private key của mình.",
     termsLi2: "Bạn có trách nhiệm xác minh địa chỉ người nhận trước khi chuyển tiền.",
-    termsLi3: "Bạn phải tuân thủ luật pháp áp dụng cho mình (bao gồm quy định về tiền mã hóa).",
+    termsLi3: "Bạn phải tuân thủ luật áp dụng với bạn, bao gồm quy định về tiền mã hóa (nếu có).",
     termsLi4: "Bạn phải từ 18 tuổi trở lên để sử dụng Dịch vụ.",
     termsH3: "3. Phí mạng",
     termsP3:
-      "Với các giao dịch ACOPAY được hỗ trợ qua luồng tài trợ của ACOPAY, phí mạng Solana (gas) có thể do ACOPAY/operator chi trả như đã công bố trong sản phẩm. Với các token khác (ví dụ USDT, SOL hoặc token SPL tùy chỉnh), bạn tự trả phí mạng từ ví của mình. Phí chuyển token (ví dụ phí on-chain 0,01% của ACOPAY) tách biệt với phí gas Solana và tuân theo quy tắc của chương trình on-chain.",
+      "Với các lệnh chuyển ACOPAY được hỗ trợ qua luồng tài trợ của ACOPAY, phí mạng Solana (gas) có thể do nhà vận hành trả như đã nêu trong sản phẩm. Với token khác (ví dụ USDT, SOL hoặc SPL tùy chỉnh), bạn trả phí mạng từ ví của mình. Phí chuyển token on-chain (ví dụ phí 0,01% của ACOPAY) tách biệt với gas Solana và theo quy tắc chương trình trên chuỗi.",
     termsH4: "4. Không lưu ký; rủi ro mất tài sản",
     termsP4:
       "Nếu bạn mất cụm từ khôi phục hoặc mất thiết bị mà không có bản sao lưu, tài sản của bạn có thể vĩnh viễn không khôi phục được. Giao dịch blockchain không thể đảo ngược sau khi đã xác nhận.",
     termsH5: "5. Hành vi bị cấm",
     termsP5:
-      "Bạn không được dùng Dịch vụ cho hoạt động bất hợp pháp, gian lận, né tránh lệnh trừng phạt, hoặc lạm dụng hạ tầng (spam, tấn công, reverse engineering nhằm gây hại).",
+      "Bạn không được dùng Dịch vụ cho hoạt động bất hợp pháp, gian lận, lách lệnh trừng phạt, hoặc lạm dụng hạ tầng (bao gồm spam, tấn công, hoặc kỹ thuật đảo chiều nhằm gây hại).",
     termsH6: "6. Miễn trừ trách nhiệm",
     termsP6:
       "DỊCH VỤ ĐƯỢC CUNG CẤP \"NGUYÊN TRẠNG\" (AS IS) KHÔNG BẢO ĐẢM DƯỚI BẤT KỲ HÌNH THỨC NÀO. TRONG PHẠM VI TỐI ĐA PHÁP LUẬT CHO PHÉP, ACOPAY KHÔNG CHỊU TRÁCH NHIỆM VỀ THIỆT HẠI GIÁN TIẾP, NGẪU NHIÊN HAY HỆ QUẢ, HOẶC TỔN THẤT PHÁT SINH TỪ LỖI NGƯỜI DÙNG, SỰ CỐ BLOCKCHAIN, HOẶC DỊCH VỤ BÊN THỨ BA.",
     termsH7: "7. Thay đổi",
     termsP7:
-      "Chúng tôi có thể cập nhật các Điều khoản này. Việc tiếp tục sử dụng sau khi có thay đổi đồng nghĩa với việc bạn chấp nhận Điều khoản đã cập nhật. Thay đổi quan trọng sẽ được thể hiện bằng cách cập nhật ngày ở trên.",
+      "Chúng tôi có thể cập nhật Điều khoản. Tiếp tục sử dụng sau khi thay đổi đồng nghĩa chấp nhận Điều khoản đã cập nhật. Thay đổi quan trọng được phản ánh bằng việc cập nhật ngày nêu trên.",
     termsH8: "8. Liên hệ",
     deleteIntro:
-      "Google Play và App Store yêu cầu một cách xóa công khai không cần cài ứng dụng. Cập nhật lần cuối: 2 tháng 8 năm 2026",
+      "Google Play và App Store yêu cầu đường dẫn xóa dữ liệu công khai không bắt buộc cài app. Cập nhật lần cuối: 6 tháng 8 năm 2026",
     deleteHWhat: "\"Tài khoản\" ở đây nghĩa là gì",
     deletePWhat:
-      "Ví di động ACOPAY không lưu ký. Key của bạn nằm trên thiết bị của bạn. Không có tài khoản đăng nhập trung tâm nào giữ tiền của bạn. Xóa nghĩa là gỡ dữ liệu ví cục bộ và mọi phiên/dữ liệu vận hành phía server gắn với địa chỉ bạn đã dùng với API của ACOPAY.",
+      "Ví di động ACOPAY là không lưu ký. Khóa nằm trên thiết bị của bạn. Không có tài khoản đăng nhập tập trung giữ tiền của bạn. Xóa nghĩa là gỡ dữ liệu ví cục bộ và mọi phiên / dữ liệu vận hành phía máy chủ gắn với địa chỉ bạn đã dùng với API ACOPAY.",
     deleteHA: "A. Xóa dữ liệu trên thiết bị của bạn (tức thì)",
-    deleteA1: "Mở ứng dụng ACOPAY → Cài đặt (biểu tượng bánh răng) → Đăng xuất.",
+    deleteA1: "Mở ứng dụng ACOPAY → Cài đặt → Đăng xuất.",
     deleteA2: "Gỡ ứng dụng khỏi thiết bị của bạn.",
-    deleteA3: "Tùy chọn: xóa bộ nhớ ứng dụng / SecureStore trước khi gỡ nếu hệ điều hành của bạn cho phép.",
+    deleteA3: "Tuỳ chọn: xóa bộ nhớ ứng dụng trước khi gỡ nếu hệ điều hành cho phép.",
     deleteWarnLabel: "Cảnh báo:",
     deleteWarn:
       " Nếu bạn chưa sao lưu cụm từ khôi phục, việc đăng xuất hoặc gỡ ứng dụng có thể khiến tài sản của bạn không thể khôi phục.",
@@ -199,7 +202,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyTitle: "隐私政策",
     termsTitle: "服务条款",
     deleteTitle: "删除账户与数据",
-    lastUpdated: "最后更新：2026年8月2日",
+    lastUpdated: "最后更新：2026年8月6日",
     privacyIntro:
       "本隐私政策说明当你使用 acopay.net 和 ACOPAY 移动钱包应用（下称“服务”）时，ACOPAY（“我们”）如何处理信息。",
     privacyH1: "1. 产品概述",
@@ -236,7 +239,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
       "使用 acopay.net 或 ACOPAY 移动钱包（“服务”）即表示你同意本条款。如果不同意，请不要使用本服务。",
     termsH1: "1. 服务的性质",
     termsP1:
-      "ACOPAY 提供非托管的 Solana 钱包与转账工具。移动应用内不包含加密货币交易所、兑换（swap）或应用内 OTC 购买。网站可能提供独立的 OTC 柜台（以 USDT 购买 ACOPAY），并可能链接至第三方 DEX 工具（例如 Raydium、Jupiter）；这些网站功能与移动钱包相互独立。我们不托管你的密钥，也不保证代币价格或投资回报。本服务不构成任何财务建议。",
+      "ACOPAY 提供非托管 Solana 钱包与转账工具。移动应用不包含加密货币交易所、应用内兑换或应用内购买加密资产。我们不托管您的密钥，也不保证代币价格或投资回报。本服务不构成财务建议。",
     termsH2: "2. 你的责任",
     termsLi1: "你须自行负责保管好你的助记词与私钥。",
     termsLi2: "转账前，你须自行核实收款地址。",
@@ -256,14 +259,14 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     termsP7:
       "我们可能会更新本条款。变更后继续使用即视为你接受更新后的条款。重大变更将通过更新上方日期予以体现。",
     termsH8: "8. 联系方式",
-    deleteIntro: "Google Play 与 App Store 要求提供无需安装应用即可完成的公开删除途径。最后更新：2026年8月2日",
+    deleteIntro: "Google Play 与 App Store 要求提供无需安装应用即可访问的公开删除路径。最后更新：2026年8月6日",
     deleteHWhat: "此处“账户”的含义",
     deletePWhat:
       "ACOPAY 移动钱包为非托管钱包。你的密钥保存在你的设备上。不存在持有你资金的中心化登录账户。删除是指移除本地钱包数据，以及与你在 ACOPAY 接口中使用过的地址相关的任何服务器端会话/运营数据。",
     deleteHA: "A. 删除设备上的数据（即时生效）",
-    deleteA1: "打开 ACOPAY 应用 → 设置（齿轮图标）→ 退出登录。",
+    deleteA1: "打开 ACOPAY 应用 → 设置 → 退出登录。",
     deleteA2: "从设备上卸载该应用。",
-    deleteA3: "可选：如果你的操作系统支持，可在卸载前清除应用存储 / SecureStore。",
+    deleteA3: "可选：若系统提供该选项，可在卸载前清除应用存储。",
     deleteWarnLabel: "警告：",
     deleteWarn: "如果你尚未备份助记词，退出登录或卸载应用可能导致你的资产无法找回。",
     deleteHB: "B. 申请服务器端删除",
@@ -282,7 +285,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyTitle: "プライバシーポリシー",
     termsTitle: "利用規約",
     deleteTitle: "アカウントとデータの削除",
-    lastUpdated: "最終更新日：2026年8月2日",
+    lastUpdated: "最終更新：2026年8月6日",
     privacyIntro:
       "本プライバシーポリシーは、お客様が acopay.net および ACOPAY モバイルウォレットアプリ（以下「本サービス」）をご利用になる際に、ACOPAY（以下「当社」）が情報をどのように取り扱うかを説明するものです。",
     privacyH1: "1. サービス概要",
@@ -322,7 +325,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
       "acopay.net または ACOPAY モバイルウォレット（以下「本サービス」）をご利用になることで、本規約に同意したものとみなされます。同意いただけない場合は、本サービスをご利用にならないでください。",
     termsH1: "1. 本サービスの性質",
     termsP1:
-      "ACOPAY は非カストディアル型の Solana ウォレットおよび送金ユーティリティを提供します。モバイルアプリ内に暗号資産取引所、スワップ、アプリ内 OTC 購入機能はありません。ウェブサイトでは USDT で ACOPAY を購入する別の OTC デスクや、第三者 DEX（例: Raydium、Jupiter）へのリンクを提供する場合があります。これらはモバイルウォレットとは別機能です。当社は鍵を保管せず、トークン価格や投資収益も保証しません。本サービスは投資助言ではありません。",
+      "ACOPAY はノンカストディアルの Solana ウォレットおよび送金ユーティリティを提供します。モバイルアプリに暗号資産取引所、アプリ内スワップ、アプリ内での暗号購入は含まれません。当社は鍵を預かりません。価格や投資リターンも保証しません。本サービスは金融助言ではありません。",
     termsH2: "2. お客様の責任",
     termsLi1: "リカバリーフレーズおよび秘密鍵の管理は、お客様ご自身の責任で行ってください。",
     termsLi2: "送金前に受取アドレスを確認する責任はお客様にあります。",
@@ -345,14 +348,14 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
       "当社は本規約を更新することがあります。変更後も本サービスの利用を継続する場合、更新後の規約に同意したものとみなされます。重要な変更は、上記の更新日を変更することで反映されます。",
     termsH8: "8. お問い合わせ",
     deleteIntro:
-      "Google Play および App Store は、アプリのインストールを必要としない公開の削除方法を求めています。最終更新日：2026年8月2日",
+      "Google Play および App Store は、アプリをインストールせずに利用できる公開の削除経路を求めています。最終更新：2026年8月6日",
     deleteHWhat: "ここでいう「アカウント」とは",
     deletePWhat:
       "ACOPAY モバイルウォレットは非カストディアル型です。鍵はお客様の端末内に保存されます。資金を保有する中央集権的なログインアカウントは存在しません。削除とは、ローカルのウォレットデータ、および ACOPAY の API で使用したアドレスに紐づくサーバー側のセッション／運用データを削除することを意味します。",
     deleteHA: "A. 端末上のデータを削除する（即時）",
-    deleteA1: "ACOPAY アプリを開く → 設定（歯車アイコン）→ サインアウト。",
+    deleteA1: "ACOPAY アプリを開く → 設定 → サインアウト。",
     deleteA2: "端末からアプリをアンインストールする。",
-    deleteA3: "任意：OS がその操作に対応している場合は、アンインストール前にアプリストレージ／SecureStore を消去する。",
+    deleteA3: "任意：OS が提供する場合、アンインストール前にアプリのストレージを消去できます。",
     deleteWarnLabel: "警告：",
     deleteWarn:
       "リカバリーフレーズをバックアップしていない場合、ログアウトまたはアンインストールにより資産が復元不能になることがあります。",
@@ -372,7 +375,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyTitle: "개인정보 처리방침",
     termsTitle: "이용약관",
     deleteTitle: "계정 및 데이터 삭제",
-    lastUpdated: "최종 업데이트: 2026년 8월 2일",
+    lastUpdated: "최종 업데이트: 2026년 8월 6일",
     privacyIntro:
       "이 개인정보 처리방침은 귀하가 acopay.net 및 ACOPAY 모바일 지갑 애플리케이션(이하 “서비스”)을 이용할 때 ACOPAY(이하 “당사”)가 정보를 어떻게 처리하는지 설명합니다.",
     privacyH1: "1. 서비스 개요",
@@ -411,7 +414,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
       "acopay.net 또는 ACOPAY 모바일 지갑(이하 “서비스”)을 이용함으로써 귀하는 본 약관에 동의합니다. 동의하지 않으시면 서비스를 이용하지 마십시오.",
     termsH1: "1. 서비스의 성격",
     termsP1:
-      "ACOPAY는 비수탁형 Solana 지갑 및 전송 유틸리티를 제공합니다. 모바일 앱에는 암호화폐 거래소, 스왑, 앱 내 OTC 구매 기능이 없습니다. 웹사이트는 USDT로 ACOPAY를 구매하는 별도의 OTC 데스크와 타사 DEX(예: Raydium, Jupiter) 링크를 제공할 수 있으며, 이는 모바일 지갑과 별개입니다. 당사는 키를 보관하지 않으며 토큰 가격이나 투자 수익을 보장하지 않습니다. 본 서비스는 재무 자문이 아닙니다.",
+      "ACOPAY는 비수탁 Solana 지갑 및 전송 유틸리티를 제공합니다. 모바일 앱에는 암호화폐 거래소, 인앱 스왑, 인앱 암호화폐 구매가 포함되지 않습니다. 당사는 키를 보관하지 않으며 토큰 가격이나 투자 수익을 보장하지 않습니다. 본 서비스는 금융 자문이 아닙니다.",
     termsH2: "2. 귀하의 책임",
     termsLi1: "복구 구문과 개인 키를 안전하게 보관하는 것은 전적으로 귀하의 책임입니다.",
     termsLi2: "전송 전에 수신 주소를 확인하는 것은 귀하의 책임입니다.",
@@ -433,14 +436,14 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     termsP7:
       "당사는 본 약관을 업데이트할 수 있습니다. 변경 후 계속 이용하는 것은 업데이트된 약관에 대한 동의로 간주됩니다. 중요한 변경 사항은 위의 날짜를 갱신하여 반영됩니다.",
     termsH8: "8. 연락처",
-    deleteIntro: "Google Play와 App Store는 앱 설치 없이도 이용 가능한 공개적인 삭제 절차를 요구합니다. 최종 업데이트: 2026년 8월 2일",
+    deleteIntro: "Google Play와 App Store는 앱 설치 없이 이용할 수 있는 공개 삭제 경로를 요구합니다. 최종 업데이트: 2026년 8월 6일",
     deleteHWhat: "여기서 말하는 “계정”의 의미",
     deletePWhat:
       "ACOPAY 모바일 지갑은 비수탁형입니다. 귀하의 키는 귀하의 기기에 저장됩니다. 귀하의 자금을 보유하는 중앙 로그인 계정은 존재하지 않습니다. 삭제란 로컬 지갑 데이터와 ACOPAY API에서 사용한 주소에 연결된 서버 측 세션/운영 데이터를 제거하는 것을 의미합니다.",
     deleteHA: "A. 기기에서 데이터 삭제(즉시)",
-    deleteA1: "ACOPAY 앱 열기 → 설정(톱니바퀴) → 로그아웃.",
+    deleteA1: "ACOPAY 앱 열기 → 설정 → 로그아웃.",
     deleteA2: "기기에서 앱을 삭제합니다.",
-    deleteA3: "선택 사항: OS에서 지원하는 경우 삭제 전에 앱 저장소 / SecureStore를 지웁니다.",
+    deleteA3: "선택 사항: OS에서 제공하는 경우 제거 전에 앱 저장소를 지울 수 있습니다.",
     deleteWarnLabel: "경고:",
     deleteWarn: " 복구 구문을 백업하지 않은 경우, 로그아웃하거나 앱을 삭제하면 자산을 복구할 수 없게 될 수 있습니다.",
     deleteHB: "B. 서버 측 삭제 요청",
@@ -459,7 +462,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyTitle: "นโยบายความเป็นส่วนตัว",
     termsTitle: "ข้อกำหนดการให้บริการ",
     deleteTitle: "ลบบัญชีและข้อมูล",
-    lastUpdated: "ปรับปรุงล่าสุด: 2 สิงหาคม 2026",
+    lastUpdated: "อัปเดตล่าสุด: 6 สิงหาคม 2026",
     privacyIntro:
       "นโยบายความเป็นส่วนตัวนี้อธิบายวิธีที่ ACOPAY (“เรา”) จัดการข้อมูลเมื่อคุณใช้ acopay.net และแอปกระเป๋าเงินมือถือ ACOPAY (“บริการ”)",
     privacyH1: "1. ภาพรวมผลิตภัณฑ์",
@@ -499,7 +502,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
       "การใช้ acopay.net หรือกระเป๋าเงินมือถือ ACOPAY (“บริการ”) ถือว่าคุณยอมรับข้อกำหนดนี้ หากคุณไม่ยอมรับ กรุณาอย่าใช้บริการ",
     termsH1: "1. ลักษณะของบริการ",
     termsP1:
-      "ACOPAY ให้บริการกระเป๋าเงิน Solana แบบไม่ดูแลกุญแจและเครื่องมือโอน แอปมือถือไม่มีตลาดแลกเปลี่ยน สวอป หรือซื้อ OTC ในแอป เว็บไซต์อาจมีโต๊ะ OTC แยกเพื่อซื้อ ACOPAY ด้วย USDT และลิงก์ไปยังเครื่องมือ DEX ของบุคคลที่สาม (เช่น Raydium, Jupiter) ซึ่งแยกจากกระเป๋าบนมือถือ เราไม่เก็บคีย์ของคุณและไม่รับประกันราคาหรือผลตอบแทน บริการนี้ไม่ใช่คำแนะนำทางการเงิน",
+      "ACOPAY ให้บริการกระเป๋า Solana แบบไม่คุมกุญแจและเครื่องมือโอน แอปมือถือไม่มีตลาดแลกคริปโต การสวอปในแอป หรือการซื้อคริปโตในแอป เราไม่เก็บกุญแจของคุณและไม่รับประกันราคาโทเค็นหรือผลตอบแทน การบริการนี้ไม่ใช่คำแนะนำทางการเงิน",
     termsH2: "2. ความรับผิดชอบของคุณ",
     termsLi1: "คุณต้องรับผิดชอบแต่เพียงผู้เดียวในการรักษาความปลอดภัยของวลีกู้คืนและคีย์ส่วนตัวของคุณ",
     termsLi2: "คุณมีหน้าที่ตรวจสอบที่อยู่ผู้รับก่อนทำการโอน",
@@ -522,14 +525,14 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
       "เราอาจปรับปรุงข้อกำหนดนี้ การใช้งานต่อเนื่องหลังการเปลี่ยนแปลงถือเป็นการยอมรับข้อกำหนดที่ปรับปรุงแล้ว การเปลี่ยนแปลงที่สำคัญจะสะท้อนด้วยการปรับปรุงวันที่ด้านบน",
     termsH8: "8. ติดต่อ",
     deleteIntro:
-      "Google Play และ App Store กำหนดให้มีช่องทางลบบัญชีสาธารณะที่ไม่จำเป็นต้องติดตั้งแอป ปรับปรุงล่าสุด: 2 สิงหาคม 2026",
+      "Google Play และ App Store กำหนดให้มีช่องทางลบข้อมูลสาธารณะโดยไม่ต้องติดตั้งแอป อัปเดตล่าสุด: 6 สิงหาคม 2026",
     deleteHWhat: "ความหมายของ “บัญชี” ในที่นี้",
     deletePWhat:
       "กระเป๋าเงินมือถือ ACOPAY เป็นแบบไม่ดูแลกุญแจแทนคุณ คีย์ของคุณอยู่บนอุปกรณ์ของคุณ ไม่มีบัญชีเข้าสู่ระบบส่วนกลางใดที่ถือครองเงินของคุณ การลบหมายถึงการลบข้อมูลกระเป๋าเงินในเครื่องและเซสชัน/ข้อมูลการดำเนินงานฝั่งเซิร์ฟเวอร์ที่เชื่อมโยงกับที่อยู่ที่คุณใช้กับ API ของ ACOPAY",
     deleteHA: "A. ลบข้อมูลบนอุปกรณ์ของคุณ (ทันที)",
-    deleteA1: "เปิดแอป ACOPAY → การตั้งค่า (ไอคอนเฟือง) → ออกจากระบบ",
+    deleteA1: "เปิดแอป ACOPAY → การตั้งค่า → ออกจากระบบ",
     deleteA2: "ถอนการติดตั้งแอปออกจากอุปกรณ์ของคุณ",
-    deleteA3: "ทางเลือก: ล้างพื้นที่จัดเก็บของแอป / SecureStore ก่อนถอนการติดตั้ง หากระบบปฏิบัติการของคุณมีตัวเลือกนี้",
+    deleteA3: "ทางเลือก: ล้างที่เก็บข้อมูลแอปก่อนถอนการติดตั้ง หากระบบปฏิบัติการมีตัวเลือกนี้",
     deleteWarnLabel: "คำเตือน:",
     deleteWarn: " หากคุณยังไม่ได้สำรองวลีกู้คืน การออกจากระบบหรือถอนการติดตั้งอาจทำให้เงินของคุณไม่สามารถกู้คืนได้",
     deleteHB: "B. ขอให้ลบข้อมูลฝั่งเซิร์ฟเวอร์",
@@ -548,7 +551,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyTitle: "Kebijakan Privasi",
     termsTitle: "Ketentuan Layanan",
     deleteTitle: "Hapus akun & data",
-    lastUpdated: "Terakhir diperbarui: 2 Agustus 2026",
+    lastUpdated: "Terakhir diperbarui: 6 Agustus 2026",
     privacyIntro:
       "Kebijakan Privasi ini menjelaskan bagaimana ACOPAY (“kami”) menangani informasi saat Anda menggunakan acopay.net dan aplikasi dompet seluler ACOPAY (“Layanan”).",
     privacyH1: "1. Ringkasan produk",
@@ -587,7 +590,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
       "Dengan menggunakan acopay.net atau dompet seluler ACOPAY (“Layanan”), Anda menyetujui Ketentuan ini. Jika Anda tidak setuju, jangan gunakan Layanan.",
     termsH1: "1. Sifat Layanan",
     termsP1:
-      "ACOPAY menyediakan dompet Solana non-kustodian dan utilitas transfer. Aplikasi seluler tidak menyertakan bursa kripto, swap, atau pembelian OTC dalam aplikasi. Situs web dapat menawarkan meja OTC terpisah untuk membeli ACOPAY dengan USDT dan menautkan ke alat DEX pihak ketiga (misalnya Raydium, Jupiter); fitur situs itu terpisah dari dompet seluler. Kami tidak menyimpan kunci Anda dan tidak menjamin harga token atau imbal hasil. Layanan ini bukan nasihat keuangan.",
+      "ACOPAY menyediakan dompet Solana non-kustodial dan utilitas transfer. Aplikasi seluler tidak mencakup bursa kripto, swap dalam aplikasi, atau pembelian kripto dalam aplikasi. Kami tidak menyimpan kunci Anda dan tidak menjamin harga token atau imbal hasil investasi. Layanan ini bukan nasihat keuangan.",
     termsH2: "2. Tanggung jawab Anda",
     termsLi1: "Anda sepenuhnya bertanggung jawab untuk mengamankan frasa pemulihan dan kunci privat Anda.",
     termsLi2: "Anda bertanggung jawab memverifikasi alamat penerima sebelum melakukan transfer.",
@@ -610,14 +613,14 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
       "Kami dapat memperbarui Ketentuan ini. Penggunaan berkelanjutan setelah perubahan merupakan penerimaan atas Ketentuan yang diperbarui. Perubahan material akan tercermin dengan memperbarui tanggal di atas.",
     termsH8: "8. Kontak",
     deleteIntro:
-      "Google Play dan App Store mewajibkan jalur penghapusan publik yang tidak mengharuskan pemasangan aplikasi. Terakhir diperbarui: 2 Agustus 2026",
+      "Google Play dan App Store mewajibkan jalur penghapusan publik yang tidak memerlukan pemasangan aplikasi. Terakhir diperbarui: 6 Agustus 2026",
     deleteHWhat: "Arti “akun” di sini",
     deletePWhat:
       "Dompet seluler ACOPAY bersifat non-kustodian. Kunci Anda berada di perangkat Anda. Tidak ada akun login pusat yang menyimpan dana Anda. Penghapusan berarti menghapus data dompet lokal dan sesi/data operasional sisi server yang terkait dengan alamat yang Anda gunakan dengan API ACOPAY.",
     deleteHA: "A. Hapus data di perangkat Anda (instan)",
-    deleteA1: "Buka aplikasi ACOPAY → Pengaturan (ikon roda gigi) → Keluar.",
+    deleteA1: "Buka aplikasi ACOPAY → Pengaturan → Keluar.",
     deleteA2: "Copot pemasangan aplikasi dari perangkat Anda.",
-    deleteA3: "Opsional: hapus penyimpanan aplikasi / SecureStore sebelum mencopot pemasangan jika OS Anda menyediakan kontrol tersebut.",
+    deleteA3: "Opsional: hapus penyimpanan aplikasi sebelum mencopot jika sistem operasi menyediakan kontrol itu.",
     deleteWarnLabel: "Peringatan:",
     deleteWarn: " Jika Anda belum mencadangkan frasa pemulihan, keluar atau mencopot pemasangan dapat membuat dana Anda tidak dapat dipulihkan.",
     deleteHB: "B. Meminta penghapusan sisi server",
@@ -636,7 +639,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyTitle: "Dasar Privasi",
     termsTitle: "Terma Perkhidmatan",
     deleteTitle: "Padam akaun & data",
-    lastUpdated: "Terakhir dikemas kini: 2 Ogos 2026",
+    lastUpdated: "Kemas kini terakhir: 6 Ogos 2026",
     privacyIntro:
       "Dasar Privasi ini menerangkan cara ACOPAY (“kami”) mengendalikan maklumat apabila anda menggunakan acopay.net dan aplikasi dompet mudah alih ACOPAY (“Perkhidmatan”).",
     privacyH1: "1. Ringkasan produk",
@@ -675,7 +678,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
       "Dengan menggunakan acopay.net atau dompet mudah alih ACOPAY (“Perkhidmatan”), anda bersetuju dengan Terma ini. Jika anda tidak bersetuju, jangan gunakan Perkhidmatan.",
     termsH1: "1. Sifat Perkhidmatan",
     termsP1:
-      "ACOPAY menyediakan dompet Solana bukan kustodian dan utiliti pemindahan. Aplikasi mudah alih tidak termasuk bursa kripto, swap, atau pembelian OTC dalam apl. Laman web mungkin menawarkan meja OTC berasingan untuk membeli ACOPAY dengan USDT dan pautan ke alat DEX pihak ketiga (contoh Raydium, Jupiter); ciri laman itu berasingan daripada dompet mudah alih. Kami tidak menyimpan kunci anda dan tidak menjamin harga token atau pulangan. Perkhidmatan ini bukan nasihat kewangan.",
+      "ACOPAY menyediakan dompet Solana tanpa kustodi dan utiliti pemindahan. Aplikasi mudah alih tidak termasuk bursa kripto, swap dalam aplikasi, atau pembelian kripto dalam aplikasi. Kami tidak menyimpan kunci anda dan tidak menjamin harga token atau pulangan pelaburan. Perkhidmatan ini bukan nasihat kewangan.",
     termsH2: "2. Tanggungjawab anda",
     termsLi1: "Anda bertanggungjawab sepenuhnya untuk mengamankan frasa pemulihan dan kunci peribadi anda.",
     termsLi2: "Anda bertanggungjawab mengesahkan alamat penerima sebelum memindahkan.",
@@ -698,14 +701,14 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
       "Kami boleh mengemas kini Terma ini. Penggunaan berterusan selepas perubahan membentuk penerimaan Terma yang dikemas kini. Perubahan penting akan dicerminkan dengan mengemas kini tarikh di atas.",
     termsH8: "8. Hubungi",
     deleteIntro:
-      "Google Play dan App Store memerlukan laluan pemadaman awam yang tidak memerlukan pemasangan aplikasi. Terakhir dikemas kini: 2 Ogos 2026",
+      "Google Play dan App Store memerlukan laluan pemadaman awam yang tidak memerlukan pemasangan aplikasi. Kemas kini terakhir: 6 Ogos 2026",
     deleteHWhat: "Maksud “akaun” di sini",
     deletePWhat:
       "Dompet mudah alih ACOPAY adalah bukan kustodian. Kunci anda berada pada peranti anda. Tiada akaun log masuk pusat yang menyimpan dana anda. Pemadaman bermaksud mengalih keluar data dompet tempatan dan mana-mana sesi/data operasi bahagian pelayan yang berkaitan dengan alamat yang anda gunakan dengan API ACOPAY.",
     deleteHA: "A. Padam data pada peranti anda (serta-merta)",
-    deleteA1: "Buka aplikasi ACOPAY → Tetapan (ikon gear) → Log keluar.",
+    deleteA1: "Buka aplikasi ACOPAY → Tetapan → Log keluar.",
     deleteA2: "Nyahpasang aplikasi daripada peranti anda.",
-    deleteA3: "Pilihan: kosongkan storan aplikasi / SecureStore sebelum menyahpasang jika OS anda menyediakan kawalan itu.",
+    deleteA3: "Pilihan: kosongkan storan aplikasi sebelum nyahpasang jika sistem pengendalian menyediakan kawalan itu.",
     deleteWarnLabel: "Amaran:",
     deleteWarn: " Jika anda belum menyandarkan frasa pemulihan anda, log keluar atau menyahpasang mungkin menyebabkan dana anda tidak dapat dipulihkan.",
     deleteHB: "B. Minta pemadaman bahagian pelayan",
@@ -724,7 +727,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyTitle: "गोपनीयता नीति",
     termsTitle: "सेवा की शर्तें",
     deleteTitle: "खाता और डेटा हटाएँ",
-    lastUpdated: "अंतिम अपडेट: 2 अगस्त 2026",
+    lastUpdated: "अंतिम अपडेट: 6 अगस्त 2026",
     privacyIntro:
       "यह गोपनीयता नीति बताती है कि जब आप acopay.net और ACOPAY मोबाइल वॉलेट ऐप (“सेवाएँ”) का उपयोग करते हैं, तो ACOPAY (“हम”) जानकारी को कैसे संभालता है।",
     privacyH1: "1. उत्पाद सारांश",
@@ -763,7 +766,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
       "acopay.net या ACOPAY मोबाइल वॉलेट (“सेवाएँ”) का उपयोग करके, आप इन शर्तों से सहमत होते हैं। यदि आप सहमत नहीं हैं, तो सेवाओं का उपयोग न करें।",
     termsH1: "1. सेवाओं की प्रकृति",
     termsP1:
-      "ACOPAY एक नॉन-कस्टोडियल Solana वॉलेट और ट्रांसफर यूटिलिटी प्रदान करता है। मोबाइल ऐप में क्रिप्टो एक्सचेंज, स्वैप या इन-ऐप OTC खरीद नहीं है। वेबसाइट पर USDT से ACOPAY खरीदने के लिए अलग OTC डेस्क और थर्ड-पार्टी DEX (जैसे Raydium, Jupiter) के लिंक हो सकते हैं; ये मोबाइल वॉलेट से अलग हैं। हम आपकी कुंजी कस्टडी में नहीं रखते और कीमतों/रिटर्न की गारंटी नहीं देते। सेवाएँ वित्तीय सलाह नहीं हैं।",
+      "ACOPAY एक नॉन-कस्टोडियल Solana वॉलेट और ट्रांसफर सुविधा प्रदान करता है। मोबाइल ऐप में क्रिप्टो एक्सचेंज, इन-ऐप स्वैप, या इन-ऐप क्रिप्टो खरीद शामिल नहीं है। हम आपकी कुंजियाँ नहीं रखते और टोकन कीमत या निवेश रिटर्न की गारंटी नहीं देते। यह सेवा वित्तीय सलाह नहीं है।",
     termsH2: "2. आपकी ज़िम्मेदारियाँ",
     termsLi1: "अपने रिकवरी फ़्रेज़ और प्राइवेट की को सुरक्षित रखने की पूरी ज़िम्मेदारी आपकी है।",
     termsLi2: "ट्रांसफर करने से पहले प्राप्तकर्ता के पते को सत्यापित करने की ज़िम्मेदारी आपकी है।",
@@ -786,14 +789,14 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
       "हम इन शर्तों को अपडेट कर सकते हैं। परिवर्तनों के बाद निरंतर उपयोग अपडेट की गई शर्तों की स्वीकृति माना जाएगा। महत्वपूर्ण परिवर्तन ऊपर दी गई तारीख को अपडेट करके दर्शाए जाएँगे।",
     termsH8: "8. संपर्क करें",
     deleteIntro:
-      "Google Play और App Store को ऐसा सार्वजनिक डिलीशन तरीका चाहिए जिसके लिए ऐप इंस्टॉल करने की आवश्यकता न हो। अंतिम अपडेट: 2 अगस्त 2026",
+      "Google Play और App Store ऐप इंस्टॉल किए बिना सार्वजनिक हटाने का मार्ग चाहते हैं। अंतिम अपडेट: 6 अगस्त 2026",
     deleteHWhat: "यहाँ “खाते” का क्या मतलब है",
     deletePWhat:
       "ACOPAY मोबाइल वॉलेट नॉन-कस्टोडियल है। आपकी की आपके डिवाइस पर रहती है। कोई केंद्रीय लॉगिन खाता नहीं है जो आपके फंड रखता हो। हटाने का मतलब है स्थानीय वॉलेट डेटा और आपके द्वारा ACOPAY API के साथ उपयोग किए गए पतों से जुड़े किसी भी सर्वर-साइड सेशन/परिचालन डेटा को हटाना।",
     deleteHA: "A. अपने डिवाइस पर डेटा हटाएँ (तुरंत)",
-    deleteA1: "ACOPAY ऐप खोलें → सेटिंग्स (गियर आइकन) → साइन आउट।",
+    deleteA1: "ACOPAY ऐप खोलें → सेटिंग्स → साइन आउट।",
     deleteA2: "अपने डिवाइस से ऐप को अनइंस्टॉल करें।",
-    deleteA3: "वैकल्पिक: यदि आपका OS वह नियंत्रण प्रदान करता है, तो अनइंस्टॉल से पहले ऐप स्टोरेज / SecureStore साफ़ करें।",
+    deleteA3: "वैकल्पिक: यदि OS अनुमति दे तो अनइंस्टॉल से पहले ऐप स्टोरेज साफ़ करें।",
     deleteWarnLabel: "चेतावनी:",
     deleteWarn: " यदि आपने अपने रिकवरी फ़्रेज़ का बैकअप नहीं लिया है, तो साइन आउट करने या अनइंस्टॉल करने से आपके फंड अप्राप्य हो सकते हैं।",
     deleteHB: "B. सर्वर-साइड डिलीशन का अनुरोध करें",
@@ -812,7 +815,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyTitle: "Política de privacidad",
     termsTitle: "Términos del servicio",
     deleteTitle: "Eliminar cuenta y datos",
-    lastUpdated: "Última actualización: 2 de agosto de 2026",
+    lastUpdated: "Última actualización: 6 de agosto de 2026",
     privacyIntro:
       "Esta Política de privacidad describe cómo ACOPAY (“nosotros”) gestiona la información cuando usas acopay.net y la aplicación de cartera móvil ACOPAY (los “Servicios”).",
     privacyH1: "1. Resumen del producto",
@@ -851,7 +854,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
       "Al usar acopay.net o la cartera móvil ACOPAY (los “Servicios”), aceptas estos Términos. Si no estás de acuerdo, no uses los Servicios.",
     termsH1: "1. Naturaleza de los Servicios",
     termsP1:
-      "ACOPAY ofrece una cartera Solana no custodiada y una utilidad de transferencia. La app móvil no incluye exchange, swap ni compra OTC dentro de la app. El sitio web puede ofrecer un escritorio OTC aparte para comprar ACOPAY con USDT y enlaces a DEX de terceros (p. ej. Raydium, Jupiter); esas funciones web son independientes de la cartera móvil. No custodiamos tus claves ni garantizamos precios ni rendimientos. Los Servicios no son asesoramiento financiero.",
+      "ACOPAY ofrece un monedero Solana no custodial y una utilidad de transferencia. La aplicación móvil no incluye intercambio de criptomonedas, swap en la app ni compra de cripto en la app. No custodiamos sus claves ni garantizamos precios ni rendimientos. Los Servicios no son asesoramiento financiero.",
     termsH2: "2. Tus responsabilidades",
     termsLi1: "Eres el único responsable de proteger tu frase de recuperación y tus claves privadas.",
     termsLi2: "Eres responsable de verificar las direcciones de destino antes de transferir.",
@@ -874,14 +877,14 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
       "Podemos actualizar estos Términos. El uso continuado tras los cambios constituye la aceptación de los Términos actualizados. Los cambios materiales se reflejarán actualizando la fecha indicada arriba.",
     termsH8: "8. Contacto",
     deleteIntro:
-      "Google Play y App Store exigen una vía pública de eliminación que no requiera instalar la app. Última actualización: 2 de agosto de 2026",
+      "Google Play y App Store exigen una vía pública de eliminación que no requiera instalar la app. Última actualización: 6 de agosto de 2026",
     deleteHWhat: "Qué significa “cuenta” aquí",
     deletePWhat:
       "La cartera móvil ACOPAY no es custodiada. Tus claves residen en tu dispositivo. No existe una cuenta de acceso central que retenga tus fondos. Eliminar significa borrar los datos locales de la cartera y cualquier sesión/dato operativo del lado del servidor vinculado a las direcciones que hayas usado con las API de ACOPAY.",
     deleteHA: "A. Eliminar datos en tu dispositivo (al instante)",
-    deleteA1: "Abre la app ACOPAY → Ajustes (icono de engranaje) → Cerrar sesión.",
+    deleteA1: "Abra la app ACOPAY → Ajustes → Cerrar sesión.",
     deleteA2: "Desinstala la app de tu dispositivo.",
-    deleteA3: "Opcional: borra el almacenamiento de la app / SecureStore antes de desinstalar si tu sistema operativo lo permite.",
+    deleteA3: "Opcional: borre el almacenamiento de la app antes de desinstalar si el sistema lo permite.",
     deleteWarnLabel: "Advertencia:",
     deleteWarn: " Si no has respaldado tu frase de recuperación, cerrar sesión o desinstalar puede hacer que tus fondos sean irrecuperables.",
     deleteHB: "B. Solicitar la eliminación en el servidor",
@@ -900,7 +903,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyTitle: "Política de Privacidade",
     termsTitle: "Termos de Serviço",
     deleteTitle: "Excluir conta e dados",
-    lastUpdated: "Última atualização: 2 de agosto de 2026",
+    lastUpdated: "Última atualização: 6 de agosto de 2026",
     privacyIntro:
       "Esta Política de Privacidade descreve como a ACOPAY (“nós”) trata as informações quando você usa o acopay.net e o aplicativo de carteira móvel ACOPAY (os “Serviços”).",
     privacyH1: "1. Resumo do produto",
@@ -939,7 +942,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
       "Ao usar o acopay.net ou a carteira móvel ACOPAY (os “Serviços”), você concorda com estes Termos. Se não concordar, não use os Serviços.",
     termsH1: "1. Natureza dos Serviços",
     termsP1:
-      "A ACOPAY oferece uma carteira Solana não custodial e um utilitário de transferência. O aplicativo móvel não inclui exchange, swap nem compra OTC no app. O site pode oferecer um desk OTC separado para comprar ACOPAY com USDT e links para DEX de terceiros (por exemplo Raydium, Jupiter); esses recursos do site são separados da carteira móvel. Não custodiamos suas chaves nem garantimos preços ou retornos. Os Serviços não constituem aconselhamento financeiro.",
+      "A ACOPAY oferece uma carteira Solana não custodial e utilitário de transferência. O aplicativo móvel não inclui exchange de criptomoedas, swap no app nem compra de cripto no app. Não custodiamos suas chaves e não garantimos preços ou retornos. Os Serviços não são aconselhamento financeiro.",
     termsH2: "2. Suas responsabilidades",
     termsLi1: "Você é o único responsável por proteger sua frase de recuperação e suas chaves privadas.",
     termsLi2: "Você é responsável por verificar os endereços do destinatário antes de transferir.",
@@ -962,14 +965,14 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
       "Podemos atualizar estes Termos. O uso continuado após as alterações constitui aceitação dos Termos atualizados. Alterações materiais serão refletidas atualizando a data acima.",
     termsH8: "8. Contato",
     deleteIntro:
-      "A Google Play e a App Store exigem um caminho público de exclusão que não requeira a instalação do aplicativo. Última atualização: 2 de agosto de 2026",
+      "A Google Play e a App Store exigem um caminho público de exclusão que não requeira instalar o app. Última atualização: 6 de agosto de 2026",
     deleteHWhat: "O que significa “conta” aqui",
     deletePWhat:
       "A carteira móvel ACOPAY é não custodial. Suas chaves ficam no seu dispositivo. Não existe uma conta de login central que retenha seus fundos. Excluir significa remover os dados locais da carteira e quaisquer sessões/dados operacionais do lado do servidor vinculados aos endereços que você usou com as APIs da ACOPAY.",
     deleteHA: "A. Excluir dados no seu dispositivo (instantâneo)",
-    deleteA1: "Abra o aplicativo ACOPAY → Configurações (ícone de engrenagem) → Sair.",
+    deleteA1: "Abra o app ACOPAY → Configurações → Sair.",
     deleteA2: "Desinstale o aplicativo do seu dispositivo.",
-    deleteA3: "Opcional: limpe o armazenamento do aplicativo / SecureStore antes de desinstalar, se o seu sistema operacional oferecer esse controle.",
+    deleteA3: "Opcional: limpe o armazenamento do app antes de desinstalar se o sistema oferecer esse controle.",
     deleteWarnLabel: "Aviso:",
     deleteWarn: " Se você não fez backup da sua frase de recuperação, sair ou desinstalar pode tornar seus fundos irrecuperáveis.",
     deleteHB: "B. Solicitar exclusão no lado do servidor",
@@ -988,7 +991,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyTitle: "Politique de confidentialité",
     termsTitle: "Conditions d'utilisation",
     deleteTitle: "Supprimer le compte et les données",
-    lastUpdated: "Dernière mise à jour : 2 août 2026",
+    lastUpdated: "Dernière mise à jour : 6 août 2026",
     privacyIntro:
       "Cette politique de confidentialité décrit comment ACOPAY (« nous ») traite les informations lorsque vous utilisez acopay.net et l'application de portefeuille mobile ACOPAY (les « Services »).",
     privacyH1: "1. Présentation du produit",
@@ -1027,7 +1030,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
       "En utilisant acopay.net ou le portefeuille mobile ACOPAY (les « Services »), vous acceptez les présentes Conditions. Si vous n'êtes pas d'accord, n'utilisez pas les Services.",
     termsH1: "1. Nature des Services",
     termsP1:
-      "ACOPAY fournit un portefeuille Solana non dépositaire et un utilitaire de transfert. L'application mobile n'inclut pas d'échange, de swap ni d'achat OTC dans l'app. Le site peut proposer un desk OTC séparé pour acheter de l'ACOPAY en USDT et des liens vers des DEX tiers (p. ex. Raydium, Jupiter) ; ces fonctions web sont distinctes du portefeuille mobile. Nous ne conservons pas vos clés et ne garantissons ni prix ni rendements. Les Services ne constituent pas un conseil financier.",
+      "ACOPAY fournit un portefeuille Solana non dépositaire et un outil de transfert. L’application mobile n’inclut pas d’échange de crypto-actifs, de swap intégré ni d’achat de crypto dans l’app. Nous ne détenons pas vos clés et ne garantissons ni prix ni rendement. Les Services ne constituent pas un conseil financier.",
     termsH2: "2. Vos responsabilités",
     termsLi1: "Vous êtes seul responsable de la sécurité de votre phrase de récupération et de vos clés privées.",
     termsLi2: "Vous êtes responsable de la vérification des adresses des destinataires avant tout transfert.",
@@ -1050,14 +1053,14 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
       "Nous pouvons mettre à jour les présentes Conditions. La poursuite de l'utilisation après modification vaut acceptation des Conditions mises à jour. Les modifications importantes seront reflétées par la mise à jour de la date ci-dessus.",
     termsH8: "8. Contact",
     deleteIntro:
-      "Google Play et l'App Store exigent un moyen public de suppression qui ne nécessite pas l'installation de l'application. Dernière mise à jour : 2 août 2026",
+      "Google Play et l’App Store exigent un chemin de suppression public sans installation de l’app. Dernière mise à jour : 6 août 2026",
     deleteHWhat: "Ce que signifie « compte » ici",
     deletePWhat:
       "Le portefeuille mobile ACOPAY est non dépositaire. Vos clés se trouvent sur votre appareil. Il n'existe pas de compte de connexion central détenant vos fonds. Supprimer signifie effacer les données locales du portefeuille et toute session/donnée d'exploitation côté serveur liée aux adresses que vous avez utilisées avec les API d'ACOPAY.",
     deleteHA: "A. Supprimer les données sur votre appareil (immédiat)",
-    deleteA1: "Ouvrez l'application ACOPAY → Paramètres (icône d'engrenage) → Déconnexion.",
+    deleteA1: "Ouvrez l’app ACOPAY → Réglages → Déconnexion.",
     deleteA2: "Désinstallez l'application de votre appareil.",
-    deleteA3: "Facultatif : effacez le stockage de l'application / SecureStore avant la désinstallation si votre système d'exploitation le permet.",
+    deleteA3: "Facultatif : effacez le stockage de l’app avant désinstallation si le système le permet.",
     deleteWarnLabel: "Avertissement :",
     deleteWarn: " Si vous n'avez pas sauvegardé votre phrase de récupération, vous déconnecter ou désinstaller l'application peut rendre vos fonds irrécupérables.",
     deleteHB: "B. Demander une suppression côté serveur",
@@ -1076,7 +1079,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyTitle: "Datenschutzerklärung",
     termsTitle: "Nutzungsbedingungen",
     deleteTitle: "Konto & Daten löschen",
-    lastUpdated: "Zuletzt aktualisiert: 2. August 2026",
+    lastUpdated: "Zuletzt aktualisiert: 6. August 2026",
     privacyIntro:
       "Diese Datenschutzerklärung beschreibt, wie ACOPAY (“wir”) mit Informationen umgeht, wenn Sie acopay.net und die mobile ACOPAY-Geldbörsen-App (die “Dienste”) nutzen.",
     privacyH1: "1. Produktübersicht",
@@ -1115,7 +1118,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
       "Durch die Nutzung von acopay.net oder der mobilen ACOPAY-Geldbörse (die “Dienste”) stimmen Sie diesen Bedingungen zu. Wenn Sie nicht zustimmen, nutzen Sie die Dienste bitte nicht.",
     termsH1: "1. Art der Dienste",
     termsP1:
-      "ACOPAY bietet eine nicht-verwahrende Solana-Geldbörse und ein Überweisungstool. Die mobile App enthält keine Börse, keinen Swap und keinen In-App-OTC-Kauf. Die Website kann einen separaten OTC-Schalter zum Kauf von ACOPAY mit USDT sowie Links zu Drittanbieter-DEX (z. B. Raydium, Jupiter) anbieten; diese Webfunktionen sind von der mobilen Geldbörse getrennt. Wir verwahren Ihre Schlüssel nicht und garantieren weder Preise noch Erträge. Die Dienste sind keine Finanzberatung.",
+      "ACOPAY stellt eine nicht-kustodiale Solana-Wallet und ein Transfer-Utility bereit. Die mobile App enthält keinen Krypto-Börsenhandel, keinen In-App-Swap und keinen In-App-Kauf von Krypto. Wir verwahren Ihre Schlüssel nicht und garantieren weder Token-Preise noch Anlagerenditen. Die Dienste sind keine Finanzberatung.",
     termsH2: "2. Ihre Pflichten",
     termsLi1: "Sie sind allein dafür verantwortlich, Ihre Wiederherstellungsphrase und Ihre privaten Schlüssel zu sichern.",
     termsLi2: "Sie sind dafür verantwortlich, Empfängeradressen vor der Überweisung zu überprüfen.",
@@ -1138,14 +1141,14 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
       "Wir können diese Bedingungen aktualisieren. Die fortgesetzte Nutzung nach Änderungen gilt als Zustimmung zu den aktualisierten Bedingungen. Wesentliche Änderungen werden durch Aktualisierung des oben genannten Datums kenntlich gemacht.",
     termsH8: "8. Kontakt",
     deleteIntro:
-      "Google Play und der App Store verlangen einen öffentlichen Löschweg, der keine Installation der App erfordert. Zuletzt aktualisiert: 2. August 2026",
+      "Google Play und der App Store verlangen einen öffentlichen Löschweg ohne App-Installation. Zuletzt aktualisiert: 6. August 2026",
     deleteHWhat: "Was “Konto” hier bedeutet",
     deletePWhat:
       "Die mobile ACOPAY-Geldbörse ist nicht verwahrend. Ihre Schlüssel befinden sich auf Ihrem Gerät. Es gibt kein zentrales Login-Konto, das Ihre Gelder verwahrt. Löschen bedeutet, lokale Geldbörsendaten sowie alle serverseitigen Sitzungen/Betriebsdaten zu entfernen, die mit von Ihnen bei ACOPAY-APIs verwendeten Adressen verknüpft sind.",
     deleteHA: "A. Daten auf Ihrem Gerät löschen (sofort)",
-    deleteA1: "Öffnen Sie die ACOPAY-App → Einstellungen (Zahnrad) → Abmelden.",
+    deleteA1: "ACOPAY-App öffnen → Einstellungen → Abmelden.",
     deleteA2: "Deinstallieren Sie die App von Ihrem Gerät.",
-    deleteA3: "Optional: Löschen Sie den App-Speicher / SecureStore vor der Deinstallation, sofern Ihr Betriebssystem dies ermöglicht.",
+    deleteA3: "Optional: App-Speicher vor der Deinstallation löschen, falls das Betriebssystem dies erlaubt.",
     deleteWarnLabel: "Warnung:",
     deleteWarn: " Wenn Sie Ihre Wiederherstellungsphrase nicht gesichert haben, kann das Abmelden oder Deinstallieren dazu führen, dass Ihre Gelder unwiederbringlich sind.",
     deleteHB: "B. Serverseitige Löschung beantragen",
@@ -1164,7 +1167,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyTitle: "Privacybeleid",
     termsTitle: "Servicevoorwaarden",
     deleteTitle: "Account en gegevens verwijderen",
-    lastUpdated: "Laatst bijgewerkt: 2 augustus 2026",
+    lastUpdated: "Laatst bijgewerkt: 6 augustus 2026",
     privacyIntro:
       "Dit privacybeleid beschrijft hoe ACOPAY (“wij”) informatie verwerkt wanneer je acopay.net en de mobiele ACOPAY-portemonnee-app (de “Diensten”) gebruikt.",
     privacyH1: "1. Productoverzicht",
@@ -1203,7 +1206,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
       "Door acopay.net of de mobiele ACOPAY-portemonnee (de “Diensten”) te gebruiken, ga je akkoord met deze Voorwaarden. Als je niet akkoord gaat, gebruik de Diensten dan niet.",
     termsH1: "1. Aard van de Diensten",
     termsP1:
-      "ACOPAY biedt een niet-bewarende Solana-portemonnee en een overboekingshulpmiddel. De mobiele app bevat geen beurs, swap of in-app OTC-aankoop. De website kan een apart OTC-loket bieden om ACOPAY met USDT te kopen en links naar DEX-tools van derden (bijv. Raydium, Jupiter); die websitefuncties staan los van de mobiele portemonnee. We bewaren je sleutels niet en garanderen geen prijzen of rendementen. De Diensten vormen geen financieel advies.",
+      "ACOPAY biedt een non-custodiale Solana-wallet en transferhulpprogramma. De mobiele app bevat geen cryptobeurs, in-app-swap of in-app-aankoop van crypto. Wij bewaren uw sleutels niet en garanderen geen tokenprijzen of beleggingsrendement. De Diensten zijn geen financieel advies.",
     termsH2: "2. Jouw verantwoordelijkheden",
     termsLi1: "Jij bent als enige verantwoordelijk voor het beveiligen van je herstelzin en privésleutels.",
     termsLi2: "Jij bent verantwoordelijk voor het verifiëren van ontvangeradressen vóór het overmaken.",
@@ -1226,14 +1229,14 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
       "We kunnen deze Voorwaarden bijwerken. Voortgezet gebruik na wijzigingen geldt als aanvaarding van de bijgewerkte Voorwaarden. Materiële wijzigingen worden weerspiegeld door de datum hierboven bij te werken.",
     termsH8: "8. Contact",
     deleteIntro:
-      "Google Play en de App Store vereisen een openbare verwijderingsmethode waarvoor de app niet hoeft te worden geïnstalleerd. Laatst bijgewerkt: 2 augustus 2026",
+      "Google Play en de App Store vereisen een openbaar verwijderpad zonder app-installatie. Laatst bijgewerkt: 6 augustus 2026",
     deleteHWhat: "Wat “account” hier betekent",
     deletePWhat:
       "De mobiele ACOPAY-portemonnee is niet-bewarend. Je sleutels bevinden zich op je apparaat. Er is geen centraal inlogaccount dat je tegoeden bewaart. Verwijderen betekent het verwijderen van lokale portemonneegegevens en eventuele serverzijdige sessies/operationele gegevens die zijn gekoppeld aan adressen die je met de API's van ACOPAY hebt gebruikt.",
     deleteHA: "A. Gegevens op je apparaat verwijderen (direct)",
-    deleteA1: "Open de ACOPAY-app → Instellingen (tandwiel) → Uitloggen.",
+    deleteA1: "Open de ACOPAY-app → Instellingen → Afmelden.",
     deleteA2: "Verwijder de app van je apparaat.",
-    deleteA3: "Optioneel: wis app-opslag / SecureStore vóór verwijdering als je besturingssysteem die optie biedt.",
+    deleteA3: "Optioneel: wis app-opslag vóór verwijderen als het besturingssysteem dat toelaat.",
     deleteWarnLabel: "Waarschuwing:",
     deleteWarn: " Als je je herstelzin niet hebt gebackupt, kan uitloggen of de app verwijderen ervoor zorgen dat je tegoeden onherstelbaar zijn.",
     deleteHB: "B. Verwijdering aan serverzijde aanvragen",
@@ -1252,7 +1255,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyTitle: "Informativa sulla privacy",
     termsTitle: "Termini di servizio",
     deleteTitle: "Elimina account e dati",
-    lastUpdated: "Ultimo aggiornamento: 2 agosto 2026",
+    lastUpdated: "Ultimo aggiornamento: 6 agosto 2026",
     privacyIntro:
       "La presente Informativa sulla privacy descrive come ACOPAY (“noi”) gestisce le informazioni quando utilizzi acopay.net e l'app del wallet mobile ACOPAY (i “Servizi”).",
     privacyH1: "1. Sintesi del prodotto",
@@ -1291,7 +1294,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
       "Utilizzando acopay.net o il wallet mobile ACOPAY (i “Servizi”), accetti i presenti Termini. Se non sei d'accordo, non utilizzare i Servizi.",
     termsH1: "1. Natura dei Servizi",
     termsP1:
-      "ACOPAY offre un wallet Solana non custodial e uno strumento di trasferimento. L'app mobile non include exchange, swap né acquisto OTC in-app. Il sito può offrire un desk OTC separato per acquistare ACOPAY con USDT e collegamenti a DEX di terze parti (ad es. Raydium, Jupiter); tali funzioni web sono separate dal wallet mobile. Non custodiamo le tue chiavi e non garantiamo prezzi o rendimenti. I Servizi non costituiscono consulenza finanziaria.",
+      "ACOPAY fornisce un wallet Solana non custodial e un’utilità di trasferimento. L’app mobile non include exchange di criptovalute, swap in-app né acquisto di crypto in-app. Non custodiamo le chiavi e non garantiamo prezzi o rendimenti. I Servizi non sono consulenza finanziaria.",
     termsH2: "2. Le tue responsabilità",
     termsLi1: "Sei l'unico responsabile della sicurezza della tua frase di recupero e delle tue chiavi private.",
     termsLi2: "Sei responsabile della verifica degli indirizzi dei destinatari prima di effettuare un trasferimento.",
@@ -1314,14 +1317,14 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
       "Potremmo aggiornare i presenti Termini. L'uso continuato dopo le modifiche costituisce accettazione dei Termini aggiornati. Le modifiche sostanziali saranno riflesse aggiornando la data sopra riportata.",
     termsH8: "8. Contatti",
     deleteIntro:
-      "Google Play e App Store richiedono un percorso pubblico di eliminazione che non richieda l'installazione dell'app. Ultimo aggiornamento: 2 agosto 2026",
+      "Google Play e l’App Store richiedono un percorso pubblico di eliminazione senza installare l’app. Ultimo aggiornamento: 6 agosto 2026",
     deleteHWhat: "Cosa significa “account” in questo contesto",
     deletePWhat:
       "Il wallet mobile ACOPAY è non custodial. Le tue chiavi risiedono sul tuo dispositivo. Non esiste un account di accesso centrale che detenga i tuoi fondi. Eliminare significa rimuovere i dati locali del wallet ed eventuali sessioni/dati operativi lato server collegati agli indirizzi che hai utilizzato con le API di ACOPAY.",
     deleteHA: "A. Elimina i dati sul tuo dispositivo (immediato)",
-    deleteA1: "Apri l'app ACOPAY → Impostazioni (icona ingranaggio) → Esci.",
+    deleteA1: "Apri l’app ACOPAY → Impostazioni → Esci.",
     deleteA2: "Disinstalla l'app dal tuo dispositivo.",
-    deleteA3: "Facoltativo: cancella l'archiviazione dell'app / SecureStore prima della disinstallazione se il tuo sistema operativo lo consente.",
+    deleteA3: "Facoltativo: cancella l’archiviazione dell’app prima della disinstallazione se il sistema lo consente.",
     deleteWarnLabel: "Avviso:",
     deleteWarn: " Se non hai eseguito il backup della tua frase di recupero, l'uscita o la disinstallazione potrebbero rendere irrecuperabili i tuoi fondi.",
     deleteHB: "B. Richiedi l'eliminazione lato server",
@@ -1340,7 +1343,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyTitle: "Политика конфиденциальности",
     termsTitle: "Условия использования",
     deleteTitle: "Удаление аккаунта и данных",
-    lastUpdated: "Последнее обновление: 2 августа 2026 г.",
+    lastUpdated: "Последнее обновление: 6 августа 2026 г.",
     privacyIntro:
       "Настоящая Политика конфиденциальности описывает, как ACOPAY («мы») обрабатывает информацию, когда вы используете acopay.net и мобильное приложение-кошелёк ACOPAY («Сервисы»).",
     privacyH1: "1. Обзор продукта",
@@ -1379,7 +1382,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
       "Используя acopay.net или мобильный кошелёк ACOPAY («Сервисы»), вы соглашаетесь с настоящими Условиями. Если вы не согласны, не используйте Сервисы.",
     termsH1: "1. Характер Сервисов",
     termsP1:
-      "ACOPAY предоставляет некастодиальный кошелёк Solana и инструмент перевода. В мобильном приложении нет биржи, свопа или OTC-покупки. На сайте может быть отдельный OTC-стол для покупки ACOPAY за USDT и ссылки на сторонние DEX (например Raydium, Jupiter); эти функции сайта отделены от мобильного кошелька. Мы не храним ваши ключи и не гарантируем цены или доходность. Сервисы не являются финансовой консультацией.",
+      "ACOPAY предоставляет некастодиальный кошелёк Solana и утилиту переводов. Мобильное приложение не включает криптобиржу, обмен внутри приложения или покупку криптовалюты в приложении. Мы не храним ваши ключи и не гарантируем цены токенов или доходность. Сервисы не являются финансовой консультацией.",
     termsH2: "2. Ваши обязанности",
     termsLi1: "Вы несёте единоличную ответственность за защиту своей фразы восстановления и приватных ключей.",
     termsLi2: "Вы несёте ответственность за проверку адресов получателей перед переводом.",
@@ -1402,14 +1405,14 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
       "Мы можем обновлять настоящие Условия. Продолжение использования после изменений означает принятие обновлённых Условий. Существенные изменения будут отражены обновлением указанной выше даты.",
     termsH8: "8. Контакты",
     deleteIntro:
-      "Google Play и App Store требуют публичного способа удаления, не требующего установки приложения. Последнее обновление: 2 августа 2026 г.",
+      "Google Play и App Store требуют публичный способ удаления данных без установки приложения. Последнее обновление: 6 августа 2026 г.",
     deleteHWhat: "Что здесь означает «аккаунт»",
     deletePWhat:
       "Мобильный кошелёк ACOPAY является некастодиальным. Ваши ключи хранятся на вашем устройстве. Не существует центрального аккаунта для входа, который хранил бы ваши средства. Удаление означает удаление локальных данных кошелька и любых серверных сессий/операционных данных, связанных с адресами, которые вы использовали с API ACOPAY.",
     deleteHA: "A. Удаление данных на вашем устройстве (мгновенно)",
-    deleteA1: "Откройте приложение ACOPAY → Настройки (значок шестерёнки) → Выйти.",
+    deleteA1: "Откройте приложение ACOPAY → Настройки → Выйти.",
     deleteA2: "Удалите приложение со своего устройства.",
-    deleteA3: "Опционально: очистите хранилище приложения / SecureStore перед удалением, если ваша ОС предоставляет такую возможность.",
+    deleteA3: "По желанию: очистите хранилище приложения перед удалением, если ОС это позволяет.",
     deleteWarnLabel: "Предупреждение:",
     deleteWarn: " Если вы не сделали резервную копию фразы восстановления, выход из аккаунта или удаление приложения может сделать ваши средства невосстановимыми.",
     deleteHB: "B. Запрос на удаление на стороне сервера",
@@ -1428,7 +1431,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyTitle: "Політика конфіденційності",
     termsTitle: "Умови надання послуг",
     deleteTitle: "Видалення акаунта та даних",
-    lastUpdated: "Останнє оновлення: 2 серпня 2026 р.",
+    lastUpdated: "Останнє оновлення: 6 серпня 2026 р.",
     privacyIntro:
       "Ця Політика конфіденційності описує, як ACOPAY («ми») обробляє інформацію, коли ви використовуєте acopay.net та мобільний додаток-гаманець ACOPAY («Сервіси»).",
     privacyH1: "1. Огляд продукту",
@@ -1467,7 +1470,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
       "Використовуючи acopay.net або мобільний гаманець ACOPAY («Сервіси»), ви погоджуєтеся з цими Умовами. Якщо ви не згодні, не використовуйте Сервіси.",
     termsH1: "1. Характер Сервісів",
     termsP1:
-      "ACOPAY надає некастодіальний гаманець Solana та інструмент переказу. У мобільному додатку немає біржі, свопу чи OTC-купівлі. На сайті може бути окремий OTC-стіл для купівлі ACOPAY за USDT та посилання на сторонні DEX (наприклад Raydium, Jupiter); ці функції сайту відокремлені від мобільного гаманця. Ми не зберігаємо ваші ключі й не гарантуємо цін чи дохідності. Сервіси не є фінансовою консультацією.",
+      "ACOPAY надає некастодіальний гаманець Solana та утиліту переказів. Мобільний застосунок не містить криптобіржі, внутрішнього обміну чи купівлі крипто в застосунку. Ми не зберігаємо ваші ключі й не гарантуємо ціни чи дохідність. Послуги не є фінансовою консультацією.",
     termsH2: "2. Ваші обов'язки",
     termsLi1: "Ви несете одноосібну відповідальність за захист своєї фрази відновлення та приватних ключів.",
     termsLi2: "Ви відповідаєте за перевірку адрес отримувачів перед переказом.",
@@ -1490,14 +1493,14 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
       "Ми можемо оновлювати ці Умови. Продовження використання після змін означає прийняття оновлених Умов. Суттєві зміни будуть відображені шляхом оновлення зазначеної вище дати.",
     termsH8: "8. Контакти",
     deleteIntro:
-      "Google Play та App Store вимагають публічного способу видалення, що не потребує встановлення додатку. Останнє оновлення: 2 серпня 2026 р.",
+      "Google Play та App Store вимагають публічний шлях видалення без встановлення застосунку. Останнє оновлення: 6 серпня 2026 р.",
     deleteHWhat: "Що тут означає «акаунт»",
     deletePWhat:
       "Мобільний гаманець ACOPAY є некастодіальним. Ваші ключі зберігаються на вашому пристрої. Не існує центрального облікового запису для входу, який утримував би ваші кошти. Видалення означає видалення локальних даних гаманця та будь-яких серверних сесій/операційних даних, пов'язаних з адресами, які ви використовували з API ACOPAY.",
     deleteHA: "A. Видалення даних на вашому пристрої (миттєво)",
-    deleteA1: "Відкрийте додаток ACOPAY → Налаштування (іконка шестерні) → Вийти.",
+    deleteA1: "Відкрийте застосунок ACOPAY → Налаштування → Вийти.",
     deleteA2: "Видаліть додаток зі свого пристрою.",
-    deleteA3: "Необов'язково: очистіть сховище додатку / SecureStore перед видаленням, якщо ваша ОС надає таку можливість.",
+    deleteA3: "За бажанням: очистіть сховище застосунку перед видаленням, якщо ОС це дозволяє.",
     deleteWarnLabel: "Попередження:",
     deleteWarn: " Якщо ви не зробили резервну копію фрази відновлення, вихід з облікового запису або видалення додатку може зробити ваші кошти неможливими для відновлення.",
     deleteHB: "B. Запит на видалення на стороні сервера",
@@ -1516,7 +1519,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyTitle: "Polityka prywatności",
     termsTitle: "Warunki korzystania z usługi",
     deleteTitle: "Usuń konto i dane",
-    lastUpdated: "Ostatnia aktualizacja: 2 sierpnia 2026",
+    lastUpdated: "Ostatnia aktualizacja: 6 sierpnia 2026",
     privacyIntro:
       "Niniejsza Polityka prywatności opisuje, w jaki sposób ACOPAY (“my”) przetwarza informacje, gdy korzystasz z acopay.net i mobilnej aplikacji portfela ACOPAY (“Usługi”).",
     privacyH1: "1. Podsumowanie produktu",
@@ -1555,7 +1558,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
       "Korzystając z acopay.net lub mobilnego portfela ACOPAY (“Usługi”), akceptujesz niniejsze Warunki. Jeśli się nie zgadzasz, nie korzystaj z Usług.",
     termsH1: "1. Charakter Usług",
     termsP1:
-      "ACOPAY zapewnia niekustodialny portfel Solana i narzędzie przelewów. Aplikacja mobilna nie zawiera giełdy, swapu ani zakupu OTC w aplikacji. Witryna może oferować osobny desk OTC do kupna ACOPAY za USDT oraz linki do DEX stron trzecich (np. Raydium, Jupiter); te funkcje witryny są oddzielne od portfela mobilnego. Nie przechowujemy Twoich kluczy ani nie gwarantujemy cen czy zwrotów. Usługi nie stanowią porady finansowej.",
+      "ACOPAY zapewnia niekustodialny portfel Solana i narzędzie do przelewów. Aplikacja mobilna nie obejmuje giełdy kryptowalut, swapu w aplikacji ani zakupu krypto w aplikacji. Nie przechowujemy kluczy i nie gwarantujemy cen ani zwrotów. Usługi nie stanowią porady finansowej.",
     termsH2: "2. Twoje obowiązki",
     termsLi1: "Ponosisz wyłączną odpowiedzialność za zabezpieczenie frazy odzyskiwania i kluczy prywatnych.",
     termsLi2: "Jesteś odpowiedzialny za weryfikację adresów odbiorców przed dokonaniem przelewu.",
@@ -1578,14 +1581,14 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
       "Możemy aktualizować niniejsze Warunki. Dalsze korzystanie po wprowadzeniu zmian oznacza akceptację zaktualizowanych Warunków. Istotne zmiany będą odzwierciedlone poprzez aktualizację powyższej daty.",
     termsH8: "8. Kontakt",
     deleteIntro:
-      "Google Play i App Store wymagają publicznej ścieżki usuwania, która nie wymaga instalacji aplikacji. Ostatnia aktualizacja: 2 sierpnia 2026",
+      "Google Play i App Store wymagają publicznego sposobu usunięcia danych bez instalacji aplikacji. Ostatnia aktualizacja: 6 sierpnia 2026",
     deleteHWhat: "Co oznacza tutaj “konto”",
     deletePWhat:
       "Mobilny portfel ACOPAY jest niekustodialny. Twoje klucze znajdują się na Twoim urządzeniu. Nie istnieje centralne konto logowania przechowujące Twoje środki. Usunięcie oznacza usunięcie lokalnych danych portfela oraz wszelkich sesji/danych operacyjnych po stronie serwera powiązanych z adresami używanymi przez Ciebie z API ACOPAY.",
     deleteHA: "A. Usuń dane na swoim urządzeniu (natychmiast)",
-    deleteA1: "Otwórz aplikację ACOPAY → Ustawienia (ikona koła zębatego) → Wyloguj się.",
+    deleteA1: "Otwórz aplikację ACOPAY → Ustawienia → Wyloguj.",
     deleteA2: "Odinstaluj aplikację ze swojego urządzenia.",
-    deleteA3: "Opcjonalnie: wyczyść pamięć aplikacji / SecureStore przed odinstalowaniem, jeśli Twój system operacyjny na to pozwala.",
+    deleteA3: "Opcjonalnie: wyczyść pamięć aplikacji przed odinstalowaniem, jeśli system na to pozwala.",
     deleteWarnLabel: "Ostrzeżenie:",
     deleteWarn: " Jeśli nie wykonałeś kopii zapasowej frazy odzyskiwania, wylogowanie się lub odinstalowanie aplikacji może uniemożliwić odzyskanie środków.",
     deleteHB: "B. Poproś o usunięcie danych po stronie serwera",
@@ -1604,7 +1607,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyTitle: "Gizlilik Politikası",
     termsTitle: "Hizmet Şartları",
     deleteTitle: "Hesap ve verileri sil",
-    lastUpdated: "Son güncelleme: 2 Ağustos 2026",
+    lastUpdated: "Son güncelleme: 6 Ağustos 2026",
     privacyIntro:
       "Bu Gizlilik Politikası, acopay.net'i ve ACOPAY mobil cüzdan uygulamasını (“Hizmetler”) kullandığınızda ACOPAY'in (“biz”) bilgileri nasıl işlediğini açıklar.",
     privacyH1: "1. Ürün özeti",
@@ -1643,7 +1646,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
       "acopay.net'i veya ACOPAY mobil cüzdanını (“Hizmetler”) kullanarak bu Şartları kabul etmiş olursunuz. Kabul etmiyorsanız, Hizmetleri kullanmayın.",
     termsH1: "1. Hizmetlerin niteliği",
     termsP1:
-      "ACOPAY, saklayıcı olmayan bir Solana cüzdanı ve transfer aracı sunar. Mobil uygulamada borsa, swap veya uygulama içi OTC alımı yoktur. Web sitesi, USDT ile ACOPAY satın almak için ayrı bir OTC masası ve üçüncü taraf DEX bağlantıları (ör. Raydium, Jupiter) sunabilir; bu site özellikleri mobil cüzdandan ayrıdır. Anahtarlarınızı saklamıyoruz ve fiyat veya getiri garanti etmiyoruz. Hizmetler finansal tavsiye değildir.",
+      "ACOPAY, saklamasız bir Solana cüzdanı ve transfer aracı sunar. Mobil uygulama kripto borsası, uygulama içi takas veya uygulama içi kripto satın alma içermez. Anahtarlarınızı saklamayız; fiyat veya getiri garantisi vermeyiz. Hizmetler finansal tavsiye değildir.",
     termsH2: "2. Sorumluluklarınız",
     termsLi1: "Kurtarma ifadenizi ve özel anahtarlarınızı güvence altına almaktan yalnızca siz sorumlusunuz.",
     termsLi2: "Transfer yapmadan önce alıcı adreslerini doğrulamaktan siz sorumlusunuz.",
@@ -1666,14 +1669,14 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
       "Bu Şartları güncelleyebiliriz. Değişikliklerden sonra kullanıma devam edilmesi, güncellenmiş Şartların kabulü anlamına gelir. Önemli değişiklikler, yukarıdaki tarihin güncellenmesiyle yansıtılacaktır.",
     termsH8: "8. İletişim",
     deleteIntro:
-      "Google Play ve App Store, uygulamanın kurulmasını gerektirmeyen herkese açık bir silme yolu talep eder. Son güncelleme: 2 Ağustos 2026",
+      "Google Play ve App Store, uygulama kurmadan kullanılabilen herkese açık bir silme yolu ister. Son güncelleme: 6 Ağustos 2026",
     deleteHWhat: "Burada “hesap” ne anlama gelir",
     deletePWhat:
       "ACOPAY mobil cüzdanı saklayıcı değildir. Anahtarlarınız cihazınızda bulunur. Fonlarınızı tutan merkezi bir giriş hesabı yoktur. Silme, yerel cüzdan verilerinin ve ACOPAY API'leriyle kullandığınız adreslere bağlı sunucu tarafı oturumların/operasyonel verilerin kaldırılması anlamına gelir.",
     deleteHA: "A. Cihazınızdaki verileri silin (anında)",
-    deleteA1: "ACOPAY uygulamasını açın → Ayarlar (dişli simgesi) → Oturumu kapatın.",
+    deleteA1: "ACOPAY uygulamasını açın → Ayarlar → Çıkış yap.",
     deleteA2: "Uygulamayı cihazınızdan kaldırın.",
-    deleteA3: "İsteğe bağlı: işletim sisteminiz bu kontrolü sağlıyorsa, kaldırmadan önce uygulama depolamasını / SecureStore'u temizleyin.",
+    deleteA3: "İsteğe bağlı: işletim sistemi izin veriyorsa kaldırmadan önce uygulama depolamasını temizleyin.",
     deleteWarnLabel: "Uyarı:",
     deleteWarn: " Kurtarma ifadenizi yedeklemediyseniz, oturumu kapatmak veya uygulamayı kaldırmak fonlarınızın geri alınamaz hale gelmesine neden olabilir.",
     deleteHB: "B. Sunucu tarafı silme talep edin",
@@ -1692,7 +1695,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyTitle: "سياسة الخصوصية",
     termsTitle: "شروط الخدمة",
     deleteTitle: "حذف الحساب والبيانات",
-    lastUpdated: "آخر تحديث: 2 أغسطس 2026",
+    lastUpdated: "آخر تحديث: 6 أغسطس 2026",
     privacyIntro:
       "توضح سياسة الخصوصية هذه كيفية تعامل ACOPAY (“نحن”) مع المعلومات عند استخدامك لموقع acopay.net وتطبيق محفظة ACOPAY للجوال (“الخدمات”).",
     privacyH1: "1. ملخص المنتج",
@@ -1731,7 +1734,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
       "باستخدامك لموقع acopay.net أو محفظة ACOPAY للجوال (“الخدمات”)، فإنك توافق على هذه الشروط. إذا كنت لا توافق، فيرجى عدم استخدام الخدمات.",
     termsH1: "1. طبيعة الخدمات",
     termsP1:
-      "توفر ACOPAY محفظة Solana غير احتجازية وأداة تحويل. لا يتضمن تطبيق الجوال بورصة أو مبادلة أو شراء OTC داخل التطبيق. قد يوفّر الموقع مكتب OTC منفصل لشراء ACOPAY بـ USDT وروابط لأدوات DEX تابعة لجهات خارجية (مثل Raydium وJupiter)؛ وهذه الميزات منفصلة عن محفظة الجوال. نحن لا نحتفظ بمفاتيحك ولا نضمن الأسعار أو العوائد. لا تُعد الخدمات استشارة مالية.",
+      "توفر ACOPAY محفظة Solana غير احتجازية وأداة تحويل. لا يتضمن تطبيق الجوال بورصة عملات مشفرة أو مبادلة داخل التطبيق أو شراء عملات مشفرة داخل التطبيق. لا نحتفظ بمفاتيحك ولا نضمن أسعار الرموز أو عوائد الاستثمار. الخدمات ليست استشارة مالية.",
     termsH2: "2. مسؤولياتك",
     termsLi1: "أنت المسؤول الوحيد عن تأمين عبارة الاسترداد ومفاتيحك الخاصة.",
     termsLi2: "أنت مسؤول عن التحقق من عناوين المستلمين قبل التحويل.",
@@ -1754,14 +1757,14 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
       "يجوز لنا تحديث هذه الشروط. يُعد استمرار الاستخدام بعد التغييرات قبولًا للشروط المحدّثة. سيتم توضيح التغييرات الجوهرية من خلال تحديث التاريخ أعلاه.",
     termsH8: "8. تواصل معنا",
     deleteIntro:
-      "يتطلب كل من Google Play وApp Store مسارًا علنيًا للحذف لا يستلزم تثبيت التطبيق. آخر تحديث: 2 أغسطس 2026",
+      "يتطلب Google Play وApp Store مسار حذف عامًا دون الحاجة إلى تثبيت التطبيق. آخر تحديث: 6 أغسطس 2026",
     deleteHWhat: "ماذا يعني “الحساب” هنا",
     deletePWhat:
       "محفظة ACOPAY للجوال غير احتجازية. تبقى مفاتيحك على جهازك. لا يوجد حساب دخول مركزي يحتفظ بأموالك. يعني الحذف إزالة بيانات المحفظة المحلية وأي جلسات/بيانات تشغيل من جانب الخادم مرتبطة بالعناوين التي استخدمتها مع واجهات برمجة تطبيقات ACOPAY.",
     deleteHA: "أ. حذف البيانات من جهازك (فوري)",
-    deleteA1: "افتح تطبيق ACOPAY ← الإعدادات (أيقونة الترس) ← تسجيل الخروج.",
+    deleteA1: "افتح تطبيق ACOPAY ← الإعدادات ← تسجيل الخروج.",
     deleteA2: "قم بإلغاء تثبيت التطبيق من جهازك.",
-    deleteA3: "اختياري: امسح تخزين التطبيق / SecureStore قبل إلغاء التثبيت إذا كان نظام التشغيل لديك يوفر هذا الخيار.",
+    deleteA3: "اختياري: امسح تخزين التطبيق قبل إلغاء التثبيت إذا وفر نظام التشغيل ذلك.",
     deleteWarnLabel: "تحذير:",
     deleteWarn: " إذا لم تكن قد نسخت عبارة الاسترداد احتياطيًا، فقد يؤدي تسجيل الخروج أو إلغاء التثبيت إلى جعل أموالك غير قابلة للاسترداد.",
     deleteHB: "ب. طلب الحذف من جانب الخادم",

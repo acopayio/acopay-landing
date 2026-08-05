@@ -1,3 +1,4 @@
+import { isTelegramPayCtaPublic } from "../config/siteSurface";
 import { TOKEN } from "../config/token";
 
 /** Brand label — same in every UI language. */
@@ -11,12 +12,13 @@ type Props = {
   showIcon?: boolean;
 };
 
-/** Opens official ACOPAY Telegram Pay bot. */
+/** Opens official ACOPAY Telegram Pay bot. Hidden when SITE_SURFACE.telegramPayCta is off. */
 export function TelegramPayButton({
   className = "btn-orca-secondary",
   label = TELEGRAM_PAY_LABEL,
   showIcon = false,
 }: Props) {
+  if (!isTelegramPayCtaPublic()) return null;
   return (
     <a
       href={TOKEN.telegramPayUrl}

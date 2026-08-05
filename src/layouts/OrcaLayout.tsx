@@ -5,6 +5,7 @@ import { LanguageToggle } from "../components/LanguageToggle";
 import { ThemeToggle } from "../components/ThemeToggle";
 import { BrandLogo } from "../components/BrandLogo";
 import { Footer } from "../components/Footer";
+import { isBuyPublic, isTelegramPayCtaPublic, isWebPayPublic } from "../config/siteSurface";
 import { useT } from "../i18n/LanguageProvider";
 
 type NavItem = {
@@ -14,7 +15,7 @@ type NavItem = {
   icon: () => ReactElement;
 };
 
-const TRADE_NAV: NavItem[] = [
+const TRADE_NAV_ALL: NavItem[] = [
   { to: "/", labelKey: "nav.home", end: true, icon: HomeIcon },
   { to: "/buy", labelKey: "nav.buy", end: false, icon: BuyIcon },
   /* Giao dịch / Transfers → /pay (P2P). No separate Pay tab. Swap = Markets. */
@@ -22,14 +23,14 @@ const TRADE_NAV: NavItem[] = [
   { to: "/markets", labelKey: "nav.markets", end: false, icon: PoolsIcon },
 ];
 
-const INFO_NAV: NavItem[] = [
+const INFO_NAV_ALL: NavItem[] = [
   { to: "/download", labelKey: "nav.download", end: false, icon: DownloadIcon },
   { to: "/token", labelKey: "nav.token", end: false, icon: TokenIcon },
   { to: "/contract", labelKey: "nav.contract", end: false, icon: ContractIcon },
   { to: "/roadmap", labelKey: "nav.roadmap", end: false, icon: RoadmapIcon },
 ];
 
-const MOBILE_NAV: NavItem[] = [
+const MOBILE_NAV_ALL: NavItem[] = [
   { to: "/", labelKey: "nav.home", end: true, icon: HomeIcon },
   { to: "/buy", labelKey: "nav.buy", end: false, icon: BuyIcon },
   { to: "/pay", labelKey: "nav.trade", end: false, icon: SwapIcon },
@@ -37,12 +38,24 @@ const MOBILE_NAV: NavItem[] = [
   { to: "/token", labelKey: "nav.token", end: false, icon: TokenIcon },
 ];
 
+function filterNav(items: NavItem[]): NavItem[] {
+  return items.filter((item) => {
+    if (item.to === "/buy") return isBuyPublic();
+    if (item.to === "/pay") return isWebPayPublic();
+    return true;
+  });
+}
+
 function linkClass(isActive: boolean) {
   return `jup-sidebar-link ${isActive ? "jup-sidebar-link-active" : ""}`;
 }
 
 export function OrcaLayout() {
   const t = useT();
+  const tradeNav = filterNav(TRADE_NAV_ALL);
+  const infoNav = filterNav(INFO_NAV_ALL);
+  const mobileNav = filterNav(MOBILE_NAV_ALL);
+  const showTg = isTelegramPayCtaPublic();
 
   return (
     <div className="jup-shell flex min-w-0 overflow-x-clip">
@@ -53,7 +66,7 @@ export function OrcaLayout() {
         </Link>
 
         <nav className="flex-1 space-y-0.5 overflow-y-auto px-3 pb-4">
-          {[...TRADE_NAV, ...INFO_NAV].map((item) => (
+          {[...tradeNav, ...infoNav].map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
@@ -70,12 +83,14 @@ export function OrcaLayout() {
               </div>
         </nav>
 
-        <div className="mt-auto border-t border-[color:var(--acopay-border)] p-3">
-          <TelegramPayButton
-            className="btn-orca-primary w-full !rounded-xl !px-3"
-            label={TELEGRAM_PAY_LABEL}
-          />
-        </div>
+        {showTg ? (
+          <div className="mt-auto border-t border-[color:var(--acopay-border)] p-3">
+            <TelegramPayButton
+              className="btn-orca-primary w-full !rounded-xl !px-3"
+              label={TELEGRAM_PAY_LABEL}
+            />
+          </div>
+        ) : null}
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col pb-[4.25rem] lg:pb-0">
@@ -92,11 +107,13 @@ export function OrcaLayout() {
               <div className="relative">
                 <LanguageToggle compact />
               </div>
-              <TelegramPayButton
-                showIcon
-                label={TELEGRAM_PAY_LABEL}
-                className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-lg border border-[color:var(--acopay-brand)]/45 bg-[var(--acopay-brand-soft)] px-2.5 text-[11px] font-semibold leading-none text-[var(--acopay-brand)] hover:opacity-90"
-              />
+              {showTg ? (
+                <TelegramPayButton
+                  showIcon
+                  label={TELEGRAM_PAY_LABEL}
+                  className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-lg border border-[color:var(--acopay-brand)]/45 bg-[var(--acopay-brand-soft)] px-2.5 text-[11px] font-semibold leading-none text-[var(--acopay-brand)] hover:opacity-90"
+                />
+              ) : null}
             </div>
           </div>
         </header>
@@ -109,7 +126,7 @@ export function OrcaLayout() {
       </div>
 
       <nav className="fixed inset-x-0 bottom-0 z-50 flex border-t border-[color:var(--acopay-border-strong)] bg-[color-mix(in_srgb,var(--acopay-bg-2)_95%,transparent)] backdrop-blur-xl lg:hidden safe-bottom">
-        {MOBILE_NAV.map((item) => (
+        {mobileNav.map((item) => (
           <NavLink
             key={item.to}
             to={item.to}
