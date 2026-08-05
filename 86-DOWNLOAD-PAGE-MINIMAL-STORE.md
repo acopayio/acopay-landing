@@ -29,5 +29,6 @@
 - Thêm lại tutorial cài APK trên Download  
 - Nhét gas / fee / Telegram / Web Pay vào Download  
 - Viết dài “cho dễ hiểu” kiểu app giáo dục  
+- Dùng jargon “không lưu ký / non-custodial / 非托管” trên **subtitle Download** — viết rõ: **khóa nằm trên thiết bị** (legal Terms mới dùng non-custodial)  
 
 Root: `DOCS/119-DOWNLOAD-PAGE-MINIMAL-STORE.md` · surface ẩn Buy/Pay: `85` + `DOCS/118`
