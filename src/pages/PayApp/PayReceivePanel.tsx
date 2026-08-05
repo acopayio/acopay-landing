@@ -52,11 +52,6 @@ export function PayReceivePanel({ address, username, onBack }: Props) {
             <h2 className="text-xl font-bold tracking-tight text-[var(--acopay-fg)]">
               {t("payApp.receiveTitle")}
             </h2>
-            {t("payApp.receiveHint") ? (
-              <p className="mt-1 text-sm leading-snug text-[var(--acopay-muted)]">
-                {t("payApp.receiveHint")}
-              </p>
-            ) : null}
           </div>
           <button
             type="button"
