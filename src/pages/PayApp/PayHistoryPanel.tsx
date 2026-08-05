@@ -17,6 +17,7 @@ import {
   fetchOnchainHistory,
   formatAcopay,
   hideOnchainHistory,
+  hideOnchainHistoryMany,
   mapPayApiError,
   type PayHistoryItem,
 } from "../../lib/payWebSession";
@@ -81,6 +82,7 @@ export function PayHistoryPanel({ address, onBack, onError }: Props) {
   const [loading, setLoading] = useState(true);
   const [openKey, setOpenKey] = useState<string | null>(null);
   const [hideBusy, setHideBusy] = useState<string | null>(null);
+  const [periodNote, setPeriodNote] = useState<string | null>(null);
 
   const chips = useMemo((): Chip[] => {
     const now = new Date();
@@ -147,6 +149,56 @@ export function PayHistoryPanel({ address, onBack, onError }: Props) {
     setChipId(c.id);
     setFilter(c.filter);
     setPage(0);
+    setPeriodNote(null);
+  }
+
+  async function hideCurrentPeriod() {
+    if (!address || hideBusy) return;
+    const n = total > 0 ? total : items.length;
+    if (n <= 0) {
+      setPeriodNote(t("payApp.historyHidePeriodEmpty"));
+      return;
+    }
+    const ok = window.confirm(t("payApp.historyHidePeriodConfirm", { n }));
+    if (!ok) return;
+    setHideBusy("period");
+    setPeriodNote(null);
+    try {
+      let all = items;
+      if (total > items.length) {
+        const range = rangeForFilter(filter);
+        const data = await fetchOnchainHistory({
+          address,
+          fromMs: range.startMs,
+          toMs: range.endMs,
+          page: 0,
+          pageSize: Math.min(200, Math.max(total, 1)),
+        });
+        all = data.items;
+      }
+      const payload = all
+        .filter((x) => x.sig)
+        .map((x) => ({
+          sig: String(x.sig),
+          symbol: x.symbol || "",
+          kind: x.kind || "recv",
+        }));
+      if (!payload.length) {
+        setPeriodNote(t("payApp.historyHidePeriodEmpty"));
+        return;
+      }
+      await hideOnchainHistoryMany({ address, items: payload });
+      setItems([]);
+      setTotal(0);
+      setPageCount(1);
+      setPage(0);
+      setOpenKey(null);
+      setPeriodNote(t("payApp.historyHidePeriodDone"));
+    } catch (e) {
+      onError(mapPayApiError(e, t, locale));
+    } finally {
+      setHideBusy(null);
+    }
   }
 
   function whoLine(row: PayHistoryItem): string {
@@ -303,7 +355,7 @@ export function PayHistoryPanel({ address, onBack, onError }: Props) {
                       </div>
                       <div>
                         <p className="text-[11px] font-semibold text-[var(--acopay-faint)]">
-                          {t("payApp.historyPeer")}
+                          {out ? t("payApp.historyPeerTo") : t("payApp.historyPeerFrom")}
                         </p>
                         <p className="break-all font-mono text-xs text-[var(--acopay-fg)]">
                           {typeof peer === "string" && peer.length > 20 ? (
@@ -404,6 +456,22 @@ export function PayHistoryPanel({ address, onBack, onError }: Props) {
             </button>
           </div>
         )}
+
+        {!loading && (items.length > 0 || total > 0) ? (
+          <div className="mt-5 border-t border-[color:var(--acopay-border)] pt-4">
+            <button
+              type="button"
+              disabled={hideBusy === "period"}
+              onClick={() => void hideCurrentPeriod()}
+              className="w-full rounded-xl border border-[color:rgba(218,37,29,0.35)] bg-[color:rgba(218,37,29,0.04)] px-3 py-3 text-sm font-bold text-[#DA251D] disabled:opacity-40"
+            >
+              {hideBusy === "period" ? "…" : t("payApp.historyHidePeriod")}
+            </button>
+          </div>
+        ) : null}
+        {periodNote ? (
+          <p className="mt-3 text-center text-xs text-[var(--acopay-muted)]">{periodNote}</p>
+        ) : null}
       </div>
     </div>
   );

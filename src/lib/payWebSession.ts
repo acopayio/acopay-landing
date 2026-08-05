@@ -399,6 +399,40 @@ export async function hideOnchainHistory(opts: {
   }
 }
 
+/** Hide many history rows for the selected period (session ownership). */
+export async function hideOnchainHistoryMany(opts: {
+  address: string;
+  items: { sig: string; symbol?: string | null; kind?: string | null }[];
+}): Promise<number> {
+  const res = await fetch("/api/pay/history-hide-many", {
+    method: "POST",
+    headers: headers(),
+    credentials: fetchCred,
+    body: JSON.stringify({
+      address: opts.address,
+      items: (opts.items || []).map((it) => ({
+        sig: it.sig,
+        symbol: it.symbol || "",
+        kind: it.kind || "recv",
+      })),
+    }),
+  });
+  const data = (await res.json()) as {
+    ok?: boolean;
+    hidden?: number;
+    error?: string;
+    errorCode?: string;
+  };
+  if (res.status === 401) {
+    setPaySession(null);
+    throw new PayApiError("session_expired", "session_expired");
+  }
+  if (!res.ok || !data.ok) {
+    throwPayApiError(data, "history_hide", data.error || "Could not hide transactions.");
+  }
+  return Number(data.hidden) || 0;
+}
+
 export type PayPreview = {
   ok: boolean;
   mode: "bot" | "phantom";

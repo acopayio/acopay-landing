@@ -39,6 +39,7 @@ const PAY_MW_PATHS: Record<string, { vps: string; methods: string[] }> = {
   /** Mobile Setup/History — middleware-only (no per-file Pages Function). */
   "/api/pay/onchain-history": { vps: "/pay/onchain-history", methods: ["GET", "OPTIONS"] },
   "/api/pay/history-hide": { vps: "/pay/history-hide", methods: ["POST", "OPTIONS"] },
+  "/api/pay/history-hide-many": { vps: "/pay/history-hide-many", methods: ["POST", "OPTIONS"] },
   "/api/pay/history-unhide": { vps: "/pay/history-unhide", methods: ["POST", "OPTIONS"] },
   "/api/pay/push-register": { vps: "/pay/push-register", methods: ["POST", "OPTIONS"] },
   "/api/pay/push-unregister": { vps: "/pay/push-unregister", methods: ["POST", "OPTIONS"] },
@@ -226,6 +227,7 @@ export async function onRequest(context: PagesContext): Promise<Response> {
     url.pathname.startsWith("/api/pay/auth-wallet") ||
     url.pathname === "/api/pay/onchain-history" ||
     url.pathname === "/api/pay/history-hide" ||
+    url.pathname === "/api/pay/history-hide-many" ||
     url.pathname === "/api/pay/history-unhide" ||
     url.pathname === "/api/pay/push-register" ||
     url.pathname === "/api/pay/push-unregister"
