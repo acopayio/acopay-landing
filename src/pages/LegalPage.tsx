@@ -28,6 +28,14 @@ function PrivacyBody() {
           {t("legal.privacyLi2Rest")}
         </li>
         <li>
+          <strong className="text-[var(--acopay-fg)]">{t("legal.privacyLiUsernameLabel")}</strong>
+          {t("legal.privacyLiUsernameRest")}
+        </li>
+        <li>
+          <strong className="text-[var(--acopay-fg)]">{t("legal.privacyLiPushLabel")}</strong>
+          {t("legal.privacyLiPushRest")}
+        </li>
+        <li>
           <strong className="text-[var(--acopay-fg)]">{t("legal.privacyLi3Label")}</strong>
           {t("legal.privacyLi3Rest")}
         </li>
@@ -54,6 +62,8 @@ function PrivacyBody() {
         </Link>
         {t("legal.privacyP7After")}
       </p>
+      <h2 className="mt-8 text-xl font-bold text-[var(--acopay-fg)]">{t("legal.privacyHChildren")}</h2>
+      <p>{t("legal.privacyPChildren")}</p>
       <h2 className="mt-8 text-xl font-bold text-[var(--acopay-fg)]">{t("legal.privacyH8")}</h2>
       <p>
         {t("legal.privacyContact")}{" "}

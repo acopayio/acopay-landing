@@ -1,11 +1,9 @@
 /**
  * Privacy / Terms / Delete-account — every supported locale.
  *
- * Store-grade (2026-08-06): non-custodial wallet framing; no OTC-in-app claims;
- * dates aligned; Settings → Sign out for deletion path. Sync with `en.ts` legal.
- *
- * Same shape as `downloadPage.ts`: an English base spread into each locale by `L()`,
- * so a key added to `en.ts` can never be silently missing anywhere.
+ * Store-grade (2026-08-06): keys on device; no exchange/swap/buy in mobile;
+ * disclose Pay username + optional push; gas sponsorship != custody.
+ * Sync with `en.ts` legal.
  */
 import type { Messages } from "./en";
 
@@ -17,80 +15,66 @@ const enBase: LegalSection = {
   termsTitle: "Terms of Service",
   deleteTitle: "Delete account & data",
   lastUpdated: "Last updated: 6 August 2026",
-  privacyIntro:
-    "This Privacy Policy explains how ACOPAY (“we”, “us”) handles information when you use acopay.net and the ACOPAY mobile wallet application (together, the “Services”).",
+  privacyIntro: "This Privacy Policy explains how ACOPAY (âweâ, âusâ) handles information when you use acopay.net and the ACOPAY mobile wallet application (together, the âServicesâ).",
   privacyH1: "1. Product summary",
-  privacyP1:
-    "ACOPAY provides a non-custodial Solana wallet. You may create or import a wallet, view balances, and transfer SPL tokens (including ACOPAY, USDT, SOL, and tokens you add). Recovery phrases and private keys remain on your device and are not collected by ACOPAY.",
+  privacyP1: "ACOPAY provides a non-custodial Solana wallet. You may create or import a wallet, view balances, and transfer SPL tokens (including ACOPAY, USDT, SOL, and tokens you add). Your recovery phrase and private keys remain on your device; ACOPAY does not collect them.",
   privacyH2: "2. Data we process",
   privacyLi1Label: "Wallet public addresses",
-  privacyLi1Rest: " — used to quote fees, build, simulate, and broadcast transfers you request.",
-  privacyLi2Label: "Transaction metadata",
-  privacyLi2Rest:
-    " — amounts, recipient addresses or usernames you enter, signatures, and confirmation status when you use ACOPAY transfer APIs.",
+  privacyLi1Rest: " â used to estimate fees, build, simulate, and broadcast transfers you request, and to operate Pay features you choose to use.",
+  privacyLi2Label: "Transaction information",
+  privacyLi2Rest: " â amounts, recipient addresses or Pay usernames you enter, signatures, and confirmation status when you use ACOPAY transfer APIs.",
   privacyLi3Label: "Technical logs",
-  privacyLi3Rest:
-    " — standard web and server logs (IP address, user agent, timestamps) for security and abuse prevention.",
+  privacyLi3Rest: " â standard web and server logs (IP address, user agent, timestamps) for security and abuse prevention.",
+  privacyLiUsernameLabel: "Pay username (optional)",
+  privacyLiUsernameRest: " â if you create an ACOPAY Pay username, we store the mapping between that username and your public wallet address so others can pay you by username.",
+  privacyLiPushLabel: "Push notification token (optional)",
+  privacyLiPushRest: " â if you enable payment notifications in the app, we store a device push token linked to your public wallet address to deliver those alerts. You can turn notifications off in Settings.",
   privacyLi4Label: "Optional contact",
-  privacyLi4Before: " — if you email ",
+  privacyLi4Before: " â if you email ",
   privacyLi4After: ", we process the content of that correspondence.",
   privacyH3: "3. Data we do not collect",
-  privacyP3:
-    "We do not collect your seed phrase, private key, or biometric templates. Biometric unlock (Face ID / fingerprint), if enabled, is handled by your device operating system.",
+  privacyP3: "We do not collect your recovery phrase, private key, or biometric templates. Biometric unlock (Face ID / fingerprint), if enabled, is handled by your device operating system.",
   privacyH4: "4. On-chain data",
-  privacyP4:
-    "Transfers you confirm are recorded on the Solana public blockchain. Once broadcast, blockchain data is public and outside ACOPAY’s control.",
+  privacyP4: "Transfers you confirm are recorded on the Solana public blockchain. Once broadcast, blockchain data is public and outside ACOPAYâs control.",
   privacyH5: "5. Third parties",
-  privacyP5:
-    "We use infrastructure providers (hosting, CDN, RPC endpoints) to operate the Services. We do not sell personal data. The mobile app does not include advertising SDKs as of the date above.",
+  privacyP5: "We use infrastructure providers (hosting, CDN, RPC endpoints, and â when you enable notifications â push delivery services such as Firebase Cloud Messaging on Android) to operate the Services. Market or foreign-exchange information shown in the product may be fetched from public third-party data sources. We do not sell personal data. The mobile app does not include advertising SDKs as of the date above.",
   privacyH6: "6. Retention",
-  privacyP6:
-    "Server-side session and operational logs are retained only as long as needed for security, support, and legal obligations, then deleted or anonymized.",
+  privacyP6: "Server-side session, push-registration, and operational logs are retained only as long as needed for security, support, and legal obligations, then deleted or anonymized.",
   privacyH7: "7. Your choices",
-  privacyP7Before:
-    "You may stop using the Services at any time, uninstall the app, and remove local wallet data from your device. See ",
+  privacyP7Before: "You may stop using the Services at any time, uninstall the app, and remove local wallet data from your device. See ",
   privacyP7After: ".",
-  privacyH8: "8. Contact",
+  privacyHChildren: "8. Children",
+  privacyPChildren: "The Services are intended for users aged 18 or older. We do not knowingly collect personal information from anyone under 18.",
+  privacyH8: "9. Contact",
   privacyContact: "Questions:",
-  termsIntro:
-    "By using acopay.net or the ACOPAY mobile wallet (“Services”), you agree to these Terms. If you do not agree, do not use the Services.",
+  termsIntro: "By using acopay.net or the ACOPAY mobile wallet (âServicesâ), you agree to these Terms. If you do not agree, do not use the Services.",
   termsH1: "1. Nature of the Services",
-  termsP1:
-    "ACOPAY provides a non-custodial Solana wallet and transfer utility. The mobile application does not include cryptocurrency exchange, in-app swap, or in-app purchase of crypto. We do not custody your keys and do not guarantee token prices or investment returns. The Services are not financial advice.",
+  termsP1: "ACOPAY provides a non-custodial Solana wallet and token-transfer tools. In the mobile app, you can create or import a wallet, view balances, receive tokens, and send tokens you choose to hold. The mobile app does not include a cryptocurrency exchange, in-app swap, or in-app purchase of crypto. Your keys stay on your device; ACOPAY does not custody your recovery phrase or private keys. Transfers require your signature. We do not guarantee token prices or investment returns. The Services are not financial, legal, or tax advice. Features on acopay.net may differ from the mobile app and are described on the website.",
   termsH2: "2. Your responsibilities",
   termsLi1: "You are solely responsible for securing your recovery phrase and private keys.",
-  termsLi2: "You are responsible for verifying recipient addresses before transferring.",
+  termsLi2: "You are responsible for verifying recipient addresses and Pay usernames before transferring.",
   termsLi3: "You must comply with laws that apply to you, including applicable crypto regulations.",
   termsLi4: "You must be at least 18 years old to use the Services.",
   termsH3: "3. Network fees",
-  termsP3:
-    "For supported ACOPAY transfers through ACOPAY’s sponsored flow, Solana network (gas) fees may be paid by the operator as disclosed in the product. For other tokens (for example USDT, SOL, or custom SPL tokens), you pay network fees from your wallet. On-chain token transfer fees (for example the ACOPAY 0.01% fee) are separate from Solana gas and follow program rules on-chain.",
-  termsH4: "4. No custody; risk of loss",
-  termsP4:
-    "If you lose your recovery phrase or device without a backup, your assets may be permanently unrecoverable. Blockchain transactions are irreversible once confirmed.",
+  termsP3: "Solana network fees (gas) depend on the asset you transfer. For supported ACOPAY transfers using ACOPAYâs sponsored flow, Solana gas may be paid by an operator wallet as fee payer, as disclosed in the product. Gas sponsorship does not give ACOPAY custody of your keys or the ability to move your tokens without your signature on that transaction. For other assets (including USDT, SOL, and custom SPL tokens), you pay Solana gas from your own wallet. Separate on-chain token transfer fees (for example the ACOPAY 0.01% Token-2022 transfer fee) are distinct from Solana gas and follow on-chain program rules.",
+  termsH4: "4. No custody; risk of irreversible loss",
+  termsP4: "If you lose your recovery phrase or your device without a backup, your assets may be permanently unrecoverable. Blockchain transactions are irreversible once confirmed.",
   termsH5: "5. Prohibited use",
-  termsP5:
-    "You may not use the Services for unlawful activity, fraud, sanctions evasion, or abuse of infrastructure (including spam, attacks, or reverse engineering for harm).",
+  termsP5: "You may not use the Services for unlawful activity, fraud, sanctions evasion, or abuse of infrastructure (including spam, attacks, or reverse engineering intended to harm the Services or other users).",
   termsH6: "6. Disclaimer",
-  termsP6:
-    "THE SERVICES ARE PROVIDED “AS IS” WITHOUT WARRANTIES OF ANY KIND. TO THE MAXIMUM EXTENT PERMITTED BY LAW, ACOPAY IS NOT LIABLE FOR INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, OR FOR LOSSES ARISING FROM USER ERROR, BLOCKCHAIN FAILURES, OR THIRD-PARTY SERVICES.",
+  termsP6: "THE SERVICES ARE PROVIDED âAS ISâ WITHOUT WARRANTIES OF ANY KIND. TO THE MAXIMUM EXTENT PERMITTED BY LAW, ACOPAY IS NOT LIABLE FOR INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, OR FOR LOSSES ARISING FROM USER ERROR, BLOCKCHAIN FAILURES, OR THIRD-PARTY SERVICES.",
   termsH7: "7. Changes",
-  termsP7:
-    "We may update these Terms. Continued use after changes constitutes acceptance of the updated Terms. Material changes are reflected by updating the date above.",
+  termsP7: "We may update these Terms. Continued use after changes constitutes acceptance of the updated Terms. Material changes are reflected by updating the date above.",
   termsH8: "8. Contact",
-  deleteIntro:
-    "Google Play and the App Store require a public deletion path that does not require installing the app. Last updated: 6 August 2026",
-  deleteHWhat: "What “account” means here",
-  deletePWhat:
-    "The ACOPAY mobile wallet is non-custodial. Your keys remain on your device. There is no central login account that holds your funds. Deletion means removing local wallet data and any server-side sessions or operational data tied to addresses you used with ACOPAY APIs.",
+  deleteIntro: "Google Play and the App Store require a public deletion path that does not require installing the app. Last updated: 6 August 2026",
+  deleteHWhat: "What âaccountâ means here",
+  deletePWhat: "The ACOPAY mobile wallet is non-custodial. Your keys remain on your device. There is no central login account that holds your funds. Deletion means removing local wallet data and any server-side sessions, push registrations, or operational data tied to addresses you used with ACOPAY APIs.",
   deleteHA: "A. Delete data on your device (instant)",
-  deleteA1: "Open the ACOPAY app → Settings → Sign out.",
+  deleteA1: "Open the ACOPAY app â Settings â Sign out.",
   deleteA2: "Uninstall the app from your device.",
-  deleteA3:
-    "Optional: clear app storage before uninstall if your operating system provides that control.",
+  deleteA3: "Optional: clear app storage before uninstall if your operating system provides that control.",
   deleteWarnLabel: "Warning:",
-  deleteWarn:
-    " If you have not backed up your recovery phrase, signing out or uninstalling may make your funds unrecoverable.",
+  deleteWarn: " If you have not backed up your recovery phrase, signing out or uninstalling may make your funds unrecoverable.",
   deleteHB: "B. Request server-side deletion",
   deleteEmailBefore: "Email ",
   deleteEmailMid: " with subject ",
@@ -98,8 +82,7 @@ const enBase: LegalSection = {
   deleteEmailAfter: " and include:",
   deleteLi1: "Your Solana wallet address(es) used with ACOPAY",
   deleteLi2: "Approximate dates of use (if known)",
-  deleteP2:
-    "We will delete or anonymize associated session records and support correspondence within 30 days, except data we must retain for legal or security reasons, and except public blockchain records which cannot be deleted.",
+  deleteP2: "We will delete or anonymize associated session records, push registrations, and support correspondence within 30 days, except data we must retain for legal or security reasons, and except public blockchain records which cannot be deleted.",
   deleteHRelated: "Related",
 };
 
@@ -113,88 +96,74 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     termsTitle: "Điều khoản dịch vụ",
     deleteTitle: "Xóa tài khoản & dữ liệu",
     lastUpdated: "Cập nhật lần cuối: 6 tháng 8 năm 2026",
-    privacyIntro:
-      "Chính sách quyền riêng tư này giải thích cách ACOPAY (\"chúng tôi\") xử lý thông tin khi bạn sử dụng acopay.net và ứng dụng ví di động ACOPAY (gọi chung là \"Dịch vụ\").",
+    privacyIntro: "Chính sách này giải thích cách ACOPAY (“chúng tôi”) xử lý thông tin khi bạn sử dụng acopay.net và ứng dụng ví di động ACOPAY (gọi chung là “Dịch vụ”).",
     privacyH1: "1. Tóm tắt sản phẩm",
-    privacyP1:
-      "ACOPAY cung cấp ví Solana không lưu ký. Bạn có thể tạo hoặc nhập ví, xem số dư và chuyển token SPL (bao gồm ACOPAY, USDT, SOL và các token bạn thêm). Cụm từ khôi phục và private key luôn nằm trên thiết bị; ACOPAY không thu thập.",
+    privacyP1: "ACOPAY cung cấp ví Solana do bạn tự giữ khóa trên thiết bị. Bạn có thể tạo hoặc nhập ví, xem số dư và chuyển token SPL (gồm ACOPAY, USDT, SOL và token bạn thêm). Cụm từ khôi phục và private key luôn nằm trên thiết bị của bạn; ACOPAY không thu thập.",
     privacyH2: "2. Dữ liệu chúng tôi xử lý",
     privacyLi1Label: "Địa chỉ ví công khai",
-    privacyLi1Rest: " — dùng để báo phí, tạo, mô phỏng và phát các lệnh chuyển bạn yêu cầu.",
-    privacyLi2Label: "Siêu dữ liệu giao dịch",
-    privacyLi2Rest:
-      " — số tiền, địa chỉ hoặc username người nhận bạn nhập, chữ ký và trạng thái xác nhận khi bạn dùng API chuyển của ACOPAY.",
+    privacyLi1Rest: " — dùng để ước tính phí, tạo, mô phỏng và phát lệnh chuyển bạn yêu cầu, cũng như vận hành các tính năng Pay bạn chọn dùng.",
+    privacyLi2Label: "Thông tin giao dịch",
+    privacyLi2Rest: " — số tiền, địa chỉ hoặc Pay username người nhận bạn nhập, chữ ký và trạng thái xác nhận khi bạn dùng API chuyển của ACOPAY.",
     privacyLi3Label: "Nhật ký kỹ thuật",
-    privacyLi3Rest:
-      " — nhật ký web và máy chủ tiêu chuẩn (địa chỉ IP, user agent, thời gian) để bảo mật và ngăn lạm dụng.",
+    privacyLi3Rest: " — nhật ký web và máy chủ thông thường (địa chỉ IP, user agent, thời gian) phục vụ bảo mật và ngăn lạm dụng.",
+    privacyLiUsernameLabel: "Pay username (tùy chọn)",
+    privacyLiUsernameRest: " — nếu bạn tạo Pay username ACOPAY, chúng tôi lưu ánh xạ giữa username đó và địa chỉ ví công khai để người khác có thể chuyển cho bạn theo username.",
+    privacyLiPushLabel: "Token thông báo đẩy (tùy chọn)",
+    privacyLiPushRest: " — nếu bạn bật thông báo thanh toán trong ứng dụng, chúng tôi lưu token đẩy của thiết bị gắn với địa chỉ ví công khai để gửi cảnh báo. Bạn có thể tắt trong Cài đặt.",
     privacyLi4Label: "Liên hệ tùy chọn",
     privacyLi4Before: " — nếu bạn gửi email tới ",
-    privacyLi4After: ", chúng tôi xử lý nội dung của email đó.",
+    privacyLi4After: ", chúng tôi xử lý nội dung thư đó.",
     privacyH3: "3. Dữ liệu chúng tôi không thu thập",
-    privacyP3:
-      "Chúng tôi không thu thập cụm từ khôi phục, private key hay mẫu sinh trắc học. Mở khóa sinh trắc học (Face ID / vân tay), nếu bật, do hệ điều hành thiết bị xử lý.",
-    privacyH4: "4. Dữ liệu on-chain",
-    privacyP4:
-      "Các giao dịch bạn xác nhận được ghi trên blockchain công khai Solana. Sau khi phát lên mạng, dữ liệu blockchain là công khai và nằm ngoài tầm kiểm soát của ACOPAY.",
+    privacyP3: "Chúng tôi không thu thập cụm từ khôi phục, private key hay mẫu sinh trắc học. Mở khóa sinh trắc học (Face ID / vân tay), nếu bật, do hệ điều hành thiết bị xử lý.",
+    privacyH4: "4. Dữ liệu trên blockchain",
+    privacyP4: "Giao dịch bạn xác nhận được ghi trên blockchain công khai Solana. Sau khi phát lên mạng, dữ liệu đó là công khai và nằm ngoài tầm kiểm soát của ACOPAY.",
     privacyH5: "5. Bên thứ ba",
-    privacyP5:
-      "Chúng tôi dùng nhà cung cấp hạ tầng (hosting, CDN, endpoint RPC) để vận hành Dịch vụ. Chúng tôi không bán dữ liệu cá nhân. Ứng dụng di động không tích hợp SDK quảng cáo tính đến ngày nêu trên.",
-    privacyH6: "6. Lưu trữ dữ liệu",
-    privacyP6:
-      "Nhật ký phiên và vận hành phía server chỉ được lưu trong thời gian cần thiết cho mục đích bảo mật, hỗ trợ và nghĩa vụ pháp lý, sau đó bị xóa hoặc ẩn danh.",
+    privacyP5: "Chúng tôi dùng nhà cung cấp hạ tầng (hosting, CDN, endpoint RPC và — khi bạn bật thông báo — dịch vụ gửi thông báo đẩy như Firebase Cloud Messaging trên Android) để vận hành Dịch vụ. Thông tin thị trường hoặc tỷ giá hiển thị trong sản phẩm có thể lấy từ nguồn dữ liệu công khai của bên thứ ba. Chúng tôi không bán dữ liệu cá nhân. Ứng dụng di động không tích hợp SDK quảng cáo tính đến ngày nêu trên.",
+    privacyH6: "6. Thời gian lưu trữ",
+    privacyP6: "Nhật ký phiên, đăng ký thông báo đẩy và vận hành phía máy chủ chỉ được lưu trong thời gian cần thiết cho bảo mật, hỗ trợ và nghĩa vụ pháp lý, sau đó bị xóa hoặc ẩn danh.",
     privacyH7: "7. Lựa chọn của bạn",
-    privacyP7Before:
-      "Bạn có thể ngừng dùng Dịch vụ bất kỳ lúc nào, gỡ ứng dụng và xóa dữ liệu ví cục bộ trên thiết bị. Xem ",
+    privacyP7Before: "Bạn có thể ngừng dùng Dịch vụ bất kỳ lúc nào, gỡ ứng dụng và xóa dữ liệu ví cục bộ trên thiết bị. Xem ",
     privacyP7After: ".",
-    privacyH8: "8. Liên hệ",
+    privacyHChildren: "8. Trẻ em",
+    privacyPChildren: "Dịch vụ dành cho người từ 18 tuổi trở lên. Chúng tôi không cố ý thu thập thông tin cá nhân của người dưới 18 tuổi.",
+    privacyH8: "9. Liên hệ",
     privacyContact: "Thắc mắc:",
-    termsIntro:
-      "Khi sử dụng acopay.net hoặc ví di động ACOPAY (\"Dịch vụ\"), bạn đồng ý với các Điều khoản này. Nếu không đồng ý, vui lòng không sử dụng Dịch vụ.",
+    termsIntro: "Khi sử dụng acopay.net hoặc ví di động ACOPAY (“Dịch vụ”), bạn đồng ý với các Điều khoản này. Nếu không đồng ý, vui lòng không sử dụng Dịch vụ.",
     termsH1: "1. Bản chất của Dịch vụ",
-    termsP1:
-      "ACOPAY cung cấp ví Solana không lưu ký và tiện ích chuyển token. Ứng dụng di động không bao gồm sàn giao dịch tiền mã hóa, hoán đổi trong app, hay mua crypto trong app. Chúng tôi không giữ khóa của bạn và không bảo đảm giá token hay lợi nhuận đầu tư. Dịch vụ không phải tư vấn tài chính.",
+    termsP1: "ACOPAY cung cấp ví Solana do bạn tự giữ khóa trên thiết bị và công cụ chuyển token. Trong ứng dụng di động, bạn có thể tạo hoặc nhập ví, xem số dư, nhận và gửi token bạn chọn nắm giữ. Ứng dụng di động không có sàn giao dịch tiền mã hóa, hoán đổi trong app, hay mua crypto trong app. Khóa nằm trên thiết bị của bạn; ACOPAY không giữ cụm từ khôi phục hoặc private key hộ bạn. Lệnh chuyển yêu cầu chữ ký của bạn. Chúng tôi không bảo đảm giá token hay lợi nhuận đầu tư. Dịch vụ không phải tư vấn tài chính, pháp lý hay thuế. Tính năng trên acopay.net có thể khác ứng dụng di động và được mô tả trên website.",
     termsH2: "2. Trách nhiệm của bạn",
     termsLi1: "Bạn hoàn toàn chịu trách nhiệm bảo mật cụm từ khôi phục và private key của mình.",
-    termsLi2: "Bạn có trách nhiệm xác minh địa chỉ người nhận trước khi chuyển tiền.",
+    termsLi2: "Bạn có trách nhiệm kiểm tra địa chỉ người nhận và Pay username trước khi chuyển.",
     termsLi3: "Bạn phải tuân thủ luật áp dụng với bạn, bao gồm quy định về tiền mã hóa (nếu có).",
     termsLi4: "Bạn phải từ 18 tuổi trở lên để sử dụng Dịch vụ.",
     termsH3: "3. Phí mạng",
-    termsP3:
-      "Với các lệnh chuyển ACOPAY được hỗ trợ qua luồng tài trợ của ACOPAY, phí mạng Solana (gas) có thể do nhà vận hành trả như đã nêu trong sản phẩm. Với token khác (ví dụ USDT, SOL hoặc SPL tùy chỉnh), bạn trả phí mạng từ ví của mình. Phí chuyển token on-chain (ví dụ phí 0,01% của ACOPAY) tách biệt với gas Solana và theo quy tắc chương trình trên chuỗi.",
-    termsH4: "4. Không lưu ký; rủi ro mất tài sản",
-    termsP4:
-      "Nếu bạn mất cụm từ khôi phục hoặc mất thiết bị mà không có bản sao lưu, tài sản của bạn có thể vĩnh viễn không khôi phục được. Giao dịch blockchain không thể đảo ngược sau khi đã xác nhận.",
+    termsP3: "Phí mạng Solana (gas) phụ thuộc tài sản bạn chuyển. Với lệnh chuyển ACOPAY được hỗ trợ qua luồng sponsor phí mạng của ACOPAY, gas Solana có thể do ví vận hành trả với vai trò fee payer, như đã nêu trong sản phẩm. Việc sponsor gas không đồng nghĩa ACOPAY giữ khóa của bạn hay có quyền chuyển token của bạn khi chưa có chữ ký của bạn trên giao dịch đó. Với tài sản khác (gồm USDT, SOL và SPL tùy chỉnh), bạn trả gas Solana từ ví của mình. Phí chuyển token on-chain (ví dụ phí Token-2022 0,01% của ACOPAY) tách biệt với gas Solana và theo quy tắc chương trình trên chuỗi.",
+    termsH4: "4. Không giữ khóa hộ bạn; rủi ro mất tài sản không hoàn tác",
+    termsP4: "Nếu bạn mất cụm từ khôi phục hoặc mất thiết bị mà không có bản sao lưu, tài sản có thể không khôi phục được vĩnh viễn. Giao dịch blockchain không thể đảo ngược sau khi đã xác nhận.",
     termsH5: "5. Hành vi bị cấm",
-    termsP5:
-      "Bạn không được dùng Dịch vụ cho hoạt động bất hợp pháp, gian lận, lách lệnh trừng phạt, hoặc lạm dụng hạ tầng (bao gồm spam, tấn công, hoặc kỹ thuật đảo chiều nhằm gây hại).",
+    termsP5: "Bạn không được dùng Dịch vụ cho hoạt động bất hợp pháp, gian lận, lách lệnh trừng phạt, hoặc lạm dụng hạ tầng (gồm spam, tấn công, hoặc dịch ngược phần mềm nhằm gây hại cho Dịch vụ hay người dùng khác).",
     termsH6: "6. Miễn trừ trách nhiệm",
-    termsP6:
-      "DỊCH VỤ ĐƯỢC CUNG CẤP \"NGUYÊN TRẠNG\" (AS IS) KHÔNG BẢO ĐẢM DƯỚI BẤT KỲ HÌNH THỨC NÀO. TRONG PHẠM VI TỐI ĐA PHÁP LUẬT CHO PHÉP, ACOPAY KHÔNG CHỊU TRÁCH NHIỆM VỀ THIỆT HẠI GIÁN TIẾP, NGẪU NHIÊN HAY HỆ QUẢ, HOẶC TỔN THẤT PHÁT SINH TỪ LỖI NGƯỜI DÙNG, SỰ CỐ BLOCKCHAIN, HOẶC DỊCH VỤ BÊN THỨ BA.",
+    termsP6: "DỊCH VỤ ĐƯỢC CUNG CẤP “NGUYÊN TRẠNG” (AS IS), KHÔNG BẢO ĐẢM DƯỚI BẤT KỲ HÌNH THỨC NÀO. TRONG PHẠM VI PHÁP LUẬT CHO PHÉP TỐI ĐA, ACOPAY KHÔNG CHỊU TRÁCH NHIỆM VỀ THIỆT HẠI GIÁN TIẾP, NGẪU NHIÊN HAY HỆ QUẢ, HOẶC TỔN THẤT PHÁT SINH TỪ LỖI NGƯỜI DÙNG, SỰ CỐ BLOCKCHAIN, HOẶC DỊCH VỤ BÊN THỨ BA.",
     termsH7: "7. Thay đổi",
-    termsP7:
-      "Chúng tôi có thể cập nhật Điều khoản. Tiếp tục sử dụng sau khi thay đổi đồng nghĩa chấp nhận Điều khoản đã cập nhật. Thay đổi quan trọng được phản ánh bằng việc cập nhật ngày nêu trên.",
+    termsP7: "Chúng tôi có thể cập nhật Điều khoản. Tiếp tục sử dụng sau khi thay đổi đồng nghĩa chấp nhận Điều khoản đã cập nhật. Thay đổi quan trọng được phản ánh bằng việc cập nhật ngày nêu trên.",
     termsH8: "8. Liên hệ",
-    deleteIntro:
-      "Google Play và App Store yêu cầu đường dẫn xóa dữ liệu công khai không bắt buộc cài app. Cập nhật lần cuối: 6 tháng 8 năm 2026",
-    deleteHWhat: "\"Tài khoản\" ở đây nghĩa là gì",
-    deletePWhat:
-      "Ví di động ACOPAY là không lưu ký. Khóa nằm trên thiết bị của bạn. Không có tài khoản đăng nhập tập trung giữ tiền của bạn. Xóa nghĩa là gỡ dữ liệu ví cục bộ và mọi phiên / dữ liệu vận hành phía máy chủ gắn với địa chỉ bạn đã dùng với API ACOPAY.",
-    deleteHA: "A. Xóa dữ liệu trên thiết bị của bạn (tức thì)",
+    deleteIntro: "Google Play và App Store yêu cầu đường dẫn xóa dữ liệu công khai, không bắt buộc cài ứng dụng. Cập nhật lần cuối: 6 tháng 8 năm 2026",
+    deleteHWhat: "“Tài khoản” ở đây nghĩa là gì",
+    deletePWhat: "Ví di động ACOPAY do bạn tự giữ khóa trên thiết bị. Không có tài khoản đăng nhập tập trung giữ tiền của bạn. Xóa nghĩa là gỡ dữ liệu ví cục bộ và các phiên, đăng ký thông báo đẩy hoặc dữ liệu vận hành phía máy chủ gắn với địa chỉ bạn đã dùng với API ACOPAY.",
+    deleteHA: "A. Xóa dữ liệu trên thiết bị (ngay lập tức)",
     deleteA1: "Mở ứng dụng ACOPAY → Cài đặt → Đăng xuất.",
-    deleteA2: "Gỡ ứng dụng khỏi thiết bị của bạn.",
-    deleteA3: "Tuỳ chọn: xóa bộ nhớ ứng dụng trước khi gỡ nếu hệ điều hành cho phép.",
+    deleteA2: "Gỡ ứng dụng khỏi thiết bị.",
+    deleteA3: "Tùy chọn: xóa bộ nhớ ứng dụng trước khi gỡ nếu hệ điều hành cho phép.",
     deleteWarnLabel: "Cảnh báo:",
-    deleteWarn:
-      " Nếu bạn chưa sao lưu cụm từ khôi phục, việc đăng xuất hoặc gỡ ứng dụng có thể khiến tài sản của bạn không thể khôi phục.",
-    deleteHB: "B. Yêu cầu xóa dữ liệu phía server",
+    deleteWarn: " Nếu bạn chưa sao lưu cụm từ khôi phục, việc đăng xuất hoặc gỡ ứng dụng có thể khiến tài sản không thể khôi phục.",
+    deleteHB: "B. Yêu cầu xóa dữ liệu phía máy chủ",
     deleteEmailBefore: "Gửi email tới ",
     deleteEmailMid: " với tiêu đề ",
     deleteSubject: "Delete ACOPAY data",
-    deleteEmailAfter: " và bao gồm:",
-    deleteLi1: "(Các) địa chỉ ví Solana bạn đã dùng với ACOPAY",
+    deleteEmailAfter: " và nêu rõ:",
+    deleteLi1: "Địa chỉ ví Solana bạn đã dùng với ACOPAY",
     deleteLi2: "Thời gian sử dụng gần đúng (nếu biết)",
-    deleteP2:
-      "Chúng tôi sẽ xóa hoặc ẩn danh các bản ghi phiên và email hỗ trợ liên quan trong vòng 30 ngày, trừ dữ liệu chúng tôi buộc phải lưu vì lý do pháp lý hoặc bảo mật, và trừ các bản ghi công khai trên blockchain không thể xóa được.",
+    deleteP2: "Chúng tôi sẽ xóa hoặc ẩn danh các bản ghi phiên, đăng ký thông báo đẩy và email hỗ trợ liên quan trong vòng 30 ngày, trừ dữ liệu buộc phải lưu vì lý do pháp lý hoặc bảo mật, và trừ bản ghi công khai trên blockchain không thể xóa.",
     deleteHRelated: "Liên quan",
   }),
 
@@ -233,7 +202,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyH7: "7. 你的选择",
     privacyP7Before: "你可以随时停止使用服务、卸载应用，并清除设备上的本地钱包数据。详见 ",
     privacyP7After: "。",
-    privacyH8: "8. 联系方式",
+    privacyH8: "9. 联系方式",
     privacyContact: "如有疑问：",
     termsIntro:
       "使用 acopay.net 或 ACOPAY 移动钱包（“服务”）即表示你同意本条款。如果不同意，请不要使用本服务。",
@@ -279,6 +248,12 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     deleteP2:
       "我们将在 30 天内删除或匿名化相关的会话记录与支持往来邮件，但因法律或安全原因必须保留的数据除外，且无法删除的公开区块链记录也除外。",
     deleteHRelated: "相关内容",
+    privacyLiUsernameLabel: "Pay 用户名（可选）",
+    privacyLiUsernameRest: "——如果你创建 ACOPAY Pay 用户名，我们会保存该用户名与公开钱包地址的映射，以便他人可通过用户名向你付款。",
+    privacyLiPushLabel: "推送通知令牌（可选）",
+    privacyLiPushRest: "——如果你在应用中启用付款通知，我们会保存与公开钱包地址关联的设备推送令牌。可在设置中关闭。",
+    privacyHChildren: "8. 儿童",
+    privacyPChildren: "本服务面向 18 岁及以上用户。我们不会故意收集 18 岁以下人士的个人信息。",
   }),
 
   ja: L({
@@ -319,7 +294,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyP7Before:
       "本サービスの利用はいつでも中止でき、アプリのアンインストールや端末上のローカルウォレットデータの消去も可能です。詳細は ",
     privacyP7After: "をご覧ください。",
-    privacyH8: "8. お問い合わせ",
+    privacyH8: "9. お問い合わせ",
     privacyContact: "ご質問：",
     termsIntro:
       "acopay.net または ACOPAY モバイルウォレット（以下「本サービス」）をご利用になることで、本規約に同意したものとみなされます。同意いただけない場合は、本サービスをご利用にならないでください。",
@@ -369,6 +344,12 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     deleteP2:
       "関連するセッション記録およびサポートのやり取りは、法的またはセキュリティ上の理由で保持が必要なデータ、および削除できない公開ブロックチェーン記録を除き、30日以内に削除または匿名化します。",
     deleteHRelated: "関連情報",
+    privacyLiUsernameLabel: "Pay ユーザー名（任意）",
+    privacyLiUsernameRest: "——ACOPAY Pay ユーザー名を作成した場合、他の方がユーザー名で送金できるよう、そのユーザー名と公開ウォレットアドレスの対応を保存します。",
+    privacyLiPushLabel: "プッシュ通知トークン（任意）",
+    privacyLiPushRest: "——アプリで支払い通知を有効にした場合、公開ウォレットアドレスに紐づく端末のプッシュトークンを保存します。設定でオフにできます。",
+    privacyHChildren: "8. 子ども",
+    privacyPChildren: "本サービスは 18 歳以上の方を対象とします。18 歳未満から故意に個人情報を収集することはありません。",
   }),
 
   ko: L({
@@ -408,7 +389,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyP7Before:
       "귀하는 언제든지 서비스 이용을 중단하고, 앱을 삭제하고, 기기에서 로컬 지갑 데이터를 지울 수 있습니다. 자세한 내용은 ",
     privacyP7After: "을 참고하세요.",
-    privacyH8: "8. 연락처",
+    privacyH8: "9. 문의",
     privacyContact: "문의:",
     termsIntro:
       "acopay.net 또는 ACOPAY 모바일 지갑(이하 “서비스”)을 이용함으로써 귀하는 본 약관에 동의합니다. 동의하지 않으시면 서비스를 이용하지 마십시오.",
@@ -456,6 +437,12 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     deleteP2:
       "당사는 법적 또는 보안상의 이유로 보관해야 하는 데이터와 삭제할 수 없는 공개 블록체인 기록을 제외하고, 관련 세션 기록 및 지원 서신을 30일 이내에 삭제하거나 익명화합니다.",
     deleteHRelated: "관련 문서",
+    privacyLiUsernameLabel: "Pay 사용자 이름(선택)",
+    privacyLiUsernameRest: " — ACOPAY Pay 사용자 이름을 만들면 다른 사람이 사용자 이름으로 보낼 수 있도록 해당 이름과 공개 지갑 주소 매핑을 저장합니다.",
+    privacyLiPushLabel: "푸시 알림 토큰(선택)",
+    privacyLiPushRest: " — 앱에서 결제 알림을 켜면 공개 지갑 주소에 연결된 기기 푸시 토큰을 저장합니다. 설정에서 끌 수 있습니다.",
+    privacyHChildren: "8. 아동",
+    privacyPChildren: "본 서비스는 18세 이상 사용자를 대상으로 합니다. 18세 미만의 개인정보를 고의로 수집하지 않습니다.",
   }),
 
   th: L({
@@ -496,7 +483,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyP7Before:
       "คุณสามารถหยุดใช้บริการได้ทุกเมื่อ ถอนการติดตั้งแอป และล้างข้อมูลกระเป๋าเงินในเครื่องออกจากอุปกรณ์ของคุณ ดู ",
     privacyP7After: ".",
-    privacyH8: "8. ติดต่อ",
+    privacyH8: "9. ติดต่อ",
     privacyContact: "สอบถามเพิ่มเติม:",
     termsIntro:
       "การใช้ acopay.net หรือกระเป๋าเงินมือถือ ACOPAY (“บริการ”) ถือว่าคุณยอมรับข้อกำหนดนี้ หากคุณไม่ยอมรับ กรุณาอย่าใช้บริการ",
@@ -545,6 +532,12 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     deleteP2:
       "เราจะลบหรือทำให้ไม่ระบุตัวตนของบันทึกเซสชันและอีเมลติดต่อฝ่ายสนับสนุนที่เกี่ยวข้องภายใน 30 วัน ยกเว้นข้อมูลที่เราต้องเก็บรักษาไว้ด้วยเหตุผลทางกฎหมายหรือความปลอดภัย และยกเว้นบันทึกบล็อกเชนสาธารณะซึ่งไม่สามารถลบได้",
     deleteHRelated: "ที่เกี่ยวข้อง",
+    privacyLiUsernameLabel: "Pay username (optional)",
+    privacyLiUsernameRest: " Ã¢ÂÂ if you create an ACOPAY Pay username, we store the mapping between that username and your public wallet address so others can pay you by username.",
+    privacyLiPushLabel: "Push notification token (optional)",
+    privacyLiPushRest: " Ã¢ÂÂ if you enable payment notifications in the app, we store a device push token linked to your public wallet address to deliver those alerts. You can turn notifications off in Settings.",
+    privacyHChildren: "8. เด็ก",
+    privacyPChildren: "บริการนี้สำหรับผู้ใช้อายุ 18 ปีขึ้นไป เราไม่เจตนาเก็บข้อมูลส่วนบุคคลจากผู้ที่มีอายุต่ำกว่า 18 ปี",
   }),
 
   id: L({
@@ -584,7 +577,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyP7Before:
       "Anda dapat berhenti menggunakan Layanan kapan saja, mencopot pemasangan aplikasi, dan menghapus data dompet lokal dari perangkat Anda. Lihat ",
     privacyP7After: ".",
-    privacyH8: "8. Kontak",
+    privacyH8: "9. Kontak",
     privacyContact: "Pertanyaan:",
     termsIntro:
       "Dengan menggunakan acopay.net atau dompet seluler ACOPAY (“Layanan”), Anda menyetujui Ketentuan ini. Jika Anda tidak setuju, jangan gunakan Layanan.",
@@ -633,6 +626,12 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     deleteP2:
       "Kami akan menghapus atau menganonimkan catatan sesi dan korespondensi dukungan terkait dalam waktu 30 hari, kecuali data yang harus kami simpan karena alasan hukum atau keamanan, dan kecuali catatan blockchain publik yang tidak dapat dihapus.",
     deleteHRelated: "Terkait",
+    privacyLiUsernameLabel: "Username Pay (opsional)",
+    privacyLiUsernameRest: " — jika Anda membuat username Pay ACOPAY, kami menyimpan pemetaan antara username itu dan alamat dompet publik Anda agar orang lain dapat membayar lewat username.",
+    privacyLiPushLabel: "Token notifikasi push (opsional)",
+    privacyLiPushRest: " — jika Anda mengaktifkan notifikasi pembayaran di aplikasi, kami menyimpan token push perangkat yang ditautkan ke alamat dompet publik. Anda dapat mematikannya di Pengaturan.",
+    privacyHChildren: "8. Anak-anak",
+    privacyPChildren: "Layanan ditujukan bagi pengguna berusia 18 tahun ke atas. Kami tidak dengan sengaja mengumpulkan informasi pribadi dari siapa pun di bawah 18 tahun.",
   }),
 
   ms: L({
@@ -672,7 +671,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyP7Before:
       "Anda boleh berhenti menggunakan Perkhidmatan pada bila-bila masa, nyahpasang aplikasi, dan padam data dompet tempatan daripada peranti anda. Lihat ",
     privacyP7After: ".",
-    privacyH8: "8. Hubungi",
+    privacyH8: "9. Hubungi",
     privacyContact: "Pertanyaan:",
     termsIntro:
       "Dengan menggunakan acopay.net atau dompet mudah alih ACOPAY (“Perkhidmatan”), anda bersetuju dengan Terma ini. Jika anda tidak bersetuju, jangan gunakan Perkhidmatan.",
@@ -721,6 +720,12 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     deleteP2:
       "Kami akan memadam atau menamakan tanpa nama rekod sesi dan surat-menyurat sokongan berkaitan dalam masa 30 hari, kecuali data yang perlu kami simpan atas sebab undang-undang atau keselamatan, dan kecuali rekod blockchain awam yang tidak boleh dipadam.",
     deleteHRelated: "Berkaitan",
+    privacyLiUsernameLabel: "Nama pengguna Pay (pilihan)",
+    privacyLiUsernameRest: " — jika anda mencipta nama pengguna Pay ACOPAY, kami menyimpan pemetaan antara nama itu dan alamat dompet awam anda supaya orang lain boleh membayar melalui nama pengguna.",
+    privacyLiPushLabel: "Token pemberitahuan tolak (pilihan)",
+    privacyLiPushRest: " — jika anda mendayakan pemberitahuan pembayaran dalam apl, kami menyimpan token tolak peranti yang dipautkan ke alamat dompet awam. Anda boleh mematikannya dalam Tetapan.",
+    privacyHChildren: "8. Kanak-kanak",
+    privacyPChildren: "Perkhidmatan ini untuk pengguna berumur 18 tahun ke atas. Kami tidak dengan sengaja mengumpul maklumat peribadi daripada sesiapa di bawah 18 tahun.",
   }),
 
   hi: L({
@@ -760,7 +765,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyP7Before:
       "आप किसी भी समय सेवाओं का उपयोग बंद कर सकते हैं, ऐप को अनइंस्टॉल कर सकते हैं, और अपने डिवाइस से स्थानीय वॉलेट डेटा मिटा सकते हैं। देखें ",
     privacyP7After: "।",
-    privacyH8: "8. संपर्क करें",
+    privacyH8: "9. संपर्क",
     privacyContact: "प्रश्न:",
     termsIntro:
       "acopay.net या ACOPAY मोबाइल वॉलेट (“सेवाएँ”) का उपयोग करके, आप इन शर्तों से सहमत होते हैं। यदि आप सहमत नहीं हैं, तो सेवाओं का उपयोग न करें।",
@@ -809,6 +814,12 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     deleteP2:
       "हम संबंधित सेशन रिकॉर्ड और सहायता पत्राचार को 30 दिनों के भीतर हटा देंगे या गुमनाम बना देंगे, उन डेटा को छोड़कर जिन्हें हमें कानूनी या सुरक्षा कारणों से बनाए रखना आवश्यक है, और उन सार्वजनिक ब्लॉकचेन रिकॉर्ड को छोड़कर जिन्हें हटाया नहीं जा सकता।",
     deleteHRelated: "संबंधित",
+    privacyLiUsernameLabel: "Pay username (optional)",
+    privacyLiUsernameRest: " Ã¢ÂÂ if you create an ACOPAY Pay username, we store the mapping between that username and your public wallet address so others can pay you by username.",
+    privacyLiPushLabel: "Push notification token (optional)",
+    privacyLiPushRest: " Ã¢ÂÂ if you enable payment notifications in the app, we store a device push token linked to your public wallet address to deliver those alerts. You can turn notifications off in Settings.",
+    privacyHChildren: "8. बच्चे",
+    privacyPChildren: "सेवाएँ 18 वर्ष या उससे अधिक आयु के उपयोगकर्ताओं के लिए हैं। हम जानबूझकर 18 से कम आयु वालों से व्यक्तिगत जानकारी एकत्र नहीं करते।",
   }),
 
   es: L({
@@ -848,7 +859,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyP7Before:
       "Puedes dejar de usar los Servicios en cualquier momento, desinstalar la app y borrar los datos locales de la cartera de tu dispositivo. Consulta ",
     privacyP7After: ".",
-    privacyH8: "8. Contacto",
+    privacyH8: "9. Contacto",
     privacyContact: "Preguntas:",
     termsIntro:
       "Al usar acopay.net o la cartera móvil ACOPAY (los “Servicios”), aceptas estos Términos. Si no estás de acuerdo, no uses los Servicios.",
@@ -897,6 +908,12 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     deleteP2:
       "Eliminaremos o anonimizaremos los registros de sesión y la correspondencia de soporte asociados en un plazo de 30 días, salvo los datos que debamos conservar por motivos legales o de seguridad, y salvo los registros públicos de la blockchain, que no se pueden eliminar.",
     deleteHRelated: "Relacionado",
+    privacyLiUsernameLabel: "Nombre de usuario Pay (opcional)",
+    privacyLiUsernameRest: " — si crea un nombre de usuario Pay de ACOPAY, almacenamos la correspondencia entre ese nombre y su dirección de billetera pública para que otros puedan pagarle por nombre de usuario.",
+    privacyLiPushLabel: "Token de notificaciones push (opcional)",
+    privacyLiPushRest: " — si activa las notificaciones de pago en la app, almacenamos un token push del dispositivo vinculado a su dirección pública. Puede desactivarlas en Ajustes.",
+    privacyHChildren: "8. Menores",
+    privacyPChildren: "Los Servicios van destinados a usuarios de 18 años o más. No recopilamos a sabiendas información personal de menores de 18 años.",
   }),
 
   pt: L({
@@ -936,7 +953,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyP7Before:
       "Você pode parar de usar os Serviços a qualquer momento, desinstalar o aplicativo e apagar os dados locais da carteira do seu dispositivo. Veja ",
     privacyP7After: ".",
-    privacyH8: "8. Contato",
+    privacyH8: "9. Contato",
     privacyContact: "Dúvidas:",
     termsIntro:
       "Ao usar o acopay.net ou a carteira móvel ACOPAY (os “Serviços”), você concorda com estes Termos. Se não concordar, não use os Serviços.",
@@ -985,6 +1002,12 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     deleteP2:
       "Excluiremos ou anonimizaremos os registros de sessão e a correspondência de suporte associados em até 30 dias, exceto os dados que devamos reter por motivos legais ou de segurança, e exceto os registros públicos da blockchain, que não podem ser excluídos.",
     deleteHRelated: "Relacionado",
+    privacyLiUsernameLabel: "Nome de usuário Pay (opcional)",
+    privacyLiUsernameRest: " — se você criar um nome de usuário Pay da ACOPAY, armazenamos o mapeamento entre esse nome e o endereço público da carteira para que outros possam pagar por nome de usuário.",
+    privacyLiPushLabel: "Token de notificação push (opcional)",
+    privacyLiPushRest: " — se você ativar notificações de pagamento no app, armazenamos um token push do dispositivo vinculado ao endereço público. Você pode desativar em Ajustes.",
+    privacyHChildren: "8. Crianças",
+    privacyPChildren: "Os Serviços destinam-se a usuários com 18 anos ou mais. Não coletamos intencionalmente informações pessoais de menores de 18 anos.",
   }),
 
   fr: L({
@@ -1024,7 +1047,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyP7Before:
       "Vous pouvez cesser d'utiliser les Services à tout moment, désinstaller l'application et effacer les données locales du portefeuille de votre appareil. Voir ",
     privacyP7After: ".",
-    privacyH8: "8. Contact",
+    privacyH8: "9. Contact",
     privacyContact: "Questions :",
     termsIntro:
       "En utilisant acopay.net ou le portefeuille mobile ACOPAY (les « Services »), vous acceptez les présentes Conditions. Si vous n'êtes pas d'accord, n'utilisez pas les Services.",
@@ -1073,6 +1096,12 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     deleteP2:
       "Nous supprimerons ou anonymiserons les enregistrements de session et la correspondance de support associés sous 30 jours, à l'exception des données que nous devons conserver pour des raisons légales ou de sécurité, et à l'exception des enregistrements publics de la blockchain qui ne peuvent pas être supprimés.",
     deleteHRelated: "En rapport",
+    privacyLiUsernameLabel: "Nom d’utilisateur Pay (facultatif)",
+    privacyLiUsernameRest: " — si vous créez un nom d’utilisateur Pay ACOPAY, nous stockons la correspondance entre ce nom et votre adresse de portefeuille publique afin que d’autres puissent vous payer par nom d’utilisateur.",
+    privacyLiPushLabel: "Jeton de notification push (facultatif)",
+    privacyLiPushRest: " — si vous activez les notifications de paiement dans l’application, nous stockons un jeton push de l’appareil lié à votre adresse publique. Vous pouvez les désactiver dans Réglages.",
+    privacyHChildren: "8. Enfants",
+    privacyPChildren: "Les Services s’adressent aux utilisateurs âgés de 18 ans ou plus. Nous ne collectons pas sciemment d’informations personnelles auprès de personnes de moins de 18 ans.",
   }),
 
   de: L({
@@ -1112,7 +1141,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyP7Before:
       "Sie können die Nutzung der Dienste jederzeit beenden, die App deinstallieren und lokale Geldbörsendaten von Ihrem Gerät löschen. Siehe ",
     privacyP7After: ".",
-    privacyH8: "8. Kontakt",
+    privacyH8: "9. Kontakt",
     privacyContact: "Fragen:",
     termsIntro:
       "Durch die Nutzung von acopay.net oder der mobilen ACOPAY-Geldbörse (die “Dienste”) stimmen Sie diesen Bedingungen zu. Wenn Sie nicht zustimmen, nutzen Sie die Dienste bitte nicht.",
@@ -1161,6 +1190,12 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     deleteP2:
       "Wir löschen oder anonymisieren zugehörige Sitzungsdaten und Support-Korrespondenz innerhalb von 30 Tagen, mit Ausnahme von Daten, die wir aus rechtlichen oder sicherheitstechnischen Gründen aufbewahren müssen, sowie öffentlichen Blockchain-Aufzeichnungen, die nicht gelöscht werden können.",
     deleteHRelated: "Verwandt",
+    privacyLiUsernameLabel: "Pay-Benutzername (optional)",
+    privacyLiUsernameRest: " — wenn Sie einen ACOPAY-Pay-Benutzernamen anlegen, speichern wir die Zuordnung zwischen diesem Namen und Ihrer öffentlichen Wallet-Adresse, damit andere per Benutzername zahlen können.",
+    privacyLiPushLabel: "Push-Benachrichtigungs-Token (optional)",
+    privacyLiPushRest: " — wenn Sie Zahlungsbenachrichtigungen in der App aktivieren, speichern wir ein Geräte-Push-Token verknüpft mit Ihrer öffentlichen Wallet-Adresse. Abschaltbar unter Einstellungen.",
+    privacyHChildren: "8. Kinder",
+    privacyPChildren: "Die Dienste richten sich an Nutzer ab 18 Jahren. Wir erheben wissentlich keine personenbezogenen Daten von Personen unter 18 Jahren.",
   }),
 
   nl: L({
@@ -1200,7 +1235,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyP7Before:
       "Je kunt op elk moment stoppen met het gebruik van de Diensten, de app verwijderen en lokale portemonneegegevens van je apparaat wissen. Zie ",
     privacyP7After: ".",
-    privacyH8: "8. Contact",
+    privacyH8: "9. Contact",
     privacyContact: "Vragen:",
     termsIntro:
       "Door acopay.net of de mobiele ACOPAY-portemonnee (de “Diensten”) te gebruiken, ga je akkoord met deze Voorwaarden. Als je niet akkoord gaat, gebruik de Diensten dan niet.",
@@ -1249,6 +1284,12 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     deleteP2:
       "We verwijderen of anonimiseren gerelateerde sessiegegevens en supportcorrespondentie binnen 30 dagen, behalve gegevens die we om juridische of beveiligingsredenen moeten bewaren, en behalve openbare blockchainrecords die niet kunnen worden verwijderd.",
     deleteHRelated: "Gerelateerd",
+    privacyLiUsernameLabel: "Pay username (optional)",
+    privacyLiUsernameRest: " Ã¢ÂÂ if you create an ACOPAY Pay username, we store the mapping between that username and your public wallet address so others can pay you by username.",
+    privacyLiPushLabel: "Push notification token (optional)",
+    privacyLiPushRest: " Ã¢ÂÂ if you enable payment notifications in the app, we store a device push token linked to your public wallet address to deliver those alerts. You can turn notifications off in Settings.",
+    privacyHChildren: "8. Kinderen",
+    privacyPChildren: "De Diensten zijn bedoeld voor gebruikers van 18 jaar of ouder. Wij verzamelen niet bewust persoonsgegevens van personen jonger dan 18.",
   }),
 
   it: L({
@@ -1288,7 +1329,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyP7Before:
       "Puoi smettere di usare i Servizi in qualsiasi momento, disinstallare l'app e cancellare i dati locali del wallet dal tuo dispositivo. Vedi ",
     privacyP7After: ".",
-    privacyH8: "8. Contatti",
+    privacyH8: "9. Contatti",
     privacyContact: "Domande:",
     termsIntro:
       "Utilizzando acopay.net o il wallet mobile ACOPAY (i “Servizi”), accetti i presenti Termini. Se non sei d'accordo, non utilizzare i Servizi.",
@@ -1337,6 +1378,12 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     deleteP2:
       "Elimineremo o renderemo anonimi i record di sessione e la corrispondenza di supporto associati entro 30 giorni, ad eccezione dei dati che dobbiamo conservare per motivi legali o di sicurezza, e ad eccezione dei record pubblici sulla blockchain, che non possono essere eliminati.",
     deleteHRelated: "Correlati",
+    privacyLiUsernameLabel: "Pay username (optional)",
+    privacyLiUsernameRest: " Ã¢ÂÂ if you create an ACOPAY Pay username, we store the mapping between that username and your public wallet address so others can pay you by username.",
+    privacyLiPushLabel: "Push notification token (optional)",
+    privacyLiPushRest: " Ã¢ÂÂ if you enable payment notifications in the app, we store a device push token linked to your public wallet address to deliver those alerts. You can turn notifications off in Settings.",
+    privacyHChildren: "8. Minori",
+    privacyPChildren: "I Servizi sono destinati a utenti di almeno 18 anni. Non raccogliamo consapevolmente dati personali di minori di 18 anni.",
   }),
 
   ru: L({
@@ -1376,7 +1423,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyP7Before:
       "Вы можете прекратить использование Сервисов в любое время, удалить приложение и стереть локальные данные кошелька с устройства. См. ",
     privacyP7After: ".",
-    privacyH8: "8. Контакты",
+    privacyH8: "9. Контакты",
     privacyContact: "Вопросы:",
     termsIntro:
       "Используя acopay.net или мобильный кошелёк ACOPAY («Сервисы»), вы соглашаетесь с настоящими Условиями. Если вы не согласны, не используйте Сервисы.",
@@ -1425,6 +1472,12 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     deleteP2:
       "Мы удалим или обезличим связанные записи сессий и переписку со службой поддержки в течение 30 дней, за исключением данных, которые мы обязаны хранить по юридическим или соображениям безопасности, а также публичных записей блокчейна, которые невозможно удалить.",
     deleteHRelated: "См. также",
+    privacyLiUsernameLabel: "Pay username (optional)",
+    privacyLiUsernameRest: " Ã¢ÂÂ if you create an ACOPAY Pay username, we store the mapping between that username and your public wallet address so others can pay you by username.",
+    privacyLiPushLabel: "Push notification token (optional)",
+    privacyLiPushRest: " Ã¢ÂÂ if you enable payment notifications in the app, we store a device push token linked to your public wallet address to deliver those alerts. You can turn notifications off in Settings.",
+    privacyHChildren: "8. Дети",
+    privacyPChildren: "Сервисы предназначены для пользователей старше 18 лет. Мы сознательно не собираем персональные данные лиц младше 18 лет.",
   }),
 
   uk: L({
@@ -1464,7 +1517,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyP7Before:
       "Ви можете припинити використання Сервісів у будь-який час, видалити додаток і стерти локальні дані гаманця з пристрою. Див. ",
     privacyP7After: ".",
-    privacyH8: "8. Контакти",
+    privacyH8: "9. Контакти",
     privacyContact: "Питання:",
     termsIntro:
       "Використовуючи acopay.net або мобільний гаманець ACOPAY («Сервіси»), ви погоджуєтеся з цими Умовами. Якщо ви не згодні, не використовуйте Сервіси.",
@@ -1513,6 +1566,12 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     deleteP2:
       "Ми видалимо або знеособимо пов'язані записи сесій та листування з підтримкою протягом 30 днів, за винятком даних, які ми повинні зберігати з юридичних причин або міркувань безпеки, а також публічних записів блокчейну, які неможливо видалити.",
     deleteHRelated: "Пов'язане",
+    privacyLiUsernameLabel: "Pay username (optional)",
+    privacyLiUsernameRest: " Ã¢ÂÂ if you create an ACOPAY Pay username, we store the mapping between that username and your public wallet address so others can pay you by username.",
+    privacyLiPushLabel: "Push notification token (optional)",
+    privacyLiPushRest: " Ã¢ÂÂ if you enable payment notifications in the app, we store a device push token linked to your public wallet address to deliver those alerts. You can turn notifications off in Settings.",
+    privacyHChildren: "8. Діти",
+    privacyPChildren: "Сервіси призначені для користувачів віком від 18 років. Ми свідомо не збираємо персональні дані осіб молодше 18 років.",
   }),
 
   pl: L({
@@ -1552,7 +1611,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyP7Before:
       "Możesz w każdej chwili zaprzestać korzystania z Usług, odinstalować aplikację i usunąć lokalne dane portfela z urządzenia. Zobacz ",
     privacyP7After: ".",
-    privacyH8: "8. Kontakt",
+    privacyH8: "9. Kontakt",
     privacyContact: "Pytania:",
     termsIntro:
       "Korzystając z acopay.net lub mobilnego portfela ACOPAY (“Usługi”), akceptujesz niniejsze Warunki. Jeśli się nie zgadzasz, nie korzystaj z Usług.",
@@ -1601,6 +1660,12 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     deleteP2:
       "Usuniemy lub zanonimizujemy powiązane zapisy sesji i korespondencję pomocy technicznej w ciągu 30 dni, z wyjątkiem danych, które musimy przechowywać z przyczyn prawnych lub bezpieczeństwa, oraz z wyjątkiem publicznych zapisów blockchaina, których nie można usunąć.",
     deleteHRelated: "Powiązane",
+    privacyLiUsernameLabel: "Pay username (optional)",
+    privacyLiUsernameRest: " Ã¢ÂÂ if you create an ACOPAY Pay username, we store the mapping between that username and your public wallet address so others can pay you by username.",
+    privacyLiPushLabel: "Push notification token (optional)",
+    privacyLiPushRest: " Ã¢ÂÂ if you enable payment notifications in the app, we store a device push token linked to your public wallet address to deliver those alerts. You can turn notifications off in Settings.",
+    privacyHChildren: "8. Dzieci",
+    privacyPChildren: "Usługi są przeznaczone dla użytkowników w wieku 18 lat lub starszych. Świadomie nie zbieramy danych osobowych osób poniżej 18. roku życia.",
   }),
 
   tr: L({
@@ -1640,7 +1705,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyP7Before:
       "İstediğiniz zaman Hizmetleri kullanmayı bırakabilir, uygulamayı kaldırabilir ve cihazınızdaki yerel cüzdan verilerini silebilirsiniz. Bkz. ",
     privacyP7After: ".",
-    privacyH8: "8. İletişim",
+    privacyH8: "9. İletişim",
     privacyContact: "Sorular:",
     termsIntro:
       "acopay.net'i veya ACOPAY mobil cüzdanını (“Hizmetler”) kullanarak bu Şartları kabul etmiş olursunuz. Kabul etmiyorsanız, Hizmetleri kullanmayın.",
@@ -1689,6 +1754,12 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     deleteP2:
       "Yasal veya güvenlik nedenleriyle saklamamız gereken veriler ile silinemeyen kamuya açık blok zinciri kayıtları hariç olmak üzere, ilgili oturum kayıtlarını ve destek yazışmalarını 30 gün içinde sileceğiz veya anonimleştireceğiz.",
     deleteHRelated: "İlgili",
+    privacyLiUsernameLabel: "Pay username (optional)",
+    privacyLiUsernameRest: " Ã¢ÂÂ if you create an ACOPAY Pay username, we store the mapping between that username and your public wallet address so others can pay you by username.",
+    privacyLiPushLabel: "Push notification token (optional)",
+    privacyLiPushRest: " Ã¢ÂÂ if you enable payment notifications in the app, we store a device push token linked to your public wallet address to deliver those alerts. You can turn notifications off in Settings.",
+    privacyHChildren: "8. Çocuklar",
+    privacyPChildren: "Hizmetler 18 yaş ve üzeri kullanıcılar içindir. 18 yaşın altındakilerden bilerek kişisel bilgi toplamayız.",
   }),
 
   ar: L({
@@ -1728,7 +1799,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyP7Before:
       "يمكنك التوقف عن استخدام الخدمات في أي وقت، وإلغاء تثبيت التطبيق، ومسح بيانات المحفظة المحلية من جهازك. راجع ",
     privacyP7After: ".",
-    privacyH8: "8. تواصل معنا",
+    privacyH8: "9. التواصل",
     privacyContact: "الأسئلة:",
     termsIntro:
       "باستخدامك لموقع acopay.net أو محفظة ACOPAY للجوال (“الخدمات”)، فإنك توافق على هذه الشروط. إذا كنت لا توافق، فيرجى عدم استخدام الخدمات.",
@@ -1777,5 +1848,11 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     deleteP2:
       "سنقوم بحذف سجلات الجلسات ومراسلات الدعم المرتبطة أو إخفاء هويتها خلال 30 يومًا، باستثناء البيانات التي يجب علينا الاحتفاظ بها لأسباب قانونية أو أمنية، وباستثناء سجلات سلسلة الكتل العامة التي لا يمكن حذفها.",
     deleteHRelated: "ذات صلة",
+    privacyLiUsernameLabel: "Pay username (optional)",
+    privacyLiUsernameRest: " Ã¢ÂÂ if you create an ACOPAY Pay username, we store the mapping between that username and your public wallet address so others can pay you by username.",
+    privacyLiPushLabel: "Push notification token (optional)",
+    privacyLiPushRest: " Ã¢ÂÂ if you enable payment notifications in the app, we store a device push token linked to your public wallet address to deliver those alerts. You can turn notifications off in Settings.",
+    privacyHChildren: "8. الأطفال",
+    privacyPChildren: "الخدمات مخصصة لمن تبلغ أعمارهم 18 عامًا فأكثر. لا نجمع عن علم معلومات شخصية ممن هم دون 18.",
   }),
 };

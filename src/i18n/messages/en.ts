@@ -754,57 +754,66 @@ export const en = {
       "This Privacy Policy explains how ACOPAY (“we”, “us”) handles information when you use acopay.net and the ACOPAY mobile wallet application (together, the “Services”).",
     privacyH1: "1. Product summary",
     privacyP1:
-      "ACOPAY provides a non-custodial Solana wallet. You may create or import a wallet, view balances, and transfer SPL tokens (including ACOPAY, USDT, SOL, and tokens you add). Recovery phrases and private keys remain on your device and are not collected by ACOPAY.",
+      "ACOPAY provides a non-custodial Solana wallet. You may create or import a wallet, view balances, and transfer SPL tokens (including ACOPAY, USDT, SOL, and tokens you add). Your recovery phrase and private keys remain on your device; ACOPAY does not collect them.",
     privacyH2: "2. Data we process",
     privacyLi1Label: "Wallet public addresses",
     privacyLi1Rest:
-      " — used to quote fees, build, simulate, and broadcast transfers you request.",
-    privacyLi2Label: "Transaction metadata",
+      " — used to estimate fees, build, simulate, and broadcast transfers you request, and to operate Pay features you choose to use.",
+    privacyLi2Label: "Transaction information",
     privacyLi2Rest:
-      " — amounts, recipient addresses or usernames you enter, signatures, and confirmation status when you use ACOPAY transfer APIs.",
+      " — amounts, recipient addresses or Pay usernames you enter, signatures, and confirmation status when you use ACOPAY transfer APIs.",
     privacyLi3Label: "Technical logs",
     privacyLi3Rest:
       " — standard web and server logs (IP address, user agent, timestamps) for security and abuse prevention.",
+    privacyLiUsernameLabel: "Pay username (optional)",
+    privacyLiUsernameRest:
+      " — if you create an ACOPAY Pay username, we store the mapping between that username and your public wallet address so others can pay you by username.",
+    privacyLiPushLabel: "Push notification token (optional)",
+    privacyLiPushRest:
+      " — if you enable payment notifications in the app, we store a device push token linked to your public wallet address to deliver those alerts. You can turn notifications off in Settings.",
     privacyLi4Label: "Optional contact",
     privacyLi4Before: " — if you email ",
     privacyLi4After: ", we process the content of that correspondence.",
     privacyH3: "3. Data we do not collect",
     privacyP3:
-      "We do not collect your seed phrase, private key, or biometric templates. Biometric unlock (Face ID / fingerprint), if enabled, is handled by your device operating system.",
+      "We do not collect your recovery phrase, private key, or biometric templates. Biometric unlock (Face ID / fingerprint), if enabled, is handled by your device operating system.",
     privacyH4: "4. On-chain data",
     privacyP4:
       "Transfers you confirm are recorded on the Solana public blockchain. Once broadcast, blockchain data is public and outside ACOPAY’s control.",
     privacyH5: "5. Third parties",
     privacyP5:
-      "We use infrastructure providers (hosting, CDN, RPC endpoints) to operate the Services. We do not sell personal data. The mobile app does not include advertising SDKs as of the date above.",
+      "We use infrastructure providers (hosting, CDN, RPC endpoints, and — when you enable notifications — push delivery services such as Firebase Cloud Messaging on Android) to operate the Services. Market or foreign-exchange information shown in the product may be fetched from public third-party data sources. We do not sell personal data. The mobile app does not include advertising SDKs as of the date above.",
     privacyH6: "6. Retention",
     privacyP6:
-      "Server-side session and operational logs are retained only as long as needed for security, support, and legal obligations, then deleted or anonymized.",
+      "Server-side session, push-registration, and operational logs are retained only as long as needed for security, support, and legal obligations, then deleted or anonymized.",
     privacyH7: "7. Your choices",
     privacyP7Before:
       "You may stop using the Services at any time, uninstall the app, and remove local wallet data from your device. See ",
     privacyP7After: ".",
-    privacyH8: "8. Contact",
+    privacyHChildren: "8. Children",
+    privacyPChildren:
+      "The Services are intended for users aged 18 or older. We do not knowingly collect personal information from anyone under 18.",
+    privacyH8: "9. Contact",
     privacyContact: "Questions:",
     termsIntro:
       "By using acopay.net or the ACOPAY mobile wallet (“Services”), you agree to these Terms. If you do not agree, do not use the Services.",
     termsH1: "1. Nature of the Services",
     termsP1:
-      "ACOPAY provides a non-custodial Solana wallet and transfer utility. The mobile application does not include cryptocurrency exchange, in-app swap, or in-app purchase of crypto. We do not custody your keys and do not guarantee token prices or investment returns. The Services are not financial advice.",
+      "ACOPAY provides a non-custodial Solana wallet and token-transfer tools. In the mobile app, you can create or import a wallet, view balances, receive tokens, and send tokens you choose to hold. The mobile app does not include a cryptocurrency exchange, in-app swap, or in-app purchase of crypto. Your keys stay on your device; ACOPAY does not custody your recovery phrase or private keys. Transfers require your signature. We do not guarantee token prices or investment returns. The Services are not financial, legal, or tax advice. Features on acopay.net may differ from the mobile app and are described on the website.",
     termsH2: "2. Your responsibilities",
     termsLi1: "You are solely responsible for securing your recovery phrase and private keys.",
-    termsLi2: "You are responsible for verifying recipient addresses before transferring.",
+    termsLi2: "You are responsible for verifying recipient addresses and Pay usernames before transferring.",
     termsLi3: "You must comply with laws that apply to you, including applicable crypto regulations.",
     termsLi4: "You must be at least 18 years old to use the Services.",
     termsH3: "3. Network fees",
     termsP3:
-      "For supported ACOPAY transfers through ACOPAY’s sponsored flow, Solana network (gas) fees may be paid by the operator as disclosed in the product. For other tokens (for example USDT, SOL, or custom SPL tokens), you pay network fees from your wallet. On-chain token transfer fees (for example the ACOPAY 0.01% fee) are separate from Solana gas and follow program rules on-chain.",
-    termsH4: "4. No custody; risk of loss",
+      "Solana network fees (gas) depend on the asset you transfer. For supported ACOPAY transfers using ACOPAY’s sponsored flow, Solana gas may be paid by an operator wallet as fee payer, as disclosed in the product. Gas sponsorship does not give ACOPAY custody of your keys or the ability to move your tokens without your signature on that transaction. For other assets (including USDT, SOL, and custom SPL tokens), you pay Solana gas from your own wallet. Separate on-chain token transfer fees (for example the ACOPAY 0.01% Token-2022 transfer fee) are distinct from Solana gas and follow on-chain program rules.",
+    termsH4: "4. No custody; risk of irreversible loss",
     termsP4:
-      "If you lose your recovery phrase or device without a backup, your assets may be permanently unrecoverable. Blockchain transactions are irreversible once confirmed.",
+      "If you lose your recovery phrase or your device without a backup, your assets may be permanently unrecoverable. Blockchain transactions are irreversible once confirmed.",
     termsH5: "5. Prohibited use",
     termsP5:
-      "You may not use the Services for unlawful activity, fraud, sanctions evasion, or abuse of infrastructure (including spam, attacks, or reverse engineering for harm).",
+      "You may not use the Services for unlawful activity, fraud, sanctions evasion, or abuse of infrastructure (including spam, attacks, or reverse engineering intended to harm the Services or other users).",
     termsH6: "6. Disclaimer",
     termsP6:
       "THE SERVICES ARE PROVIDED “AS IS” WITHOUT WARRANTIES OF ANY KIND. TO THE MAXIMUM EXTENT PERMITTED BY LAW, ACOPAY IS NOT LIABLE FOR INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, OR FOR LOSSES ARISING FROM USER ERROR, BLOCKCHAIN FAILURES, OR THIRD-PARTY SERVICES.",
@@ -816,7 +825,7 @@ export const en = {
       "Google Play and the App Store require a public deletion path that does not require installing the app. Last updated: 6 August 2026",
     deleteHWhat: "What “account” means here",
     deletePWhat:
-      "The ACOPAY mobile wallet is non-custodial. Your keys remain on your device. There is no central login account that holds your funds. Deletion means removing local wallet data and any server-side sessions or operational data tied to addresses you used with ACOPAY APIs.",
+      "The ACOPAY mobile wallet is non-custodial. Your keys remain on your device. There is no central login account that holds your funds. Deletion means removing local wallet data and any server-side sessions, push registrations, or operational data tied to addresses you used with ACOPAY APIs.",
     deleteHA: "A. Delete data on your device (instant)",
     deleteA1: "Open the ACOPAY app → Settings → Sign out.",
     deleteA2: "Uninstall the app from your device.",
@@ -833,7 +842,7 @@ export const en = {
     deleteLi1: "Your Solana wallet address(es) used with ACOPAY",
     deleteLi2: "Approximate dates of use (if known)",
     deleteP2:
-      "We will delete or anonymize associated session records and support correspondence within 30 days, except data we must retain for legal or security reasons, and except public blockchain records which cannot be deleted.",
+      "We will delete or anonymize associated session records, push registrations, and support correspondence within 30 days, except data we must retain for legal or security reasons, and except public blockchain records which cannot be deleted.",
     deleteHRelated: "Related",
   },
 };
