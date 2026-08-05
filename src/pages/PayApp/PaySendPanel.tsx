@@ -188,14 +188,10 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
   );
   const sourceBalance = balances[source];
   const sourceSymbol = source.toUpperCase();
-  const unitIsCrypto = isCryptoAmountUnit(currency);
   const estimateLabel = useMemo(() => {
-    if (tokenAmount == null) return "";
-    if (unitIsCrypto && cryptoUnitToSource(currency) === source) {
-      return `≈ ${formatCoinAmount(tokenAmount)} ${sourceSymbol}`;
-    }
+    if (tokenAmount == null || !(tokenAmount > 0)) return "";
     return `≈ ${formatCoinAmount(tokenAmount)} ${sourceSymbol}`;
-  }, [tokenAmount, unitIsCrypto, currency, source, sourceSymbol]);
+  }, [tokenAmount, sourceSymbol]);
   const toIsUsername = looksLikeTelegramUsername(to);
   const activePreview = assetPreview || preview;
   const isPhantomMode = activePreview?.mode === "phantom";
@@ -865,12 +861,13 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
                   </span>
                 </button>
               </div>
-              <p className={`mt-2 text-xs ${estimateLabel ? "text-[var(--acopay-muted)]" : "text-[var(--acopay-danger)]"}`}>
-                {estimateLabel ||
-                  (fiatAmountNum > 0
-                    ? t("payApp.transferRateUnavailable")
-                    : t("payApp.transferFiatEstimateHint"))}
-              </p>
+              {estimateLabel ? (
+                <p className="mt-2 text-xs text-[var(--acopay-muted)]">{estimateLabel}</p>
+              ) : fiatAmountNum > 0 ? (
+                <p className="mt-2 text-xs text-[var(--acopay-danger)]">
+                  {t("payApp.transferRateUnavailable")}
+                </p>
+              ) : null}
               <div className="mt-2 flex flex-wrap gap-1.5">
                 {[1000, 2000, 5000].map((n) => (
                   <button
