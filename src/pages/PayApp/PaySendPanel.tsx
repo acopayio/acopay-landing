@@ -800,20 +800,31 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
               />
             </div>
 
-            <button
-              type="button"
-              className="pay-transfer-choice w-full"
-              onClick={() => setSourceOpen(true)}
-            >
-              <span className="pay-transfer-choice-label">{t("payApp.transferSource")}</span>
-              <span className="pay-transfer-choice-value">
-                <SourceLogo source={source} />
-                {sourceSymbol}
-              </span>
-              <span className="pay-transfer-choice-sub">
-                {t("payApp.balanceLabel")} {formatCoinAmount(sourceBalance)}
-              </span>
-            </button>
+            <div className="otc-field-block">
+              <label className="text-xs font-semibold text-[var(--acopay-muted)]">
+                {t("payApp.transferSource")}
+              </label>
+              <button
+                type="button"
+                className="pay-source-card mt-2 w-full"
+                onClick={() => setSourceOpen(true)}
+                aria-label={t("payApp.transferChooseToken")}
+              >
+                <SourceLogo source={source} className="pay-source-card-logo" />
+                <span className="pay-source-card-mid">
+                  <strong className="pay-source-card-name">{sourceDisplayName(source)}</strong>
+                  <span className="pay-source-card-bal">
+                    {t("payApp.transferAvailable", {
+                      v: `${formatCoinAmount(sourceBalance)} ${sourceSymbol}`,
+                    })}
+                  </span>
+                </span>
+                <span className="pay-source-card-sym">{sourceSymbol}</span>
+                <span className="pay-source-card-caret" aria-hidden>
+                  ▾
+                </span>
+              </button>
+            </div>
 
             <div className="otc-field-block">
               <div className="flex items-center justify-between gap-2">
@@ -897,12 +908,11 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
             {sourceOpen ? (
               <div className="pay-fx-sheet" role="dialog" aria-modal="true">
                 <div className="pay-fx-sheet-head">
-                  <h3 className="pay-fx-sheet-title">{t("payApp.transferSource")}</h3>
+                  <h3 className="pay-fx-sheet-title">{t("payApp.transferChooseToken")}</h3>
                   <button type="button" className="pay-fx-sheet-close" onClick={() => setSourceOpen(false)}>
                     ×
                   </button>
                 </div>
-                <p className="pay-fx-sheet-sub">{t("payApp.transferSourceHint")}</p>
                 <div className="pay-fx-sheet-list">
                   {availableSources.map((item) => (
                     <button
@@ -911,11 +921,20 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
                       className={`pay-fx-row${source === item ? " pay-fx-row-on" : ""}`}
                       onClick={() => selectSource(item)}
                     >
-                      <span className="inline-flex items-center gap-2">
-                        <SourceLogo source={item} />
-                        <strong>{item.toUpperCase()}</strong>
+                      <span className="inline-flex min-w-0 flex-1 items-center gap-2.5 text-left">
+                        <SourceLogo source={item} className="pay-source-card-logo" />
+                        <span className="min-w-0">
+                          <strong className="block text-sm font-bold text-[var(--acopay-fg)]">
+                            {sourceDisplayName(item)}
+                          </strong>
+                          <span className="block text-xs text-[var(--acopay-muted)]">
+                            {formatCoinAmount(balances[item])} {item.toUpperCase()}
+                          </span>
+                        </span>
                       </span>
-                      <span className="pay-fx-name">{formatCoinAmount(balances[item])}</span>
+                      <span className="shrink-0 text-xs font-bold text-[var(--acopay-muted)]">
+                        {item.toUpperCase()}
+                      </span>
                     </button>
                   ))}
                 </div>
@@ -1351,15 +1370,27 @@ function TransferBill({
   );
 }
 
-function SourceLogo({ source }: { source: TransferSourceId }) {
+function SourceLogo({
+  source,
+  className = "h-5 w-5 rounded-full",
+}: {
+  source: TransferSourceId;
+  className?: string;
+}) {
   if (source === "acopay") {
-    return <BrandLogo className="h-5 w-5 rounded-full" alt="" />;
+    return <BrandLogo className={className} alt="" />;
   }
   const src =
     source === "usdt"
       ? "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/solana/assets/Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB/logo.png"
       : "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/solana/info/logo.png";
-  return <img src={src} alt="" className="h-5 w-5 rounded-full" referrerPolicy="no-referrer" />;
+  return <img src={src} alt="" className={className} referrerPolicy="no-referrer" />;
+}
+
+function sourceDisplayName(source: TransferSourceId): string {
+  if (source === "acopay") return "ACOPAY";
+  if (source === "usdt") return "Tether";
+  return "Solana";
 }
 
 function AmountUnitMark({ unit }: { unit: AmountUnit }) {

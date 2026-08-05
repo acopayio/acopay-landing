@@ -560,6 +560,8 @@ export const en = {
     tokenAlreadyListed: "This token is already in your list.",
     addAction: "Add",
     transferSource: "Pay with",
+    transferChooseToken: "Select token",
+    transferAvailable: "Available: {v}",
     transferSourceHint: "ACOPAY appears when your balance is above zero. USDT and SOL are always available.",
     transferChooseCurrency: "Amount unit",
     transferCurrencyHint: "Crypto from your wallet first, then fiat.",

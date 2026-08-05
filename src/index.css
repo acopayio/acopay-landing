@@ -2001,6 +2001,73 @@ html[data-theme="dark"] .send-bill-link {
   white-space: nowrap;
 }
 
+.pay-source-card {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 4rem;
+  border: 1px solid var(--acopay-border-strong);
+  border-radius: 0.85rem;
+  background: var(--acopay-surface);
+  padding: 0.7rem 0.85rem;
+  text-align: left;
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+
+.pay-source-card:hover,
+.pay-source-card:focus-visible {
+  border-color: var(--acopay-brand);
+  outline: none;
+}
+
+.pay-source-card-logo {
+  width: 2.125rem;
+  height: 2.125rem;
+  border-radius: 999px;
+  flex: none;
+  object-fit: cover;
+}
+
+.pay-source-card-mid {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.12rem;
+}
+
+.pay-source-card-name {
+  color: var(--acopay-fg);
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.pay-source-card-bal {
+  color: var(--acopay-muted);
+  font-size: 0.75rem;
+  line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pay-source-card-sym {
+  flex: none;
+  color: var(--acopay-muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.pay-source-card-caret {
+  flex: none;
+  color: var(--acopay-faint);
+  font-size: 0.65rem;
+  line-height: 1;
+  margin-top: 0.1rem;
+}
+
 .pay-transfer-choice {
   display: flex;
   min-width: 0;

@@ -54,6 +54,8 @@ const enBase: PaySection = {
   tokenAlreadyListed: "This token is already in your list.",
   addAction: "Add",
   transferSource: "Pay with",
+  transferChooseToken: "Select token",
+  transferAvailable: "Available: {v}",
   transferSourceHint: "ACOPAY appears when your balance is above zero. USDT and SOL are always available.",
   transferChooseCurrency: "Amount unit",
   transferCurrencyHint: "Crypto from your wallet first, then fiat.",
@@ -2903,6 +2905,10 @@ type AddTokenCopyKey =
   | "tokenAlreadyListed"
   | "addAction";
 
+type SourceCopyKey =
+  | "transferChooseToken"
+  | "transferAvailable";
+
 type TransferCopyKey =
   | "tokensTitle"
   | "detectedReadOnly"
@@ -2992,6 +2998,28 @@ const ADD_TOKEN_NATIVE: Record<string, Pick<PaySection, AddTokenCopyKey>> = {
     addToken: "إضافة عملة", addTokenHint: "الصق عنوان mint لعملة SPL على شبكة Solana (مثل USDC)", mintPlaceholder: "عنوان mint للعملة", symbolOptional: "الرمز (اختياري)",
     invalidMint: "عنوان mint غير صالح", addTokenFail: "تعذّرت إضافة العملة. يرجى المحاولة مرة أخرى.", tokenAlreadyListed: "هذا الرمز موجود بالفعل في قائمتك.", addAction: "إضافة",
   },
+};
+
+const SOURCE_NATIVE: Record<string, Pick<PaySection, SourceCopyKey>> = {
+  vi: { transferChooseToken: "Chọn token", transferAvailable: "Khả dụng: {v}" },
+  zh: { transferChooseToken: "选择代币", transferAvailable: "可用余额：{v}" },
+  ja: { transferChooseToken: "トークンを選択", transferAvailable: "利用可能残高：{v}" },
+  ko: { transferChooseToken: "토큰 선택", transferAvailable: "사용 가능 잔액: {v}" },
+  th: { transferChooseToken: "เลือกโทเค็น", transferAvailable: "ยอดคงเหลือที่ใช้ได้: {v}" },
+  id: { transferChooseToken: "Pilih token", transferAvailable: "Tersedia: {v}" },
+  ms: { transferChooseToken: "Pilih token", transferAvailable: "Tersedia: {v}" },
+  hi: { transferChooseToken: "टोकन चुनें", transferAvailable: "उपलब्ध: {v}" },
+  es: { transferChooseToken: "Elegir token", transferAvailable: "Disponible: {v}" },
+  pt: { transferChooseToken: "Escolher token", transferAvailable: "Disponível: {v}" },
+  fr: { transferChooseToken: "Choisir le jeton", transferAvailable: "Disponible : {v}" },
+  de: { transferChooseToken: "Token wählen", transferAvailable: "Verfügbar: {v}" },
+  nl: { transferChooseToken: "Token kiezen", transferAvailable: "Beschikbaar: {v}" },
+  it: { transferChooseToken: "Scegli token", transferAvailable: "Disponibile: {v}" },
+  ru: { transferChooseToken: "Выбрать токен", transferAvailable: "Доступно: {v}" },
+  uk: { transferChooseToken: "Обрати токен", transferAvailable: "Доступно: {v}" },
+  pl: { transferChooseToken: "Wybierz token", transferAvailable: "Dostępne: {v}" },
+  tr: { transferChooseToken: "Token seç", transferAvailable: "Kullanılabilir: {v}" },
+  ar: { transferChooseToken: "اختر الرمز", transferAvailable: "المتاح: {v}" },
 };
 
 const TRANSFER_NATIVE: Record<string, Pick<PaySection, TransferCopyKey>> = {
@@ -3150,6 +3178,12 @@ const TRANSFER_NATIVE: Record<string, Pick<PaySection, TransferCopyKey>> = {
 };
 
 for (const [locale, copy] of Object.entries(TRANSFER_NATIVE)) {
+  if (PAY_APP_PARTIALS[locale]) {
+    Object.assign(PAY_APP_PARTIALS[locale].payApp, copy);
+  }
+}
+
+for (const [locale, copy] of Object.entries(SOURCE_NATIVE)) {
   if (PAY_APP_PARTIALS[locale]) {
     Object.assign(PAY_APP_PARTIALS[locale].payApp, copy);
   }
