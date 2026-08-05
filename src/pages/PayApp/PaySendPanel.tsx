@@ -181,6 +181,11 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
     ],
     [balances.acopay],
   );
+  /** Amount-unit sheet: only crypto with balance > 0 (Kevin). Source picker still lists USDT/SOL always. */
+  const amountUnitCryptos = useMemo(
+    () => availableSources.filter((id) => balances[id] > 0),
+    [availableSources, balances],
+  );
   const sourceBalance = balances[source];
   const sourceSymbol = source.toUpperCase();
   const unitIsCrypto = isCryptoAmountUnit(currency);
@@ -209,6 +214,15 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
     setSource("usdt");
     saveTransferPreferences({ source: "usdt", currency });
   }, [availableSources, source, currency]);
+
+  useEffect(() => {
+    if (!isCryptoAmountUnit(currency)) return;
+    const id = cryptoUnitToSource(currency);
+    if (balances[id] > 0) return;
+    const fallback = amountUnitCryptos[0] ? sourceToCryptoUnit(amountUnitCryptos[0]) : "USD";
+    setCurrency(fallback);
+    saveTransferPreferences({ source, currency: fallback });
+  }, [amountUnitCryptos, balances, currency, source]);
 
   function selectSource(next: TransferSourceId) {
     setSource(next);
@@ -918,7 +932,7 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
                 </div>
                 <p className="pay-fx-sheet-sub">{t("payApp.transferCurrencyHint")}</p>
                 <div className="pay-fx-sheet-list">
-                  {availableSources.map((item) => {
+                  {amountUnitCryptos.map((item) => {
                     const code = sourceToCryptoUnit(item);
                     return (
                       <button

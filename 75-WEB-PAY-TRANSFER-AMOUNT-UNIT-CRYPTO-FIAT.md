@@ -8,6 +8,7 @@
 - Nguồn tiền full-width · amount + chip đơn vị (logo/cờ)  
 - Sheet: crypto nguồn trước → fiat + cờ  
 
-## Flags
-`/assets/flags/{us,eu,vn,…}.png` — FlagCDN official; không bịa.  
-Crypto: Trust Wallet SOL/USDT + ACOPAY logo-circle.  
+## Amount-unit sheet
+- Crypto chỉ khi balance > 0  
+- Hint subtitle: chờ Kevin chốt wording ngắn  
+- Shared Expo → Apple parity (`35`)  
