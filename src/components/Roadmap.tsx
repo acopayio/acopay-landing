@@ -4,7 +4,7 @@ const MILESTONES = [
   {
     year: "2026",
     titleKey: "roadmap.m2026Title",
-    itemKeys: ["roadmap.m2026Item0", "roadmap.m2026Item1"],
+    itemKeys: ["roadmap.m2026Item0", "roadmap.m2026Item1", "roadmap.m2026Item2"],
     art: "/assets/roadmap/2026-pool.png",
     altKey: "roadmap.m2026Alt",
     done: true,
@@ -12,8 +12,8 @@ const MILESTONES = [
   {
     year: "2027",
     titleKey: "roadmap.m2027Title",
-    itemKeys: ["roadmap.m2027Item0", "roadmap.m2027Item1"],
-    art: "/assets/roadmap/2028-mobile.png",
+    itemKeys: ["roadmap.m2027Item0"],
+    art: "/assets/roadmap/2027-web.png",
     altKey: "roadmap.m2027Alt",
     done: false,
   },
@@ -21,7 +21,7 @@ const MILESTONES = [
     year: "2028",
     titleKey: "roadmap.m2028Title",
     itemKeys: ["roadmap.m2028Item0", "roadmap.m2028Item1"],
-    art: "/assets/roadmap/2027-web.png",
+    art: "/assets/roadmap/2028-mobile.png",
     altKey: "roadmap.m2028Alt",
     done: false,
   },
@@ -96,15 +96,19 @@ export function Roadmap() {
                     )}
                   </div>
                   <ul className="mt-3 space-y-2">
-                    {m.itemKeys.map((key) => (
+                    {m.itemKeys.map((key) => {
+                      const label = t(key);
+                      if (!label.trim()) return null;
+                      return (
                       <li
                         key={key}
                         className="flex gap-2 text-sm leading-relaxed text-[var(--acopay-fg)] sm:text-base"
                       >
                         <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-[#00E5FF]" aria-hidden />
-                        <span>{t(key)}</span>
+                        <span>{label}</span>
                       </li>
-                    ))}
+                      );
+                    })}
                   </ul>
                 </div>
               </div>
