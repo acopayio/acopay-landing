@@ -9,6 +9,7 @@ import {
   saveStoredCurrency,
   type DisplayCurrency,
 } from "../../lib/displayCurrency";
+import { fiatFlagSrc } from "../../lib/amountUnit";
 import {
   emptyQuotes,
   fetchPortfolioQuotes,
@@ -613,7 +614,16 @@ export function PayAppPage() {
                   >
                     <span className="pay-home-bal-amount">
                       <span className="pay-home-bal-num">{fiatAmount}</span>
-                      <span className="pay-home-bal-ccy">{currency}</span>
+                      <span className="pay-home-bal-ccy">
+                        <img
+                          src={fiatFlagSrc(currency)}
+                          alt=""
+                          className="pay-home-bal-flag"
+                          width={16}
+                          height={16}
+                        />
+                        <span>{currency}</span>
+                      </span>
                     </span>
                   </button>
                 </div>
@@ -637,7 +647,16 @@ export function PayAppPage() {
                             className={`pay-fx-row${on ? " pay-fx-row-on" : ""}`}
                             onClick={() => pickCurrency(c.code)}
                           >
-                            <span className="pay-fx-code">{c.code}</span>
+                            <span className="inline-flex items-center gap-2">
+                              <img
+                                src={fiatFlagSrc(c.code)}
+                                alt=""
+                                className="h-5 w-5 rounded-full object-cover"
+                                width={20}
+                                height={20}
+                              />
+                              <strong>{c.code}</strong>
+                            </span>
                           </button>
                         );
                       })}
