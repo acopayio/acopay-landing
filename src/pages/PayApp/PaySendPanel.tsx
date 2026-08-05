@@ -27,12 +27,13 @@ import {
   saveTransferPreferences,
   type TransferSourceId,
 } from "../../lib/transferPreferences";
-import { hasPhantomExtension, isDesktopPhantomCapable } from "../../lib/phantomPay";
+import { hasPhantomExtension, isDesktopPhantomCapable, isMobileUa } from "../../lib/phantomPay";
 import {
   clearPayPaidQueryFromUrl,
   clearPayPhantomPending,
   loadPayPhantomPending,
   parsePayPaidQuery,
+  savePayPhantomPending,
   type PayPhantomPending,
 } from "../../lib/payPhantomReturn";
 import {
@@ -575,18 +576,19 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
   }
 
   /**
-   * Bot PK: NEVER leave confirm CTA as “Đang tải…”.
-   * Switch to 45s clock first → send → Phantom-parity success bill.
+   * Bot PK: Confirm → server send.
+   * App→Web mobile: Confirm → open ACOPAY app to sign (Saul) → poll Safari.
+   * Desktop + Phantom extension: 🔐 → extension modal.
    */
   async function onPrimaryAction() {
     if (assetPreview) {
       onError("");
-      if (assetPreview.mode === "bot" || !isDesktopPhantomCapable()) {
-        if (assetPreview.mode === "phantom" && !isDesktopPhantomCapable()) {
-          onError(t("payApp.errPhantomDesktopOnly"));
-          return;
-        }
+      if (assetPreview.mode === "bot") {
         await runAssetBot(assetPreview);
+        return;
+      }
+      if (!isDesktopPhantomCapable()) {
+        onError(t("payApp.errPhantomDesktopOnly"));
         return;
       }
       await runAssetPhantom(assetPreview);
@@ -595,11 +597,7 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
     if (!preview) return;
     onError("");
 
-    if (preview.mode === "bot" || !isDesktopPhantomCapable()) {
-      if (preview.mode === "phantom" && !isDesktopPhantomCapable()) {
-        onError(t("payApp.errPhantomDesktopOnly"));
-        return;
-      }
+    if (preview.mode === "bot") {
       const waitStarted = Date.now();
       beginWaiting();
       try {
@@ -608,12 +606,6 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
           await holdWaitingMinMs(waitStarted);
           const explorer = r.explorer || `https://solscan.io/tx/${r.signature}`;
           finishSuccess(previewToSuccess(preview, explorer, r.signature));
-          return;
-        }
-        if (r.mode === "phantom") {
-          onError(t("payApp.errPhantomDesktopOnly"));
-          setStep("confirm");
-          setBusy(false);
           return;
         }
         onError(t("payApp.errUnexpectedSend"));
@@ -627,13 +619,50 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
       return;
     }
 
-    // Desktop Phantom extension only — never mobile browse / deep-link.
+    // Device-sign path (API mode "phantom"): App on phone OR Phantom extension on PC.
     beginWaiting();
     try {
       const r = await sendPay(preview.recipient.to, preview.amount);
 
-      if (r.mode === "phantom" && r.sendUrl) {
-        const sess = parsePhantomSendUrl(r.sendUrl);
+      if (r.mode === "phantom" && (r.appApproveUrl || r.sendUrl)) {
+        const sess = parsePhantomSendUrl(r.sendUrl || r.appApproveUrl || "");
+        const from = sess?.from || String(r.from || preview.from || "");
+        const to = sess?.to || String(r.to || preview.recipient.to || "");
+        const amount = sess?.amount || String(r.amount ?? preview.amount);
+        const pid = sess?.pid || String(r.pid || "");
+        const tg = sess?.tg || String(r.tg || "");
+        if (!from || !to || !pid) {
+          onError(t("payApp.errInvalidPhantomSession"));
+          setStep("confirm");
+          setBusy(false);
+          return;
+        }
+
+        if (isMobileUa()) {
+          const pending: PayPhantomPending = {
+            pid,
+            from,
+            to,
+            amount,
+            tg,
+            label: preview.recipient.label,
+            transferred: String(preview.plan.transferred),
+            fee: String(preview.plan.fee),
+            feePct: preview.plan.feePct,
+            openFee: String(preview.plan.openFee),
+            total: String(preview.plan.total),
+            isFirstAtaOpen: preview.plan.isFirstAtaOpen,
+            startedAt: Date.now(),
+          };
+          savePayPhantomPending(pending);
+          setAwaitingPhantomReturn(true);
+          const approve =
+            r.appApproveUrl ||
+            `https://acopay.net/pay/app-approve?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&amount=${encodeURIComponent(amount)}&tg=${encodeURIComponent(tg)}&pid=${encodeURIComponent(pid)}&ret=pay`;
+          window.location.assign(approve);
+          return;
+        }
+
         if (!sess) {
           onError(t("payApp.errInvalidPhantomSession"));
           setStep("confirm");
@@ -648,7 +677,6 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
           return;
         }
 
-        // Restore confirm only to open Phantom modal, then waiting after sign.
         setStep("confirm");
         setBusy(false);
         try {

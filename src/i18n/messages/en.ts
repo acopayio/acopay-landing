@@ -534,6 +534,11 @@ export const en = {
     connectMissing: "This connect link is missing or invalid. Open Web Pay and scan the QR again.",
     connectOpenApp: "Open ACOPAY app",
     connectDownload: "Download ACOPAY for Android",
+    appApproveTitle: "Approve in ACOPAY",
+    appApproveOpening: "Opening the ACOPAY app to approve this transfer.",
+    appApproveFallback:
+      "If the app did not open, tap Open ACOPAY app. Keep this browser tab — the receipt returns here.",
+    appApproveMissing: "This approve link is missing or invalid. Start the transfer again in Web Pay.",
     loginHintMobile: "",
     loginHintDesktop: "",
     step1: "📤 Transfer & receive ACOPAY",

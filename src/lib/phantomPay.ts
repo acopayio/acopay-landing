@@ -130,8 +130,8 @@ export function isMobileUa(): boolean {
 }
 
 /**
- * Kevin 2026-08-05 LOCKED: Web Pay Phantom sign ONLY on desktop with extension.
- * Mobile Web Pay (Telegram / App connect) → Confirm & send (bot), never Phantom CTA / browse.
+ * Kevin 2026-08-05 LOCKED: Phantom *extension* ONLY on desktop.
+ * Mobile Web Pay after App QR login → Confirm → ACOPAY app-approve (not Phantom app).
  */
 export function isDesktopPhantomCapable(): boolean {
   return hasPhantomExtension() && !isMobileUa();

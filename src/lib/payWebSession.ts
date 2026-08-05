@@ -493,6 +493,8 @@ export type PaySendResult = {
   signature?: string;
   explorer?: string;
   sendUrl?: string;
+  /** Mobile Web Pay: open ACOPAY app to sign (same pending as sendUrl). */
+  appApproveUrl?: string;
   pid?: string;
   from?: string;
   to?: string;

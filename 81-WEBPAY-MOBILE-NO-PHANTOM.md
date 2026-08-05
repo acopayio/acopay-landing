@@ -1,12 +1,15 @@
-# Web Pay — mobile Confirm only (no Phantom on phone)
+# 81 — Web Pay mobile: App approve (not Phantom / not bot wallet)
 
-**Kevin 2026-08-05** · LIVE VPS + landing `3cb5da0fd`
+**Kevin 2026-08-05**
 
-Chi tiết lock: [`DOCS/115-WEBPAY-MOBILE-NO-PHANTOM.md`](../DOCS/115-WEBPAY-MOBILE-NO-PHANTOM.md)
+Login ĐT = App quét QR (`52`). Transfer ĐT = Confirm → `/pay/app-approve` → app ký Saul → bill Safari.
 
-| Client | CTA |
-|--------|-----|
-| Mobile UA | ✅ Xác nhận chuyển |
-| Desktop + Phantom extension | 🔐 Ký duyệt Phantom |
+Lock: [`DOCS/115`](../DOCS/115-WEBPAY-MOBILE-NO-PHANTOM.md)
 
-Truy vết: DOCS/72–76–78 cố ý thêm mobile Phantom browse khi chỉ link Phantom — Kevin ghi đè.
+| Client | Path |
+|--------|------|
+| Mobile + App session | ✅ Confirm → ACOPAY app |
+| Desktop + extension | 🔐 Phantom |
+| Telegram + custodial | ✅ Confirm → bot send |
+
+APK cần **≥ 1.0.85** (`webpay-approve` + intent `/pay/app-approve`).
