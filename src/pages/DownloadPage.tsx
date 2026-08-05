@@ -20,21 +20,19 @@ export function DownloadPage() {
     }
   };
 
-  const steps = [t("download.install1"), t("download.install2"), t("download.install3"), t("download.install4")];
-  const features = [t("download.feat1"), t("download.feat2"), t("download.feat3"), t("download.feat4")];
-  const safety = [t("download.safety1"), t("download.safety2"), t("download.safety3")];
+  const overview = [t("download.feat1"), t("download.feat2"), t("download.feat3")];
 
   return (
     <section className="section-pad relative overflow-x-clip pb-12 md:pb-16">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(0,229,255,0.09),_transparent_52%)]" />
 
-      <div className="page-wrap relative min-w-0 space-y-10">
-        <header className="mx-auto max-w-3xl text-center">
+      <div className="page-wrap relative min-w-0 space-y-8">
+        <header className="mx-auto max-w-2xl text-center">
           <p className="label-orca">{t("download.kicker")}</p>
           <h1 className="mt-2 text-3xl font-bold tracking-tight text-[var(--acopay-fg)] sm:text-4xl">
             {t("download.title")}
           </h1>
-          <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-[var(--acopay-muted)] sm:text-base">
+          <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-[var(--acopay-muted)] sm:text-base">
             {t("download.subtitle")}
           </p>
 
@@ -51,7 +49,7 @@ export function DownloadPage() {
           </div>
         </header>
 
-        <div className="mx-auto max-w-3xl">
+        <div className="mx-auto max-w-2xl">
           <div className="orca-card p-4 sm:p-5">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <span className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--acopay-faint)]">
@@ -72,55 +70,30 @@ export function DownloadPage() {
           </div>
         </div>
 
-        <div className="mx-auto grid max-w-5xl gap-4 md:grid-cols-2">
-          <div className="orca-card p-6">
-            <h2 className="text-lg font-semibold text-[var(--acopay-fg)]">{t("download.installTitle")}</h2>
-            <ol className="mt-4 space-y-3">
-              {steps.map((step, i) => (
-                <li key={step} className="flex gap-3">
-                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--acopay-brand-soft)] text-xs font-bold text-[var(--acopay-brand)]">
-                    {i + 1}
-                  </span>
-                  <span className="text-sm leading-relaxed text-[var(--acopay-muted)]">{step}</span>
-                </li>
-              ))}
-            </ol>
-          </div>
-
-          <div className="orca-card p-6">
-            <h2 className="text-lg font-semibold text-[var(--acopay-fg)]">{t("download.featuresTitle")}</h2>
-            <ul className="mt-4 space-y-3">
-              {features.map((item) => (
-                <li key={item} className="flex gap-3">
-                  <span className="mt-1 text-[var(--acopay-brand)]">·</span>
-                  <span className="text-sm leading-relaxed text-[var(--acopay-muted)]">{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        <div className="mx-auto max-w-5xl">
-          <div className="orca-card border-[color:var(--acopay-border-strong)] p-6">
-            <h2 className="text-lg font-semibold text-[var(--acopay-fg)]">{t("download.safetyTitle")}</h2>
+        <div className="mx-auto max-w-2xl">
+          <div className="orca-card p-5 sm:p-6">
+            <h2 className="text-sm font-semibold uppercase tracking-[0.12em] text-[var(--acopay-faint)]">
+              {t("download.featuresTitle")}
+            </h2>
             <ul className="mt-4 space-y-2.5">
-              {safety.map((item) => (
-                <li key={item} className="flex gap-3">
-                  <span className="mt-1 text-[var(--acopay-faint)]">•</span>
-                  <span className="text-sm leading-relaxed text-[var(--acopay-muted)]">{item}</span>
+              {overview.map((item) => (
+                <li key={item} className="flex gap-3 text-sm leading-relaxed text-[var(--acopay-muted)]">
+                  <span className="mt-1 text-[var(--acopay-brand)]" aria-hidden>
+                    ·
+                  </span>
+                  <span>{item}</span>
                 </li>
               ))}
             </ul>
           </div>
         </div>
 
-        <div className="mx-auto grid max-w-5xl gap-4 sm:grid-cols-2">
-          <div className="orca-card p-6">
+        <div className="mx-auto grid max-w-2xl gap-4 sm:grid-cols-2">
+          <div className="orca-card p-5">
             <h2 className="text-sm font-semibold text-[var(--acopay-fg)]">{t("download.storeTitle")}</h2>
             <p className="mt-2 text-sm leading-relaxed text-[var(--acopay-muted)]">{t("download.storeBody")}</p>
           </div>
-
-          <div className="orca-card p-6">
+          <div className="orca-card p-5">
             <h2 className="text-sm font-semibold text-[var(--acopay-fg)]">{t("download.iosTitle")}</h2>
             <p className="mt-2 text-sm leading-relaxed text-[var(--acopay-muted)]">{t("download.iosBody")}</p>
             {webPayOn ? (
@@ -131,7 +104,7 @@ export function DownloadPage() {
           </div>
         </div>
 
-        <p className="mx-auto max-w-3xl text-center text-xs leading-relaxed text-[var(--acopay-faint)]">
+        <p className="mx-auto max-w-2xl text-center text-xs leading-relaxed text-[var(--acopay-faint)]">
           <Link to="/privacy" className="hover:text-[var(--acopay-brand)]">
             {t("legal.privacyTitle")}
           </Link>
