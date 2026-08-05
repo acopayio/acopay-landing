@@ -4,6 +4,11 @@ import {
   type PortfolioQuotes,
 } from "./portfolioValue";
 import type { TransferSourceId } from "./transferPreferences";
+import {
+  cryptoUnitToSource,
+  isCryptoAmountUnit,
+  type AmountUnit,
+} from "./amountUnit";
 
 function fiatPerUsd(currency: DisplayCurrency, quotes: PortfolioQuotes): number | null {
   if (currency === "USD") return 1;
@@ -21,6 +26,44 @@ export function sourceUsdPrice(
   }
   const price = acopayToUsdViaVnd(1, quotes.ratesUsd);
   return Number.isFinite(price) && price > 0 ? price : null;
+}
+
+/** Convert typed amount (fiat or crypto unit) → source token amount to send. */
+export function amountToSourceAmount(
+  amount: number,
+  unit: AmountUnit,
+  source: TransferSourceId,
+  quotes: PortfolioQuotes,
+): number | null {
+  if (!Number.isFinite(amount) || amount <= 0) return null;
+  if (isCryptoAmountUnit(unit)) {
+    const unitSource = cryptoUnitToSource(unit);
+    if (unitSource === source) return amount;
+    const unitUsd = sourceUsdPrice(unitSource, quotes);
+    const tokenUsd = sourceUsdPrice(source, quotes);
+    if (!unitUsd || !tokenUsd) return null;
+    return (amount * unitUsd) / tokenUsd;
+  }
+  return fiatToSourceAmount(amount, unit, source, quotes);
+}
+
+/** Convert source token amount → display unit (fiat or crypto). */
+export function sourceToAmountUnit(
+  tokenAmount: number,
+  source: TransferSourceId,
+  unit: AmountUnit,
+  quotes: PortfolioQuotes,
+): number | null {
+  if (!Number.isFinite(tokenAmount) || tokenAmount < 0) return null;
+  if (isCryptoAmountUnit(unit)) {
+    const unitSource = cryptoUnitToSource(unit);
+    if (unitSource === source) return tokenAmount;
+    const unitUsd = sourceUsdPrice(unitSource, quotes);
+    const tokenUsd = sourceUsdPrice(source, quotes);
+    if (!unitUsd || !tokenUsd) return null;
+    return (tokenAmount * tokenUsd) / unitUsd;
+  }
+  return sourceToFiatAmount(tokenAmount, source, unit, quotes);
 }
 
 export function fiatToSourceAmount(

@@ -1,10 +1,11 @@
-import { isDisplayCurrency, type DisplayCurrency } from "./displayCurrency";
+import { isAmountUnit, type AmountUnit } from "./amountUnit";
 
 export type TransferSourceId = "acopay" | "usdt" | "sol";
 
 export type TransferPreferences = {
   source: TransferSourceId;
-  currency: DisplayCurrency;
+  /** Fiat ISO or crypto symbol (ACOPAY / USDT / SOL). */
+  currency: AmountUnit;
 };
 
 export const DEFAULT_TRANSFER_PREFERENCES: TransferPreferences = {
@@ -26,7 +27,7 @@ export function loadTransferPreferences(): TransferPreferences {
     return {
       source: isSource(parsed.source) ? parsed.source : DEFAULT_TRANSFER_PREFERENCES.source,
       currency:
-        typeof parsed.currency === "string" && isDisplayCurrency(parsed.currency)
+        typeof parsed.currency === "string" && isAmountUnit(parsed.currency)
           ? parsed.currency
           : DEFAULT_TRANSFER_PREFERENCES.currency,
     };

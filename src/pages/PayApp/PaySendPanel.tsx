@@ -6,16 +6,22 @@ import { formatSessionClock, phantomBrowseUrl } from "../../config/otc";
 import { explorerTransfersUrl } from "../../config/token";
 import { useI18n } from "../../i18n/LanguageProvider";
 import {
-  currencyMeta,
   DISPLAY_CURRENCIES,
   formatFiatNumber,
-  type DisplayCurrency,
 } from "../../lib/displayCurrency";
 import type { PortfolioBalances, PortfolioQuotes } from "../../lib/portfolioValue";
 import {
-  fiatToSourceAmount,
-  sourceToFiatAmount,
+  amountToSourceAmount,
+  sourceToAmountUnit,
 } from "../../lib/transferMoney";
+import {
+  amountUnitDecimals,
+  cryptoUnitToSource,
+  fiatFlagSrc,
+  isCryptoAmountUnit,
+  sourceToCryptoUnit,
+  type AmountUnit,
+} from "../../lib/amountUnit";
 import {
   loadTransferPreferences,
   saveTransferPreferences,
@@ -53,8 +59,6 @@ import {
   type PayTransferAsset,
 } from "../../lib/payWebSession";
 
-const PRESETS = [10, 50, 100, 250, 500, 1000];
-/** Same window as `/send` Phantom confirm countdown. */
 const CONFIRM_WAIT_MS = 45_000;
 
 type Props = {
@@ -115,10 +119,8 @@ function shortAddr(a: string): string {
 }
 
 /**
- * Transfer ACOPAY — Kevin 2026-07-29:
- * - Bot wallet → CTA Confirm transfer → success bill
- * - Phantom linked → CTA 🔐 Sign on Phantom (no extra Confirm) → success bill
- * Same bill UI either way (no “paid from …” labels).
+ * Transfer (multi-asset) — layout parity App Transfer:
+ * recipient → source card → amount + unit chip (crypto sources then fiat flags).
  */
 function pendingToSuccess(p: PayPhantomPending, explorer: string, signature?: string): SuccessState {
   return {
@@ -150,7 +152,7 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
   const [to, setTo] = useState("");
   const initialPreferences = useMemo(() => loadTransferPreferences(), []);
   const [source, setSource] = useState<TransferSourceId>(initialPreferences.source);
-  const [currency, setCurrency] = useState<DisplayCurrency>(initialPreferences.currency);
+  const [currency, setCurrency] = useState<AmountUnit>(initialPreferences.currency);
   const [fiatAmount, setFiatAmount] = useState("");
   const [sourceOpen, setSourceOpen] = useState(false);
   const [currencyOpen, setCurrencyOpen] = useState(false);
@@ -168,7 +170,7 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
 
   const fiatAmountNum = useMemo(() => parseAmountInput(fiatAmount), [fiatAmount]);
   const tokenAmount = useMemo(
-    () => fiatToSourceAmount(fiatAmountNum, currency, source, quotes),
+    () => amountToSourceAmount(fiatAmountNum, currency, source, quotes),
     [fiatAmountNum, currency, source, quotes],
   );
   const availableSources = useMemo(
@@ -181,8 +183,14 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
   );
   const sourceBalance = balances[source];
   const sourceSymbol = source.toUpperCase();
-  const estimateLabel =
-    tokenAmount != null ? `≈ ${formatCoinAmount(tokenAmount)} ${sourceSymbol}` : "";
+  const unitIsCrypto = isCryptoAmountUnit(currency);
+  const estimateLabel = useMemo(() => {
+    if (tokenAmount == null) return "";
+    if (unitIsCrypto && cryptoUnitToSource(currency) === source) {
+      return `≈ ${formatCoinAmount(tokenAmount)} ${sourceSymbol}`;
+    }
+    return `≈ ${formatCoinAmount(tokenAmount)} ${sourceSymbol}`;
+  }, [tokenAmount, unitIsCrypto, currency, source, sourceSymbol]);
   const toIsUsername = looksLikeTelegramUsername(to);
   const activePreview = assetPreview || preview;
   const isPhantomMode = activePreview?.mode === "phantom";
@@ -204,16 +212,25 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
 
   function selectSource(next: TransferSourceId) {
     setSource(next);
+    // Keep crypto amount unit aligned with the asset being sent.
+    const nextUnit: AmountUnit = isCryptoAmountUnit(currency)
+      ? sourceToCryptoUnit(next)
+      : currency;
+    setCurrency(nextUnit);
     setSourceOpen(false);
     setPreview(null);
     setAssetPreview(null);
     setStep("form");
-    saveTransferPreferences({ source: next, currency });
+    saveTransferPreferences({ source: next, currency: nextUnit });
   }
 
-  function selectCurrency(next: DisplayCurrency) {
-    const nextSource: TransferSourceId =
-      next === "VND" ? (balances.acopay > 0 ? "acopay" : "usdt") : source;
+  function selectCurrency(next: AmountUnit) {
+    let nextSource: TransferSourceId = source;
+    if (isCryptoAmountUnit(next)) {
+      nextSource = cryptoUnitToSource(next);
+    } else if (next === "VND") {
+      nextSource = balances.acopay > 0 ? "acopay" : "usdt";
+    }
     setCurrency(next);
     setSource(nextSource);
     setCurrencyOpen(false);
@@ -227,11 +244,11 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
     let maxToken = Math.max(0, sourceBalance);
     if (source === "sol") maxToken = Math.max(0, maxToken - 0.005);
     if (source === "acopay") maxToken = Math.max(0, maxToken / 1.0001 - 1);
-    const maxFiat = sourceToFiatAmount(maxToken, source, currency, quotes);
-    if (maxFiat == null) return;
-    const decimals = currencyMeta(currency).decimals;
+    const maxUnit = sourceToAmountUnit(maxToken, source, currency, quotes);
+    if (maxUnit == null) return;
+    const decimals = amountUnitDecimals(currency);
     const scale = 10 ** decimals;
-    const floored = Math.floor(maxFiat * scale) / scale;
+    const floored = Math.floor(maxUnit * scale) / scale;
     setFiatAmount(formatFiatNumber(floored, decimals));
   }
 
@@ -769,31 +786,20 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                type="button"
-                className="pay-transfer-choice"
-                onClick={() => setSourceOpen(true)}
-              >
-                <span className="pay-transfer-choice-label">{t("payApp.transferSource")}</span>
-                <span className="pay-transfer-choice-value">
-                  <SourceLogo source={source} />
-                  {sourceSymbol}
-                </span>
-                <span className="pay-transfer-choice-sub">
-                  {t("payApp.balanceLabel")} {formatCoinAmount(sourceBalance)}
-                </span>
-              </button>
-              <button
-                type="button"
-                className="pay-transfer-choice"
-                onClick={() => setCurrencyOpen(true)}
-              >
-                <span className="pay-transfer-choice-label">{t("payApp.transferChooseCurrency")}</span>
-                <span className="pay-transfer-choice-value">{currency}</span>
-                <span className="pay-transfer-choice-sub">{t("payApp.transferCurrencyHint")}</span>
-              </button>
-            </div>
+            <button
+              type="button"
+              className="pay-transfer-choice w-full"
+              onClick={() => setSourceOpen(true)}
+            >
+              <span className="pay-transfer-choice-label">{t("payApp.transferSource")}</span>
+              <span className="pay-transfer-choice-value">
+                <SourceLogo source={source} />
+                {sourceSymbol}
+              </span>
+              <span className="pay-transfer-choice-sub">
+                {t("payApp.balanceLabel")} {formatCoinAmount(sourceBalance)}
+              </span>
+            </button>
 
             <div className="otc-field-block">
               <div className="flex items-center justify-between gap-2">
@@ -808,7 +814,7 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
                   {t("payApp.transferMax")}
                 </button>
               </div>
-              <div className="mt-2 flex items-center gap-2 rounded-2xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-surface)] px-4 py-3 focus-within:border-[color:var(--acopay-brand)]">
+              <div className="mt-2 flex items-center gap-2 rounded-2xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-surface)] px-3 py-3 focus-within:border-[color:var(--acopay-brand)]">
                 <input
                   value={fiatAmount}
                   onChange={(e) => setFiatAmount(formatAmountInput(e.target.value))}
@@ -818,18 +824,30 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
                   autoCorrect="off"
                   spellCheck={false}
                   lang="en"
-                  placeholder="0.0"
+                  placeholder="0"
                   className="min-w-0 flex-1 bg-transparent text-3xl font-bold tabular-nums tracking-tight text-[var(--acopay-fg)] outline-none"
                 />
-                <span className="inline-flex shrink-0 items-center rounded-lg bg-[var(--acopay-brand-soft)] px-2 py-1 text-xs font-bold text-[var(--acopay-brand)]">
-                  {currency}
-                </span>
+                <button
+                  type="button"
+                  onClick={() => setCurrencyOpen(true)}
+                  className="inline-flex shrink-0 items-center gap-1.5 rounded-xl border border-[color:var(--acopay-border)] bg-[var(--acopay-bg)] px-2.5 py-1.5 text-xs font-bold text-[var(--acopay-fg)]"
+                  aria-label={t("payApp.transferChooseCurrency")}
+                >
+                  <AmountUnitMark unit={currency} />
+                  <span>{currency}</span>
+                  <span className="text-[10px] text-[var(--acopay-faint)]" aria-hidden>
+                    ▾
+                  </span>
+                </button>
               </div>
               <p className={`mt-2 text-xs ${estimateLabel ? "text-[var(--acopay-muted)]" : "text-[var(--acopay-danger)]"}`}>
-                {estimateLabel || t("payApp.transferRateUnavailable")}
+                {estimateLabel ||
+                  (fiatAmountNum > 0
+                    ? t("payApp.transferRateUnavailable")
+                    : t("payApp.transferFiatEstimateHint"))}
               </p>
               <div className="mt-2 flex flex-wrap gap-1.5">
-                {PRESETS.map((n) => (
+                {[10, 100, 1000].map((n) => (
                   <button
                     key={n}
                     type="button"
@@ -843,6 +861,13 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
                     {formatAmountInput(String(n))}
                   </button>
                 ))}
+                <button
+                  type="button"
+                  onClick={setMaxAmount}
+                  className="rounded-full border border-[color:var(--acopay-border)] px-3 py-1 text-[11px] font-semibold text-[var(--acopay-muted)]"
+                >
+                  {t("payApp.transferMax")}
+                </button>
               </div>
             </div>
 
@@ -893,6 +918,23 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
                 </div>
                 <p className="pay-fx-sheet-sub">{t("payApp.transferCurrencyHint")}</p>
                 <div className="pay-fx-sheet-list">
+                  {availableSources.map((item) => {
+                    const code = sourceToCryptoUnit(item);
+                    return (
+                      <button
+                        key={code}
+                        type="button"
+                        className={`pay-fx-row${currency === code ? " pay-fx-row-on" : ""}`}
+                        onClick={() => selectCurrency(code)}
+                      >
+                        <span className="inline-flex items-center gap-2">
+                          <SourceLogo source={item} />
+                          <strong>{code}</strong>
+                        </span>
+                        <span className="pay-fx-name">{formatCoinAmount(balances[item])}</span>
+                      </button>
+                    );
+                  })}
                   {DISPLAY_CURRENCIES.map((item) => (
                     <button
                       key={item.code}
@@ -900,7 +942,16 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
                       className={`pay-fx-row${currency === item.code ? " pay-fx-row-on" : ""}`}
                       onClick={() => selectCurrency(item.code)}
                     >
-                      <span className="pay-fx-code">{item.code}</span>
+                      <span className="inline-flex items-center gap-2">
+                        <img
+                          src={fiatFlagSrc(item.code)}
+                          alt=""
+                          className="h-5 w-5 rounded-full object-cover"
+                          width={20}
+                          height={20}
+                        />
+                        <strong>{item.code}</strong>
+                      </span>
                     </button>
                   ))}
                 </div>
@@ -1296,4 +1347,19 @@ function SourceLogo({ source }: { source: TransferSourceId }) {
       ? "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/solana/assets/Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB/logo.png"
       : "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/solana/info/logo.png";
   return <img src={src} alt="" className="h-5 w-5 rounded-full" referrerPolicy="no-referrer" />;
+}
+
+function AmountUnitMark({ unit }: { unit: AmountUnit }) {
+  if (isCryptoAmountUnit(unit)) {
+    return <SourceLogo source={cryptoUnitToSource(unit)} />;
+  }
+  return (
+    <img
+      src={fiatFlagSrc(unit)}
+      alt=""
+      className="h-4 w-4 rounded-full object-cover"
+      width={16}
+      height={16}
+    />
+  );
 }
