@@ -371,6 +371,34 @@ export async function fetchOnchainHistory(opts: {
   };
 }
 
+/** Hide one on-chain history row (session ownership). Syncs App/Web/Telegram. */
+export async function hideOnchainHistory(opts: {
+  address: string;
+  sig: string;
+  symbol?: string | null;
+  kind?: string | null;
+}): Promise<void> {
+  const res = await fetch("/api/pay/history-hide", {
+    method: "POST",
+    headers: headers(),
+    credentials: fetchCred,
+    body: JSON.stringify({
+      address: opts.address,
+      sig: opts.sig,
+      symbol: opts.symbol || "",
+      kind: opts.kind || "recv",
+    }),
+  });
+  const data = (await res.json()) as { ok?: boolean; error?: string; errorCode?: string };
+  if (res.status === 401) {
+    setPaySession(null);
+    throw new PayApiError("session_expired", "session_expired");
+  }
+  if (!res.ok || !data.ok) {
+    throwPayApiError(data, "history_hide", data.error || "Could not hide transaction.");
+  }
+}
+
 export type PayPreview = {
   ok: boolean;
   mode: "bot" | "phantom";

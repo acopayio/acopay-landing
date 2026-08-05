@@ -37,6 +37,8 @@ const PAY_MW_PATHS: Record<string, { vps: string; methods: string[] }> = {
   "/api/pay/auth-wallet-claim": { vps: "/pay/auth/wallet-claim", methods: ["POST", "OPTIONS"] },
   /** Mobile Setup/History — middleware-only (no per-file Pages Function). */
   "/api/pay/onchain-history": { vps: "/pay/onchain-history", methods: ["GET", "OPTIONS"] },
+  "/api/pay/history-hide": { vps: "/pay/history-hide", methods: ["POST", "OPTIONS"] },
+  "/api/pay/history-unhide": { vps: "/pay/history-unhide", methods: ["POST", "OPTIONS"] },
 };
 
 function withCountryCookie(request: Request, response: Response): Response {
@@ -172,11 +174,13 @@ export async function onRequest(context: PagesContext): Promise<Response> {
     // fall through to static asset / 404
   }
 
-  // Username / wallet-auth / onchain-history — middleware proxy (secret inject) before SPA fallback.
+  // Username / wallet-auth / onchain-history / history-hide — middleware proxy (secret inject).
   if (
     url.pathname.startsWith("/api/pay/username") ||
     url.pathname.startsWith("/api/pay/auth-wallet") ||
-    url.pathname === "/api/pay/onchain-history"
+    url.pathname === "/api/pay/onchain-history" ||
+    url.pathname === "/api/pay/history-hide" ||
+    url.pathname === "/api/pay/history-unhide"
   ) {
     const payMwRes = await proxyPayMw(context.request, context.env, url);
     if (payMwRes) return withCountryCookie(context.request, payMwRes);

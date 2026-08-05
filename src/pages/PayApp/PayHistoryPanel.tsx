@@ -16,6 +16,7 @@ import {
 import {
   fetchOnchainHistory,
   formatAcopay,
+  hideOnchainHistory,
   mapPayApiError,
   type PayHistoryItem,
 } from "../../lib/payWebSession";
@@ -78,6 +79,8 @@ export function PayHistoryPanel({ address, onBack, onError }: Props) {
   const [total, setTotal] = useState(0);
   const [items, setItems] = useState<PayHistoryItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [openKey, setOpenKey] = useState<string | null>(null);
+  const [hideBusy, setHideBusy] = useState<string | null>(null);
 
   const chips = useMemo((): Chip[] => {
     const now = new Date();
@@ -223,60 +226,155 @@ export function PayHistoryPanel({ address, onBack, onError }: Props) {
         )}
 
         {!loading && items.length > 0 && (
-          <ul className="mt-4 divide-y divide-[color:var(--acopay-border)]">
+          <ul className="mt-4 space-y-2">
             {items.map((row, i) => {
               const out = row.kind === "send";
               const tone = amountTone(row.kind);
+              const key = `${row.sig || row.at}-${row.symbol || ""}-${row.kind}-${i}`;
+              const open = openKey === key;
+              const peer =
+                (out ? row.toHandle && `@${row.toHandle}` : row.fromHandle && `@${row.fromHandle}`) ||
+                (out ? row.to : row.from) ||
+                "—";
               return (
-                <li key={`${row.sig || row.at}-${i}`} className="flex gap-3 py-3.5">
-                  <div className="mt-0.5 h-10 w-10 shrink-0 overflow-hidden rounded-full bg-[var(--acopay-bg)]">
-                    <img
-                      src={logoUrl(row)}
-                      alt=""
-                      className="h-full w-full object-cover"
-                      loading="lazy"
-                      referrerPolicy="no-referrer"
-                    />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="min-w-0">
-                        <p className="truncate text-sm font-semibold text-[var(--acopay-fg)]">
-                          {whoLine(row)}
+                <li
+                  key={key}
+                  className={`overflow-hidden rounded-2xl border transition ${
+                    open
+                      ? "border-[color:var(--acopay-brand)] bg-[var(--acopay-surface)] shadow-[0_8px_24px_rgba(0,229,255,0.08)]"
+                      : "border-[color:var(--acopay-border)] bg-[var(--acopay-surface)]"
+                  }`}
+                >
+                  <button
+                    type="button"
+                    onClick={() => setOpenKey(open ? null : key)}
+                    className="flex w-full gap-3 px-3.5 py-3.5 text-left"
+                  >
+                    <div className="mt-0.5 h-10 w-10 shrink-0 overflow-hidden rounded-full bg-[var(--acopay-bg)]">
+                      <img
+                        src={logoUrl(row)}
+                        alt=""
+                        className="h-full w-full object-cover"
+                        loading="lazy"
+                        referrerPolicy="no-referrer"
+                      />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="min-w-0">
+                          <p className="truncate text-sm font-semibold text-[var(--acopay-fg)]">
+                            {whoLine(row)}
+                          </p>
+                          <p className="mt-0.5 text-[11px] text-[var(--acopay-faint)]">
+                            {formatHistAt(row.at)}
+                          </p>
+                        </div>
+                        <div className="shrink-0 text-right">
+                          <p
+                            className={`text-sm font-bold tabular-nums ${
+                              tone ? "" : "text-emerald-700 dark:text-emerald-300"
+                            }`}
+                            style={tone ? { color: tone } : undefined}
+                          >
+                            {out ? "−" : "+"}
+                            {formatAmount(row.amount)}{" "}
+                            <span className="text-[11px] font-semibold opacity-80">
+                              {row.symbol || "ACOPAY"}
+                            </span>
+                          </p>
+                          <p className="mt-0.5 text-[10px] font-bold text-[var(--acopay-faint)]">
+                            {open ? "▴" : "▾"}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </button>
+
+                  {open && (
+                    <div className="space-y-2 border-t border-[color:var(--acopay-border)] bg-[var(--acopay-bg)] px-3.5 py-3">
+                      <div>
+                        <p className="text-[11px] font-semibold text-[var(--acopay-faint)]">
+                          {out ? t("payApp.historyActionSend") : t("payApp.historyActionRecv")}
                         </p>
-                        <p className="mt-0.5 text-[11px] text-[var(--acopay-faint)]">
-                          {formatHistAt(row.at)}
+                        <p className="text-sm font-semibold text-[var(--acopay-fg)]">
+                          {out ? "−" : "+"}
+                          {formatAmount(row.amount)} {row.symbol || "ACOPAY"}
                         </p>
                       </div>
-                      <p
-                        className={`shrink-0 text-sm font-bold tabular-nums ${
-                          tone ? "" : "text-emerald-700 dark:text-emerald-300"
-                        }`}
-                        style={tone ? { color: tone } : undefined}
-                      >
-                        {out ? "−" : "+"}
-                        {formatAmount(row.amount)}{" "}
-                        <span className="text-[11px] font-semibold opacity-80">
-                          {row.symbol || "ACOPAY"}
-                        </span>
-                      </p>
+                      <div>
+                        <p className="text-[11px] font-semibold text-[var(--acopay-faint)]">
+                          {t("payApp.historyPeer")}
+                        </p>
+                        <p className="break-all font-mono text-xs text-[var(--acopay-fg)]">
+                          {typeof peer === "string" && peer.length > 20 ? (
+                            <AddrHighlight addr={peer} />
+                          ) : (
+                            peer
+                          )}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-[11px] font-semibold text-[var(--acopay-faint)]">
+                          {t("payApp.historyTime")}
+                        </p>
+                        <p className="text-xs text-[var(--acopay-fg)]">{formatHistAt(row.at)}</p>
+                      </div>
+                      {row.sig && (
+                        <div>
+                          <p className="text-[11px] font-semibold text-[var(--acopay-faint)]">
+                            {t("payApp.historySig")}
+                          </p>
+                          <p className="font-mono text-xs text-[var(--acopay-fg)]">
+                            {row.sig.slice(0, 8)}…{row.sig.slice(-8)}
+                          </p>
+                        </div>
+                      )}
+                      <div className="flex flex-wrap gap-2 pt-1">
+                        {row.sig && (
+                          <a
+                            href={`https://solscan.io/tx/${row.sig}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="rounded-lg border border-[color:var(--acopay-border)] px-3 py-1.5 text-[11px] font-bold text-[var(--acopay-brand)]"
+                          >
+                            {t("payApp.historyOpenExplorer")} ↗
+                          </a>
+                        )}
+                        <button
+                          type="button"
+                          disabled={hideBusy === key || !row.sig}
+                          onClick={() => {
+                            if (!row.sig || !address) return;
+                            setHideBusy(key);
+                            void hideOnchainHistory({
+                              address,
+                              sig: row.sig,
+                              symbol: row.symbol,
+                              kind: row.kind,
+                            })
+                              .then(() => {
+                                setItems((prev) =>
+                                  prev.filter(
+                                    (x) =>
+                                      !(
+                                        x.sig === row.sig &&
+                                        (x.symbol || "") === (row.symbol || "") &&
+                                        x.kind === row.kind
+                                      ),
+                                  ),
+                                );
+                                setOpenKey(null);
+                              })
+                              .catch((e) => onError(mapPayApiError(e, t, locale)))
+                              .finally(() => setHideBusy(null));
+                          }}
+                          className="rounded-lg border border-[color:rgba(218,37,29,0.35)] px-3 py-1.5 text-[11px] font-bold text-[#DA251D] disabled:opacity-40"
+                        >
+                          {hideBusy === key ? "…" : t("payApp.historyHide")}
+                        </button>
+                      </div>
                     </div>
-                    {(out ? row.to : row.from) && !row.symbol && (
-                      <p className="mt-1 truncate font-mono text-[11px] text-[var(--acopay-muted)]">
-                        <AddrHighlight addr={(out ? row.to : row.from) || ""} />
-                      </p>
-                    )}
-                    {row.sig && (
-                      <a
-                        href={`https://solscan.io/tx/${row.sig}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mt-1 inline-block text-[11px] font-medium text-[var(--acopay-brand)] hover:underline"
-                      >
-                        {t("payApp.openExplorer")} ↗
-                      </a>
-                    )}
-                  </div>
+                  )}
                 </li>
               );
             })}

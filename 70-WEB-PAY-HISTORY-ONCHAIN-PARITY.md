@@ -41,7 +41,9 @@ Chỉ **một** chỗ: số lớn + pill `USD` cạnh số (bấm → sheet). Kh
 
 ## Telegram
 
-Bot History vẫn `txLog` (tin nhắn bot). Cùng **pubkey** trên App/Web → cùng on-chain list. Bot UI chưa port on-chain (scope riêng).
+**SHIPPED 2026-08-05:** Bot History cũng dùng `fetchWalletOnchainHistory()` từ cùng
+module on-chain; không còn lấy danh sách từ `txLog`. Ví truy vấn là ví Telegram Pay
+hoặc Phantom đang hoạt động (`getReceivePublicKey`). Chi tiết: `DOCS/110-TELEGRAM-HISTORY-ONCHAIN-PARITY.md`.
 
 ## i18n
 

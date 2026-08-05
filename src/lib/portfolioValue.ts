@@ -102,7 +102,10 @@ export function portfolioTotalFiat(
   return convertUsdToFiat(portfolioTotalUsd(bal, quotes), code, quotes.ratesUsd);
 }
 
-/** Number only — currency code shown on chip (parity App). */
+/**
+ * Number for hero — chip shows ISO code separately (parity App / DOCS/111).
+ * Prefix `≈`: approximate FX conversion. Pattern every locale: `≈ 102.89` + `USD`.
+ */
 export function formatPortfolioNumber(
   bal: PortfolioBalances,
   code: DisplayCurrency,
@@ -111,8 +114,9 @@ export function formatPortfolioNumber(
   try {
     const n = portfolioTotalFiat(bal, code, quotes);
     const full = formatFiatAmount(n, code);
-    return full.replace(/\s+[A-Z]{3}$/, "") || formatFiatNumber(n, 2);
+    const num = full.replace(/\s+[A-Z]{3}$/, "") || formatFiatNumber(n, 2);
+    return `≈ ${num}`;
   } catch {
-    return "0";
+    return "≈ 0";
   }
 }
