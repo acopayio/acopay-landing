@@ -3,7 +3,8 @@
  * 1) www → apex
  * 2) Country cookie (language detect — no VPS)
  * 3) /data/*.json → proxy raw GitHub (fresh from VPS push; no CF rebuild wait)
- * 4) /api/pay/username* + /api/pay/auth-wallet-* + onchain-history → VPS (inject secret; works without per-file Functions)
+ * 4) /api/pay/username* + /api/pay/auth-wallet-* + onchain-history → VPS
+ *    (inject secret + forward Pay session header/cookie — DOCS/114)
  * 5) SPA fallback
  * 6) Real 404 for missing static assets
  *
@@ -107,6 +108,28 @@ async function proxyPayMw(
   const secret = String(env.PAY_SPONSOR_SECRET || "").trim();
   if (secret) headers["X-Acopay-Pay-Secret"] = secret;
 
+  // Same session forward as functions/api/pay/_proxy.ts — without this,
+  // username-set/clear always 401 while /pay/me (Pages Function) still works.
+  const hdrSess =
+    request.headers.get("X-Acopay-Pay-Session") ||
+    request.headers.get("Authorization");
+  const cookieRaw = request.headers.get("Cookie") || "";
+  const cookieMatch = /(?:^|;\s*)acopay_pay_sess=([^;]+)/.exec(cookieRaw);
+  let cookieSess: string | null = null;
+  if (cookieMatch) {
+    try {
+      cookieSess = decodeURIComponent(cookieMatch[1].trim());
+    } catch {
+      cookieSess = cookieMatch[1].trim() || null;
+    }
+  }
+  if (hdrSess) {
+    if (/^Bearer\s+/i.test(hdrSess)) headers.Authorization = hdrSess;
+    else headers["X-Acopay-Pay-Session"] = hdrSess.replace(/^Bearer\s+/i, "").trim();
+  } else if (cookieSess) {
+    headers["X-Acopay-Pay-Session"] = cookieSess;
+  }
+
   let body: string | undefined;
   if (request.method !== "GET" && request.method !== "HEAD") {
     body = await request.text();
@@ -120,13 +143,34 @@ async function proxyPayMw(
       body: body && request.method !== "GET" ? body || "{}" : undefined,
     });
     const text = await upstreamRes.text();
+
+    const outHeaders: Record<string, string> = {
+      "Content-Type": "application/json; charset=utf-8",
+      "Cache-Control": "no-store",
+      "X-Acopay-Pay": "pay-middleware",
+    };
+
+    // Wallet auth via middleware must also set HttpOnly session cookie.
+    const isAuthOk =
+      (route.vps === "/pay/auth/wallet-verify" ||
+        route.vps === "/pay/auth/wallet-claim") &&
+      upstreamRes.ok;
+    if (isAuthOk) {
+      try {
+        const data = JSON.parse(text) as { ok?: boolean; status?: string; token?: string };
+        const tok = String(data.token || "").trim();
+        if (tok && (data.ok === true || data.status === "ok")) {
+          outHeaders["Set-Cookie"] =
+            `acopay_pay_sess=${encodeURIComponent(tok)}; Path=/; Max-Age=${7 * 24 * 60 * 60}; HttpOnly; Secure; SameSite=Strict`;
+        }
+      } catch {
+        /* keep body */
+      }
+    }
+
     return new Response(text, {
       status: upstreamRes.status,
-      headers: {
-        "Content-Type": "application/json; charset=utf-8",
-        "Cache-Control": "no-store",
-        "X-Acopay-Pay": "pay-middleware",
-      },
+      headers: outHeaders,
     });
   } catch {
     return new Response(JSON.stringify({ error: "Pay upstream unreachable." }), {
