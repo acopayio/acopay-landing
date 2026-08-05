@@ -314,8 +314,8 @@ const partials: Record<string, DeepPartialMessages> = {
       tokenStandard: "Tiêu chuẩn token",
       network: "Mạng",
       dexPair: "Cặp DEX",
-      footnoteBefore: "Quyền mint vẫn còn, nên có thể mint thêm token sau này. Xem ",
-      footnoteAfter: " để biết địa chỉ và thông số đầy đủ.",
+      footnoteBefore: "",
+      footnoteAfter: "",
       contractLink: "Hợp đồng",
     },
     launch: {

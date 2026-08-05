@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { TOKEN } from "../config/token";
 import { useT } from "../i18n/LanguageProvider";
 
@@ -70,14 +69,6 @@ export function Tokenomics() {
             </tbody>
           </table>
         </div>
-
-        <p className="mt-6 text-sm text-[var(--acopay-faint)]">
-          {t("tokenPage.footnoteBefore")}
-          <Link to="/contract" className="text-[var(--acopay-brand)] hover:underline">
-            {t("tokenPage.contractLink")}
-          </Link>
-          {t("tokenPage.footnoteAfter")}
-        </p>
       </div>
     </section>
   );

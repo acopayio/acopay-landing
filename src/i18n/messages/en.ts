@@ -276,8 +276,8 @@ export const en = {
     tokenStandard: "Token standard",
     network: "Network",
     dexPair: "DEX pair",
-    footnoteBefore: "Mint authority is still active, so more tokens can be minted later. See ",
-    footnoteAfter: " for the address and full parameters.",
+    footnoteBefore: "",
+    footnoteAfter: "",
     contractLink: "Contract",
   },
   launch: {
