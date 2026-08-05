@@ -161,6 +161,8 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
   const [step, setStep] = useState<Step>("form");
   const [success, setSuccess] = useState<SuccessState | null>(null);
   const [awaitingPhantomReturn, setAwaitingPhantomReturn] = useState(false);
+  const [statusChecking, setStatusChecking] = useState(false);
+  const checkStatusRef = useRef<() => Promise<void>>(async () => {});
   const [confirmStartedAt, setConfirmStartedAt] = useState<number | null>(null);
   const [now, setNow] = useState(() => Date.now());
   const pollBusyRef = useRef(false);
@@ -370,6 +372,7 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
       }
     };
 
+    checkStatusRef.current = tryMatch;
     void tryMatch();
     const id = window.setInterval(() => void tryMatch(), 2500);
     const onVis = () => {
@@ -383,9 +386,58 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
       document.removeEventListener("visibilitychange", onVis);
       window.removeEventListener("pageshow", onVis);
       window.removeEventListener("focus", onVis);
+      checkStatusRef.current = async () => {};
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps -- poll while awaiting
   }, [awaitingPhantomReturn, step]);
+
+  async function onCheckWaitingStatus() {
+    setStatusChecking(true);
+    try {
+      await checkStatusRef.current();
+      // Bot / in-page confirm path (no device-sign pending): match today's history.
+      if (step === "waiting" && preview && !loadPayPhantomPending()) {
+        const hist = await fetchPayHistory({ period: "td", page: 0 });
+        const wantAmt = Number(preview.plan.transferred);
+        const match = hist.items.find((row) => {
+          if (row.kind !== "send" || !row.sig || !row.to) return false;
+          if (row.to !== preview.recipient.to) return false;
+          if (row.amount == null || !amountsClose(Number(row.amount), wantAmt)) return false;
+          return true;
+        });
+        if (match?.sig) {
+          finishSuccess(previewToSuccess(preview, `https://solscan.io/tx/${match.sig}`, match.sig));
+        }
+      }
+    } catch {
+      /* stay on waiting */
+    } finally {
+      setStatusChecking(false);
+    }
+  }
+
+  function reopenAppApproveFromPending() {
+    const pending = loadPayPhantomPending();
+    if (!pending?.pid || !pending.from) return;
+    const u = new URL("https://acopay.net/pay/app-approve");
+    u.searchParams.set("from", pending.from);
+    u.searchParams.set("to", pending.to);
+    u.searchParams.set("amount", pending.amount);
+    u.searchParams.set("tg", pending.tg);
+    u.searchParams.set("pid", pending.pid);
+    u.searchParams.set("ret", "pay");
+    if (pending.label) u.searchParams.set("label", pending.label);
+    window.location.assign(u.toString());
+  }
+
+  function leaveWaitingToWallet() {
+    // Keep local pending so a later visit can still hydrate success.
+    setAwaitingPhantomReturn(false);
+    setBusy(false);
+    setConfirmStartedAt(null);
+    setStep("form");
+    onBack();
+  }
 
   async function onPreview() {
     onError("");
@@ -1055,26 +1107,37 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
               <div
                 className="otc-timer-ring"
                 style={{
-                  background: `conic-gradient(#00E5FF ${confirmProgress * 360}deg, rgba(255,255,255,0.08) 0)`,
+                  background: confirmPastWindow
+                    ? `conic-gradient(var(--acopay-muted) 360deg, rgba(255,255,255,0.08) 0)`
+                    : `conic-gradient(#00E5FF ${confirmProgress * 360}deg, rgba(255,255,255,0.08) 0)`,
                 }}
               >
                 <div className="otc-timer-core">
                   <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--acopay-faint)]">
-                    {t("sendAcopay.confirmWaitLabel")}
+                    {confirmPastWindow
+                      ? t("sendAcopay.confirmWaitSlowLabel")
+                      : t("sendAcopay.confirmWaitLabel")}
                   </p>
                   <p
                     className={`font-mono text-2xl font-bold tabular-nums tracking-tight ${
-                      confirmPastWindow ? "text-amber-300" : "text-[var(--acopay-fg)]"
+                      confirmPastWindow ? "text-[var(--acopay-muted)]" : "text-[var(--acopay-fg)]"
                     }`}
                   >
-                    {confirmPastWindow ? "…" : formatSessionClock(msLeft)}
+                    {confirmPastWindow ? "—" : formatSessionClock(msLeft)}
                   </p>
                 </div>
               </div>
             </div>
 
             <p className="mt-6 max-w-sm text-[15px] font-medium leading-snug text-[var(--acopay-fg)]">
-              {confirmPastWindow ? t("sendAcopay.confirmWaitTimeout") : t("sendAcopay.confirmWaitBody")}
+              {confirmPastWindow
+                ? t("sendAcopay.confirmWaitTimeout")
+                : t("sendAcopay.confirmWaitBody")}
+            </p>
+            <p className="mt-2 max-w-sm text-sm leading-relaxed text-[var(--acopay-muted)]">
+              {confirmPastWindow
+                ? t("sendAcopay.confirmWaitTimeoutHint")
+                : t("sendAcopay.confirmWaitHint")}
             </p>
 
             {waitBill ? (
@@ -1100,6 +1163,35 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
                     {waitBill.label}
                   </span>
                 </div>
+              </div>
+            ) : null}
+
+            {confirmPastWindow ? (
+              <div className="mt-8 flex w-full max-w-sm flex-col gap-2">
+                <button
+                  type="button"
+                  disabled={statusChecking}
+                  onClick={() => void onCheckWaitingStatus()}
+                  className="btn-orca-primary w-full !rounded-xl !py-3 text-sm font-semibold disabled:opacity-50"
+                >
+                  {statusChecking ? t("payApp.loading") : t("sendAcopay.confirmWaitCheckStatus")}
+                </button>
+                {loadPayPhantomPending() ? (
+                  <button
+                    type="button"
+                    onClick={() => reopenAppApproveFromPending()}
+                    className="w-full !rounded-xl !py-3 text-sm font-semibold border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-surface)] text-[var(--acopay-fg)] hover:opacity-90"
+                  >
+                    {t("sendAcopay.confirmWaitOpenApp")}
+                  </button>
+                ) : null}
+                <button
+                  type="button"
+                  onClick={() => leaveWaitingToWallet()}
+                  className="w-full !rounded-xl !py-3 text-sm font-semibold text-[var(--acopay-pay-exit)] border border-[color:var(--acopay-pay-exit-ring)] bg-[var(--acopay-pay-exit-bg)] hover:opacity-90"
+                >
+                  {t("sendAcopay.confirmWaitBackWallet")}
+                </button>
               </div>
             ) : null}
           </div>
