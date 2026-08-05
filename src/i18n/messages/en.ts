@@ -546,7 +546,7 @@ export const en = {
     openAgain: "Open again",
     secureNote: "",
     balanceLabel: "Balance",
-    fiatEstimated: "Estimated total value",
+    fiatEstimated: "Estimated total balance",
     currency: "Currency",
     chooseCurrency: "Display currency",
     tokensTitle: "Tokens",

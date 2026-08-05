@@ -557,13 +557,10 @@ export function PayAppPage() {
                   </div>
 
                   <div className="pay-home-bal-head">
-                    <div className="pay-home-bal-label-col">
-                      <p className="pay-home-bal-label">
-                        <span aria-hidden>💰</span>
-                        {t("payApp.balanceLabel")}
-                      </p>
-                      <p className="pay-home-bal-est">{t("payApp.fiatEstimated")}</p>
-                    </div>
+                    <p className="pay-home-bal-label">
+                      <span aria-hidden>💰</span>
+                      {t("payApp.fiatEstimated")}
+                    </p>
                   </div>
                   <button
                     type="button"
