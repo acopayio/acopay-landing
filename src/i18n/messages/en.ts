@@ -822,10 +822,10 @@ export const en = {
       "We may update these Terms. Continued use after changes constitutes acceptance of the updated Terms. Material changes are reflected by updating the date above.",
     termsH8: "8. Contact",
     deleteIntro:
-      "Google Play and the App Store require a public deletion path that does not require installing the app. Last updated: 6 August 2026",
+      "Use this page to remove ACOPAY wallet data from your device and to request deletion of related server-side data. You do not need to have the app installed to submit a server-side request.",
     deleteHWhat: "What “account” means here",
     deletePWhat:
-      "The ACOPAY mobile wallet is non-custodial. Your keys remain on your device. There is no central login account that holds your funds. Deletion means removing local wallet data and any server-side sessions, push registrations, or operational data tied to addresses you used with ACOPAY APIs.",
+      "The ACOPAY mobile wallet keeps your recovery phrase and private keys on your device. There is no central login account that holds your funds. “Deletion” means: (1) removing wallet data stored on your device, and (2) deleting or anonymizing server-side data linked to wallet addresses you used with ACOPAY (for example sessions, optional Pay username mappings, push notification registrations, and support emails).",
     deleteHA: "A. Delete data on your device (instant)",
     deleteA1: "Open the ACOPAY app → Settings → Sign out.",
     deleteA2: "Uninstall the app from your device.",
@@ -840,9 +840,10 @@ export const en = {
     deleteSubject: "Delete ACOPAY data",
     deleteEmailAfter: " and include:",
     deleteLi1: "Your Solana wallet address(es) used with ACOPAY",
-    deleteLi2: "Approximate dates of use (if known)",
+    deleteLi2: "Any ACOPAY Pay username you created (if applicable)",
+    deleteLi3: "Approximate dates of use (if known)",
     deleteP2:
-      "We will delete or anonymize associated session records, push registrations, and support correspondence within 30 days, except data we must retain for legal or security reasons, and except public blockchain records which cannot be deleted.",
+      "We will delete or anonymize associated session records, Pay username mappings, push registrations, and support correspondence within 30 days of a verifiable request, except data we must retain for legal or security reasons. Public blockchain records cannot be deleted.",
     deleteHRelated: "Related",
   },
 };

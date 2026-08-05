@@ -114,7 +114,8 @@ function DeleteBody() {
   const t = useT();
   return (
     <>
-      <p className="text-[var(--acopay-muted)]">{t("legal.deleteIntro")}</p>
+      <p className="text-[var(--acopay-muted)]">{t("legal.lastUpdated")}</p>
+      <p>{t("legal.deleteIntro")}</p>
       <h2 className="mt-8 text-xl font-bold text-[var(--acopay-fg)]">{t("legal.deleteHWhat")}</h2>
       <p>{t("legal.deletePWhat")}</p>
       <h2 className="mt-8 text-xl font-bold text-[var(--acopay-fg)]">{t("legal.deleteHA")}</h2>
@@ -140,6 +141,7 @@ function DeleteBody() {
       <ul className="mt-3 list-disc space-y-2 pl-5 text-[var(--acopay-muted)]">
         <li>{t("legal.deleteLi1")}</li>
         <li>{t("legal.deleteLi2")}</li>
+        <li>{t("legal.deleteLi3")}</li>
       </ul>
       <p className="mt-3">{t("legal.deleteP2")}</p>
       <h2 className="mt-8 text-xl font-bold text-[var(--acopay-fg)]">{t("legal.deleteHRelated")}</h2>

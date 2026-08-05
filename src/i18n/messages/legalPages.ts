@@ -66,9 +66,9 @@ const enBase: LegalSection = {
   termsH7: "7. Changes",
   termsP7: "We may update these Terms. Continued use after changes constitutes acceptance of the updated Terms. Material changes are reflected by updating the date above.",
   termsH8: "8. Contact",
-  deleteIntro: "Google Play and the App Store require a public deletion path that does not require installing the app. Last updated: 6 August 2026",
+  deleteIntro: "Use this page to remove ACOPAY wallet data from your device and to request deletion of related server-side data. You do not need to have the app installed to submit a server-side request.",
   deleteHWhat: "What âaccountâ means here",
-  deletePWhat: "The ACOPAY mobile wallet is non-custodial. Your keys remain on your device. There is no central login account that holds your funds. Deletion means removing local wallet data and any server-side sessions, push registrations, or operational data tied to addresses you used with ACOPAY APIs.",
+  deletePWhat: "The ACOPAY mobile wallet keeps your recovery phrase and private keys on your device. There is no central login account that holds your funds. âDeletionâ means: (1) removing wallet data stored on your device, and (2) deleting or anonymizing server-side data linked to wallet addresses you used with ACOPAY (for example sessions, optional Pay username mappings, push notification registrations, and support emails).",
   deleteHA: "A. Delete data on your device (instant)",
   deleteA1: "Open the ACOPAY app â Settings â Sign out.",
   deleteA2: "Uninstall the app from your device.",
@@ -81,8 +81,9 @@ const enBase: LegalSection = {
   deleteSubject: "Delete ACOPAY data",
   deleteEmailAfter: " and include:",
   deleteLi1: "Your Solana wallet address(es) used with ACOPAY",
-  deleteLi2: "Approximate dates of use (if known)",
-  deleteP2: "We will delete or anonymize associated session records, push registrations, and support correspondence within 30 days, except data we must retain for legal or security reasons, and except public blockchain records which cannot be deleted.",
+  deleteLi2: "Any ACOPAY Pay username you created (if applicable)",
+  deleteLi3: "Approximate dates of use (if known)",
+  deleteP2: "We will delete or anonymize associated session records, Pay username mappings, push registrations, and support correspondence within 30 days of a verifiable request, except data we must retain for legal or security reasons. Public blockchain records cannot be deleted.",
   deleteHRelated: "Related",
 };
 
@@ -147,9 +148,9 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     termsH7: "7. Thay đổi",
     termsP7: "Chúng tôi có thể cập nhật Điều khoản. Tiếp tục sử dụng sau khi thay đổi đồng nghĩa chấp nhận Điều khoản đã cập nhật. Thay đổi quan trọng được phản ánh bằng việc cập nhật ngày nêu trên.",
     termsH8: "8. Liên hệ",
-    deleteIntro: "Google Play và App Store yêu cầu đường dẫn xóa dữ liệu công khai, không bắt buộc cài ứng dụng. Cập nhật lần cuối: 6 tháng 8 năm 2026",
+    deleteIntro: "Trang này giúp bạn xóa dữ liệu ví ACOPAY trên thiết bị và yêu cầu xóa dữ liệu liên quan phía máy chủ. Bạn không cần cài ứng dụng để gửi yêu cầu phía máy chủ.",
     deleteHWhat: "“Tài khoản” ở đây nghĩa là gì",
-    deletePWhat: "Ví di động ACOPAY do bạn tự giữ khóa trên thiết bị. Không có tài khoản đăng nhập tập trung giữ tiền của bạn. Xóa nghĩa là gỡ dữ liệu ví cục bộ và các phiên, đăng ký thông báo đẩy hoặc dữ liệu vận hành phía máy chủ gắn với địa chỉ bạn đã dùng với API ACOPAY.",
+    deletePWhat: "Ví di động ACOPAY giữ cụm từ khôi phục và private key trên thiết bị của bạn. Không có tài khoản đăng nhập tập trung giữ tiền của bạn. “Xóa” nghĩa là: (1) gỡ dữ liệu ví lưu trên thiết bị, và (2) xóa hoặc ẩn danh dữ liệu phía máy chủ gắn với địa chỉ ví bạn đã dùng với ACOPAY (ví dụ phiên, ánh xạ Pay username nếu có, đăng ký thông báo đẩy, và email hỗ trợ).",
     deleteHA: "A. Xóa dữ liệu trên thiết bị (ngay lập tức)",
     deleteA1: "Mở ứng dụng ACOPAY → Cài đặt → Đăng xuất.",
     deleteA2: "Gỡ ứng dụng khỏi thiết bị.",
@@ -162,9 +163,10 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     deleteSubject: "Delete ACOPAY data",
     deleteEmailAfter: " và nêu rõ:",
     deleteLi1: "Địa chỉ ví Solana bạn đã dùng với ACOPAY",
-    deleteLi2: "Thời gian sử dụng gần đúng (nếu biết)",
-    deleteP2: "Chúng tôi sẽ xóa hoặc ẩn danh các bản ghi phiên, đăng ký thông báo đẩy và email hỗ trợ liên quan trong vòng 30 ngày, trừ dữ liệu buộc phải lưu vì lý do pháp lý hoặc bảo mật, và trừ bản ghi công khai trên blockchain không thể xóa.",
+    deleteLi2: "Pay username ACOPAY bạn đã tạo (nếu có)",
+    deleteP2: "Chúng tôi sẽ xóa hoặc ẩn danh các bản ghi phiên, ánh xạ Pay username, đăng ký thông báo đẩy và email hỗ trợ liên quan trong vòng 30 ngày sau khi nhận được yêu cầu có thể xác minh, trừ dữ liệu buộc phải lưu vì lý do pháp lý hoặc bảo mật. Bản ghi công khai trên blockchain không thể xóa.",
     deleteHRelated: "Liên quan",
+    deleteLi3: "Thời gian sử dụng gần đúng (nếu biết)",
   }),
 
   zh: L({
@@ -228,10 +230,9 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     termsP7:
       "我们可能会更新本条款。变更后继续使用即视为你接受更新后的条款。重大变更将通过更新上方日期予以体现。",
     termsH8: "8. 联系方式",
-    deleteIntro: "Google Play 与 App Store 要求提供无需安装应用即可访问的公开删除路径。最后更新：2026年8月6日",
+    deleteIntro: "通过本页可删除设备上的 ACOPAY 钱包数据，并请求删除相关的服务器端数据。提交服务器端请求无需安装应用。",
     deleteHWhat: "此处“账户”的含义",
-    deletePWhat:
-      "ACOPAY 移动钱包为非托管钱包。你的密钥保存在你的设备上。不存在持有你资金的中心化登录账户。删除是指移除本地钱包数据，以及与你在 ACOPAY 接口中使用过的地址相关的任何服务器端会话/运营数据。",
+    deletePWhat: "ACOPAY 移动钱包将助记词和私钥保存在你的设备上。不存在持有你资金的中心化登录账户。“删除”是指：(1) 移除设备上的钱包数据；(2) 删除或匿名化与你在 ACOPAY 使用过的钱包地址相关的服务器端数据（例如会话、可选的 Pay 用户名映射、推送注册和支持邮件）。",
     deleteHA: "A. 删除设备上的数据（即时生效）",
     deleteA1: "打开 ACOPAY 应用 → 设置 → 退出登录。",
     deleteA2: "从设备上卸载该应用。",
@@ -244,9 +245,8 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     deleteSubject: "Delete ACOPAY data",
     deleteEmailAfter: "，并附上：",
     deleteLi1: "你在 ACOPAY 中使用过的 Solana 钱包地址",
-    deleteLi2: "大致使用日期（如已知）",
-    deleteP2:
-      "我们将在 30 天内删除或匿名化相关的会话记录与支持往来邮件，但因法律或安全原因必须保留的数据除外，且无法删除的公开区块链记录也除外。",
+    deleteLi2: "你创建的 ACOPAY Pay 用户名（如有）",
+    deleteP2: "在收到可核验的请求后 30 天内，我们将删除或匿名化相关会话记录、Pay 用户名映射、推送注册与支持往来邮件，但因法律或安全原因必须保留的数据除外。公开区块链记录无法删除。",
     deleteHRelated: "相关内容",
     privacyLiUsernameLabel: "Pay 用户名（可选）",
     privacyLiUsernameRest: "——如果你创建 ACOPAY Pay 用户名，我们会保存该用户名与公开钱包地址的映射，以便他人可通过用户名向你付款。",
@@ -254,6 +254,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyLiPushRest: "——如果你在应用中启用付款通知，我们会保存与公开钱包地址关联的设备推送令牌。可在设置中关闭。",
     privacyHChildren: "8. 儿童",
     privacyPChildren: "本服务面向 18 岁及以上用户。我们不会故意收集 18 岁以下人士的个人信息。",
+    deleteLi3: "大致使用日期（如已知）",
   }),
 
   ja: L({
@@ -322,11 +323,9 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     termsP7:
       "当社は本規約を更新することがあります。変更後も本サービスの利用を継続する場合、更新後の規約に同意したものとみなされます。重要な変更は、上記の更新日を変更することで反映されます。",
     termsH8: "8. お問い合わせ",
-    deleteIntro:
-      "Google Play および App Store は、アプリをインストールせずに利用できる公開の削除経路を求めています。最終更新：2026年8月6日",
+    deleteIntro: "このページでは、端末上の ACOPAY ウォレットデータを削除し、関連するサーバー側データの削除を依頼できます。サーバー側の依頼にアプリのインストールは不要です。",
     deleteHWhat: "ここでいう「アカウント」とは",
-    deletePWhat:
-      "ACOPAY モバイルウォレットは非カストディアル型です。鍵はお客様の端末内に保存されます。資金を保有する中央集権的なログインアカウントは存在しません。削除とは、ローカルのウォレットデータ、および ACOPAY の API で使用したアドレスに紐づくサーバー側のセッション／運用データを削除することを意味します。",
+    deletePWhat: "ACOPAY モバイルウォレットはリカバリーフレーズと秘密鍵を端末内に保持します。資金を預かる中央ログインアカウントはありません。「削除」とは、(1) 端末上のウォレットデータの削除、および (2) ACOPAY で使用したウォレットアドレスに紐づくサーバー側データ（セッション、任意の Pay ユーザー名の対応、プッシュ登録、サポートメールなど）の削除または匿名化を意味します。",
     deleteHA: "A. 端末上のデータを削除する（即時）",
     deleteA1: "ACOPAY アプリを開く → 設定 → サインアウト。",
     deleteA2: "端末からアプリをアンインストールする。",
@@ -340,9 +339,8 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     deleteSubject: "Delete ACOPAY data",
     deleteEmailAfter: " でメールを送り、以下を記載してください：",
     deleteLi1: "ACOPAY で使用した Solana ウォレットアドレス",
-    deleteLi2: "利用時期のおおよその目安（分かる場合）",
-    deleteP2:
-      "関連するセッション記録およびサポートのやり取りは、法的またはセキュリティ上の理由で保持が必要なデータ、および削除できない公開ブロックチェーン記録を除き、30日以内に削除または匿名化します。",
+    deleteLi2: "作成した ACOPAY Pay ユーザー名（該当する場合）",
+    deleteP2: "確認可能な依頼を受け取ってから 30 日以内に、関連するセッション、Pay ユーザー名の対応、プッシュ登録、サポート連絡を削除または匿名化します。法令・セキュリティ上保持が必要なデータを除きます。公開ブロックチェーン記録は削除できません。",
     deleteHRelated: "関連情報",
     privacyLiUsernameLabel: "Pay ユーザー名（任意）",
     privacyLiUsernameRest: "——ACOPAY Pay ユーザー名を作成した場合、他の方がユーザー名で送金できるよう、そのユーザー名と公開ウォレットアドレスの対応を保存します。",
@@ -350,6 +348,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyLiPushRest: "——アプリで支払い通知を有効にした場合、公開ウォレットアドレスに紐づく端末のプッシュトークンを保存します。設定でオフにできます。",
     privacyHChildren: "8. 子ども",
     privacyPChildren: "本サービスは 18 歳以上の方を対象とします。18 歳未満から故意に個人情報を収集することはありません。",
+    deleteLi3: "おおよその利用時期（分かる場合）",
   }),
 
   ko: L({
@@ -417,10 +416,9 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     termsP7:
       "당사는 본 약관을 업데이트할 수 있습니다. 변경 후 계속 이용하는 것은 업데이트된 약관에 대한 동의로 간주됩니다. 중요한 변경 사항은 위의 날짜를 갱신하여 반영됩니다.",
     termsH8: "8. 연락처",
-    deleteIntro: "Google Play와 App Store는 앱 설치 없이 이용할 수 있는 공개 삭제 경로를 요구합니다. 최종 업데이트: 2026년 8월 6일",
+    deleteIntro: "이 페이지에서 기기의 ACOPAY 지갑 데이터를 삭제하고 관련 서버 데이터 삭제를 요청할 수 있습니다. 서버 요청에는 앱 설치가 필요하지 않습니다.",
     deleteHWhat: "여기서 말하는 “계정”의 의미",
-    deletePWhat:
-      "ACOPAY 모바일 지갑은 비수탁형입니다. 귀하의 키는 귀하의 기기에 저장됩니다. 귀하의 자금을 보유하는 중앙 로그인 계정은 존재하지 않습니다. 삭제란 로컬 지갑 데이터와 ACOPAY API에서 사용한 주소에 연결된 서버 측 세션/운영 데이터를 제거하는 것을 의미합니다.",
+    deletePWhat: "ACOPAY 모바일 지갑은 복구 구문과 개인 키를 기기에 보관합니다. 자금을 보유하는 중앙 로그인 계정은 없습니다. “삭제”란 (1) 기기의 지갑 데이터 제거, (2) ACOPAY에서 사용한 지갑 주소에 연결된 서버 데이터(세션, 선택적 Pay 사용자 이름 매핑, 푸시 등록, 지원 이메일 등) 삭제 또는 익명화를 의미합니다.",
     deleteHA: "A. 기기에서 데이터 삭제(즉시)",
     deleteA1: "ACOPAY 앱 열기 → 설정 → 로그아웃.",
     deleteA2: "기기에서 앱을 삭제합니다.",
@@ -433,9 +431,8 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     deleteSubject: "Delete ACOPAY data",
     deleteEmailAfter: ") 그리고 다음 내용을 포함하세요:",
     deleteLi1: "ACOPAY에서 사용한 귀하의 Solana 지갑 주소",
-    deleteLi2: "대략적인 사용 기간(아는 경우)",
-    deleteP2:
-      "당사는 법적 또는 보안상의 이유로 보관해야 하는 데이터와 삭제할 수 없는 공개 블록체인 기록을 제외하고, 관련 세션 기록 및 지원 서신을 30일 이내에 삭제하거나 익명화합니다.",
+    deleteLi2: "생성한 ACOPAY Pay 사용자 이름(해당 시)",
+    deleteP2: "확인 가능한 요청 접수 후 30일 이내에 관련 세션, Pay 사용자 이름 매핑, 푸시 등록 및 지원 서신을 삭제하거나 익명화합니다. 법적·보안상 보관해야 하는 데이터는 제외합니다. 공개 블록체인 기록은 삭제할 수 없습니다.",
     deleteHRelated: "관련 문서",
     privacyLiUsernameLabel: "Pay 사용자 이름(선택)",
     privacyLiUsernameRest: " — ACOPAY Pay 사용자 이름을 만들면 다른 사람이 사용자 이름으로 보낼 수 있도록 해당 이름과 공개 지갑 주소 매핑을 저장합니다.",
@@ -443,6 +440,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyLiPushRest: " — 앱에서 결제 알림을 켜면 공개 지갑 주소에 연결된 기기 푸시 토큰을 저장합니다. 설정에서 끌 수 있습니다.",
     privacyHChildren: "8. 아동",
     privacyPChildren: "본 서비스는 18세 이상 사용자를 대상으로 합니다. 18세 미만의 개인정보를 고의로 수집하지 않습니다.",
+    deleteLi3: "대략적인 사용 시기(아는 경우)",
   }),
 
   th: L({
@@ -511,11 +509,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     termsP7:
       "เราอาจปรับปรุงข้อกำหนดนี้ การใช้งานต่อเนื่องหลังการเปลี่ยนแปลงถือเป็นการยอมรับข้อกำหนดที่ปรับปรุงแล้ว การเปลี่ยนแปลงที่สำคัญจะสะท้อนด้วยการปรับปรุงวันที่ด้านบน",
     termsH8: "8. ติดต่อ",
-    deleteIntro:
-      "Google Play และ App Store กำหนดให้มีช่องทางลบข้อมูลสาธารณะโดยไม่ต้องติดตั้งแอป อัปเดตล่าสุด: 6 สิงหาคม 2026",
     deleteHWhat: "ความหมายของ “บัญชี” ในที่นี้",
-    deletePWhat:
-      "กระเป๋าเงินมือถือ ACOPAY เป็นแบบไม่ดูแลกุญแจแทนคุณ คีย์ของคุณอยู่บนอุปกรณ์ของคุณ ไม่มีบัญชีเข้าสู่ระบบส่วนกลางใดที่ถือครองเงินของคุณ การลบหมายถึงการลบข้อมูลกระเป๋าเงินในเครื่องและเซสชัน/ข้อมูลการดำเนินงานฝั่งเซิร์ฟเวอร์ที่เชื่อมโยงกับที่อยู่ที่คุณใช้กับ API ของ ACOPAY",
     deleteHA: "A. ลบข้อมูลบนอุปกรณ์ของคุณ (ทันที)",
     deleteA1: "เปิดแอป ACOPAY → การตั้งค่า → ออกจากระบบ",
     deleteA2: "ถอนการติดตั้งแอปออกจากอุปกรณ์ของคุณ",
@@ -528,9 +522,6 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     deleteSubject: "Delete ACOPAY data",
     deleteEmailAfter: " และแนบข้อมูลต่อไปนี้:",
     deleteLi1: "ที่อยู่กระเป๋าเงิน Solana ของคุณที่ใช้กับ ACOPAY",
-    deleteLi2: "ช่วงเวลาการใช้งานโดยประมาณ (ถ้าทราบ)",
-    deleteP2:
-      "เราจะลบหรือทำให้ไม่ระบุตัวตนของบันทึกเซสชันและอีเมลติดต่อฝ่ายสนับสนุนที่เกี่ยวข้องภายใน 30 วัน ยกเว้นข้อมูลที่เราต้องเก็บรักษาไว้ด้วยเหตุผลทางกฎหมายหรือความปลอดภัย และยกเว้นบันทึกบล็อกเชนสาธารณะซึ่งไม่สามารถลบได้",
     deleteHRelated: "ที่เกี่ยวข้อง",
     privacyLiUsernameLabel: "Pay username (optional)",
     privacyLiUsernameRest: " Ã¢ÂÂ if you create an ACOPAY Pay username, we store the mapping between that username and your public wallet address so others can pay you by username.",
@@ -605,11 +596,9 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     termsP7:
       "Kami dapat memperbarui Ketentuan ini. Penggunaan berkelanjutan setelah perubahan merupakan penerimaan atas Ketentuan yang diperbarui. Perubahan material akan tercermin dengan memperbarui tanggal di atas.",
     termsH8: "8. Kontak",
-    deleteIntro:
-      "Google Play dan App Store mewajibkan jalur penghapusan publik yang tidak memerlukan pemasangan aplikasi. Terakhir diperbarui: 6 Agustus 2026",
+    deleteIntro: "Gunakan halaman ini untuk menghapus data dompet ACOPAY dari perangkat Anda dan meminta penghapusan data terkait di server. Anda tidak perlu menginstal aplikasi untuk mengirim permintaan di sisi server.",
     deleteHWhat: "Arti “akun” di sini",
-    deletePWhat:
-      "Dompet seluler ACOPAY bersifat non-kustodian. Kunci Anda berada di perangkat Anda. Tidak ada akun login pusat yang menyimpan dana Anda. Penghapusan berarti menghapus data dompet lokal dan sesi/data operasional sisi server yang terkait dengan alamat yang Anda gunakan dengan API ACOPAY.",
+    deletePWhat: "Dompet seluler ACOPAY menyimpan frasa pemulihan dan private key di perangkat Anda. Tidak ada akun login terpusat yang memegang dana Anda. “Penghapusan” berarti: (1) menghapus data dompet di perangkat, dan (2) menghapus atau menganonimkan data di server yang terkait dengan alamat dompet yang Anda gunakan dengan ACOPAY (misalnya sesi, pemetaan username Pay opsional, registrasi push, dan email dukungan).",
     deleteHA: "A. Hapus data di perangkat Anda (instan)",
     deleteA1: "Buka aplikasi ACOPAY → Pengaturan → Keluar.",
     deleteA2: "Copot pemasangan aplikasi dari perangkat Anda.",
@@ -622,9 +611,8 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     deleteSubject: "Delete ACOPAY data",
     deleteEmailAfter: " dan sertakan:",
     deleteLi1: "Alamat dompet Solana Anda yang digunakan dengan ACOPAY",
-    deleteLi2: "Perkiraan tanggal penggunaan (jika diketahui)",
-    deleteP2:
-      "Kami akan menghapus atau menganonimkan catatan sesi dan korespondensi dukungan terkait dalam waktu 30 hari, kecuali data yang harus kami simpan karena alasan hukum atau keamanan, dan kecuali catatan blockchain publik yang tidak dapat dihapus.",
+    deleteLi2: "Username Pay ACOPAY yang Anda buat (jika ada)",
+    deleteP2: "Kami akan menghapus atau menganonimkan catatan sesi, pemetaan username Pay, registrasi push, dan korespondensi dukungan dalam 30 hari setelah permintaan yang dapat diverifikasi, kecuali data yang harus kami simpan karena alasan hukum atau keamanan. Catatan blockchain publik tidak dapat dihapus.",
     deleteHRelated: "Terkait",
     privacyLiUsernameLabel: "Username Pay (opsional)",
     privacyLiUsernameRest: " — jika Anda membuat username Pay ACOPAY, kami menyimpan pemetaan antara username itu dan alamat dompet publik Anda agar orang lain dapat membayar lewat username.",
@@ -632,6 +620,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyLiPushRest: " — jika Anda mengaktifkan notifikasi pembayaran di aplikasi, kami menyimpan token push perangkat yang ditautkan ke alamat dompet publik. Anda dapat mematikannya di Pengaturan.",
     privacyHChildren: "8. Anak-anak",
     privacyPChildren: "Layanan ditujukan bagi pengguna berusia 18 tahun ke atas. Kami tidak dengan sengaja mengumpulkan informasi pribadi dari siapa pun di bawah 18 tahun.",
+    deleteLi3: "Perkiraan waktu penggunaan (jika diketahui)",
   }),
 
   ms: L({
@@ -699,11 +688,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     termsP7:
       "Kami boleh mengemas kini Terma ini. Penggunaan berterusan selepas perubahan membentuk penerimaan Terma yang dikemas kini. Perubahan penting akan dicerminkan dengan mengemas kini tarikh di atas.",
     termsH8: "8. Hubungi",
-    deleteIntro:
-      "Google Play dan App Store memerlukan laluan pemadaman awam yang tidak memerlukan pemasangan aplikasi. Kemas kini terakhir: 6 Ogos 2026",
     deleteHWhat: "Maksud “akaun” di sini",
-    deletePWhat:
-      "Dompet mudah alih ACOPAY adalah bukan kustodian. Kunci anda berada pada peranti anda. Tiada akaun log masuk pusat yang menyimpan dana anda. Pemadaman bermaksud mengalih keluar data dompet tempatan dan mana-mana sesi/data operasi bahagian pelayan yang berkaitan dengan alamat yang anda gunakan dengan API ACOPAY.",
     deleteHA: "A. Padam data pada peranti anda (serta-merta)",
     deleteA1: "Buka aplikasi ACOPAY → Tetapan → Log keluar.",
     deleteA2: "Nyahpasang aplikasi daripada peranti anda.",
@@ -716,9 +701,6 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     deleteSubject: "Delete ACOPAY data",
     deleteEmailAfter: " dan sertakan:",
     deleteLi1: "Alamat dompet Solana anda yang digunakan dengan ACOPAY",
-    deleteLi2: "Anggaran tarikh penggunaan (jika diketahui)",
-    deleteP2:
-      "Kami akan memadam atau menamakan tanpa nama rekod sesi dan surat-menyurat sokongan berkaitan dalam masa 30 hari, kecuali data yang perlu kami simpan atas sebab undang-undang atau keselamatan, dan kecuali rekod blockchain awam yang tidak boleh dipadam.",
     deleteHRelated: "Berkaitan",
     privacyLiUsernameLabel: "Nama pengguna Pay (pilihan)",
     privacyLiUsernameRest: " — jika anda mencipta nama pengguna Pay ACOPAY, kami menyimpan pemetaan antara nama itu dan alamat dompet awam anda supaya orang lain boleh membayar melalui nama pengguna.",
@@ -793,11 +775,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     termsP7:
       "हम इन शर्तों को अपडेट कर सकते हैं। परिवर्तनों के बाद निरंतर उपयोग अपडेट की गई शर्तों की स्वीकृति माना जाएगा। महत्वपूर्ण परिवर्तन ऊपर दी गई तारीख को अपडेट करके दर्शाए जाएँगे।",
     termsH8: "8. संपर्क करें",
-    deleteIntro:
-      "Google Play और App Store ऐप इंस्टॉल किए बिना सार्वजनिक हटाने का मार्ग चाहते हैं। अंतिम अपडेट: 6 अगस्त 2026",
     deleteHWhat: "यहाँ “खाते” का क्या मतलब है",
-    deletePWhat:
-      "ACOPAY मोबाइल वॉलेट नॉन-कस्टोडियल है। आपकी की आपके डिवाइस पर रहती है। कोई केंद्रीय लॉगिन खाता नहीं है जो आपके फंड रखता हो। हटाने का मतलब है स्थानीय वॉलेट डेटा और आपके द्वारा ACOPAY API के साथ उपयोग किए गए पतों से जुड़े किसी भी सर्वर-साइड सेशन/परिचालन डेटा को हटाना।",
     deleteHA: "A. अपने डिवाइस पर डेटा हटाएँ (तुरंत)",
     deleteA1: "ACOPAY ऐप खोलें → सेटिंग्स → साइन आउट।",
     deleteA2: "अपने डिवाइस से ऐप को अनइंस्टॉल करें।",
@@ -810,9 +788,6 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     deleteSubject: "Delete ACOPAY data",
     deleteEmailAfter: " और इसमें शामिल करें:",
     deleteLi1: "ACOPAY के साथ उपयोग किए गए आपके Solana वॉलेट पते",
-    deleteLi2: "उपयोग की अनुमानित तारीखें (यदि ज्ञात हों)",
-    deleteP2:
-      "हम संबंधित सेशन रिकॉर्ड और सहायता पत्राचार को 30 दिनों के भीतर हटा देंगे या गुमनाम बना देंगे, उन डेटा को छोड़कर जिन्हें हमें कानूनी या सुरक्षा कारणों से बनाए रखना आवश्यक है, और उन सार्वजनिक ब्लॉकचेन रिकॉर्ड को छोड़कर जिन्हें हटाया नहीं जा सकता।",
     deleteHRelated: "संबंधित",
     privacyLiUsernameLabel: "Pay username (optional)",
     privacyLiUsernameRest: " Ã¢ÂÂ if you create an ACOPAY Pay username, we store the mapping between that username and your public wallet address so others can pay you by username.",
@@ -887,11 +862,9 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     termsP7:
       "Podemos actualizar estos Términos. El uso continuado tras los cambios constituye la aceptación de los Términos actualizados. Los cambios materiales se reflejarán actualizando la fecha indicada arriba.",
     termsH8: "8. Contacto",
-    deleteIntro:
-      "Google Play y App Store exigen una vía pública de eliminación que no requiera instalar la app. Última actualización: 6 de agosto de 2026",
+    deleteIntro: "Use esta página para eliminar los datos de la billetera ACOPAY de su dispositivo y solicitar la eliminación de datos relacionados en el servidor. No necesita tener la aplicación instalada para enviar una solicitud al servidor.",
     deleteHWhat: "Qué significa “cuenta” aquí",
-    deletePWhat:
-      "La cartera móvil ACOPAY no es custodiada. Tus claves residen en tu dispositivo. No existe una cuenta de acceso central que retenga tus fondos. Eliminar significa borrar los datos locales de la cartera y cualquier sesión/dato operativo del lado del servidor vinculado a las direcciones que hayas usado con las API de ACOPAY.",
+    deletePWhat: "La billetera móvil ACOPAY guarda su frase de recuperación y claves privadas en su dispositivo. No hay una cuenta de inicio de sesión central que custodie sus fondos. “Eliminación” significa: (1) quitar los datos de la billetera en el dispositivo, y (2) eliminar o anonimizar datos en el servidor vinculados a direcciones de billetera que usó con ACOPAY (por ejemplo sesiones, mapeos opcionales de nombre de usuario Pay, registros push y correos de soporte).",
     deleteHA: "A. Eliminar datos en tu dispositivo (al instante)",
     deleteA1: "Abra la app ACOPAY → Ajustes → Cerrar sesión.",
     deleteA2: "Desinstala la app de tu dispositivo.",
@@ -904,9 +877,8 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     deleteSubject: "Delete ACOPAY data",
     deleteEmailAfter: " e incluye:",
     deleteLi1: "Tus direcciones de cartera de Solana usadas con ACOPAY",
-    deleteLi2: "Fechas aproximadas de uso (si las conoces)",
-    deleteP2:
-      "Eliminaremos o anonimizaremos los registros de sesión y la correspondencia de soporte asociados en un plazo de 30 días, salvo los datos que debamos conservar por motivos legales o de seguridad, y salvo los registros públicos de la blockchain, que no se pueden eliminar.",
+    deleteLi2: "Cualquier nombre de usuario Pay de ACOPAY que haya creado (si aplica)",
+    deleteP2: "Eliminaremos o anonimizaremos registros de sesión, mapeos de nombre de usuario Pay, registros push y correspondencia de soporte en un plazo de 30 días tras una solicitud verificable, salvo datos que debamos conservar por motivos legales o de seguridad. Los registros públicos en blockchain no se pueden eliminar.",
     deleteHRelated: "Relacionado",
     privacyLiUsernameLabel: "Nombre de usuario Pay (opcional)",
     privacyLiUsernameRest: " — si crea un nombre de usuario Pay de ACOPAY, almacenamos la correspondencia entre ese nombre y su dirección de billetera pública para que otros puedan pagarle por nombre de usuario.",
@@ -914,6 +886,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyLiPushRest: " — si activa las notificaciones de pago en la app, almacenamos un token push del dispositivo vinculado a su dirección pública. Puede desactivarlas en Ajustes.",
     privacyHChildren: "8. Menores",
     privacyPChildren: "Los Servicios van destinados a usuarios de 18 años o más. No recopilamos a sabiendas información personal de menores de 18 años.",
+    deleteLi3: "Fechas aproximadas de uso (si las conoce)",
   }),
 
   pt: L({
@@ -981,11 +954,9 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     termsP7:
       "Podemos atualizar estes Termos. O uso continuado após as alterações constitui aceitação dos Termos atualizados. Alterações materiais serão refletidas atualizando a data acima.",
     termsH8: "8. Contato",
-    deleteIntro:
-      "A Google Play e a App Store exigem um caminho público de exclusão que não requeira instalar o app. Última atualização: 6 de agosto de 2026",
+    deleteIntro: "Use esta página para remover dados da carteira ACOPAY do seu dispositivo e solicitar exclusão de dados relacionados no servidor. Você não precisa ter o app instalado para enviar um pedido ao servidor.",
     deleteHWhat: "O que significa “conta” aqui",
-    deletePWhat:
-      "A carteira móvel ACOPAY é não custodial. Suas chaves ficam no seu dispositivo. Não existe uma conta de login central que retenha seus fundos. Excluir significa remover os dados locais da carteira e quaisquer sessões/dados operacionais do lado do servidor vinculados aos endereços que você usou com as APIs da ACOPAY.",
+    deletePWhat: "A carteira móvel ACOPAY mantém sua frase de recuperação e chaves privadas no dispositivo. Não há conta de login central que detenha seus fundos. “Exclusão” significa: (1) remover dados da carteira no dispositivo e (2) excluir ou anonimizar dados no servidor ligados a endereços usados com a ACOPAY (por exemplo sessões, mapeamentos opcionais de nome de usuário Pay, registros push e e-mails de suporte).",
     deleteHA: "A. Excluir dados no seu dispositivo (instantâneo)",
     deleteA1: "Abra o app ACOPAY → Configurações → Sair.",
     deleteA2: "Desinstale o aplicativo do seu dispositivo.",
@@ -998,9 +969,8 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     deleteSubject: "Delete ACOPAY data",
     deleteEmailAfter: " e inclua:",
     deleteLi1: "Seu(s) endereço(s) de carteira Solana usado(s) com a ACOPAY",
-    deleteLi2: "Datas aproximadas de uso (se conhecidas)",
-    deleteP2:
-      "Excluiremos ou anonimizaremos os registros de sessão e a correspondência de suporte associados em até 30 dias, exceto os dados que devamos reter por motivos legais ou de segurança, e exceto os registros públicos da blockchain, que não podem ser excluídos.",
+    deleteLi2: "Qualquer nome de usuário Pay da ACOPAY que você criou (se aplicável)",
+    deleteP2: "Excluiremos ou anonimizaremos registros de sessão, mapeamentos de nome de usuário Pay, registros push e correspondência de suporte em até 30 dias após um pedido verificável, exceto dados que devemos reter por motivos legais ou de segurança. Registros públicos em blockchain não podem ser excluídos.",
     deleteHRelated: "Relacionado",
     privacyLiUsernameLabel: "Nome de usuário Pay (opcional)",
     privacyLiUsernameRest: " — se você criar um nome de usuário Pay da ACOPAY, armazenamos o mapeamento entre esse nome e o endereço público da carteira para que outros possam pagar por nome de usuário.",
@@ -1008,6 +978,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyLiPushRest: " — se você ativar notificações de pagamento no app, armazenamos um token push do dispositivo vinculado ao endereço público. Você pode desativar em Ajustes.",
     privacyHChildren: "8. Crianças",
     privacyPChildren: "Os Serviços destinam-se a usuários com 18 anos ou mais. Não coletamos intencionalmente informações pessoais de menores de 18 anos.",
+    deleteLi3: "Datas aproximadas de uso (se souber)",
   }),
 
   fr: L({
@@ -1075,11 +1046,9 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     termsP7:
       "Nous pouvons mettre à jour les présentes Conditions. La poursuite de l'utilisation après modification vaut acceptation des Conditions mises à jour. Les modifications importantes seront reflétées par la mise à jour de la date ci-dessus.",
     termsH8: "8. Contact",
-    deleteIntro:
-      "Google Play et l’App Store exigent un chemin de suppression public sans installation de l’app. Dernière mise à jour : 6 août 2026",
+    deleteIntro: "Utilisez cette page pour supprimer les données du portefeuille ACOPAY de votre appareil et demander la suppression des données associées côté serveur. Vous n’avez pas besoin d’avoir l’application installée pour envoyer une demande côté serveur.",
     deleteHWhat: "Ce que signifie « compte » ici",
-    deletePWhat:
-      "Le portefeuille mobile ACOPAY est non dépositaire. Vos clés se trouvent sur votre appareil. Il n'existe pas de compte de connexion central détenant vos fonds. Supprimer signifie effacer les données locales du portefeuille et toute session/donnée d'exploitation côté serveur liée aux adresses que vous avez utilisées avec les API d'ACOPAY.",
+    deletePWhat: "Le portefeuille mobile ACOPAY conserve votre phrase de récupération et vos clés privées sur votre appareil. Il n’existe pas de compte de connexion central détenant vos fonds. La « suppression » signifie : (1) retirer les données du portefeuille sur l’appareil, et (2) supprimer ou anonymiser les données côté serveur liées aux adresses utilisées avec ACOPAY (par exemple sessions, correspondances de nom d’utilisateur Pay optionnelles, enregistrements push et e-mails d’assistance).",
     deleteHA: "A. Supprimer les données sur votre appareil (immédiat)",
     deleteA1: "Ouvrez l’app ACOPAY → Réglages → Déconnexion.",
     deleteA2: "Désinstallez l'application de votre appareil.",
@@ -1092,9 +1061,8 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     deleteSubject: "Delete ACOPAY data",
     deleteEmailAfter: " et incluez :",
     deleteLi1: "Votre ou vos adresses de portefeuille Solana utilisées avec ACOPAY",
-    deleteLi2: "Dates approximatives d'utilisation (si connues)",
-    deleteP2:
-      "Nous supprimerons ou anonymiserons les enregistrements de session et la correspondance de support associés sous 30 jours, à l'exception des données que nous devons conserver pour des raisons légales ou de sécurité, et à l'exception des enregistrements publics de la blockchain qui ne peuvent pas être supprimés.",
+    deleteLi2: "Tout nom d’utilisateur Pay ACOPAY que vous avez créé (le cas échéant)",
+    deleteP2: "Nous supprimerons ou anonymiserons les enregistrements de session, correspondances de nom d’utilisateur Pay, enregistrements push et correspondance d’assistance sous 30 jours après une demande vérifiable, sauf données que nous devons conserver pour des raisons légales ou de sécurité. Les enregistrements publics sur la blockchain ne peuvent pas être supprimés.",
     deleteHRelated: "En rapport",
     privacyLiUsernameLabel: "Nom d’utilisateur Pay (facultatif)",
     privacyLiUsernameRest: " — si vous créez un nom d’utilisateur Pay ACOPAY, nous stockons la correspondance entre ce nom et votre adresse de portefeuille publique afin que d’autres puissent vous payer par nom d’utilisateur.",
@@ -1102,6 +1070,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyLiPushRest: " — si vous activez les notifications de paiement dans l’application, nous stockons un jeton push de l’appareil lié à votre adresse publique. Vous pouvez les désactiver dans Réglages.",
     privacyHChildren: "8. Enfants",
     privacyPChildren: "Les Services s’adressent aux utilisateurs âgés de 18 ans ou plus. Nous ne collectons pas sciemment d’informations personnelles auprès de personnes de moins de 18 ans.",
+    deleteLi3: "Périodes d’utilisation approximatives (si connues)",
   }),
 
   de: L({
@@ -1169,11 +1138,9 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     termsP7:
       "Wir können diese Bedingungen aktualisieren. Die fortgesetzte Nutzung nach Änderungen gilt als Zustimmung zu den aktualisierten Bedingungen. Wesentliche Änderungen werden durch Aktualisierung des oben genannten Datums kenntlich gemacht.",
     termsH8: "8. Kontakt",
-    deleteIntro:
-      "Google Play und der App Store verlangen einen öffentlichen Löschweg ohne App-Installation. Zuletzt aktualisiert: 6. August 2026",
+    deleteIntro: "Nutzen Sie diese Seite, um ACOPAY-Wallet-Daten von Ihrem Gerät zu entfernen und die Löschung zugehöriger Serverdaten zu beantragen. Für eine Serveranfrage muss die App nicht installiert sein.",
     deleteHWhat: "Was “Konto” hier bedeutet",
-    deletePWhat:
-      "Die mobile ACOPAY-Geldbörse ist nicht verwahrend. Ihre Schlüssel befinden sich auf Ihrem Gerät. Es gibt kein zentrales Login-Konto, das Ihre Gelder verwahrt. Löschen bedeutet, lokale Geldbörsendaten sowie alle serverseitigen Sitzungen/Betriebsdaten zu entfernen, die mit von Ihnen bei ACOPAY-APIs verwendeten Adressen verknüpft sind.",
+    deletePWhat: "Die ACOPAY-Mobile-Wallet speichert Wiederherstellungsphrase und private Schlüssel auf Ihrem Gerät. Es gibt kein zentrales Login-Konto, das Ihre Mittel hält. „Löschung“ bedeutet: (1) Wallet-Daten auf dem Gerät entfernen und (2) serverbezogene Daten zu Wallet-Adressen, die Sie mit ACOPAY genutzt haben, löschen oder anonymisieren (z. B. Sitzungen, optionale Pay-Benutzernamen-Zuordnungen, Push-Registrierungen und Support-E-Mails).",
     deleteHA: "A. Daten auf Ihrem Gerät löschen (sofort)",
     deleteA1: "ACOPAY-App öffnen → Einstellungen → Abmelden.",
     deleteA2: "Deinstallieren Sie die App von Ihrem Gerät.",
@@ -1186,9 +1153,8 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     deleteSubject: "Delete ACOPAY data",
     deleteEmailAfter: " und geben Sie an:",
     deleteLi1: "Ihre mit ACOPAY verwendete(n) Solana-Geldbörsenadresse(n)",
-    deleteLi2: "Ungefähre Nutzungszeiträume (falls bekannt)",
-    deleteP2:
-      "Wir löschen oder anonymisieren zugehörige Sitzungsdaten und Support-Korrespondenz innerhalb von 30 Tagen, mit Ausnahme von Daten, die wir aus rechtlichen oder sicherheitstechnischen Gründen aufbewahren müssen, sowie öffentlichen Blockchain-Aufzeichnungen, die nicht gelöscht werden können.",
+    deleteLi2: "Einen von Ihnen angelegten ACOPAY-Pay-Benutzernamen (falls vorhanden)",
+    deleteP2: "Wir löschen oder anonymisieren zugehörige Sitzungsdaten, Pay-Benutzernamen-Zuordnungen, Push-Registrierungen und Support-Korrespondenz innerhalb von 30 Tagen nach einer überprüfbaren Anfrage, außer Daten, die wir aus rechtlichen oder Sicherheitsgründen aufbewahren müssen. Öffentliche Blockchain-Einträge können nicht gelöscht werden.",
     deleteHRelated: "Verwandt",
     privacyLiUsernameLabel: "Pay-Benutzername (optional)",
     privacyLiUsernameRest: " — wenn Sie einen ACOPAY-Pay-Benutzernamen anlegen, speichern wir die Zuordnung zwischen diesem Namen und Ihrer öffentlichen Wallet-Adresse, damit andere per Benutzername zahlen können.",
@@ -1196,6 +1162,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     privacyLiPushRest: " — wenn Sie Zahlungsbenachrichtigungen in der App aktivieren, speichern wir ein Geräte-Push-Token verknüpft mit Ihrer öffentlichen Wallet-Adresse. Abschaltbar unter Einstellungen.",
     privacyHChildren: "8. Kinder",
     privacyPChildren: "Die Dienste richten sich an Nutzer ab 18 Jahren. Wir erheben wissentlich keine personenbezogenen Daten von Personen unter 18 Jahren.",
+    deleteLi3: "Ungefähre Nutzungszeiträume (falls bekannt)",
   }),
 
   nl: L({
@@ -1263,11 +1230,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     termsP7:
       "We kunnen deze Voorwaarden bijwerken. Voortgezet gebruik na wijzigingen geldt als aanvaarding van de bijgewerkte Voorwaarden. Materiële wijzigingen worden weerspiegeld door de datum hierboven bij te werken.",
     termsH8: "8. Contact",
-    deleteIntro:
-      "Google Play en de App Store vereisen een openbaar verwijderpad zonder app-installatie. Laatst bijgewerkt: 6 augustus 2026",
     deleteHWhat: "Wat “account” hier betekent",
-    deletePWhat:
-      "De mobiele ACOPAY-portemonnee is niet-bewarend. Je sleutels bevinden zich op je apparaat. Er is geen centraal inlogaccount dat je tegoeden bewaart. Verwijderen betekent het verwijderen van lokale portemonneegegevens en eventuele serverzijdige sessies/operationele gegevens die zijn gekoppeld aan adressen die je met de API's van ACOPAY hebt gebruikt.",
     deleteHA: "A. Gegevens op je apparaat verwijderen (direct)",
     deleteA1: "Open de ACOPAY-app → Instellingen → Afmelden.",
     deleteA2: "Verwijder de app van je apparaat.",
@@ -1280,9 +1243,6 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     deleteSubject: "Delete ACOPAY data",
     deleteEmailAfter: " en vermeld:",
     deleteLi1: "Je Solana-portemonneeadres(sen) die je met ACOPAY hebt gebruikt",
-    deleteLi2: "Bij benadering periode van gebruik (indien bekend)",
-    deleteP2:
-      "We verwijderen of anonimiseren gerelateerde sessiegegevens en supportcorrespondentie binnen 30 dagen, behalve gegevens die we om juridische of beveiligingsredenen moeten bewaren, en behalve openbare blockchainrecords die niet kunnen worden verwijderd.",
     deleteHRelated: "Gerelateerd",
     privacyLiUsernameLabel: "Pay username (optional)",
     privacyLiUsernameRest: " Ã¢ÂÂ if you create an ACOPAY Pay username, we store the mapping between that username and your public wallet address so others can pay you by username.",
@@ -1357,11 +1317,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     termsP7:
       "Potremmo aggiornare i presenti Termini. L'uso continuato dopo le modifiche costituisce accettazione dei Termini aggiornati. Le modifiche sostanziali saranno riflesse aggiornando la data sopra riportata.",
     termsH8: "8. Contatti",
-    deleteIntro:
-      "Google Play e l’App Store richiedono un percorso pubblico di eliminazione senza installare l’app. Ultimo aggiornamento: 6 agosto 2026",
     deleteHWhat: "Cosa significa “account” in questo contesto",
-    deletePWhat:
-      "Il wallet mobile ACOPAY è non custodial. Le tue chiavi risiedono sul tuo dispositivo. Non esiste un account di accesso centrale che detenga i tuoi fondi. Eliminare significa rimuovere i dati locali del wallet ed eventuali sessioni/dati operativi lato server collegati agli indirizzi che hai utilizzato con le API di ACOPAY.",
     deleteHA: "A. Elimina i dati sul tuo dispositivo (immediato)",
     deleteA1: "Apri l’app ACOPAY → Impostazioni → Esci.",
     deleteA2: "Disinstalla l'app dal tuo dispositivo.",
@@ -1374,9 +1330,6 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     deleteSubject: "Delete ACOPAY data",
     deleteEmailAfter: " e includi:",
     deleteLi1: "Il tuo/i tuoi indirizzo/i wallet Solana utilizzati con ACOPAY",
-    deleteLi2: "Date approssimative di utilizzo (se note)",
-    deleteP2:
-      "Elimineremo o renderemo anonimi i record di sessione e la corrispondenza di supporto associati entro 30 giorni, ad eccezione dei dati che dobbiamo conservare per motivi legali o di sicurezza, e ad eccezione dei record pubblici sulla blockchain, che non possono essere eliminati.",
     deleteHRelated: "Correlati",
     privacyLiUsernameLabel: "Pay username (optional)",
     privacyLiUsernameRest: " Ã¢ÂÂ if you create an ACOPAY Pay username, we store the mapping between that username and your public wallet address so others can pay you by username.",
@@ -1451,11 +1404,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     termsP7:
       "Мы можем обновлять настоящие Условия. Продолжение использования после изменений означает принятие обновлённых Условий. Существенные изменения будут отражены обновлением указанной выше даты.",
     termsH8: "8. Контакты",
-    deleteIntro:
-      "Google Play и App Store требуют публичный способ удаления данных без установки приложения. Последнее обновление: 6 августа 2026 г.",
     deleteHWhat: "Что здесь означает «аккаунт»",
-    deletePWhat:
-      "Мобильный кошелёк ACOPAY является некастодиальным. Ваши ключи хранятся на вашем устройстве. Не существует центрального аккаунта для входа, который хранил бы ваши средства. Удаление означает удаление локальных данных кошелька и любых серверных сессий/операционных данных, связанных с адресами, которые вы использовали с API ACOPAY.",
     deleteHA: "A. Удаление данных на вашем устройстве (мгновенно)",
     deleteA1: "Откройте приложение ACOPAY → Настройки → Выйти.",
     deleteA2: "Удалите приложение со своего устройства.",
@@ -1468,9 +1417,6 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     deleteSubject: "Delete ACOPAY data",
     deleteEmailAfter: " и укажите:",
     deleteLi1: "Ваш(и) адрес(а) кошелька Solana, использованный(е) с ACOPAY",
-    deleteLi2: "Примерные даты использования (если известны)",
-    deleteP2:
-      "Мы удалим или обезличим связанные записи сессий и переписку со службой поддержки в течение 30 дней, за исключением данных, которые мы обязаны хранить по юридическим или соображениям безопасности, а также публичных записей блокчейна, которые невозможно удалить.",
     deleteHRelated: "См. также",
     privacyLiUsernameLabel: "Pay username (optional)",
     privacyLiUsernameRest: " Ã¢ÂÂ if you create an ACOPAY Pay username, we store the mapping between that username and your public wallet address so others can pay you by username.",
@@ -1545,11 +1491,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     termsP7:
       "Ми можемо оновлювати ці Умови. Продовження використання після змін означає прийняття оновлених Умов. Суттєві зміни будуть відображені шляхом оновлення зазначеної вище дати.",
     termsH8: "8. Контакти",
-    deleteIntro:
-      "Google Play та App Store вимагають публічний шлях видалення без встановлення застосунку. Останнє оновлення: 6 серпня 2026 р.",
     deleteHWhat: "Що тут означає «акаунт»",
-    deletePWhat:
-      "Мобільний гаманець ACOPAY є некастодіальним. Ваші ключі зберігаються на вашому пристрої. Не існує центрального облікового запису для входу, який утримував би ваші кошти. Видалення означає видалення локальних даних гаманця та будь-яких серверних сесій/операційних даних, пов'язаних з адресами, які ви використовували з API ACOPAY.",
     deleteHA: "A. Видалення даних на вашому пристрої (миттєво)",
     deleteA1: "Відкрийте застосунок ACOPAY → Налаштування → Вийти.",
     deleteA2: "Видаліть додаток зі свого пристрою.",
@@ -1562,9 +1504,6 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     deleteSubject: "Delete ACOPAY data",
     deleteEmailAfter: " та вкажіть:",
     deleteLi1: "Вашу(і) адресу(и) гаманця Solana, використану(і) з ACOPAY",
-    deleteLi2: "Приблизні дати використання (якщо відомі)",
-    deleteP2:
-      "Ми видалимо або знеособимо пов'язані записи сесій та листування з підтримкою протягом 30 днів, за винятком даних, які ми повинні зберігати з юридичних причин або міркувань безпеки, а також публічних записів блокчейну, які неможливо видалити.",
     deleteHRelated: "Пов'язане",
     privacyLiUsernameLabel: "Pay username (optional)",
     privacyLiUsernameRest: " Ã¢ÂÂ if you create an ACOPAY Pay username, we store the mapping between that username and your public wallet address so others can pay you by username.",
@@ -1639,11 +1578,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     termsP7:
       "Możemy aktualizować niniejsze Warunki. Dalsze korzystanie po wprowadzeniu zmian oznacza akceptację zaktualizowanych Warunków. Istotne zmiany będą odzwierciedlone poprzez aktualizację powyższej daty.",
     termsH8: "8. Kontakt",
-    deleteIntro:
-      "Google Play i App Store wymagają publicznego sposobu usunięcia danych bez instalacji aplikacji. Ostatnia aktualizacja: 6 sierpnia 2026",
     deleteHWhat: "Co oznacza tutaj “konto”",
-    deletePWhat:
-      "Mobilny portfel ACOPAY jest niekustodialny. Twoje klucze znajdują się na Twoim urządzeniu. Nie istnieje centralne konto logowania przechowujące Twoje środki. Usunięcie oznacza usunięcie lokalnych danych portfela oraz wszelkich sesji/danych operacyjnych po stronie serwera powiązanych z adresami używanymi przez Ciebie z API ACOPAY.",
     deleteHA: "A. Usuń dane na swoim urządzeniu (natychmiast)",
     deleteA1: "Otwórz aplikację ACOPAY → Ustawienia → Wyloguj.",
     deleteA2: "Odinstaluj aplikację ze swojego urządzenia.",
@@ -1656,9 +1591,6 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     deleteSubject: "Delete ACOPAY data",
     deleteEmailAfter: " i podaj:",
     deleteLi1: "Twój adres (lub adresy) portfela Solana używany(e) z ACOPAY",
-    deleteLi2: "Przybliżone daty korzystania (jeśli znane)",
-    deleteP2:
-      "Usuniemy lub zanonimizujemy powiązane zapisy sesji i korespondencję pomocy technicznej w ciągu 30 dni, z wyjątkiem danych, które musimy przechowywać z przyczyn prawnych lub bezpieczeństwa, oraz z wyjątkiem publicznych zapisów blockchaina, których nie można usunąć.",
     deleteHRelated: "Powiązane",
     privacyLiUsernameLabel: "Pay username (optional)",
     privacyLiUsernameRest: " Ã¢ÂÂ if you create an ACOPAY Pay username, we store the mapping between that username and your public wallet address so others can pay you by username.",
@@ -1733,11 +1665,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     termsP7:
       "Bu Şartları güncelleyebiliriz. Değişikliklerden sonra kullanıma devam edilmesi, güncellenmiş Şartların kabulü anlamına gelir. Önemli değişiklikler, yukarıdaki tarihin güncellenmesiyle yansıtılacaktır.",
     termsH8: "8. İletişim",
-    deleteIntro:
-      "Google Play ve App Store, uygulama kurmadan kullanılabilen herkese açık bir silme yolu ister. Son güncelleme: 6 Ağustos 2026",
     deleteHWhat: "Burada “hesap” ne anlama gelir",
-    deletePWhat:
-      "ACOPAY mobil cüzdanı saklayıcı değildir. Anahtarlarınız cihazınızda bulunur. Fonlarınızı tutan merkezi bir giriş hesabı yoktur. Silme, yerel cüzdan verilerinin ve ACOPAY API'leriyle kullandığınız adreslere bağlı sunucu tarafı oturumların/operasyonel verilerin kaldırılması anlamına gelir.",
     deleteHA: "A. Cihazınızdaki verileri silin (anında)",
     deleteA1: "ACOPAY uygulamasını açın → Ayarlar → Çıkış yap.",
     deleteA2: "Uygulamayı cihazınızdan kaldırın.",
@@ -1750,9 +1678,6 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     deleteSubject: "Delete ACOPAY data",
     deleteEmailAfter: " ve şunları ekleyin:",
     deleteLi1: "ACOPAY ile kullandığınız Solana cüzdan adres(ler)iniz",
-    deleteLi2: "Yaklaşık kullanım tarihleri (biliniyorsa)",
-    deleteP2:
-      "Yasal veya güvenlik nedenleriyle saklamamız gereken veriler ile silinemeyen kamuya açık blok zinciri kayıtları hariç olmak üzere, ilgili oturum kayıtlarını ve destek yazışmalarını 30 gün içinde sileceğiz veya anonimleştireceğiz.",
     deleteHRelated: "İlgili",
     privacyLiUsernameLabel: "Pay username (optional)",
     privacyLiUsernameRest: " Ã¢ÂÂ if you create an ACOPAY Pay username, we store the mapping between that username and your public wallet address so others can pay you by username.",
@@ -1827,11 +1752,7 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     termsP7:
       "يجوز لنا تحديث هذه الشروط. يُعد استمرار الاستخدام بعد التغييرات قبولًا للشروط المحدّثة. سيتم توضيح التغييرات الجوهرية من خلال تحديث التاريخ أعلاه.",
     termsH8: "8. تواصل معنا",
-    deleteIntro:
-      "يتطلب Google Play وApp Store مسار حذف عامًا دون الحاجة إلى تثبيت التطبيق. آخر تحديث: 6 أغسطس 2026",
     deleteHWhat: "ماذا يعني “الحساب” هنا",
-    deletePWhat:
-      "محفظة ACOPAY للجوال غير احتجازية. تبقى مفاتيحك على جهازك. لا يوجد حساب دخول مركزي يحتفظ بأموالك. يعني الحذف إزالة بيانات المحفظة المحلية وأي جلسات/بيانات تشغيل من جانب الخادم مرتبطة بالعناوين التي استخدمتها مع واجهات برمجة تطبيقات ACOPAY.",
     deleteHA: "أ. حذف البيانات من جهازك (فوري)",
     deleteA1: "افتح تطبيق ACOPAY ← الإعدادات ← تسجيل الخروج.",
     deleteA2: "قم بإلغاء تثبيت التطبيق من جهازك.",
@@ -1844,9 +1765,6 @@ export const LEGAL_PAGE_PARTIALS: Partials = {
     deleteSubject: "Delete ACOPAY data",
     deleteEmailAfter: " مع تضمين ما يلي:",
     deleteLi1: "عنوان (عناوين) محفظة Solana الخاصة بك المستخدمة مع ACOPAY",
-    deleteLi2: "التواريخ التقريبية للاستخدام (إن كانت معروفة)",
-    deleteP2:
-      "سنقوم بحذف سجلات الجلسات ومراسلات الدعم المرتبطة أو إخفاء هويتها خلال 30 يومًا، باستثناء البيانات التي يجب علينا الاحتفاظ بها لأسباب قانونية أو أمنية، وباستثناء سجلات سلسلة الكتل العامة التي لا يمكن حذفها.",
     deleteHRelated: "ذات صلة",
     privacyLiUsernameLabel: "Pay username (optional)",
     privacyLiUsernameRest: " Ã¢ÂÂ if you create an ACOPAY Pay username, we store the mapping between that username and your public wallet address so others can pay you by username.",
