@@ -44,7 +44,7 @@ export const en = {
   markets: {
     label: "Markets",
     title: "Markets",
-    subtitle: "ACOPAY transactions, Raydium pools, spot prices, and Jupiter swap.",
+    subtitle: "ACOPAY transactions, Raydium pools, and spot prices.",
     allPools: "All Pools",
     binance: "Spot",
     spot: "Spot",

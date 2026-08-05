@@ -3,10 +3,9 @@ import { MARKET_TABS, type MarketTabId } from "../../config/markets";
 import { useT } from "../../i18n/LanguageProvider";
 import { BinanceMarketsTable } from "./BinanceMarketsTable";
 import { LiquidityPoolsWidget } from "./LiquidityPoolsWidget";
-import { SwapMarketPanel } from "./SwapMarketPanel";
 import { TransfersExplorer } from "./TransfersExplorer";
 
-/** Markets hub: Transactions | All Pools | Spot | Swap */
+/** Markets hub: Transactions | All Pools | Spot (Swap tab removed — Kevin 2026-08-05). */
 type Props = {
   variant?: "home" | "full";
 };
@@ -41,11 +40,10 @@ export function MarketsHub({ variant = "full" }: Props) {
             ))}
           </div>
 
-          <div className={`mt-6 ${tab === "swap" ? "flex justify-center py-2 sm:py-4" : ""}`}>
+          <div className="mt-6">
             {tab === "pools" && <LiquidityPoolsWidget variant={variant} embedded />}
             {tab === "spot" && <BinanceMarketsTable variant={variant} embedded />}
             {tab === "transfers" && <TransfersExplorer />}
-            {tab === "swap" && <SwapMarketPanel />}
           </div>
         </div>
       </div>

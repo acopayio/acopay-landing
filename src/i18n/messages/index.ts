@@ -98,7 +98,7 @@ const partials: Record<string, DeepPartialMessages> = {
     markets: {
       label: "Thị trường",
       title: "Thị trường",
-      subtitle: "Giao dịch ACOPAY, pool Raydium, giá spot và hoán đổi Jupiter.",
+      subtitle: "Giao dịch ACOPAY, pool Raydium và giá thị trường tham khảo.",
       allPools: "Tất cả pool",
       binance: "Giá spot",
       spot: "Giá spot",
@@ -1950,7 +1950,7 @@ const partials: Record<string, DeepPartialMessages> = {
     markets: {
       label: "मार्केट्स",
       title: "मार्केट्स",
-      subtitle: "ACOPAY ट्रांजैक्शन, Raydium पूल, स्पॉट कीमतें, और Jupiter स्वैप।",
+      subtitle: "ACOPAY लेनदेन, Raydium पूल और स्पॉट कीमतें।",
       allPools: "सभी पूल",
       transfers: "ट्रांजैक्शन",
       binance: "स्पॉट",
