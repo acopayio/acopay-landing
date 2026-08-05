@@ -4,7 +4,13 @@
  * Known ACOPAY / USDT / WSOL cannot be added as custom.
  */
 
+import { PublicKey } from "@solana/web3.js";
+
 import { SOL_MINT, TOKEN, USDT_MINT } from "../config/token";
+import {
+  isWeakWebTokenMeta,
+  resolveWebSplTokenMeta,
+} from "./resolveWebSplTokenMeta";
 
 const STORAGE_KEY = "acopay_web_custom_tokens_v1";
 
@@ -52,38 +58,54 @@ async function resolveTokenMeta(mint: string): Promise<{
   name: string;
   logoUri?: string;
 } | null> {
-  const ctrl = new AbortController();
-  const timer = window.setTimeout(() => ctrl.abort(), 6000);
-  try {
-    const res = await fetch(`https://tokens.jup.ag/token/${encodeURIComponent(mint)}`, {
-      signal: ctrl.signal,
-    });
-    if (!res.ok) return null;
-    const data = (await res.json()) as {
-      symbol?: string;
-      name?: string;
-      logoURI?: string;
+  return resolveWebSplTokenMeta(mint);
+}
+
+/** Re-resolve customs stuck on generic "TOKEN" after Jupiter-only failures. */
+export async function refreshWeakWebCustomMetas(): Promise<WebCustomToken[]> {
+  const list = readList();
+  if (list.length === 0) return list;
+  let changed = false;
+  const next: WebCustomToken[] = [];
+  for (const tok of list) {
+    if (!isWeakWebTokenMeta(tok) && tok.logoUri) {
+      next.push(tok);
+      continue;
+    }
+    const meta = await resolveTokenMeta(tok.mint);
+    if (!meta) {
+      next.push(tok);
+      continue;
+    }
+    const updated: WebCustomToken = {
+      mint: tok.mint,
+      symbol: meta.symbol,
+      name: meta.name,
+      logoUri: meta.logoUri || tok.logoUri,
     };
-    const fallback = `${mint.slice(0, 4)}…${mint.slice(-4)}`;
-    const symbol = String(data.symbol || fallback).trim().slice(0, 12).toUpperCase() || fallback;
-    const name = String(data.name || symbol).trim().slice(0, 40) || symbol;
-    const logoUri =
-      typeof data.logoURI === "string" && /^https:\/\//i.test(data.logoURI)
-        ? data.logoURI
-        : undefined;
-    return { symbol, name, logoUri };
-  } catch {
-    return null;
-  } finally {
-    window.clearTimeout(timer);
+    if (
+      updated.symbol !== tok.symbol ||
+      updated.name !== tok.name ||
+      updated.logoUri !== tok.logoUri
+    ) {
+      changed = true;
+    }
+    next.push(updated);
   }
+  if (changed) writeList(next);
+  return next;
 }
 
 export async function addWebCustomToken(input: {
   mint: string;
   symbol?: string;
 }): Promise<AddWebCustomResult> {
-  const mint = input.mint.trim();
+  const mint = input.mint.trim().replace(/\s+/g, "");
+  try {
+    new PublicKey(mint);
+  } catch {
+    return { ok: false, code: "INVALID_MINT" };
+  }
   if (mint.length < 32 || mint.length > 44) {
     return { ok: false, code: "INVALID_MINT" };
   }
@@ -95,8 +117,9 @@ export async function addWebCustomToken(input: {
     return { ok: false, code: "ALREADY_CUSTOM" };
   }
   const meta = await resolveTokenMeta(mint);
+  const fallback = `${mint.slice(0, 4)}…${mint.slice(-4)}`;
   const symbol =
-    (input.symbol || meta?.symbol || "TOKEN").trim().slice(0, 12).toUpperCase() || "TOKEN";
+    (input.symbol || meta?.symbol || fallback).trim().slice(0, 12).toUpperCase() || fallback;
   const name = (meta?.name || symbol).trim().slice(0, 40) || symbol;
   const next = [...list, { mint, symbol, name, logoUri: meta?.logoUri }];
   writeList(next);

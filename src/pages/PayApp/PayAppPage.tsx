@@ -20,6 +20,7 @@ import { fetchOwnedTokens, type OwnedToken } from "../../lib/ownedTokens";
 import {
   addWebCustomToken,
   listWebCustomTokens,
+  refreshWeakWebCustomMetas,
   type WebCustomToken,
 } from "../../lib/webCustomTokens";
 import {
@@ -98,6 +99,16 @@ export function PayAppPage() {
     return () => {
       cancelled = true;
       window.clearTimeout(start);
+    };
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    void refreshWeakWebCustomMetas().then((list) => {
+      if (!cancelled) setCustomTokens(list);
+    });
+    return () => {
+      cancelled = true;
     };
   }, []);
 
