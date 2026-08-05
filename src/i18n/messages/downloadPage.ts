@@ -13,7 +13,7 @@ type Partials = Record<string, { download: DownloadSection; nav?: { download?: s
 const enBase: DownloadSection = {
   kicker: "Android",
   title: "ACOPAY for Android",
-  subtitle: "Non-custodial Solana wallet.",
+  subtitle: "Solana wallet. Keys stay on your device.",
   cta: "Download APK",
   ctaHint: "APK · {size} · Android 8.0+ · arm64",
   version: "Version {v}",
@@ -49,7 +49,7 @@ export const DOWNLOAD_PAGE_PARTIALS: Partials = {
     {
       kicker: "Android",
       title: "ACOPAY cho Android",
-      subtitle: "Ví Solana không lưu ký.",
+      subtitle: "Ví Solana. Khóa nằm trên thiết bị của bạn.",
       cta: "Tải APK",
       ctaHint: "APK · {size} · Android 8.0+ · arm64",
       version: "Phiên bản {v}",
@@ -82,7 +82,7 @@ export const DOWNLOAD_PAGE_PARTIALS: Partials = {
     {
       kicker: "Android",
       title: "ACOPAY Android 版",
-      subtitle: "非托管 Solana 钱包。",
+      subtitle: "Solana 钱包。密钥保存在您的设备上。",
       cta: "下载 APK",
       ctaHint: "APK · {size} · Android 8.0+ · arm64",
       version: "版本 {v}",
@@ -115,7 +115,7 @@ export const DOWNLOAD_PAGE_PARTIALS: Partials = {
     {
       kicker: "Android",
       title: "ACOPAY for Android",
-      subtitle: "ノンカストディアルの Solana ウォレット。",
+      subtitle: "Solana ウォレット。鍵は端末に残ります。",
       cta: "APK をダウンロード",
       ctaHint: "APK · {size} · Android 8.0+ · arm64",
       version: "バージョン {v}",
@@ -148,7 +148,7 @@ export const DOWNLOAD_PAGE_PARTIALS: Partials = {
     {
       kicker: "Android",
       title: "ACOPAY for Android",
-      subtitle: "비수탁 Solana 지갑.",
+      subtitle: "Solana 지갑. 키는 기기에 보관됩니다.",
       cta: "APK 다운로드",
       ctaHint: "APK · {size} · Android 8.0+ · arm64",
       version: "버전 {v}",
@@ -181,7 +181,7 @@ export const DOWNLOAD_PAGE_PARTIALS: Partials = {
     {
       kicker: "Android",
       title: "ACOPAY สำหรับ Android",
-      subtitle: "กระเป๋า Solana แบบไม่คุมกุญแจ",
+      subtitle: "กระเป๋า Solana กุญแจอยู่บนอุปกรณ์ของคุณ",
       cta: "ดาวน์โหลด APK",
       ctaHint: "APK · {size} · Android 8.0+ · arm64",
       version: "เวอร์ชัน {v}",
@@ -214,7 +214,7 @@ export const DOWNLOAD_PAGE_PARTIALS: Partials = {
     {
       kicker: "Android",
       title: "ACOPAY untuk Android",
-      subtitle: "Dompet Solana non-kustodial.",
+      subtitle: "Dompet Solana. Kunci tetap di perangkat Anda.",
       cta: "Unduh APK",
       ctaHint: "APK · {size} · Android 8.0+ · arm64",
       version: "Versi {v}",
@@ -247,7 +247,7 @@ export const DOWNLOAD_PAGE_PARTIALS: Partials = {
     {
       kicker: "Android",
       title: "ACOPAY untuk Android",
-      subtitle: "Dompet Solana tanpa kustodi.",
+      subtitle: "Dompet Solana. Kunci kekal pada peranti anda.",
       cta: "Muat turun APK",
       ctaHint: "APK · {size} · Android 8.0+ · arm64",
       version: "Versi {v}",
@@ -280,7 +280,7 @@ export const DOWNLOAD_PAGE_PARTIALS: Partials = {
     {
       kicker: "Android",
       title: "Android के लिए ACOPAY",
-      subtitle: "नॉन-कस्टोडियल Solana वॉलेट।",
+      subtitle: "Solana वॉलेट। कुंजियाँ आपके डिवाइस पर रहती हैं।",
       cta: "APK डाउनलोड करें",
       ctaHint: "APK · {size} · Android 8.0+ · arm64",
       version: "संस्करण {v}",
@@ -313,7 +313,7 @@ export const DOWNLOAD_PAGE_PARTIALS: Partials = {
     {
       kicker: "Android",
       title: "ACOPAY para Android",
-      subtitle: "Monedero Solana no custodial.",
+      subtitle: "Monedero Solana. Las claves permanecen en su dispositivo.",
       cta: "Descargar APK",
       ctaHint: "APK · {size} · Android 8.0+ · arm64",
       version: "Versión {v}",
@@ -346,7 +346,7 @@ export const DOWNLOAD_PAGE_PARTIALS: Partials = {
     {
       kicker: "Android",
       title: "ACOPAY para Android",
-      subtitle: "Carteira Solana não custodial.",
+      subtitle: "Carteira Solana. As chaves ficam no seu dispositivo.",
       cta: "Baixar APK",
       ctaHint: "APK · {size} · Android 8.0+ · arm64",
       version: "Versão {v}",
@@ -379,7 +379,7 @@ export const DOWNLOAD_PAGE_PARTIALS: Partials = {
     {
       kicker: "Android",
       title: "ACOPAY pour Android",
-      subtitle: "Portefeuille Solana non dépositaire.",
+      subtitle: "Portefeuille Solana. Les clés restent sur votre appareil.",
       cta: "Télécharger l’APK",
       ctaHint: "APK · {size} · Android 8.0+ · arm64",
       version: "Version {v}",
@@ -412,7 +412,7 @@ export const DOWNLOAD_PAGE_PARTIALS: Partials = {
     {
       kicker: "Android",
       title: "ACOPAY für Android",
-      subtitle: "Nicht-kustodiale Solana-Wallet.",
+      subtitle: "Solana-Wallet. Schlüssel bleiben auf Ihrem Gerät.",
       cta: "APK herunterladen",
       ctaHint: "APK · {size} · Android 8.0+ · arm64",
       version: "Version {v}",
@@ -445,7 +445,7 @@ export const DOWNLOAD_PAGE_PARTIALS: Partials = {
     {
       kicker: "Android",
       title: "ACOPAY voor Android",
-      subtitle: "Non-custodiale Solana-wallet.",
+      subtitle: "Solana-wallet. Sleutels blijven op uw apparaat.",
       cta: "APK downloaden",
       ctaHint: "APK · {size} · Android 8.0+ · arm64",
       version: "Versie {v}",
@@ -478,7 +478,7 @@ export const DOWNLOAD_PAGE_PARTIALS: Partials = {
     {
       kicker: "Android",
       title: "ACOPAY per Android",
-      subtitle: "Wallet Solana non custodial.",
+      subtitle: "Wallet Solana. Le chiavi restano sul dispositivo.",
       cta: "Scarica APK",
       ctaHint: "APK · {size} · Android 8.0+ · arm64",
       version: "Versione {v}",
@@ -511,7 +511,7 @@ export const DOWNLOAD_PAGE_PARTIALS: Partials = {
     {
       kicker: "Android",
       title: "ACOPAY для Android",
-      subtitle: "Некастодиальный кошелёк Solana.",
+      subtitle: "Кошелёк Solana. Ключи остаются на вашем устройстве.",
       cta: "Скачать APK",
       ctaHint: "APK · {size} · Android 8.0+ · arm64",
       version: "Версия {v}",
@@ -544,7 +544,7 @@ export const DOWNLOAD_PAGE_PARTIALS: Partials = {
     {
       kicker: "Android",
       title: "ACOPAY для Android",
-      subtitle: "Некастодіальний гаманець Solana.",
+      subtitle: "Гаманець Solana. Ключі залишаються на вашому пристрої.",
       cta: "Завантажити APK",
       ctaHint: "APK · {size} · Android 8.0+ · arm64",
       version: "Версія {v}",
@@ -577,7 +577,7 @@ export const DOWNLOAD_PAGE_PARTIALS: Partials = {
     {
       kicker: "Android",
       title: "ACOPAY na Androida",
-      subtitle: "Niekustodialny portfel Solana.",
+      subtitle: "Portfel Solana. Klucze pozostają na urządzeniu.",
       cta: "Pobierz APK",
       ctaHint: "APK · {size} · Android 8.0+ · arm64",
       version: "Wersja {v}",
@@ -610,7 +610,7 @@ export const DOWNLOAD_PAGE_PARTIALS: Partials = {
     {
       kicker: "Android",
       title: "Android için ACOPAY",
-      subtitle: "Saklamasız Solana cüzdanı.",
+      subtitle: "Solana cüzdanı. Anahtarlar cihazınızda kalır.",
       cta: "APK indir",
       ctaHint: "APK · {size} · Android 8.0+ · arm64",
       version: "Sürüm {v}",
@@ -643,7 +643,7 @@ export const DOWNLOAD_PAGE_PARTIALS: Partials = {
     {
       kicker: "Android",
       title: "ACOPAY لأندرويد",
-      subtitle: "محفظة Solana غير احتجازية.",
+      subtitle: "محفظة Solana. تبقى المفاتيح على جهازك.",
       cta: "تنزيل APK",
       ctaHint: "APK · {size} · Android 8.0+ · arm64",
       version: "الإصدار {v}",

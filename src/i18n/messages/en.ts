@@ -718,7 +718,7 @@ export const en = {
   download: {
     kicker: "Android",
     title: "ACOPAY for Android",
-    subtitle: "Non-custodial Solana wallet.",
+    subtitle: "Solana wallet. Keys stay on your device.",
     cta: "Download APK",
     ctaHint: "APK · {size} · Android 8.0+ · arm64",
     version: "Version {v}",
