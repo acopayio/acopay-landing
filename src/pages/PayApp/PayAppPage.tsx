@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import QRCode from "qrcode";
 import { AddrHighlight } from "../../components/AddrHighlight";
@@ -16,9 +16,11 @@ import {
   formatPortfolioNumber,
   type PortfolioQuotes,
 } from "../../lib/portfolioValue";
+import { fetchOwnedTokens, type OwnedToken } from "../../lib/ownedTokens";
 import {
   clearPayUsername,
   fetchPayMe,
+  formatCoinAmount,
   logoutPay,
   mapPayApiError,
   openTelegramBotLink,
@@ -58,6 +60,7 @@ export function PayAppPage() {
   const [currency, setCurrency] = useState<DisplayCurrency>(() => loadStoredCurrency(locale));
   const [quotes, setQuotes] = useState<PortfolioQuotes>(() => emptyQuotes());
   const [fxOpen, setFxOpen] = useState(false);
+  const [ownedTokens, setOwnedTokens] = useState<OwnedToken[]>([]);
   const pollRef = useRef<number | null>(null);
   const authGenRef = useRef(0);
   const loginAuthBusyRef = useRef(false);
@@ -121,6 +124,13 @@ export function PayAppPage() {
   const loadMe = useCallback(async () => {
     const profile = await fetchPayMe();
     setMe(profile);
+    if (profile.publicKey || profile.linkedPublicKey) {
+      void fetchOwnedTokens()
+        .then(setOwnedTokens)
+        .catch(() => setOwnedTokens([]));
+    } else {
+      setOwnedTokens([]);
+    }
     setPhase("home");
     setError(null);
   }, []);
@@ -354,12 +364,49 @@ export function PayAppPage() {
     }
   }
 
-  const bal = me?.balance?.acopay;
   const portfolioBal = {
     acopay: Number(me?.balance?.acopay) || 0,
     usdt: Number(me?.balance?.usdt) || 0,
     sol: Number(me?.balance?.sol) || 0,
   };
+  const homeTokens = useMemo(
+    () => [
+      ...(portfolioBal.acopay > 0
+        ? [
+            {
+              id: "acopay",
+              name: "ACOPAY",
+              symbol: "ACOPAY",
+              balance: portfolioBal.acopay,
+              logoUri: "/assets/logo-circle.png",
+            },
+          ]
+        : []),
+      {
+        id: "usdt",
+        name: "Tether USD",
+        symbol: "USDT",
+        balance: portfolioBal.usdt,
+        logoUri: `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/solana/assets/Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB/logo.png`,
+      },
+      {
+        id: "sol",
+        name: "Solana",
+        symbol: "SOL",
+        balance: portfolioBal.sol,
+        logoUri:
+          "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/solana/info/logo.png",
+      },
+      ...ownedTokens.map((token) => ({
+        id: token.mint,
+        name: token.name,
+        symbol: token.symbol,
+        balance: token.balance,
+        logoUri: token.logoUri,
+      })),
+    ],
+    [portfolioBal.acopay, portfolioBal.usdt, portfolioBal.sol, ownedTokens],
+  );
   const fiatAmount = hasWallet
     ? formatPortfolioNumber(portfolioBal, currency, quotes)
     : "—";
@@ -510,7 +557,6 @@ export function PayAppPage() {
                             onClick={() => pickCurrency(c.code)}
                           >
                             <span className="pay-fx-code">{c.code}</span>
-                            <span className="pay-fx-name">{c.name}</span>
                           </button>
                         );
                       })}
@@ -585,12 +631,51 @@ export function PayAppPage() {
                     <span className="pay-action-label">{t("payApp.buy")}</span>
                   </Link>
                 </div>
+
+                {hasWallet ? (
+                  <div className="pay-token-list">
+                    <div className="pay-token-list-head">
+                      <h3>{t("payApp.tokensTitle")}</h3>
+                      {ownedTokens.length > 0 ? (
+                        <span>{t("payApp.detectedReadOnly")}</span>
+                      ) : null}
+                    </div>
+                    <div className="pay-token-rows">
+                      {homeTokens.map((token) => (
+                        <div className="pay-token-row" key={token.id}>
+                          {token.logoUri ? (
+                            <img
+                              className="pay-token-logo"
+                              src={token.logoUri}
+                              alt=""
+                              loading="lazy"
+                              referrerPolicy="no-referrer"
+                            />
+                          ) : (
+                            <span className="pay-token-logo pay-token-logo-neutral">
+                              {token.symbol.slice(0, 1)}
+                            </span>
+                          )}
+                          <div className="pay-token-name">
+                            <strong>{token.symbol}</strong>
+                            <span>{token.name}</span>
+                          </div>
+                          <div className="pay-token-balance">
+                            <strong>{formatCoinAmount(token.balance)}</strong>
+                            <span>{token.symbol}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
               </div>
             )}
 
             {panel === "send" && (
               <PaySendPanel
-                balance={bal}
+                balances={portfolioBal}
+                quotes={quotes}
                 onBack={() => setPanel("home")}
                 onError={(m) => setError(m || null)}
                 onSentBot={() => {

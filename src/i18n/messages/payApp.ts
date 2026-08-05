@@ -43,6 +43,15 @@ const enBase: PaySection = {
   fiatEstimated: "Estimated total value",
   currency: "Currency",
   chooseCurrency: "Display currency",
+  tokensTitle: "Tokens",
+  detectedReadOnly: "Other assets · view only",
+  transferSource: "Pay with",
+  transferSourceHint: "ACOPAY appears when your balance is above zero. USDT and SOL are always available.",
+  transferChooseCurrency: "Amount currency",
+  transferCurrencyHint: "Enter the payment amount in your preferred currency.",
+  transferMax: "Max",
+  transferRateUnavailable: "Rate unavailable. Try again shortly.",
+  transferBillFiat: "Payment amount",
   tgId: "Telegram",
   logout: "Sign out",
   needWalletTitle: "Create wallet in Telegram first",
@@ -193,6 +202,15 @@ export const PAY_APP_PARTIALS: Partials = {
     fiatEstimated: "Tổng giá trị ước tính",
     currency: "Tiền tệ",
     chooseCurrency: "Đơn vị hiển thị",
+    tokensTitle: "Token",
+    detectedReadOnly: "Tài sản khác · chỉ xem",
+    transferSource: "Nguồn thanh toán",
+    transferSourceHint: "ACOPAY xuất hiện khi có số dư. USDT và SOL luôn có sẵn.",
+    transferChooseCurrency: "Đơn vị nhập",
+    transferCurrencyHint: "Nhập số tiền thanh toán theo đơn vị bạn chọn.",
+    transferMax: "Tối đa",
+    transferRateUnavailable: "Chưa lấy được tỷ giá. Vui lòng thử lại sau.",
+    transferBillFiat: "Số tiền thanh toán",
     logout: "Đăng xuất",
     needWalletTitle: "Tạo ví trong Telegram trước",
     needWalletBody: "Mở @AcopayNetwork_bot, rồi đăng nhập lại.",
@@ -2585,3 +2603,156 @@ export const PAY_APP_PARTIALS: Partials = {
     histYear: "سنة {y}",
   }),
 };
+
+type TransferCopyKey =
+  | "tokensTitle"
+  | "detectedReadOnly"
+  | "transferSource"
+  | "transferSourceHint"
+  | "transferChooseCurrency"
+  | "transferCurrencyHint"
+  | "transferMax"
+  | "transferRateUnavailable"
+  | "transferBillFiat";
+
+const TRANSFER_NATIVE: Record<string, Pick<PaySection, TransferCopyKey>> = {
+  vi: {
+    tokensTitle: "Token", detectedReadOnly: "Tài sản khác · chỉ xem",
+    transferSource: "Nguồn thanh toán", transferSourceHint: "ACOPAY xuất hiện khi có số dư. USDT và SOL luôn có sẵn.",
+    transferChooseCurrency: "Đơn vị nhập", transferCurrencyHint: "Nhập số tiền thanh toán theo đơn vị bạn chọn.",
+    transferMax: "Tối đa", transferRateUnavailable: "Chưa lấy được tỷ giá. Vui lòng thử lại sau.",
+    transferBillFiat: "Số tiền thanh toán",
+  },
+  zh: {
+    tokensTitle: "代币", detectedReadOnly: "其他资产 · 仅查看",
+    transferSource: "付款资产", transferSourceHint: "ACOPAY 余额大于零时显示；USDT 和 SOL 始终可用。",
+    transferChooseCurrency: "输入币种", transferCurrencyHint: "使用您选择的法币输入付款金额。",
+    transferMax: "最大", transferRateUnavailable: "暂时无法获取汇率，请稍后重试。",
+    transferBillFiat: "付款金额",
+  },
+  ja: {
+    tokensTitle: "トークン", detectedReadOnly: "その他の資産 · 閲覧のみ",
+    transferSource: "支払い元", transferSourceHint: "ACOPAY は残高がある場合に表示されます。USDT と SOL は常に利用できます。",
+    transferChooseCurrency: "入力通貨", transferCurrencyHint: "選択した法定通貨で支払い額を入力します。",
+    transferMax: "最大", transferRateUnavailable: "レートを取得できません。しばらくしてから再試行してください。",
+    transferBillFiat: "支払い額",
+  },
+  ko: {
+    tokensTitle: "토큰", detectedReadOnly: "기타 자산 · 보기 전용",
+    transferSource: "결제 자산", transferSourceHint: "ACOPAY는 잔액이 있을 때 표시됩니다. USDT와 SOL은 항상 사용할 수 있습니다.",
+    transferChooseCurrency: "입력 통화", transferCurrencyHint: "선택한 법정화폐로 결제 금액을 입력하세요.",
+    transferMax: "최대", transferRateUnavailable: "환율을 불러올 수 없습니다. 잠시 후 다시 시도하세요.",
+    transferBillFiat: "결제 금액",
+  },
+  th: {
+    tokensTitle: "โทเคน", detectedReadOnly: "สินทรัพย์อื่น · ดูอย่างเดียว",
+    transferSource: "สินทรัพย์ที่ใช้จ่าย", transferSourceHint: "ACOPAY จะแสดงเมื่อมียอดคงเหลือ ส่วน USDT และ SOL พร้อมใช้งานเสมอ",
+    transferChooseCurrency: "สกุลเงินที่กรอก", transferCurrencyHint: "กรอกจำนวนเงินด้วยสกุลเงินที่คุณเลือก",
+    transferMax: "สูงสุด", transferRateUnavailable: "ไม่สามารถดึงอัตราแลกเปลี่ยนได้ โปรดลองอีกครั้งภายหลัง",
+    transferBillFiat: "จำนวนเงินที่ชำระ",
+  },
+  id: {
+    tokensTitle: "Token", detectedReadOnly: "Aset lain · hanya lihat",
+    transferSource: "Bayar dengan", transferSourceHint: "ACOPAY tampil jika saldo tersedia. USDT dan SOL selalu tersedia.",
+    transferChooseCurrency: "Mata uang input", transferCurrencyHint: "Masukkan jumlah pembayaran dalam mata uang pilihan Anda.",
+    transferMax: "Maks.", transferRateUnavailable: "Kurs belum tersedia. Coba lagi sebentar lagi.",
+    transferBillFiat: "Jumlah pembayaran",
+  },
+  ms: {
+    tokensTitle: "Token", detectedReadOnly: "Aset lain · paparan sahaja",
+    transferSource: "Bayar dengan", transferSourceHint: "ACOPAY dipaparkan apabila ada baki. USDT dan SOL sentiasa tersedia.",
+    transferChooseCurrency: "Mata wang input", transferCurrencyHint: "Masukkan jumlah bayaran dalam mata wang pilihan anda.",
+    transferMax: "Maks.", transferRateUnavailable: "Kadar belum tersedia. Cuba lagi sebentar lagi.",
+    transferBillFiat: "Jumlah bayaran",
+  },
+  hi: {
+    tokensTitle: "टोकन", detectedReadOnly: "अन्य एसेट · केवल देखें",
+    transferSource: "भुगतान एसेट", transferSourceHint: "शेष होने पर ACOPAY दिखता है। USDT और SOL हमेशा उपलब्ध हैं।",
+    transferChooseCurrency: "इनपुट मुद्रा", transferCurrencyHint: "अपनी चुनी हुई फ़िएट मुद्रा में भुगतान राशि दर्ज करें।",
+    transferMax: "अधिकतम", transferRateUnavailable: "विनिमय दर उपलब्ध नहीं है। थोड़ी देर बाद फिर प्रयास करें।",
+    transferBillFiat: "भुगतान राशि",
+  },
+  es: {
+    tokensTitle: "Tokens", detectedReadOnly: "Otros activos · solo lectura",
+    transferSource: "Pagar con", transferSourceHint: "ACOPAY aparece si hay saldo. USDT y SOL siempre están disponibles.",
+    transferChooseCurrency: "Moneda de entrada", transferCurrencyHint: "Introduce el importe en la moneda fiduciaria que prefieras.",
+    transferMax: "Máx.", transferRateUnavailable: "El tipo de cambio no está disponible. Inténtalo de nuevo en breve.",
+    transferBillFiat: "Importe del pago",
+  },
+  pt: {
+    tokensTitle: "Tokens", detectedReadOnly: "Outros ativos · somente leitura",
+    transferSource: "Pagar com", transferSourceHint: "ACOPAY aparece quando há saldo. USDT e SOL estão sempre disponíveis.",
+    transferChooseCurrency: "Moeda de entrada", transferCurrencyHint: "Insira o valor na moeda fiduciária escolhida.",
+    transferMax: "Máx.", transferRateUnavailable: "Cotação indisponível. Tente novamente em instantes.",
+    transferBillFiat: "Valor do pagamento",
+  },
+  fr: {
+    tokensTitle: "Jetons", detectedReadOnly: "Autres actifs · lecture seule",
+    transferSource: "Payer avec", transferSourceHint: "ACOPAY apparaît si le solde est positif. USDT et SOL restent disponibles.",
+    transferChooseCurrency: "Devise de saisie", transferCurrencyHint: "Saisissez le montant dans la devise fiduciaire choisie.",
+    transferMax: "Max.", transferRateUnavailable: "Taux indisponible. Réessayez dans un instant.",
+    transferBillFiat: "Montant du paiement",
+  },
+  de: {
+    tokensTitle: "Token", detectedReadOnly: "Weitere Assets · nur Ansicht",
+    transferSource: "Bezahlen mit", transferSourceHint: "ACOPAY erscheint bei positivem Guthaben. USDT und SOL sind immer verfügbar.",
+    transferChooseCurrency: "Eingabewährung", transferCurrencyHint: "Gib den Zahlungsbetrag in deiner gewählten Fiatwährung ein.",
+    transferMax: "Max.", transferRateUnavailable: "Kurs derzeit nicht verfügbar. Bitte versuche es gleich erneut.",
+    transferBillFiat: "Zahlungsbetrag",
+  },
+  nl: {
+    tokensTitle: "Tokens", detectedReadOnly: "Overige activa · alleen bekijken",
+    transferSource: "Betalen met", transferSourceHint: "ACOPAY verschijnt bij een positief saldo. USDT en SOL zijn altijd beschikbaar.",
+    transferChooseCurrency: "Invoervaluta", transferCurrencyHint: "Voer het betaalbedrag in de gekozen fiatvaluta in.",
+    transferMax: "Max.", transferRateUnavailable: "Koers niet beschikbaar. Probeer het zo opnieuw.",
+    transferBillFiat: "Betaalbedrag",
+  },
+  it: {
+    tokensTitle: "Token", detectedReadOnly: "Altri asset · sola lettura",
+    transferSource: "Paga con", transferSourceHint: "ACOPAY appare quando il saldo è positivo. USDT e SOL sono sempre disponibili.",
+    transferChooseCurrency: "Valuta di inserimento", transferCurrencyHint: "Inserisci l'importo nella valuta fiat scelta.",
+    transferMax: "Max", transferRateUnavailable: "Tasso non disponibile. Riprova tra poco.",
+    transferBillFiat: "Importo del pagamento",
+  },
+  ru: {
+    tokensTitle: "Токены", detectedReadOnly: "Другие активы · только просмотр",
+    transferSource: "Оплатить из", transferSourceHint: "ACOPAY отображается при положительном балансе. USDT и SOL доступны всегда.",
+    transferChooseCurrency: "Валюта ввода", transferCurrencyHint: "Введите сумму платежа в выбранной фиатной валюте.",
+    transferMax: "Макс.", transferRateUnavailable: "Курс временно недоступен. Повторите попытку позже.",
+    transferBillFiat: "Сумма платежа",
+  },
+  uk: {
+    tokensTitle: "Токени", detectedReadOnly: "Інші активи · лише перегляд",
+    transferSource: "Сплатити з", transferSourceHint: "ACOPAY відображається за наявності балансу. USDT і SOL доступні завжди.",
+    transferChooseCurrency: "Валюта введення", transferCurrencyHint: "Введіть суму платежу в обраній фіатній валюті.",
+    transferMax: "Макс.", transferRateUnavailable: "Курс тимчасово недоступний. Спробуйте пізніше.",
+    transferBillFiat: "Сума платежу",
+  },
+  pl: {
+    tokensTitle: "Tokeny", detectedReadOnly: "Inne aktywa · tylko podgląd",
+    transferSource: "Zapłać z", transferSourceHint: "ACOPAY pojawia się przy dodatnim saldzie. USDT i SOL są zawsze dostępne.",
+    transferChooseCurrency: "Waluta kwoty", transferCurrencyHint: "Wpisz kwotę płatności w wybranej walucie fiducjarnej.",
+    transferMax: "Maks.", transferRateUnavailable: "Kurs jest chwilowo niedostępny. Spróbuj ponownie później.",
+    transferBillFiat: "Kwota płatności",
+  },
+  tr: {
+    tokensTitle: "Tokenler", detectedReadOnly: "Diğer varlıklar · yalnızca görüntüleme",
+    transferSource: "Şununla öde", transferSourceHint: "ACOPAY, bakiye varsa görünür. USDT ve SOL her zaman kullanılabilir.",
+    transferChooseCurrency: "Giriş para birimi", transferCurrencyHint: "Ödeme tutarını seçtiğiniz itibari para biriminde girin.",
+    transferMax: "Maks.", transferRateUnavailable: "Kur şu anda kullanılamıyor. Kısa süre sonra tekrar deneyin.",
+    transferBillFiat: "Ödeme tutarı",
+  },
+  ar: {
+    tokensTitle: "الرموز", detectedReadOnly: "أصول أخرى · للعرض فقط",
+    transferSource: "الدفع باستخدام", transferSourceHint: "يظهر ACOPAY عند وجود رصيد. يتوفر USDT وSOL دائمًا.",
+    transferChooseCurrency: "عملة الإدخال", transferCurrencyHint: "أدخل مبلغ الدفع بالعملة النقدية التي تختارها.",
+    transferMax: "الحد الأقصى", transferRateUnavailable: "سعر الصرف غير متاح حاليًا. حاول مرة أخرى بعد قليل.",
+    transferBillFiat: "مبلغ الدفع",
+  },
+};
+
+for (const [locale, copy] of Object.entries(TRANSFER_NATIVE)) {
+  if (PAY_APP_PARTIALS[locale]) {
+    Object.assign(PAY_APP_PARTIALS[locale].payApp, copy);
+  }
+}

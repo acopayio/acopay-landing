@@ -5,6 +5,22 @@ import { BrandLogo } from "../../components/BrandLogo";
 import { formatSessionClock, phantomBrowseUrl } from "../../config/otc";
 import { explorerTransfersUrl } from "../../config/token";
 import { useI18n } from "../../i18n/LanguageProvider";
+import {
+  currencyMeta,
+  DISPLAY_CURRENCIES,
+  formatFiatNumber,
+  type DisplayCurrency,
+} from "../../lib/displayCurrency";
+import type { PortfolioBalances, PortfolioQuotes } from "../../lib/portfolioValue";
+import {
+  fiatToSourceAmount,
+  sourceToFiatAmount,
+} from "../../lib/transferMoney";
+import {
+  loadTransferPreferences,
+  saveTransferPreferences,
+  type TransferSourceId,
+} from "../../lib/transferPreferences";
 import { hasPhantomExtension, isMobileUa } from "../../lib/phantomPay";
 import {
   clearPayPaidQueryFromUrl,
@@ -19,16 +35,22 @@ import {
   confirmPhantomPayInTelegram,
   sendAcopayWithPhantom,
 } from "../../lib/sendAcopay";
+import { sendAssetWithPhantom } from "../../lib/signPayAsset";
 import {
   fetchPayHistory,
   formatAcopay,
+  formatCoinAmount,
   formatAmountInput,
   looksLikeTelegramUsername,
   mapPayApiError,
   parseAmountInput,
   previewPay,
+  previewPayAsset,
   sendPay,
+  sendPayAsset,
+  type PayAssetPreview,
   type PayPreview,
+  type PayTransferAsset,
 } from "../../lib/payWebSession";
 
 const PRESETS = [10, 50, 100, 250, 500, 1000];
@@ -36,7 +58,8 @@ const PRESETS = [10, 50, 100, 250, 500, 1000];
 const CONFIRM_WAIT_MS = 45_000;
 
 type Props = {
-  balance: number | null | undefined;
+  balances: PortfolioBalances;
+  quotes: PortfolioQuotes;
   onBack: () => void;
   onError: (msg: string) => void;
   onSentBot: (explorer: string) => void;
@@ -66,6 +89,8 @@ type SuccessState = {
   openFee: string;
   total: string;
   isFirstAtaOpen: boolean;
+  symbol: string;
+  fiatLabel?: string;
 };
 
 function parsePhantomSendUrl(sendUrl: string): PhantomSession | null {
@@ -108,6 +133,7 @@ function pendingToSuccess(p: PayPhantomPending, explorer: string, signature?: st
     openFee: p.openFee,
     total: p.total,
     isFirstAtaOpen: p.isFirstAtaOpen,
+    symbol: "ACOPAY",
   };
 }
 
@@ -115,15 +141,21 @@ function amountsClose(a: number, b: number): boolean {
   return Math.abs(a - b) <= Math.max(1e-6, Math.abs(b) * 1e-9);
 }
 
-export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
+export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: Props) {
   const { t, locale } = useI18n();
 
   function showErr(e: unknown) {
     onError(mapPayApiError(e, t, locale));
   }
   const [to, setTo] = useState("");
-  const [amount, setAmount] = useState("");
+  const initialPreferences = useMemo(() => loadTransferPreferences(), []);
+  const [source, setSource] = useState<TransferSourceId>(initialPreferences.source);
+  const [currency, setCurrency] = useState<DisplayCurrency>(initialPreferences.currency);
+  const [fiatAmount, setFiatAmount] = useState("");
+  const [sourceOpen, setSourceOpen] = useState(false);
+  const [currencyOpen, setCurrencyOpen] = useState(false);
   const [preview, setPreview] = useState<PayPreview | null>(null);
+  const [assetPreview, setAssetPreview] = useState<PayAssetPreview | null>(null);
   const [busy, setBusy] = useState(false);
   const [step, setStep] = useState<Step>("form");
   const [success, setSuccess] = useState<SuccessState | null>(null);
@@ -134,9 +166,74 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
   const hydratedPaidRef = useRef(false);
   const resumedPendingRef = useRef(false);
 
-  const amountNum = useMemo(() => parseAmountInput(amount), [amount]);
+  const fiatAmountNum = useMemo(() => parseAmountInput(fiatAmount), [fiatAmount]);
+  const tokenAmount = useMemo(
+    () => fiatToSourceAmount(fiatAmountNum, currency, source, quotes),
+    [fiatAmountNum, currency, source, quotes],
+  );
+  const availableSources = useMemo(
+    () => [
+      ...(balances.acopay > 0 ? (["acopay"] as const) : []),
+      "usdt" as const,
+      "sol" as const,
+    ],
+    [balances.acopay],
+  );
+  const sourceBalance = balances[source];
+  const sourceSymbol = source.toUpperCase();
+  const estimateLabel =
+    tokenAmount != null ? `≈ ${formatCoinAmount(tokenAmount)} ${sourceSymbol}` : "";
   const toIsUsername = looksLikeTelegramUsername(to);
-  const isPhantomMode = preview?.mode === "phantom";
+  const activePreview = assetPreview || preview;
+  const isPhantomMode = activePreview?.mode === "phantom";
+  const fiatBillLabel =
+    fiatAmount.trim().length > 0 ? `${fiatAmount.trim()} ${currency}` : undefined;
+
+  function exactTokenAmountString(): string | null {
+    if (tokenAmount == null || !(tokenAmount > 0)) return null;
+    const decimals = source === "usdt" ? 6 : source === "sol" ? 9 : 9;
+    const fixed = tokenAmount.toFixed(decimals).replace(/\.?0+$/, "");
+    return fixed || null;
+  }
+
+  useEffect(() => {
+    if (availableSources.includes(source)) return;
+    setSource("usdt");
+    saveTransferPreferences({ source: "usdt", currency });
+  }, [availableSources, source, currency]);
+
+  function selectSource(next: TransferSourceId) {
+    setSource(next);
+    setSourceOpen(false);
+    setPreview(null);
+    setAssetPreview(null);
+    setStep("form");
+    saveTransferPreferences({ source: next, currency });
+  }
+
+  function selectCurrency(next: DisplayCurrency) {
+    const nextSource: TransferSourceId =
+      next === "VND" ? (balances.acopay > 0 ? "acopay" : "usdt") : source;
+    setCurrency(next);
+    setSource(nextSource);
+    setCurrencyOpen(false);
+    setPreview(null);
+    setAssetPreview(null);
+    setStep("form");
+    saveTransferPreferences({ source: nextSource, currency: next });
+  }
+
+  function setMaxAmount() {
+    let maxToken = Math.max(0, sourceBalance);
+    if (source === "sol") maxToken = Math.max(0, maxToken - 0.005);
+    if (source === "acopay") maxToken = Math.max(0, maxToken / 1.0001 - 1);
+    const maxFiat = sourceToFiatAmount(maxToken, source, currency, quotes);
+    if (maxFiat == null) return;
+    const decimals = currencyMeta(currency).decimals;
+    const scale = 10 ** decimals;
+    const floored = Math.floor(maxFiat * scale) / scale;
+    setFiatAmount(formatFiatNumber(floored, decimals));
+  }
 
   function finishSuccess(s: SuccessState) {
     clearPayPhantomPending();
@@ -207,10 +304,10 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
         total: pending.total,
         isFirstAtaOpen: pending.isFirstAtaOpen,
       },
-      balance: typeof balance === "number" ? balance : 0,
+      balance: balances.acopay,
       enough: true,
     });
-  }, [step, balance]);
+  }, [step, balances.acopay]);
 
   useEffect(() => {
     if (!awaitingPhantomReturn || step === "success") return;
@@ -269,8 +366,22 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
     onError("");
     setBusy(true);
     try {
-      const p = await previewPay(to.trim(), amountNum);
-      setPreview(p);
+      const exact = exactTokenAmountString();
+      if (!exact) {
+        onError(t("payApp.transferRateUnavailable"));
+        return;
+      }
+      if (source === "acopay") {
+        const p = await previewPay(to.trim(), exact);
+        setAssetPreview(null);
+        setPreview(p);
+        setStep("confirm");
+        return;
+      }
+      const asset = source as PayTransferAsset;
+      const p = await previewPayAsset({ to: to.trim(), amount: exact, asset });
+      setPreview(null);
+      setAssetPreview(p);
       setStep("confirm");
     } catch (e) {
       showErr(e);
@@ -296,7 +407,81 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
       openFee: String(p.plan.openFee),
       total: String(p.plan.total),
       isFirstAtaOpen: p.plan.isFirstAtaOpen,
+      symbol: "ACOPAY",
+      fiatLabel: fiatBillLabel,
     };
+  }
+
+  function assetToSuccess(p: PayAssetPreview, explorer: string, signature?: string): SuccessState {
+    const label =
+      p.recipient.labelKind === "tgUser" || (!p.recipient.username && !p.recipient.label)
+        ? t("payApp.recipientTgUser")
+        : p.recipient.label;
+    return {
+      explorer,
+      signature,
+      from: p.from,
+      label,
+      to: p.recipient.to,
+      transferred: p.amount,
+      fee: p.estimatedNetworkFeeSol,
+      feePct: "SOL",
+      openFee: p.recipientAtaCreated ? p.estimatedNetworkFeeSol : "0",
+      total: p.amount,
+      isFirstAtaOpen: p.recipientAtaCreated,
+      symbol: p.asset.toUpperCase(),
+      fiatLabel: fiatBillLabel,
+    };
+  }
+
+  async function runAssetBot(p: PayAssetPreview) {
+    const waitStarted = Date.now();
+    beginWaiting();
+    try {
+      const r = await sendPayAsset({
+        to: p.recipient.to,
+        amount: p.amount,
+        asset: p.asset,
+      });
+      await holdWaitingMinMs(waitStarted);
+      finishSuccess(assetToSuccess(p, r.explorer, r.signature));
+    } catch (e) {
+      showErr(e);
+      setStep("confirm");
+      setBusy(false);
+    }
+  }
+
+  async function runAssetPhantom(p: PayAssetPreview) {
+    if (isMobileUa() && !hasPhantomExtension()) {
+      onError(t("payApp.billErrNoPhantom"));
+      return;
+    }
+    if (!hasPhantomExtension()) {
+      onError(t("payApp.billErrNoPhantom"));
+      return;
+    }
+    beginWaiting();
+    try {
+      const r = await sendAssetWithPhantom({
+        to: p.recipient.to,
+        amount: p.amount,
+        asset: p.asset,
+      });
+      finishSuccess(assetToSuccess(p, r.explorer, r.signature));
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      if (msg === "PHANTOM_MISSING") onError(t("payApp.billErrNoPhantom"));
+      else if (msg === "WRONG_WALLET") {
+        onError(t("payApp.billErrWrongWallet", { addr: shortAddr(p.from) }));
+      } else if (/User rejected|rejected|4001/i.test(msg)) {
+        onError(t("payApp.billErrCancelled"));
+      } else {
+        showErr(e);
+      }
+      setStep("confirm");
+      setBusy(false);
+    }
   }
 
   function beginWaiting() {
@@ -374,6 +559,15 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
    * Switch to 45s clock first → send → Phantom-parity success bill.
    */
   async function onPrimaryAction() {
+    if (assetPreview) {
+      onError("");
+      if (assetPreview.mode === "bot") {
+        await runAssetBot(assetPreview);
+        return;
+      }
+      await runAssetPhantom(assetPreview);
+      return;
+    }
     if (!preview) return;
     onError("");
 
@@ -478,25 +672,42 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
   }
 
   const recipientBillLabel =
-    preview?.recipient.labelKind === "tgUser" ||
-    (preview && !preview.recipient.username && !preview.recipient.label)
+    activePreview?.recipient.labelKind === "tgUser" ||
+    (activePreview && !activePreview.recipient.username && !activePreview.recipient.label)
       ? t("payApp.recipientTgUser")
-      : preview?.recipient.label || "";
+      : activePreview?.recipient.label || "";
 
-  const billPlan = preview
+  const billPlan = assetPreview
     ? {
         label: recipientBillLabel,
-        to: preview.recipient.to,
-        transferred: String(preview.plan.transferred),
-        fee: String(preview.plan.fee),
-        feePct: preview.plan.feePct,
-        openFee: String(preview.plan.openFee),
-        total: String(preview.plan.total),
-        isFirstAtaOpen: preview.plan.isFirstAtaOpen,
-        balance: preview.balance,
-        enough: preview.enough,
+        to: assetPreview.recipient.to,
+        transferred: assetPreview.amount,
+        fee: assetPreview.estimatedNetworkFeeSol,
+        feePct: "SOL",
+        openFee: assetPreview.recipientAtaCreated ? assetPreview.estimatedNetworkFeeSol : "0",
+        total: assetPreview.amount,
+        isFirstAtaOpen: assetPreview.recipientAtaCreated,
+        balance: Number(assetPreview.balance),
+        enough: assetPreview.enough,
+        symbol: assetPreview.asset.toUpperCase(),
+        fiatLabel: fiatBillLabel,
       }
-    : null;
+    : preview
+      ? {
+          label: recipientBillLabel,
+          to: preview.recipient.to,
+          transferred: String(preview.plan.transferred),
+          fee: String(preview.plan.fee),
+          feePct: preview.plan.feePct,
+          openFee: String(preview.plan.openFee),
+          total: String(preview.plan.total),
+          isFirstAtaOpen: preview.plan.isFirstAtaOpen,
+          balance: preview.balance,
+          enough: preview.enough,
+          symbol: "ACOPAY",
+          fiatLabel: fiatBillLabel,
+        }
+      : null;
 
   const headerTitle =
     step === "success"
@@ -516,6 +727,8 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
         openFee: success.openFee,
         total: success.total,
         isFirstAtaOpen: success.isFirstAtaOpen,
+        symbol: success.symbol,
+        fiatLabel: success.fiatLabel,
       }
     : null);
 
@@ -556,21 +769,49 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
               />
             </div>
 
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                className="pay-transfer-choice"
+                onClick={() => setSourceOpen(true)}
+              >
+                <span className="pay-transfer-choice-label">{t("payApp.transferSource")}</span>
+                <span className="pay-transfer-choice-value">
+                  <SourceLogo source={source} />
+                  {sourceSymbol}
+                </span>
+                <span className="pay-transfer-choice-sub">
+                  {t("payApp.balanceLabel")} {formatCoinAmount(sourceBalance)}
+                </span>
+              </button>
+              <button
+                type="button"
+                className="pay-transfer-choice"
+                onClick={() => setCurrencyOpen(true)}
+              >
+                <span className="pay-transfer-choice-label">{t("payApp.transferChooseCurrency")}</span>
+                <span className="pay-transfer-choice-value">{currency}</span>
+                <span className="pay-transfer-choice-sub">{t("payApp.transferCurrencyHint")}</span>
+              </button>
+            </div>
+
             <div className="otc-field-block">
               <div className="flex items-center justify-between gap-2">
                 <label className="text-xs font-semibold text-[var(--acopay-muted)]">
                   {t("payApp.sendAmountLabel")}
                 </label>
-                <span className="inline-flex items-center gap-1 text-[11px] font-semibold tabular-nums text-[var(--acopay-muted)]">
-                  {t("payApp.balanceLabel")}{" "}
-                  <span className="tabular-nums text-[var(--acopay-fg)]">{formatAcopay(balance)}</span>
-                  <AcopayTicker className="h-3 w-3" />
-                </span>
+                <button
+                  type="button"
+                  onClick={setMaxAmount}
+                  className="text-[11px] font-bold text-[var(--acopay-brand)]"
+                >
+                  {t("payApp.transferMax")}
+                </button>
               </div>
               <div className="mt-2 flex items-center gap-2 rounded-2xl border border-[color:var(--acopay-border-strong)] bg-[var(--acopay-surface)] px-4 py-3 focus-within:border-[color:var(--acopay-brand)]">
                 <input
-                  value={amount}
-                  onChange={(e) => setAmount(formatAmountInput(e.target.value))}
+                  value={fiatAmount}
+                  onChange={(e) => setFiatAmount(formatAmountInput(e.target.value))}
                   inputMode="decimal"
                   enterKeyHint="done"
                   autoComplete="off"
@@ -580,19 +821,21 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
                   placeholder="0.0"
                   className="min-w-0 flex-1 bg-transparent text-3xl font-bold tabular-nums tracking-tight text-[var(--acopay-fg)] outline-none"
                 />
-                <span className="inline-flex shrink-0 items-center gap-1 rounded-lg bg-[var(--acopay-brand-soft)] px-2 py-1 text-xs font-bold text-[var(--acopay-brand)]">
-                  <AcopayTicker className="h-3.5 w-3.5" label={false} />
-                  ACOPAY
+                <span className="inline-flex shrink-0 items-center rounded-lg bg-[var(--acopay-brand-soft)] px-2 py-1 text-xs font-bold text-[var(--acopay-brand)]">
+                  {currency}
                 </span>
               </div>
+              <p className={`mt-2 text-xs ${estimateLabel ? "text-[var(--acopay-muted)]" : "text-[var(--acopay-danger)]"}`}>
+                {estimateLabel || t("payApp.transferRateUnavailable")}
+              </p>
               <div className="mt-2 flex flex-wrap gap-1.5">
                 {PRESETS.map((n) => (
                   <button
                     key={n}
                     type="button"
-                    onClick={() => setAmount(formatAmountInput(String(n)))}
+                    onClick={() => setFiatAmount(formatAmountInput(String(n)))}
                     className={`rounded-full px-3 py-1 text-[11px] font-semibold tabular-nums ${
-                      amountNum === n
+                      fiatAmountNum === n
                         ? "bg-[var(--acopay-brand)] text-[var(--acopay-btn-fg)]"
                         : "border border-[color:var(--acopay-border)] text-[var(--acopay-muted)]"
                     }`}
@@ -605,12 +848,64 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
 
             <button
               type="button"
-              disabled={busy || !to.trim() || !(amountNum >= 1)}
+              disabled={busy || !to.trim() || tokenAmount == null || tokenAmount <= 0}
               onClick={() => void onPreview()}
               className="btn-orca-primary w-full !rounded-xl !py-3.5 text-sm font-semibold disabled:opacity-50"
             >
               {busy ? t("payApp.loading") : t("payApp.sendPreview")}
             </button>
+
+            {sourceOpen ? (
+              <div className="pay-fx-sheet" role="dialog" aria-modal="true">
+                <div className="pay-fx-sheet-head">
+                  <h3 className="pay-fx-sheet-title">{t("payApp.transferSource")}</h3>
+                  <button type="button" className="pay-fx-sheet-close" onClick={() => setSourceOpen(false)}>
+                    ×
+                  </button>
+                </div>
+                <p className="pay-fx-sheet-sub">{t("payApp.transferSourceHint")}</p>
+                <div className="pay-fx-sheet-list">
+                  {availableSources.map((item) => (
+                    <button
+                      key={item}
+                      type="button"
+                      className={`pay-fx-row${source === item ? " pay-fx-row-on" : ""}`}
+                      onClick={() => selectSource(item)}
+                    >
+                      <span className="inline-flex items-center gap-2">
+                        <SourceLogo source={item} />
+                        <strong>{item.toUpperCase()}</strong>
+                      </span>
+                      <span className="pay-fx-name">{formatCoinAmount(balances[item])}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+
+            {currencyOpen ? (
+              <div className="pay-fx-sheet" role="dialog" aria-modal="true">
+                <div className="pay-fx-sheet-head">
+                  <h3 className="pay-fx-sheet-title">{t("payApp.transferChooseCurrency")}</h3>
+                  <button type="button" className="pay-fx-sheet-close" onClick={() => setCurrencyOpen(false)}>
+                    ×
+                  </button>
+                </div>
+                <p className="pay-fx-sheet-sub">{t("payApp.transferCurrencyHint")}</p>
+                <div className="pay-fx-sheet-list">
+                  {DISPLAY_CURRENCIES.map((item) => (
+                    <button
+                      key={item.code}
+                      type="button"
+                      className={`pay-fx-row${currency === item.code ? " pay-fx-row-on" : ""}`}
+                      onClick={() => selectCurrency(item.code)}
+                    >
+                      <span className="pay-fx-code">{item.code}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : null}
           </div>
         )}
 
@@ -640,6 +935,7 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
                   setAwaitingPhantomReturn(false);
                   setStep("form");
                   setPreview(null);
+                  setAssetPreview(null);
                   setBusy(false);
                 }}
                 className="flex-1 !rounded-xl !py-3 text-sm font-semibold text-[var(--acopay-pay-exit)] border border-[color:var(--acopay-pay-exit-ring)] bg-[var(--acopay-pay-exit-bg)] hover:opacity-90"
@@ -691,7 +987,9 @@ export function PaySendPanel({ balance, onBack, onError, onSentBot }: Props) {
                 <div className="send-bill-row">
                   <span className="send-bill-label">{t("sendAcopay.amountLabel")}</span>
                   <span className="send-bill-value">
-                    <AcopayAmount>{formatAcopay(parseAmountInput(String(waitBill.transferred)))}</AcopayAmount>
+                    <AcopayAmount symbol={waitBill.symbol || "ACOPAY"}>
+                      {formatCoinAmount(parseAmountInput(String(waitBill.transferred)))}
+                    </AcopayAmount>
                   </span>
                 </div>
                 <hr className="send-bill-divider" />
@@ -740,6 +1038,8 @@ type BillPlan = {
   isFirstAtaOpen: boolean;
   balance?: number;
   enough?: boolean;
+  symbol?: string;
+  fiatLabel?: string;
 };
 
 /** Same success layout as `/send` Phantom bill — used for bot + Phantom on `/pay`. */
@@ -748,13 +1048,22 @@ function PhantomParitySuccessBill({ success }: { success: SuccessState }) {
   const labelIsUser = looksLikeTelegramUsername(success.label);
   const transfersUrl = explorerTransfersUrl();
   const openFeeN = parseAmountInput(String(success.openFee || "0"));
+  const symbol = success.symbol || "ACOPAY";
 
   return (
     <div className="send-bill send-bill--success space-y-3 text-sm">
+      {success.fiatLabel ? (
+        <div className="send-bill-row">
+          <span className="send-bill-label">{t("payApp.transferBillFiat")}</span>
+          <span className="send-bill-value send-bill-value--plain">{success.fiatLabel}</span>
+        </div>
+      ) : null}
       <div className="send-bill-row">
         <span className="send-bill-label">💸 {t("sendAcopay.transferredLabel")}</span>
         <span className="send-bill-value">
-          <AcopayAmount>{formatAcopay(parseAmountInput(String(success.transferred)))}</AcopayAmount>
+          <AcopayAmount symbol={symbol}>
+            {formatCoinAmount(parseAmountInput(String(success.transferred)))}
+          </AcopayAmount>
         </span>
       </div>
       <div className="send-bill-row">
@@ -763,10 +1072,14 @@ function PhantomParitySuccessBill({ success }: { success: SuccessState }) {
           <span className="send-bill-meta">({success.feePct})</span>
         </span>
         <span className="send-bill-value send-bill-value--plain inline-flex items-center gap-1">
-          <AcopayAmount>{formatAcopay(parseAmountInput(String(success.fee)))}</AcopayAmount>
+          {symbol === "ACOPAY" ? (
+            <AcopayAmount>{formatAcopay(parseAmountInput(String(success.fee)))}</AcopayAmount>
+          ) : (
+            <span>{formatCoinAmount(parseAmountInput(String(success.fee)))} SOL</span>
+          )}
         </span>
       </div>
-      {success.isFirstAtaOpen && openFeeN > 0 ? (
+      {success.isFirstAtaOpen && openFeeN > 0 && symbol === "ACOPAY" ? (
         <div className="send-bill-row">
           <span className="send-bill-label">🆕 {t("sendAcopay.openFeeLabel")}</span>
           <span className="send-bill-value send-bill-value--plain inline-flex items-center gap-1">
@@ -778,7 +1091,9 @@ function PhantomParitySuccessBill({ success }: { success: SuccessState }) {
       <div className="send-bill-row">
         <span className="send-bill-label send-bill-label--strong">🧾 {t("sendAcopay.totalLabel")}</span>
         <span className="send-bill-value">
-          <AcopayAmount>{formatAcopay(parseAmountInput(String(success.total)))}</AcopayAmount>
+          <AcopayAmount symbol={symbol}>
+            {formatCoinAmount(parseAmountInput(String(success.total)))}
+          </AcopayAmount>
         </span>
       </div>
 
@@ -823,12 +1138,12 @@ function PhantomParitySuccessBill({ success }: { success: SuccessState }) {
 }
 
 /** Amount + logo + ticker on one baseline (flex middle). */
-function AcopayAmount({ children }: { children: ReactNode }) {
+function AcopayAmount({ children, symbol = "ACOPAY" }: { children: ReactNode; symbol?: string }) {
   return (
     <span className="send-bill-amount">
       <span className="send-bill-amount-num">{children}</span>
-      <BrandLogo className="send-bill-logo" alt="" />
-      <span className="send-bill-ticker">ACOPAY</span>
+      {symbol === "ACOPAY" ? <BrandLogo className="send-bill-logo" alt="" /> : null}
+      <span className="send-bill-ticker">{symbol}</span>
     </span>
   );
 }
@@ -866,7 +1181,9 @@ function TransferBill({
   explorerHref?: string;
   explorerLabel?: string;
 }) {
+  const { t } = useI18n();
   const labelIsUser = looksLikeTelegramUsername(plan.label);
+  const symbol = plan.symbol || "ACOPAY";
   return (
     <div className={`send-bill space-y-3 text-sm ${variant === "success" ? "send-bill--success" : ""}`}>
       <div className="flex items-center justify-between gap-2">
@@ -897,10 +1214,19 @@ function TransferBill({
 
       <hr className="send-bill-divider" />
 
+      {plan.fiatLabel ? (
+        <div className="send-bill-row">
+          <span className="send-bill-label">{t("payApp.transferBillFiat")}</span>
+          <span className="send-bill-value send-bill-value--plain">{plan.fiatLabel}</span>
+        </div>
+      ) : null}
+
       <div className="send-bill-row">
         <span className="send-bill-label">{amountLabel}</span>
         <span className="send-bill-value">
-          <AcopayAmount>{formatAcopay(parseAmountInput(String(plan.transferred)))}</AcopayAmount>
+          <AcopayAmount symbol={symbol}>
+            {formatCoinAmount(parseAmountInput(String(plan.transferred)))}
+          </AcopayAmount>
         </span>
       </div>
       <div className="send-bill-row">
@@ -909,10 +1235,14 @@ function TransferBill({
           <span className="send-bill-meta">({plan.feePct})</span>
         </span>
         <span className="send-bill-value send-bill-value--plain inline-flex items-center gap-1">
-          <AcopayAmount>{formatAcopay(parseAmountInput(String(plan.fee)))}</AcopayAmount>
+          {symbol === "ACOPAY" ? (
+            <AcopayAmount>{formatAcopay(parseAmountInput(String(plan.fee)))}</AcopayAmount>
+          ) : (
+            <span>{formatCoinAmount(parseAmountInput(String(plan.fee)))} SOL</span>
+          )}
         </span>
       </div>
-      {plan.isFirstAtaOpen && parseAmountInput(String(plan.openFee)) > 0 && (
+      {plan.isFirstAtaOpen && parseAmountInput(String(plan.openFee)) > 0 && symbol === "ACOPAY" && (
         <div className="send-bill-row">
           <span className="send-bill-label">{openFeeLabel}</span>
           <span className="send-bill-value send-bill-value--plain inline-flex items-center gap-1">
@@ -924,7 +1254,9 @@ function TransferBill({
       <div className="send-bill-row">
         <span className="send-bill-label send-bill-label--strong">{totalLabel}</span>
         <span className="send-bill-value">
-          <AcopayAmount>{formatAcopay(parseAmountInput(String(plan.total)))}</AcopayAmount>
+          <AcopayAmount symbol={symbol}>
+            {formatCoinAmount(parseAmountInput(String(plan.total)))}
+          </AcopayAmount>
         </span>
       </div>
 
@@ -936,7 +1268,7 @@ function TransferBill({
               plan.enough === false ? "text-[var(--acopay-danger,#da251d)]" : ""
             }`}
           >
-            <AcopayAmount>{formatAcopay(plan.balance)}</AcopayAmount>
+            <AcopayAmount symbol={symbol}>{formatCoinAmount(plan.balance)}</AcopayAmount>
             {plan.enough === false ? (
               <span className="send-bill-meta"> — {insufficient}</span>
             ) : null}
@@ -955,17 +1287,13 @@ function TransferBill({
   );
 }
 
-function AcopayTicker({
-  className = "h-3.5 w-3.5",
-  label = true,
-}: {
-  className?: string;
-  label?: boolean;
-}) {
-  return (
-    <span className="inline-flex items-center gap-1">
-      <BrandLogo className={className} alt="" />
-      {label ? <span className="font-bold text-[var(--acopay-brand)]">ACOPAY</span> : null}
-    </span>
-  );
+function SourceLogo({ source }: { source: TransferSourceId }) {
+  if (source === "acopay") {
+    return <BrandLogo className="h-5 w-5 rounded-full" alt="" />;
+  }
+  const src =
+    source === "usdt"
+      ? "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/solana/assets/Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB/logo.png"
+      : "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/solana/info/logo.png";
+  return <img src={src} alt="" className="h-5 w-5 rounded-full" referrerPolicy="no-referrer" />;
 }

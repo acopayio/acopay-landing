@@ -486,6 +486,141 @@ export async function sendPay(to: string, amount: number | string): Promise<PayS
   return data;
 }
 
+export type PayTransferAsset = "usdt" | "sol";
+
+export type PayAssetRecipient = {
+  to: string;
+  label: string;
+  labelKind?: "username" | "tgUser" | "address";
+  kind: string;
+  username: string | null;
+};
+
+export type PayAssetPreview = {
+  ok: true;
+  mode: "bot" | "phantom";
+  from: string;
+  recipient: PayAssetRecipient;
+  asset: PayTransferAsset;
+  /** Exact decimal strings; never converted through JavaScript number. */
+  amount: string;
+  balance: string;
+  enough: boolean;
+  enoughAsset: boolean;
+  enoughGas: boolean;
+  estimatedNetworkFeeSol: string;
+  /** True when this transaction will idempotently create the recipient USDT ATA. */
+  recipientAtaCreated: boolean;
+};
+
+export type PayAssetBuildResult = PayAssetPreview & {
+  transaction: string;
+  pendingId: string;
+  pendingSecret: string;
+  expiresAt: number;
+};
+
+export type PayAssetSendResult = PayAssetPreview & {
+  signature: string;
+  explorer: string;
+};
+
+export type PayAssetBroadcastResult = {
+  ok: true;
+  signature: string;
+  explorer: string;
+};
+
+type PayAssetErrorBody = {
+  error?: string;
+  errorCode?: string;
+  need?: string | number;
+  have?: string | number;
+};
+
+async function postPayAsset<T>(
+  path: string,
+  payload: Record<string, unknown>,
+  fallbackCode: string,
+  fallbackMessage: string,
+  authenticated = true,
+): Promise<T> {
+  const res = await fetch(path, {
+    method: "POST",
+    headers: authenticated
+      ? headers()
+      : { Accept: "application/json", "Content-Type": "application/json" },
+    credentials: authenticated ? fetchCred : "omit",
+    body: JSON.stringify(payload),
+  });
+  const data = (await res.json()) as T & PayAssetErrorBody & { ok?: boolean };
+  if (authenticated && res.status === 401) {
+    setPaySession(null);
+    throw new PayApiError("session_expired", "session_expired");
+  }
+  if (!res.ok || data.ok !== true) {
+    throwPayApiError(data, fallbackCode, fallbackMessage);
+  }
+  return data;
+}
+
+export async function previewPayAsset(input: {
+  to: string;
+  amount: string;
+  asset: PayTransferAsset;
+}): Promise<PayAssetPreview> {
+  return postPayAsset<PayAssetPreview>(
+    "/api/pay/asset-preview",
+    input,
+    "asset_preview_failed",
+    "Asset preview failed.",
+  );
+}
+
+export async function buildPayAsset(input: {
+  to: string;
+  amount: string;
+  asset: PayTransferAsset;
+}): Promise<PayAssetBuildResult> {
+  return postPayAsset<PayAssetBuildResult>(
+    "/api/pay/asset-build",
+    input,
+    "asset_build_failed",
+    "Could not build asset transfer.",
+  );
+}
+
+export async function sendPayAsset(input: {
+  to: string;
+  amount: string;
+  asset: PayTransferAsset;
+}): Promise<PayAssetSendResult> {
+  return postPayAsset<PayAssetSendResult>(
+    "/api/pay/asset-send",
+    input,
+    "asset_send_failed",
+    "Asset transfer failed.",
+  );
+}
+
+/**
+ * Broadcast after Phantom signs the exact transaction returned by buildPayAsset.
+ * Session-free by design so an in-app wallet browser can finish Safari's build.
+ */
+export async function broadcastPayAsset(input: {
+  transaction: string;
+  pendingId: string;
+  pendingSecret: string;
+}): Promise<PayAssetBroadcastResult> {
+  return postPayAsset<PayAssetBroadcastResult>(
+    "/api/pay/asset-broadcast",
+    input,
+    "asset_broadcast_failed",
+    "Could not broadcast signed transaction.",
+    false,
+  );
+}
+
 export async function logoutPay(): Promise<void> {
   try {
     await fetch("/api/pay/auth-logout", {
