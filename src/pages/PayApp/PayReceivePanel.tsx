@@ -10,8 +10,9 @@ type Props = {
 };
 
 /**
- * Receive layout (Kevin 2026-07-29):
- * QR (+ logo) → Solana badge + address → ACOPAY @username (if set on Web/App) → Copy
+ * Receive layout (Kevin 2026-08-05):
+ * Short title · one-line Solana assets hint · QR · network badge · address · @username · Copy
+ * Wallet receives SOL + any SPL (not ACOPAY-only).
  */
 export function PayReceivePanel({ address, username, onBack }: Props) {
   const { t } = useI18n();
@@ -51,9 +52,11 @@ export function PayReceivePanel({ address, username, onBack }: Props) {
             <h2 className="text-xl font-bold tracking-tight text-[var(--acopay-fg)]">
               {t("payApp.receiveTitle")}
             </h2>
-            <p className="mt-1 text-sm leading-relaxed text-[var(--acopay-muted)]">
-              {t("payApp.receiveHint")}
-            </p>
+            {t("payApp.receiveHint") ? (
+              <p className="mt-1 text-sm leading-snug text-[var(--acopay-muted)]">
+                {t("payApp.receiveHint")}
+              </p>
+            ) : null}
           </div>
           <button
             type="button"
