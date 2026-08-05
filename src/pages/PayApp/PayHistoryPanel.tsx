@@ -273,7 +273,6 @@ export function PayHistoryPanel({ address, onBack, onError }: Props) {
         {!loading && items.length === 0 && (
           <div className="mt-6 rounded-xl border border-dashed border-[color:var(--acopay-border)] px-4 py-8 text-center">
             <p className="text-sm text-[var(--acopay-muted)]">{t("payApp.historyEmpty")}</p>
-            <p className="mt-2 text-xs text-[var(--acopay-faint)]">{t("payApp.historyEmptyHint")}</p>
           </div>
         )}
 

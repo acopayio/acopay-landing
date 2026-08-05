@@ -30,7 +30,7 @@ export const CORE_UI_GAPS: Record<string, object> = {
     hero: {
       explorer: "Оглядач Solana ↗",
       solscan: "Solscan ↗",
-      desc: "Платіжна утиліта Solana для переказів між гаманцями. Торгуйте ACOPAY/USDT на Raydium і Jupiter.",
+      desc: "Платіжна утиліта Solana для переказів між гаманцями.",
       contractAddress: "Адреса контракту",
       details: "Докладніше →",
       copy: "Копіювати",
@@ -162,7 +162,7 @@ export const CORE_UI_GAPS: Record<string, object> = {
     hero: {
       explorer: "Solana Verkenner ↗",
       solscan: "Solscan ↗",
-      desc: "Solana-betalingsutility voor transfers van wallet naar wallet. Handel ACOPAY/USDT op Raydium en Jupiter.",
+      desc: "Solana-betalingsutility voor wallet-naar-wallet-overschrijvingen.",
       contractAddress: "Contractadres",
       details: "Meer info →",
       copy: "Kopiëren",
@@ -294,7 +294,7 @@ export const CORE_UI_GAPS: Record<string, object> = {
     hero: {
       explorer: "Eksplorator Solana ↗",
       solscan: "Solscan ↗",
-      desc: "Narzędzie płatnicze Solana do przelewów między portfelami. Handluj ACOPAY/USDT na Raydium i Jupiter.",
+      desc: "Narzędzie płatnicze Solana do przelewów między portfelami.",
       contractAddress: "Adres kontraktu",
       details: "Szczegóły →",
       copy: "Kopiuj",
@@ -425,7 +425,7 @@ export const CORE_UI_GAPS: Record<string, object> = {
     hero: {
       explorer: "Solana Gezgini ↗",
       solscan: "Solscan ↗",
-      desc: "Cüzdandan cüzdana transferler için Solana ödeme yardımcı tokeni. Raydium ve Jupiter'de ACOPAY/USDT işlem yapın.",
+      desc: "Cüzdandan cüzdana transferler için Solana ödeme aracı.",
       contractAddress: "Sözleşme adresi",
       details: "Ayrıntılar →",
       copy: "Kopyala",
@@ -558,7 +558,7 @@ export const CORE_UI_GAPS: Record<string, object> = {
     hero: {
       explorer: "Esploratore Solana ↗",
       solscan: "Solscan ↗",
-      desc: "Utility di pagamento su Solana per trasferimenti tra portafogli. Opera ACOPAY/USDT su Raydium e Jupiter.",
+      desc: "Utility di pagamento Solana per trasferimenti tra wallet.",
       contractAddress: "Indirizzo del contratto",
       details: "Dettagli →",
       copy: "Copia",
@@ -693,7 +693,7 @@ export const CORE_UI_GAPS: Record<string, object> = {
     hero: {
       explorer: "Penjelajah Solana ↗",
       solscan: "Solscan ↗",
-      desc: "Utiliti pembayaran Solana untuk pindahan dompet-ke-dompet. Dagangkan ACOPAY/USDT di Raydium dan Jupiter.",
+      desc: "Utiliti pembayaran Solana untuk pemindahan dompet-ke-dompet.",
       contractAddress: "Alamat kontrak",
       details: "Butiran →",
       copy: "Salin",

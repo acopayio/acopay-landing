@@ -1117,7 +1117,7 @@ export const SITE_CONTENT_PARTIALS: Record<string, object> = {
     hero: {
       eyebrow: "Solana · Token-2022",
       feeLabel: "ऑन-चेन ट्रांसफर शुल्क:",
-      desc: "वॉलेट-टू-वॉलेट ट्रांसफर के लिए Solana पेमेंट यूटिलिटी। Raydium और Jupiter पर ACOPAY/USDT ट्रेड करें।",
+      desc: "वॉलेट-टू-वॉलेट ट्रांसफर के लिए Solana पेमेंट यूटिलिटी।",
       explorer: "Solana एक्सप्लोरर ↗",
       solscan: "Solscan ↗",
       contractAddress: "कॉन्ट्रैक्ट एड्रेस",
