@@ -192,7 +192,6 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
   }, [tokenAmount, sourceSymbol]);
   const toIsUsername = looksLikeTelegramUsername(to);
   const activePreview = assetPreview || preview;
-  const isPhantomMode = activePreview?.mode === "phantom";
   const fiatBillLabel =
     fiatAmount.trim().length > 0 ? `${fiatAmount.trim()} ${currency}` : undefined;
 
