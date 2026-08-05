@@ -872,7 +872,7 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
                     : t("payApp.transferFiatEstimateHint"))}
               </p>
               <div className="mt-2 flex flex-wrap gap-1.5">
-                {[10, 100, 1000].map((n) => (
+                {[1000, 2000, 5000].map((n) => (
                   <button
                     key={n}
                     type="button"
