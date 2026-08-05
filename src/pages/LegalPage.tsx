@@ -13,7 +13,6 @@ function PrivacyBody() {
   const t = useT();
   return (
     <>
-      <p className="text-[var(--acopay-muted)]">{t("legal.lastUpdated")}</p>
       <p>{t("legal.privacyIntro")}</p>
       <h2 className="mt-8 text-xl font-bold text-[var(--acopay-fg)]">{t("legal.privacyH1")}</h2>
       <p>{t("legal.privacyP1")}</p>
@@ -79,7 +78,6 @@ function TermsBody() {
   const t = useT();
   return (
     <>
-      <p className="text-[var(--acopay-muted)]">{t("legal.lastUpdated")}</p>
       <p>{t("legal.termsIntro")}</p>
       <h2 className="mt-8 text-xl font-bold text-[var(--acopay-fg)]">{t("legal.termsH1")}</h2>
       <p>{t("legal.termsP1")}</p>
@@ -114,7 +112,6 @@ function DeleteBody() {
   const t = useT();
   return (
     <>
-      <p className="text-[var(--acopay-muted)]">{t("legal.lastUpdated")}</p>
       <p>{t("legal.deleteIntro")}</p>
       <h2 className="mt-8 text-xl font-bold text-[var(--acopay-fg)]">{t("legal.deleteHWhat")}</h2>
       <p>{t("legal.deletePWhat")}</p>
