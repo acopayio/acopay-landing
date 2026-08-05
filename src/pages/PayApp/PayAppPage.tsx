@@ -24,6 +24,7 @@ import {
   logoutPay,
   mapPayApiError,
   openTelegramBotLink,
+  PayApiError,
   pollTelegramAuth,
   requestTelegramAuth,
   setPaySession,
@@ -176,7 +177,8 @@ export function PayAppPage() {
 
   const saveUsernameModal = useCallback(async () => {
     if (!hasWallet || userBusy) return;
-    const trimmed = usernameDraft.trim().replace(/^@+/, "");
+    const trimmed = usernameDraft.trim().replace(/^@+/, "").replace(/\s+/g, "");
+    setUsernameDraft(trimmed);
     setUserBusy(true);
     setUsernameErr(null);
     setError(null);
@@ -189,7 +191,15 @@ export function PayAppPage() {
       await loadMe();
       setUsernameOpen(false);
     } catch (e) {
-      setUsernameErr(mapPayApiError(e, t, locale));
+      const msg = mapPayApiError(e, t, locale);
+      setUsernameErr(msg);
+      // Session gone while SPA still shows cached /me — force re-login.
+      if (e instanceof PayApiError && e.code === "session_expired") {
+        setUsernameOpen(false);
+        setMe(null);
+        setPhase("login");
+        setError(msg);
+      }
     } finally {
       setUserBusy(false);
     }
@@ -622,7 +632,9 @@ export function PayAppPage() {
                         disabled={userBusy}
                         placeholder="username"
                         onChange={(e) => {
-                          setUsernameDraft(e.target.value.replace(/^@+/, ""));
+                          setUsernameDraft(
+                            e.target.value.replace(/^@+/, "").replace(/\s+/g, ""),
+                          );
                           setUsernameErr(null);
                         }}
                         onKeyDown={(e) => {
