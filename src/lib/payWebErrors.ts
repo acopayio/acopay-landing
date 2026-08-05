@@ -42,6 +42,7 @@ const CODE_TO_KEY: Record<string, string> = {
   first_ata_min2: "payApp.firstAtaMin2",
   insufficient_balance: "payApp.errInsufficient",
   phantom_not_linked: "payApp.errPhantomNotLinked",
+  phantom_desktop_only: "payApp.errPhantomDesktopOnly",
   custodial_missing: "payApp.errCustodialMissing",
   preview_failed: "payApp.errPreviewFailed",
   send_failed: "payApp.errSendFailed",

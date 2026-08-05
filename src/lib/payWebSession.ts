@@ -17,6 +17,11 @@ function isMobileUa(): boolean {
 
 export { isMobileUa };
 
+/** Kevin 2026-08-05 — server gates Phantom to desktop only. */
+export function webPayClientPlatform(): "mobile" | "desktop" {
+  return isMobileUa() ? "mobile" : "desktop";
+}
+
 /** https://t.me/Bot?start=payload → tg://resolve?domain=Bot&start=payload */
 export function telegramHttpsToAppScheme(httpsUrl: string): string | null {
   try {
@@ -463,7 +468,7 @@ export async function previewPay(to: string, amount: number | string): Promise<P
     method: "POST",
     headers: headers(),
     credentials: fetchCred,
-    body: JSON.stringify({ to, amount }),
+    body: JSON.stringify({ to, amount, clientPlatform: webPayClientPlatform() }),
   });
   const data = (await res.json()) as PayPreview & {
     error?: string;
@@ -501,7 +506,7 @@ export async function sendPay(to: string, amount: number | string): Promise<PayS
     method: "POST",
     headers: headers(),
     credentials: fetchCred,
-    body: JSON.stringify({ to, amount }),
+    body: JSON.stringify({ to, amount, clientPlatform: webPayClientPlatform() }),
   });
   const data = (await res.json()) as PaySendResult & {
     error?: string;
@@ -579,13 +584,16 @@ async function postPayAsset<T>(
   fallbackMessage: string,
   authenticated = true,
 ): Promise<T> {
+  const body = authenticated
+    ? { ...payload, clientPlatform: webPayClientPlatform() }
+    : payload;
   const res = await fetch(path, {
     method: "POST",
     headers: authenticated
       ? headers()
       : { Accept: "application/json", "Content-Type": "application/json" },
     credentials: authenticated ? fetchCred : "omit",
-    body: JSON.stringify(payload),
+    body: JSON.stringify(body),
   });
   const data = (await res.json()) as T & PayAssetErrorBody & { ok?: boolean };
   if (authenticated && res.status === 401) {

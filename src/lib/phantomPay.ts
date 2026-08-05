@@ -129,6 +129,18 @@ export function isMobileUa(): boolean {
   return /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
 }
 
+/**
+ * Kevin 2026-08-05 LOCKED: Web Pay Phantom sign ONLY on desktop with extension.
+ * Mobile Web Pay (Telegram / App connect) → Confirm & send (bot), never Phantom CTA / browse.
+ */
+export function isDesktopPhantomCapable(): boolean {
+  return hasPhantomExtension() && !isMobileUa();
+}
+
+export function webPayClientPlatform(): "mobile" | "desktop" {
+  return isMobileUa() ? "mobile" : "desktop";
+}
+
 function usdtToRaw(amount: number): bigint {
   if (!Number.isFinite(amount) || amount <= 0) {
     throw new Error("Invalid USDT amount");

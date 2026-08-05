@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { flushSync } from "react-dom";
 import { AddrHighlight } from "../../components/AddrHighlight";
 import { BrandLogo } from "../../components/BrandLogo";
-import { formatSessionClock, phantomBrowseUrl } from "../../config/otc";
+import { formatSessionClock } from "../../config/otc";
 import { explorerTransfersUrl } from "../../config/token";
 import { useI18n } from "../../i18n/LanguageProvider";
 import {
@@ -27,14 +27,12 @@ import {
   saveTransferPreferences,
   type TransferSourceId,
 } from "../../lib/transferPreferences";
-import { hasPhantomExtension, isMobileUa } from "../../lib/phantomPay";
+import { hasPhantomExtension, isDesktopPhantomCapable } from "../../lib/phantomPay";
 import {
   clearPayPaidQueryFromUrl,
   clearPayPhantomPending,
   loadPayPhantomPending,
   parsePayPaidQuery,
-  savePayPhantomPending,
-  withPayReturnParam,
   type PayPhantomPending,
 } from "../../lib/payPhantomReturn";
 import {
@@ -480,12 +478,8 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
   }
 
   async function runAssetPhantom(p: PayAssetPreview) {
-    if (isMobileUa() && !hasPhantomExtension()) {
-      onError(t("payApp.billErrNoPhantom"));
-      return;
-    }
-    if (!hasPhantomExtension()) {
-      onError(t("payApp.billErrNoPhantom"));
+    if (!isDesktopPhantomCapable()) {
+      onError(t("payApp.errPhantomDesktopOnly"));
       return;
     }
     beginWaiting();
@@ -588,7 +582,11 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
   async function onPrimaryAction() {
     if (assetPreview) {
       onError("");
-      if (assetPreview.mode === "bot") {
+      if (assetPreview.mode === "bot" || !isDesktopPhantomCapable()) {
+        if (assetPreview.mode === "phantom" && !isDesktopPhantomCapable()) {
+          onError(t("payApp.errPhantomDesktopOnly"));
+          return;
+        }
         await runAssetBot(assetPreview);
         return;
       }
@@ -598,7 +596,11 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
     if (!preview) return;
     onError("");
 
-    if (preview.mode === "bot") {
+    if (preview.mode === "bot" || !isDesktopPhantomCapable()) {
+      if (preview.mode === "phantom" && !isDesktopPhantomCapable()) {
+        onError(t("payApp.errPhantomDesktopOnly"));
+        return;
+      }
       const waitStarted = Date.now();
       beginWaiting();
       try {
@@ -607,6 +609,12 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
           await holdWaitingMinMs(waitStarted);
           const explorer = r.explorer || `https://solscan.io/tx/${r.signature}`;
           finishSuccess(previewToSuccess(preview, explorer, r.signature));
+          return;
+        }
+        if (r.mode === "phantom") {
+          onError(t("payApp.errPhantomDesktopOnly"));
+          setStep("confirm");
+          setBusy(false);
           return;
         }
         onError(t("payApp.errUnexpectedSend"));
@@ -620,7 +628,7 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
       return;
     }
 
-    // Phantom: show clock while creating session (no Loading on confirm button).
+    // Desktop Phantom extension only — never mobile browse / deep-link.
     beginWaiting();
     try {
       const r = await sendPay(preview.recipient.to, preview.amount);
@@ -631,29 +639,6 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
           onError(t("payApp.errInvalidPhantomSession"));
           setStep("confirm");
           setBusy(false);
-          return;
-        }
-
-        if (isMobileUa() && !hasPhantomExtension()) {
-          const pending: PayPhantomPending = {
-            pid: sess.pid,
-            from: sess.from,
-            to: sess.to,
-            amount: sess.amount,
-            tg: sess.tg,
-            label: preview.recipient.label,
-            transferred: String(preview.plan.transferred),
-            fee: String(preview.plan.fee),
-            feePct: preview.plan.feePct,
-            openFee: String(preview.plan.openFee),
-            total: String(preview.plan.total),
-            isFirstAtaOpen: preview.plan.isFirstAtaOpen,
-            startedAt: Date.now(),
-          };
-          savePayPhantomPending(pending);
-          setAwaitingPhantomReturn(true);
-          const browseTarget = withPayReturnParam(sess.sendUrl);
-          window.location.assign(phantomBrowseUrl(browseTarget));
           return;
         }
 
@@ -743,7 +728,10 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
         ? t("sendAcopay.pendingTitle")
         : t("payApp.sendTitle");
 
-  const primaryLabel = isPhantomMode ? t("payApp.sendPhantom") : t("payApp.sendConfirm");
+  const isPhantomMode = activePreview?.mode === "phantom";
+  /** Kevin 2026-08-05: Phantom CTA only desktop + extension — never mobile Web Pay. */
+  const usePhantomCta = isPhantomMode && isDesktopPhantomCapable();
+  const primaryLabel = usePhantomCta ? t("payApp.sendPhantom") : t("payApp.sendConfirm");
   const waitBill = billPlan || (success
     ? {
         label: success.label,

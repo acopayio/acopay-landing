@@ -672,6 +672,7 @@ export const en = {
     errInsufficient: "Insufficient balance. Need {need} ACOPAY (have {have}).",
     errPhantomNotLinked: "Phantom wallet not linked.",
     errCustodialMissing: "Custodial wallet missing. Open Telegram Pay to create one, or link Phantom.",
+    errPhantomDesktopOnly: "On phone, confirm with Telegram Pay (or transfer in the ACOPAY app). Phantom sign is only on desktop Chrome with the extension.",
     errPreviewFailed: "Preview failed.",
     errSendFailed: "Send failed.",
     errUnexpectedSend: "Unexpected send response.",
