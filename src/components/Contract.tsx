@@ -43,7 +43,7 @@ export function Contract() {
           <div className="pools-table">
             <table className="w-full">
               <thead>
-                <tr className="bg-[#13161a]/80">
+                <tr>
                   <th>{t("common.field")}</th>
                   <th>{t("common.details")}</th>
                 </tr>

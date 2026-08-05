@@ -53,7 +53,7 @@ export function Tokenomics() {
         <div className="pools-table mt-10">
           <table className="w-full">
             <thead>
-              <tr className="bg-[#13161a]/80">
+              <tr>
                 <th>{t("common.metric")}</th>
                 <th>{t("common.value")}</th>
               </tr>

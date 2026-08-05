@@ -262,6 +262,11 @@ html[data-theme="dark"] .label-orca {
   background: color-mix(in srgb, var(--acopay-surface) 90%, transparent);
 }
 
+.pools-table thead {
+  background: color-mix(in srgb, var(--acopay-fg) 4.5%, var(--acopay-surface));
+  border-bottom: 1px solid var(--acopay-border);
+}
+
 .pools-table thead th {
   padding: 1rem 1.25rem;
   text-align: left;
@@ -270,6 +275,22 @@ html[data-theme="dark"] .label-orca {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--acopay-muted);
+}
+
+html[data-theme="light"] .pools-table thead {
+  background: color-mix(in srgb, var(--acopay-fg) 5%, #ffffff);
+}
+
+html[data-theme="light"] .pools-table thead th {
+  color: #3d4654;
+}
+
+html[data-theme="dark"] .pools-table thead {
+  background: color-mix(in srgb, #ffffff 6%, var(--acopay-surface));
+}
+
+html[data-theme="dark"] .pools-table thead th {
+  color: #c4cad4;
 }
 
 .pools-table tbody tr {
