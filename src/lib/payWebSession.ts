@@ -764,8 +764,8 @@ export function formatAmountInput(raw: string): string {
   return intFmt;
 }
 
-/** Telegram @username look (not a Solana base58 pubkey). */
 export function looksLikeTelegramUsername(value: string): boolean {
+  /** ACOPAY / Telegram-style @handle (not a Solana base58 pubkey). Name is historical. */
   const s = value.trim().replace(/^@/, "");
   if (!s || s.length > 32) return false;
   if (/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(s)) return false;

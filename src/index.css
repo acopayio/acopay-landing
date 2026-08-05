@@ -1155,6 +1155,55 @@ html[data-theme="dark"] .otc-live-pill {
   font-size: 0.8125rem;
   color: var(--acopay-faint);
 }
+.pay-username-field {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-bottom: 0.65rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 0.65rem;
+  border: 1px solid var(--acopay-border);
+  background: var(--acopay-bg, var(--acopay-surface));
+}
+.pay-username-at {
+  font-weight: 700;
+  color: var(--acopay-pay-accent, var(--acopay-brand));
+}
+.pay-username-input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--acopay-ink, var(--acopay-fg));
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+.pay-username-err {
+  margin: 0 0 0.65rem;
+  font-size: 0.8125rem;
+  color: var(--acopay-danger, #da251d);
+  line-height: 1.35;
+}
+.pay-username-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+.pay-username-secondary,
+.pay-username-clear {
+  border: 0;
+  background: transparent;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--acopay-muted);
+}
+.pay-username-clear {
+  color: var(--acopay-danger, #da251d);
+  margin-inline-start: auto;
+}
 .pay-fx-sheet-list {
   display: flex;
   flex-direction: column;

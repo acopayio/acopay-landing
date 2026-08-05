@@ -57,6 +57,9 @@ export function PayAppPage() {
   const [copied, setCopied] = useState(false);
   const [qrCopied, setQrCopied] = useState(false);
   const [userBusy, setUserBusy] = useState(false);
+  const [usernameOpen, setUsernameOpen] = useState(false);
+  const [usernameDraft, setUsernameDraft] = useState("");
+  const [usernameErr, setUsernameErr] = useState<string | null>(null);
   const [currency, setCurrency] = useState<DisplayCurrency>(() => loadStoredCurrency(locale));
   const [quotes, setQuotes] = useState<PortfolioQuotes>(() => emptyQuotes());
   const [fxOpen, setFxOpen] = useState(false);
@@ -157,33 +160,59 @@ export function PayAppPage() {
   const receivePk = me?.publicKey || me?.linkedPublicKey || null;
   const hasWallet = Boolean(receivePk || me?.walletReady);
 
-  const onEditUsername = useCallback(async () => {
+  const openUsernameModal = useCallback(() => {
     if (!hasWallet || userBusy) return;
-    const current = me?.username || "";
-    const next = window.prompt(t("payApp.usernamePrompt"), current.replace(/^@/, ""));
-    if (next == null) return;
-    const trimmed = next.trim().replace(/^@+/, "");
+    setUsernameDraft((me?.username || "").replace(/^@/, ""));
+    setUsernameErr(null);
+    setFxOpen(false);
+    setUsernameOpen(true);
+  }, [hasWallet, userBusy, me?.username]);
+
+  const closeUsernameModal = useCallback(() => {
+    if (userBusy) return;
+    setUsernameOpen(false);
+    setUsernameErr(null);
+  }, [userBusy]);
+
+  const saveUsernameModal = useCallback(async () => {
+    if (!hasWallet || userBusy) return;
+    const trimmed = usernameDraft.trim().replace(/^@+/, "");
     setUserBusy(true);
+    setUsernameErr(null);
     setError(null);
     try {
       if (!trimmed) {
-        if (current) {
-          const ok = window.confirm(t("payApp.usernameClearConfirm"));
-          if (ok) {
-            await clearPayUsername();
-            await loadMe();
-          }
-        }
+        setUsernameErr(t("payApp.errUsernameEmpty"));
         return;
       }
       await setPayUsername(trimmed);
       await loadMe();
+      setUsernameOpen(false);
     } catch (e) {
-      showErr(e);
+      setUsernameErr(mapPayApiError(e, t, locale));
     } finally {
       setUserBusy(false);
     }
-  }, [hasWallet, userBusy, me?.username, t, loadMe, showErr]);
+  }, [hasWallet, userBusy, usernameDraft, t, locale, loadMe]);
+
+  const clearUsernameModal = useCallback(async () => {
+    if (!hasWallet || userBusy || !me?.username) return;
+    const ok = window.confirm(t("payApp.usernameClearConfirm"));
+    if (!ok) return;
+    setUserBusy(true);
+    setUsernameErr(null);
+    setError(null);
+    try {
+      await clearPayUsername();
+      await loadMe();
+      setUsernameDraft("");
+      setUsernameOpen(false);
+    } catch (e) {
+      setUsernameErr(mapPayApiError(e, t, locale));
+    } finally {
+      setUserBusy(false);
+    }
+  }, [hasWallet, userBusy, me?.username, t, locale, loadMe]);
 
   const beginAuthSession = useCallback(
     async (opts: { openApp: boolean }) => {
@@ -492,7 +521,7 @@ export function PayAppPage() {
                   <div className="pay-home-identity">
                     <button
                       type="button"
-                      onClick={() => void onEditUsername()}
+                      onClick={openUsernameModal}
                       disabled={!hasWallet || userBusy}
                       className={
                         me.username
@@ -560,6 +589,78 @@ export function PayAppPage() {
                           </button>
                         );
                       })}
+                    </div>
+                  </div>
+                ) : null}
+
+                {usernameOpen ? (
+                  <div className="pay-fx-sheet" role="dialog" aria-modal="true">
+                    <div className="pay-fx-sheet-head">
+                      <h3 className="pay-fx-sheet-title">{t("payApp.usernameModalTitle")}</h3>
+                      <button
+                        type="button"
+                        className="pay-fx-sheet-close"
+                        onClick={closeUsernameModal}
+                        disabled={userBusy}
+                      >
+                        ×
+                      </button>
+                    </div>
+                    <p className="pay-fx-sheet-sub">{t("payApp.usernamePrompt")}</p>
+                    <label className="pay-username-field">
+                      <span className="pay-username-at" aria-hidden>
+                        @
+                      </span>
+                      <input
+                        type="text"
+                        className="pay-username-input"
+                        value={usernameDraft}
+                        autoComplete="off"
+                        autoCapitalize="none"
+                        spellCheck={false}
+                        maxLength={32}
+                        disabled={userBusy}
+                        placeholder="username"
+                        onChange={(e) => {
+                          setUsernameDraft(e.target.value.replace(/^@+/, ""));
+                          setUsernameErr(null);
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                            void saveUsernameModal();
+                          }
+                        }}
+                      />
+                    </label>
+                    {usernameErr ? <p className="pay-username-err">{usernameErr}</p> : null}
+                    <div className="pay-username-actions">
+                      <button
+                        type="button"
+                        className="btn-orca-primary !rounded-lg !px-3 !py-2 text-sm"
+                        disabled={userBusy}
+                        onClick={() => void saveUsernameModal()}
+                      >
+                        {t("payApp.usernameSave")}
+                      </button>
+                      <button
+                        type="button"
+                        className="pay-username-secondary"
+                        disabled={userBusy}
+                        onClick={closeUsernameModal}
+                      >
+                        {t("payApp.usernameCancel")}
+                      </button>
+                      {me.username ? (
+                        <button
+                          type="button"
+                          className="pay-username-clear"
+                          disabled={userBusy}
+                          onClick={() => void clearUsernameModal()}
+                        >
+                          {t("payApp.usernameClearBtn")}
+                        </button>
+                      ) : null}
                     </div>
                   </div>
                 ) : null}

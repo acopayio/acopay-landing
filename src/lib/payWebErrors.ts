@@ -27,6 +27,14 @@ const CODE_TO_KEY: Record<string, string> = {
   sendInvalidTo: "payApp.errInvalidAddress",
   username_not_found: "payApp.errUnknownUsername",
   sendUnknownUsername: "payApp.errUnknownUsername",
+  username_empty: "payApp.errUsernameEmpty",
+  username_invalid: "payApp.errUsernameInvalid",
+  username_taken: "payApp.errUsernameTaken",
+  username_blocked: "payApp.errUsernameBlocked",
+  username_set: "payApp.errUsernameInvalid",
+  username_clear: "payApp.errGeneric",
+  no_wallet: "payApp.errNeedWallet",
+  no_session: "payApp.errNotSignedIn",
   need_wallet: "payApp.errNeedWallet",
   no_address: "payApp.errNoAddress",
   self_send: "payApp.errSelfSend",
@@ -69,6 +77,10 @@ function codeFromEnglishMessage(msg: string): { code: string; vars: PayErrorVars
   if (/^Missing recipient\.?$/i.test(m)) return { code: "missing_recipient", vars: {} };
   if (/^Invalid Solana address\.?$/i.test(m)) return { code: "invalid_address", vars: {} };
   if (/ACOPAY username not found/i.test(m)) return { code: "username_not_found", vars: {} };
+  if (/^Enter a username\.?$/i.test(m)) return { code: "username_empty", vars: {} };
+  if (/^Username is already taken\.?$/i.test(m)) return { code: "username_taken", vars: {} };
+  if (/^Username is not valid\.?$/i.test(m)) return { code: "username_invalid", vars: {} };
+  if (/Create or link a wallet first/i.test(m)) return { code: "no_wallet", vars: {} };
   if (/Create or link a wallet in Telegram first/i.test(m)) return { code: "need_wallet", vars: {} };
   if (/^No receive address\.?$/i.test(m)) return { code: "no_address", vars: {} };
   if (/Cannot send to yourself/i.test(m)) return { code: "self_send", vars: {} };
