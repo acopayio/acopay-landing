@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { Link } from "react-router-dom";
 import QRCode from "qrcode";
 import { AddrHighlight } from "../../components/AddrHighlight";
 import { TOKEN } from "../../config/token";
@@ -568,8 +567,10 @@ export function PayAppPage() {
                     onClick={() => setFxOpen(true)}
                     aria-label={t("payApp.chooseCurrency")}
                   >
-                    <span className="pay-home-bal-num">{fiatAmount}</span>
-                    <span className="pay-home-bal-ccy">{currency}</span>
+                    <span className="pay-home-bal-amount">
+                      <span className="pay-home-bal-num">{fiatAmount}</span>
+                      <span className="pay-home-bal-ccy">{currency}</span>
+                    </span>
                   </button>
                 </div>
 
@@ -734,12 +735,6 @@ export function PayAppPage() {
                       setPanel("history");
                     }}
                   />
-                  <Link to="/buy" className="pay-action-tile">
-                    <span className="pay-action-icon">
-                      <BuyIcon />
-                    </span>
-                    <span className="pay-action-label">{t("payApp.buy")}</span>
-                  </Link>
                 </div>
 
                 {hasWallet ? (
@@ -893,14 +888,6 @@ function HistIcon() {
       <path d="M3 12a9 9 0 1 0 3-6.7" strokeLinecap="round" />
       <path d="M3 4v5h5" strokeLinecap="round" strokeLinejoin="round" />
       <path d="M12 7v5l3 2" strokeLinecap="round" />
-    </svg>
-  );
-}
-function BuyIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
-      <path d="M12 5v14" strokeLinecap="round" />
-      <path d="M5 12h14" strokeLinecap="round" />
     </svg>
   );
 }
