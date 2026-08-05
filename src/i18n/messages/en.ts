@@ -244,7 +244,7 @@ export const en = {
     poolId: "Pool ID",
     website: "Website",
     contact: "Contact",
-    freezeNote: "Freeze: {freeze} — wallets cannot be frozen. Mint: {mint} — supply can still increase.",
+    freezeNote: "",
     freezeRevoked: "Revoked",
     mintActive: "Active",
     solanaExplorer: "Solana Explorer ↗",

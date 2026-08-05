@@ -75,12 +75,6 @@ export function Contract() {
                 ))}
               </tbody>
             </table>
-            <p className="border-t border-[color:var(--acopay-border)] px-5 py-3 text-xs leading-relaxed text-[var(--acopay-muted)]">
-              {t("contractPage.freezeNote", {
-                freeze: t("contractPage.freezeRevoked"),
-                mint: t("contractPage.mintActive"),
-              })}
-            </p>
             <div className="flex flex-wrap gap-2 border-t border-[color:var(--acopay-border)] px-5 py-4">
               <a
                 href={explorerUrl()}
