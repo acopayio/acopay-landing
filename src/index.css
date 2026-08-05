@@ -1939,6 +1939,22 @@ html[data-theme="dark"] .send-bill-link {
   padding: 0.7rem 0.85rem;
 }
 
+.pay-token-row-btn {
+  width: 100%;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  text-align: inherit;
+  font: inherit;
+  color: inherit;
+}
+
+.pay-token-row-btn:hover .pay-token-name strong,
+.pay-token-row-btn:focus-visible .pay-token-name strong {
+  color: var(--acopay-brand);
+}
+
 .pay-token-row + .pay-token-row {
   border-top: 1px solid var(--acopay-border);
 }
@@ -1955,10 +1971,66 @@ html[data-theme="dark"] .send-bill-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: var(--acopay-brand-soft);
-  color: var(--acopay-brand);
+  background: var(--acopay-surface-hi, var(--acopay-brand-soft));
+  border: 1px solid var(--acopay-border);
+  color: transparent;
+  font-size: 0;
+}
+
+.pay-token-detail-hero {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0.35rem 0 0.85rem;
+}
+
+.pay-token-detail-logo {
+  width: 2.75rem;
+  height: 2.75rem;
+}
+
+.pay-token-detail-label {
+  margin: 0.55rem 0 0.2rem;
+  color: var(--acopay-muted);
+  font-size: 0.72rem;
+}
+
+.pay-token-detail-value {
+  margin: 0;
+  color: var(--acopay-fg);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.pay-token-detail-mint {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  margin: 0;
+  border: 1px solid var(--acopay-border);
+  border-radius: 0.65rem;
+  background: var(--acopay-surface);
+  padding: 0.55rem 0.7rem;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
+.pay-token-detail-mint span {
+  word-break: break-all;
+  color: var(--acopay-fg);
   font-size: 0.75rem;
-  font-weight: 800;
+  line-height: 1.35;
+}
+
+.pay-token-detail-mint em {
+  font-style: normal;
+  color: var(--acopay-brand);
+  font-size: 0.72rem;
+  font-weight: 700;
 }
 
 .pay-token-name,

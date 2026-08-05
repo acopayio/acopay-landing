@@ -19,8 +19,10 @@ import {
 import { fetchOwnedTokens, type OwnedToken } from "../../lib/ownedTokens";
 import {
   addWebCustomToken,
+  clearWebCustomTokenLogo,
   listWebCustomTokens,
   refreshWeakWebCustomMetas,
+  removeWebCustomToken,
   type WebCustomToken,
 } from "../../lib/webCustomTokens";
 import {
@@ -77,6 +79,18 @@ export function PayAppPage() {
   const [addSymbol, setAddSymbol] = useState("");
   const [addBusy, setAddBusy] = useState(false);
   const [addErr, setAddErr] = useState<string | null>(null);
+  const [brokenLogos, setBrokenLogos] = useState<Record<string, true>>({});
+  const [detailTok, setDetailTok] = useState<{
+    id: string;
+    name: string;
+    symbol: string;
+    balance: number;
+    logoUri?: string;
+    mint?: string;
+    canRemove: boolean;
+    readOnly: boolean;
+  } | null>(null);
+  const [detailCopied, setDetailCopied] = useState(false);
   const pollRef = useRef<number | null>(null);
   const authGenRef = useRef(0);
   const loginAuthBusyRef = useRef(false);
@@ -432,6 +446,7 @@ export function PayAppPage() {
   };
   const homeTokens = useMemo(() => {
     const ownedMints = new Set(ownedTokens.map((token) => token.mint));
+    const customMints = new Set(customTokens.map((token) => token.mint));
     const customOnly = customTokens
       .filter((token) => !ownedMints.has(token.mint))
       .map((token) => ({
@@ -440,6 +455,9 @@ export function PayAppPage() {
         symbol: token.symbol,
         balance: 0,
         logoUri: token.logoUri,
+        mint: token.mint,
+        canRemove: true,
+        readOnly: true,
       }));
     return [
       ...(portfolioBal.acopay > 0
@@ -450,6 +468,8 @@ export function PayAppPage() {
               symbol: "ACOPAY",
               balance: portfolioBal.acopay,
               logoUri: "/assets/logo-circle.png",
+              canRemove: false,
+              readOnly: false,
             },
           ]
         : []),
@@ -459,6 +479,8 @@ export function PayAppPage() {
         symbol: "USDT",
         balance: portfolioBal.usdt,
         logoUri: `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/solana/assets/Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB/logo.png`,
+        canRemove: false,
+        readOnly: false,
       },
       {
         id: "sol",
@@ -467,6 +489,8 @@ export function PayAppPage() {
         balance: portfolioBal.sol,
         logoUri:
           "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/solana/info/logo.png",
+        canRemove: false,
+        readOnly: false,
       },
       ...ownedTokens.map((token) => ({
         id: token.mint,
@@ -474,10 +498,24 @@ export function PayAppPage() {
         symbol: token.symbol,
         balance: token.balance,
         logoUri: token.logoUri,
+        mint: token.mint,
+        canRemove: customMints.has(token.mint),
+        readOnly: true,
       })),
       ...customOnly,
     ];
   }, [portfolioBal.acopay, portfolioBal.usdt, portfolioBal.sol, ownedTokens, customTokens]);
+
+  const onTokenLogoError = useCallback((tokenId: string, mint?: string) => {
+    setBrokenLogos((prev) => (prev[tokenId] ? prev : { ...prev, [tokenId]: true }));
+    if (mint) setCustomTokens(clearWebCustomTokenLogo(mint));
+  }, []);
+
+  const removeDetailToken = useCallback(() => {
+    if (!detailTok?.mint || !detailTok.canRemove) return;
+    setCustomTokens(removeWebCustomToken(detailTok.mint));
+    setDetailTok(null);
+  }, [detailTok]);
 
   const submitAddToken = useCallback(async () => {
     setAddErr(null);
@@ -829,20 +867,44 @@ export function PayAppPage() {
                       </button>
                     </div>
                     <div className="pay-token-rows">
-                      {homeTokens.map((token) => (
-                        <div className="pay-token-row" key={token.id}>
-                          {token.logoUri ? (
+                      {homeTokens.map((token) => {
+                        const logoBroken = !!brokenLogos[token.id];
+                        const showLogo = !!token.logoUri && !logoBroken;
+                        return (
+                        <button
+                          type="button"
+                          className="pay-token-row pay-token-row-btn"
+                          key={token.id}
+                          onClick={() => {
+                            setDetailCopied(false);
+                            setDetailTok({
+                              id: token.id,
+                              name: token.name,
+                              symbol: token.symbol,
+                              balance: token.balance,
+                              logoUri: logoBroken ? undefined : token.logoUri,
+                              mint: "mint" in token ? token.mint : undefined,
+                              canRemove: token.canRemove,
+                              readOnly: token.readOnly,
+                            });
+                          }}
+                        >
+                          {showLogo ? (
                             <img
                               className="pay-token-logo"
                               src={token.logoUri}
                               alt=""
                               loading="lazy"
                               referrerPolicy="no-referrer"
+                              onError={() =>
+                                onTokenLogoError(
+                                  token.id,
+                                  "mint" in token ? token.mint : undefined,
+                                )
+                              }
                             />
                           ) : (
-                            <span className="pay-token-logo pay-token-logo-neutral">
-                              {token.symbol.slice(0, 1)}
-                            </span>
+                            <span className="pay-token-logo pay-token-logo-neutral" aria-hidden />
                           )}
                           <div className="pay-token-name">
                             <strong>{token.symbol}</strong>
@@ -852,8 +914,9 @@ export function PayAppPage() {
                             <strong>{formatCoinAmount(token.balance)}</strong>
                             <span>{token.symbol}</span>
                           </div>
-                        </div>
-                      ))}
+                        </button>
+                        );
+                      })}
                     </div>
                   </div>
                 ) : null}
@@ -928,6 +991,80 @@ export function PayAppPage() {
                         onClick={() => setAddTokenOpen(false)}
                       >
                         {t("payApp.usernameCancel")}
+                      </button>
+                    </div>
+                  </div>
+                ) : null}
+
+                {detailTok ? (
+                  <div className="pay-fx-sheet" role="dialog" aria-modal="true">
+                    <div className="pay-fx-sheet-head">
+                      <h3 className="pay-fx-sheet-title">{t("payApp.tokenDetailTitle")}</h3>
+                      <button
+                        type="button"
+                        className="pay-fx-sheet-close"
+                        onClick={() => setDetailTok(null)}
+                      >
+                        ×
+                      </button>
+                    </div>
+                    <div className="pay-token-detail-hero">
+                      {detailTok.logoUri && !brokenLogos[detailTok.id] ? (
+                        <img
+                          className="pay-token-logo pay-token-detail-logo"
+                          src={detailTok.logoUri}
+                          alt=""
+                          referrerPolicy="no-referrer"
+                          onError={() => onTokenLogoError(detailTok.id, detailTok.mint)}
+                        />
+                      ) : (
+                        <span className="pay-token-logo pay-token-logo-neutral pay-token-detail-logo" aria-hidden />
+                      )}
+                      <div className="pay-token-name">
+                        <strong>{detailTok.symbol}</strong>
+                        <span>{detailTok.name}</span>
+                      </div>
+                    </div>
+                    <p className="pay-token-detail-label">{t("payApp.tokenBalance")}</p>
+                    <p className="pay-token-detail-value">
+                      {formatCoinAmount(detailTok.balance)} {detailTok.symbol}
+                    </p>
+                    {detailTok.mint ? (
+                      <>
+                        <p className="pay-token-detail-label">{t("payApp.tokenMint")}</p>
+                        <button
+                          type="button"
+                          className="pay-token-detail-mint"
+                          onClick={() => {
+                            void navigator.clipboard.writeText(detailTok.mint!).then(() => {
+                              setDetailCopied(true);
+                            });
+                          }}
+                        >
+                          <span>{detailTok.mint}</span>
+                          <em>{detailCopied ? t("payApp.tokenCopiedMint") : t("payApp.copy")}</em>
+                        </button>
+                      </>
+                    ) : null}
+                    {detailTok.readOnly ? (
+                      <p className="pay-fx-sheet-sub">{t("payApp.tokenReadOnlyHint")}</p>
+                    ) : null}
+                    <div className="pay-username-actions">
+                      {detailTok.canRemove ? (
+                        <button
+                          type="button"
+                          className="pay-username-secondary"
+                          onClick={removeDetailToken}
+                        >
+                          {t("payApp.tokenRemove")}
+                        </button>
+                      ) : null}
+                      <button
+                        type="button"
+                        className="btn-orca-primary !rounded-lg !px-3 !py-2 text-sm"
+                        onClick={() => setDetailTok(null)}
+                      >
+                        {t("payApp.billDone")}
                       </button>
                     </div>
                   </div>

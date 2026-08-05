@@ -1,7 +1,11 @@
 /**
  * Read-only positive-balance SPL assets for Web Pay.
  * Unknown assets never enter the Transfer source picker.
+ * Meta = same waterfall as custom tokens (verify logos before display).
  */
+import { TOKEN, USDT_MINT, SOL_MINT } from "../config/token";
+import { resolveWebSplTokenMeta } from "./resolveWebSplTokenMeta";
+
 export type OwnedToken = {
   mint: string;
   symbol: string;
@@ -17,38 +21,8 @@ type TokenBalanceRow = {
   decimals?: number;
 };
 
-const META_TIMEOUT_MS = 6_000;
-
-async function resolveTokenMeta(mint: string): Promise<{
-  symbol: string;
-  name: string;
-  logoUri?: string;
-} | null> {
-  const ctrl = new AbortController();
-  const timer = window.setTimeout(() => ctrl.abort(), META_TIMEOUT_MS);
-  try {
-    const res = await fetch(`https://tokens.jup.ag/token/${encodeURIComponent(mint)}`, {
-      signal: ctrl.signal,
-    });
-    if (!res.ok) return null;
-    const data = (await res.json()) as {
-      symbol?: string;
-      name?: string;
-      logoURI?: string;
-    };
-    const fallback = `${mint.slice(0, 4)}…${mint.slice(-4)}`;
-    const symbol = String(data.symbol || fallback).trim().slice(0, 12).toUpperCase() || fallback;
-    const name = String(data.name || symbol).trim().slice(0, 40) || symbol;
-    const logoUri =
-      typeof data.logoURI === "string" && /^https:\/\//i.test(data.logoURI)
-        ? data.logoURI
-        : undefined;
-    return { symbol, name, logoUri };
-  } catch {
-    return null;
-  } finally {
-    window.clearTimeout(timer);
-  }
+function isKnownMint(mint: string): boolean {
+  return mint === TOKEN.mintAddress || mint === USDT_MINT || mint === SOL_MINT;
 }
 
 async function mapWithConcurrency<T, R>(
@@ -92,13 +66,14 @@ export async function fetchOwnedTokens(): Promise<OwnedToken[]> {
     .filter(
       (row) =>
         row.mint.length >= 32 &&
+        !isKnownMint(row.mint) &&
         Number.isFinite(row.balance) &&
         row.balance > 0 &&
         Number.isFinite(row.decimals),
     );
 
   return mapWithConcurrency(valid, 4, async (row) => {
-    const meta = await resolveTokenMeta(row.mint);
+    const meta = await resolveWebSplTokenMeta(row.mint);
     const fallback = `${row.mint.slice(0, 4)}…${row.mint.slice(-4)}`;
     return {
       ...row,

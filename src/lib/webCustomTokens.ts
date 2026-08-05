@@ -8,7 +8,7 @@ import { PublicKey } from "@solana/web3.js";
 
 import { SOL_MINT, TOKEN, USDT_MINT } from "../config/token";
 import {
-  isWeakWebTokenMeta,
+  needsWebTokenMetaRefresh,
   resolveWebSplTokenMeta,
 } from "./resolveWebSplTokenMeta";
 
@@ -19,6 +19,7 @@ export type WebCustomToken = {
   symbol: string;
   name: string;
   logoUri?: string;
+  logoCheckedAt?: number;
 };
 
 export type AddWebCustomResult =
@@ -61,14 +62,14 @@ async function resolveTokenMeta(mint: string): Promise<{
   return resolveWebSplTokenMeta(mint);
 }
 
-/** Re-resolve customs stuck on generic "TOKEN" after Jupiter-only failures. */
+/** Re-resolve customs with weak names, missing logos, or fragile IPFS URIs. */
 export async function refreshWeakWebCustomMetas(): Promise<WebCustomToken[]> {
   const list = readList();
   if (list.length === 0) return list;
   let changed = false;
   const next: WebCustomToken[] = [];
   for (const tok of list) {
-    if (!isWeakWebTokenMeta(tok) && tok.logoUri) {
+    if (!needsWebTokenMetaRefresh(tok)) {
       next.push(tok);
       continue;
     }
@@ -81,17 +82,31 @@ export async function refreshWeakWebCustomMetas(): Promise<WebCustomToken[]> {
       mint: tok.mint,
       symbol: meta.symbol,
       name: meta.name,
-      logoUri: meta.logoUri || tok.logoUri,
+      logoUri: meta.logoUri,
+      logoCheckedAt: Date.now(),
     };
     if (
       updated.symbol !== tok.symbol ||
       updated.name !== tok.name ||
-      updated.logoUri !== tok.logoUri
+      updated.logoUri !== tok.logoUri ||
+      !tok.logoCheckedAt
     ) {
       changed = true;
     }
     next.push(updated);
   }
+  if (changed) writeList(next);
+  return next;
+}
+
+export function clearWebCustomTokenLogo(mint: string): WebCustomToken[] {
+  const list = readList();
+  let changed = false;
+  const next = list.map((tok) => {
+    if (tok.mint !== mint || !tok.logoUri) return tok;
+    changed = true;
+    return { ...tok, logoUri: undefined, logoCheckedAt: Date.now() };
+  });
   if (changed) writeList(next);
   return next;
 }
@@ -121,7 +136,16 @@ export async function addWebCustomToken(input: {
   const symbol =
     (input.symbol || meta?.symbol || fallback).trim().slice(0, 12).toUpperCase() || fallback;
   const name = (meta?.name || symbol).trim().slice(0, 40) || symbol;
-  const next = [...list, { mint, symbol, name, logoUri: meta?.logoUri }];
+  const next = [
+    ...list,
+    {
+      mint,
+      symbol,
+      name,
+      logoUri: meta?.logoUri,
+      logoCheckedAt: Date.now(),
+    },
+  ];
   writeList(next);
   return { ok: true, list: next };
 }

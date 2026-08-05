@@ -1,7 +1,7 @@
 /**
  * Resolve SPL mint metadata for Web Pay custom tokens.
  * Same waterfall as App: Jupiter → Trust Wallet → on-chain Metaplex / Token-2022.
- * Logos only from trusted HTTPS (Jupiter / Trust Wallet) — never Metaplex URI.
+ * Logos: multi-CDN + HEAD/GET verify — never persist dead / IPFS-fail URIs.
  */
 
 import { PublicKey, type Connection } from "@solana/web3.js";
@@ -15,7 +15,8 @@ export type ResolvedWebTokenMeta = {
 };
 
 const META_PROGRAM = new PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s");
-const TOKEN_2022 = new PublicKey("TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb");
+const TOKEN_2022 = new PublicKey("TokenzQdBNbLqP5vEhdkAS6EPFLC1PHnBqCXEpPxuEb");
+const LOGO_CHECK_MS = 3500;
 
 function shortMint(mint: string): string {
   return `${mint.slice(0, 4)}…${mint.slice(-4)}`;
@@ -31,11 +32,38 @@ function normalizeName(raw: string | undefined, fallback: string): string {
   return (s || fallback).slice(0, 40) || fallback;
 }
 
-function httpsLogo(uri: unknown): string | undefined {
+function httpsUri(uri: unknown): string | undefined {
   if (typeof uri !== "string") return undefined;
   const u = uri.trim();
   if (!/^https:\/\//i.test(u)) return undefined;
   return u;
+}
+
+export function isFragileLogoUri(uri: string | undefined): boolean {
+  if (!uri) return false;
+  try {
+    const host = new URL(uri).hostname.toLowerCase();
+    return (
+      host.includes("ipfs") ||
+      host.endsWith("nftstorage.link") ||
+      host.endsWith("arweave.net") ||
+      host.includes("cloudflare-ipfs") ||
+      host.endsWith("dweb.link")
+    );
+  } catch {
+    return true;
+  }
+}
+
+function trustLogoUrl(mint: string): string {
+  return `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/solana/assets/${mint}/logo.png`;
+}
+
+function tokenListLogoUrls(mint: string): string[] {
+  return [
+    `https://cdn.jsdelivr.net/gh/solana-labs/token-list@main/assets/mainnet/${mint}/logo.png`,
+    `https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/${mint}/logo.png`,
+  ];
 }
 
 async function fetchJson(
@@ -58,13 +86,79 @@ async function fetchJson(
   }
 }
 
+export async function verifyLogoUri(uri: string | undefined): Promise<string | undefined> {
+  const u = httpsUri(uri);
+  if (!u) return undefined;
+  const ctrl = new AbortController();
+  const timer = window.setTimeout(() => ctrl.abort(), LOGO_CHECK_MS);
+  try {
+    let res = await fetch(u, {
+      method: "HEAD",
+      signal: ctrl.signal,
+      headers: { Accept: "image/*,*/*" },
+    });
+    if (res.status === 405 || res.status === 501 || res.status === 403) {
+      res = await fetch(u, {
+        method: "GET",
+        signal: ctrl.signal,
+        headers: { Accept: "image/*,*/*", Range: "bytes=0-64" },
+      });
+    }
+    if (!(res.ok || res.status === 206)) return undefined;
+    const ct = (res.headers.get("content-type") || "").toLowerCase();
+    if (ct && !ct.includes("image") && !ct.includes("octet-stream") && !ct.includes("binary")) {
+      if (ct.includes("text/") || ct.includes("json") || ct.includes("html")) return undefined;
+    }
+    return u;
+  } catch {
+    return undefined;
+  } finally {
+    window.clearTimeout(timer);
+  }
+}
+
+export async function resolveVerifiedLogoUri(
+  mint: string,
+  extras: Array<string | undefined> = [],
+): Promise<string | undefined> {
+  const seen = new Set<string>();
+  const ordered: string[] = [];
+  const push = (u: string | undefined) => {
+    const https = httpsUri(u);
+    if (!https || seen.has(https)) return;
+    seen.add(https);
+    ordered.push(https);
+  };
+
+  push(trustLogoUrl(mint));
+  for (const u of tokenListLogoUrls(mint)) push(u);
+  const fragile: string[] = [];
+  const solid: string[] = [];
+  for (const extra of extras) {
+    const https = httpsUri(extra);
+    if (!https || seen.has(https)) continue;
+    seen.add(https);
+    if (isFragileLogoUri(https)) fragile.push(https);
+    else solid.push(https);
+  }
+  for (const u of solid) ordered.push(u);
+  for (const u of fragile) ordered.push(u);
+
+  for (const candidate of ordered) {
+    const ok = await verifyLogoUri(candidate);
+    if (ok) return ok;
+  }
+  return undefined;
+}
+
 function score(meta: ResolvedWebTokenMeta | null): number {
   if (!meta) return 0;
   let s = 0;
   if (meta.symbol && meta.symbol !== "TOKEN" && !meta.symbol.includes("…")) s += 4;
   else if (meta.symbol && meta.symbol !== "TOKEN") s += 2;
   if (meta.name && meta.name.toUpperCase() !== "TOKEN") s += 2;
-  if (meta.logoUri) s += 3;
+  if (meta.logoUri && !isFragileLogoUri(meta.logoUri)) s += 3;
+  else if (meta.logoUri) s += 1;
   return s;
 }
 
@@ -87,7 +181,7 @@ async function fromJupiterLegacy(mint: string): Promise<ResolvedWebTokenMeta | n
   return {
     symbol,
     name: normalizeName(data.name as string | undefined, symbol),
-    logoUri: httpsLogo(data.logoURI ?? data.icon),
+    logoUri: httpsUri(data.logoURI ?? data.icon),
   };
 }
 
@@ -105,20 +199,21 @@ async function fromJupiterSearch(mint: string): Promise<ResolvedWebTokenMeta | n
   return {
     symbol,
     name: normalizeName(hit.name, symbol),
-    logoUri: httpsLogo(hit.icon),
+    logoUri: httpsUri(hit.icon),
   };
 }
 
 async function fromTrustWallet(mint: string): Promise<ResolvedWebTokenMeta | null> {
   const base = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/solana/assets/${mint}`;
   const data = await fetchJson(`${base}/info.json`);
+  // No info.json → logo.png still probed in resolveVerifiedLogoUri.
   if (!data || Array.isArray(data)) return null;
   const symbol = normalizeSymbol(data.symbol as string | undefined, "");
   if (!symbol) return null;
   return {
     symbol,
     name: normalizeName(data.name as string | undefined, symbol),
-    logoUri: httpsLogo(`${base}/logo.png`),
+    logoUri: `${base}/logo.png`,
   };
 }
 
@@ -203,6 +298,22 @@ export function isWeakWebTokenMeta(meta: {
   return false;
 }
 
+export function needsWebTokenMetaRefresh(meta: {
+  symbol?: string;
+  name?: string;
+  logoUri?: string;
+  logoCheckedAt?: number;
+}): boolean {
+  if (isWeakWebTokenMeta(meta)) return true;
+  if (meta.logoUri && isFragileLogoUri(meta.logoUri)) return true;
+  if (!meta.logoUri) {
+    const at = Number(meta.logoCheckedAt) || 0;
+    if (at > 0 && Date.now() - at < 24 * 60 * 60 * 1000) return false;
+    return true;
+  }
+  return false;
+}
+
 export async function resolveWebSplTokenMeta(
   mintRaw: string,
 ): Promise<ResolvedWebTokenMeta | null> {
@@ -220,7 +331,7 @@ export async function resolveWebSplTokenMeta(
   ]);
   let best = pickBetter(pickBetter(jupLegacy, jupSearch), trust);
 
-  if (!best || isWeakWebTokenMeta(best) || !best.logoUri) {
+  if (!best || isWeakWebTokenMeta(best)) {
     try {
       const connection = await getWorkingConnection();
       const onchain = pickBetter(
@@ -231,22 +342,33 @@ export async function resolveWebSplTokenMeta(
     } catch {
       /* RPC optional */
     }
-    if (best && !best.logoUri && trust?.logoUri) {
-      best = { ...best, logoUri: trust.logoUri };
+  }
+
+  const logoUri = await resolveVerifiedLogoUri(mint, [
+    trust?.logoUri,
+    jupLegacy?.logoUri,
+    jupSearch?.logoUri,
+    best?.logoUri,
+  ]);
+
+  const fallback = shortMint(mint);
+  if (!best) return { symbol: fallback, name: fallback, logoUri };
+
+  let symbol = best.symbol && best.symbol !== "TOKEN" ? best.symbol : fallback;
+  let name =
+    best.name && best.name.toUpperCase() !== "TOKEN"
+      ? best.name
+      : best.symbol !== "TOKEN"
+        ? best.symbol
+        : fallback;
+
+  if (symbol.includes("…")) {
+    const betterName = pickBetter(jupLegacy, jupSearch);
+    if (betterName && !isWeakWebTokenMeta(betterName) && !betterName.symbol.includes("…")) {
+      symbol = betterName.symbol;
+      name = betterName.name;
     }
   }
 
-  const fallback = shortMint(mint);
-  if (!best) return { symbol: fallback, name: fallback };
-
-  return {
-    symbol: best.symbol && best.symbol !== "TOKEN" ? best.symbol : fallback,
-    name:
-      best.name && best.name.toUpperCase() !== "TOKEN"
-        ? best.name
-        : best.symbol !== "TOKEN"
-          ? best.symbol
-          : fallback,
-    logoUri: best.logoUri,
-  };
+  return { symbol, name, logoUri };
 }

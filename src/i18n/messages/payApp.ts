@@ -57,6 +57,12 @@ const enBase: PaySection = {
   addTokenFail: "Could not add token. Please try again.",
   tokenAlreadyListed: "This token is already in your list.",
   addAction: "Add",
+  tokenDetailTitle: "Token details",
+  tokenMint: "Mint",
+  tokenBalance: "Balance",
+  tokenRemove: "Remove from list",
+  tokenCopiedMint: "Mint copied",
+  tokenReadOnlyHint: "View only — not available as a transfer source.",
   transferSource: "Pay with",
   transferChooseToken: "Select token",
   transferAvailable: "Available: {v}",
@@ -3003,7 +3009,13 @@ type AddTokenCopyKey =
   | "invalidMint"
   | "addTokenFail"
   | "tokenAlreadyListed"
-  | "addAction";
+  | "addAction"
+  | "tokenDetailTitle"
+  | "tokenMint"
+  | "tokenBalance"
+  | "tokenRemove"
+  | "tokenCopiedMint"
+  | "tokenReadOnlyHint";
 
 type SourceCopyKey =
   | "transferChooseToken"
@@ -3024,79 +3036,79 @@ type TransferCopyKey =
 const ADD_TOKEN_NATIVE: Record<string, Pick<PaySection, AddTokenCopyKey>> = {
   vi: {
     addToken: "Thêm token", addTokenHint: "Dán địa chỉ mint SPL trên Solana (ví dụ USDC).", mintPlaceholder: "Địa chỉ mint token", symbolOptional: "Ký hiệu (tuỳ chọn)",
-    invalidMint: "Địa chỉ mint không hợp lệ", addTokenFail: "Không thêm được token. Vui lòng thử lại.", tokenAlreadyListed: "Token này đã có trong danh sách.", addAction: "Thêm",
+    invalidMint: "Địa chỉ mint không hợp lệ", addTokenFail: "Không thêm được token. Vui lòng thử lại.", tokenAlreadyListed: "Token này đã có trong danh sách.", addAction: "Thêm", tokenDetailTitle: "Chi tiết token", tokenMint: "Mint", tokenBalance: "Số dư", tokenRemove: "Xóa khỏi danh sách", tokenCopiedMint: "Đã sao chép mint", tokenReadOnlyHint: "Chỉ xem — không dùng làm nguồn chuyển.",
   },
   zh: {
     addToken: "添加代币", addTokenHint: "粘贴 Solana 上的 SPL 代币铸币地址（例如 USDC）", mintPlaceholder: "代币铸币地址", symbolOptional: "代币符号（可选）",
-    invalidMint: "铸币地址无效", addTokenFail: "添加代币失败，请重试", tokenAlreadyListed: "该代币已在列表中。", addAction: "添加",
+    invalidMint: "铸币地址无效", addTokenFail: "添加代币失败，请重试", tokenAlreadyListed: "该代币已在列表中。", addAction: "添加", tokenDetailTitle: "代币详情", tokenMint: "铸币地址", tokenBalance: "余额", tokenRemove: "从列表移除", tokenCopiedMint: "已复制铸币地址", tokenReadOnlyHint: "仅查看 — 不可用作转账来源。",
   },
   ja: {
     addToken: "トークンを追加", addTokenHint: "Solana 上の SPL トークンのミントアドレスを貼り付けてください（例：USDC）", mintPlaceholder: "トークンのミントアドレス", symbolOptional: "シンボル（任意）",
-    invalidMint: "ミントアドレスが無効です", addTokenFail: "トークンの追加に失敗しました。もう一度お試しください。", tokenAlreadyListed: "このトークンはすでにリストにあります。", addAction: "追加",
+    invalidMint: "ミントアドレスが無効です", addTokenFail: "トークンの追加に失敗しました。もう一度お試しください。", tokenAlreadyListed: "このトークンはすでにリストにあります。", addAction: "追加", tokenDetailTitle: "トークン詳細", tokenMint: "ミント", tokenBalance: "残高", tokenRemove: "リストから削除", tokenCopiedMint: "ミントをコピーしました", tokenReadOnlyHint: "表示のみ — 送金元には使えません。",
   },
   ko: {
     addToken: "토큰 추가", addTokenHint: "Solana의 SPL 토큰 민트 주소를 붙여넣으세요 (예: USDC)", mintPlaceholder: "토큰 민트 주소", symbolOptional: "심볼 (선택 사항)",
-    invalidMint: "잘못된 민트 주소입니다", addTokenFail: "토큰 추가에 실패했습니다. 다시 시도해 주세요.", tokenAlreadyListed: "이 토큰은 이미 목록에 있습니다.", addAction: "추가",
+    invalidMint: "잘못된 민트 주소입니다", addTokenFail: "토큰 추가에 실패했습니다. 다시 시도해 주세요.", tokenAlreadyListed: "이 토큰은 이미 목록에 있습니다.", addAction: "추가", tokenDetailTitle: "토큰 상세", tokenMint: "민트", tokenBalance: "잔액", tokenRemove: "목록에서 제거", tokenCopiedMint: "민트 복사됨", tokenReadOnlyHint: "보기 전용 — 송금 소스로 사용할 수 없습니다.",
   },
   th: {
     addToken: "เพิ่มโทเคน", addTokenHint: "วางที่อยู่ mint ของโทเคน SPL บน Solana (เช่น USDC)", mintPlaceholder: "ที่อยู่ mint ของโทเคน", symbolOptional: "สัญลักษณ์ (ไม่บังคับ)",
-    invalidMint: "ที่อยู่ mint ไม่ถูกต้อง", addTokenFail: "เพิ่มโทเคนไม่สำเร็จ กรุณาลองใหม่", tokenAlreadyListed: "โทเค็นนี้อยู่ในรายการแล้ว", addAction: "เพิ่ม",
+    invalidMint: "ที่อยู่ mint ไม่ถูกต้อง", addTokenFail: "เพิ่มโทเคนไม่สำเร็จ กรุณาลองใหม่", tokenAlreadyListed: "โทเค็นนี้อยู่ในรายการแล้ว", addAction: "เพิ่ม", tokenDetailTitle: "รายละเอียดโทเค็น", tokenMint: "Mint", tokenBalance: "ยอดคงเหลือ", tokenRemove: "ลบออกจากรายการ", tokenCopiedMint: "คัดลอก mint แล้ว", tokenReadOnlyHint: "ดูอย่างเดียว — ใช้เป็นแหล่งโอนไม่ได้",
   },
   id: {
     addToken: "Tambah token", addTokenHint: "Tempel alamat mint token SPL di Solana (mis. USDC)", mintPlaceholder: "Alamat mint token", symbolOptional: "Simbol (opsional)",
-    invalidMint: "Alamat mint tidak valid", addTokenFail: "Gagal menambahkan token. Silakan coba lagi.", tokenAlreadyListed: "Token ini sudah ada di daftar Anda.", addAction: "Tambah",
+    invalidMint: "Alamat mint tidak valid", addTokenFail: "Gagal menambahkan token. Silakan coba lagi.", tokenAlreadyListed: "Token ini sudah ada di daftar Anda.", addAction: "Tambah", tokenDetailTitle: "Detail token", tokenMint: "Mint", tokenBalance: "Saldo", tokenRemove: "Hapus dari daftar", tokenCopiedMint: "Mint disalin", tokenReadOnlyHint: "Hanya lihat — tidak tersedia sebagai sumber transfer.",
   },
   ms: {
     addToken: "Tambah token", addTokenHint: "Tampal alamat mint token SPL di Solana (cth. USDC)", mintPlaceholder: "Alamat mint token", symbolOptional: "Simbol (pilihan)",
-    invalidMint: "Alamat mint tidak sah", addTokenFail: "Gagal menambah token. Sila cuba lagi.", tokenAlreadyListed: "Token ini sudah ada dalam senarai anda.", addAction: "Tambah",
+    invalidMint: "Alamat mint tidak sah", addTokenFail: "Gagal menambah token. Sila cuba lagi.", tokenAlreadyListed: "Token ini sudah ada dalam senarai anda.", addAction: "Tambah", tokenDetailTitle: "Butiran token", tokenMint: "Mint", tokenBalance: "Baki", tokenRemove: "Buang dari senarai", tokenCopiedMint: "Mint disalin", tokenReadOnlyHint: "Paparan sahaja — tidak tersedia sebagai sumber pindahan.",
   },
   hi: {
     addToken: "टोकन जोड़ें", addTokenHint: "Solana पर SPL टोकन का mint पता पेस्ट करें (जैसे USDC)", mintPlaceholder: "टोकन mint पता", symbolOptional: "सिंबल (वैकल्पिक)",
-    invalidMint: "अमान्य mint पता", addTokenFail: "टोकन जोड़ना विफल रहा। कृपया फिर से कोशिश करें।", tokenAlreadyListed: "यह टोकन पहले से आपकी सूची में है।", addAction: "जोड़ें",
+    invalidMint: "अमान्य mint पता", addTokenFail: "टोकन जोड़ना विफल रहा। कृपया फिर से कोशिश करें।", tokenAlreadyListed: "यह टोकन पहले से आपकी सूची में है।", addAction: "जोड़ें", tokenDetailTitle: "टोकन विवरण", tokenMint: "Mint", tokenBalance: "शेष", tokenRemove: "सूची से हटाएँ", tokenCopiedMint: "Mint कॉपी हुआ", tokenReadOnlyHint: "केवल देखें — ट्रांसफर स्रोत के रूप में उपलब्ध नहीं।",
   },
   es: {
     addToken: "Añadir token", addTokenHint: "Pega la dirección mint del token SPL en Solana (p. ej. USDC)", mintPlaceholder: "Dirección mint del token", symbolOptional: "Símbolo (opcional)",
-    invalidMint: "Dirección mint no válida", addTokenFail: "No se pudo añadir el token. Inténtalo de nuevo.", tokenAlreadyListed: "Este token ya está en tu lista.", addAction: "Añadir",
+    invalidMint: "Dirección mint no válida", addTokenFail: "No se pudo añadir el token. Inténtalo de nuevo.", tokenAlreadyListed: "Este token ya está en tu lista.", addAction: "Añadir", tokenDetailTitle: "Detalles del token", tokenMint: "Mint", tokenBalance: "Saldo", tokenRemove: "Quitar de la lista", tokenCopiedMint: "Mint copiado", tokenReadOnlyHint: "Solo lectura — no disponible como origen de transferencia.",
   },
   pt: {
     addToken: "Adicionar token", addTokenHint: "Cole o endereço mint do token SPL na Solana (ex.: USDC)", mintPlaceholder: "Endereço mint do token", symbolOptional: "Símbolo (opcional)",
-    invalidMint: "Endereço mint inválido", addTokenFail: "Não foi possível adicionar o token. Tente novamente.", tokenAlreadyListed: "Este token já está na sua lista.", addAction: "Adicionar",
+    invalidMint: "Endereço mint inválido", addTokenFail: "Não foi possível adicionar o token. Tente novamente.", tokenAlreadyListed: "Este token já está na sua lista.", addAction: "Adicionar", tokenDetailTitle: "Detalhes do token", tokenMint: "Mint", tokenBalance: "Saldo", tokenRemove: "Remover da lista", tokenCopiedMint: "Mint copiado", tokenReadOnlyHint: "Somente leitura — não disponível como origem de transferência.",
   },
   fr: {
     addToken: "Ajouter un jeton", addTokenHint: "Collez l'adresse mint du jeton SPL sur Solana (ex. USDC)", mintPlaceholder: "Adresse mint du jeton", symbolOptional: "Symbole (facultatif)",
-    invalidMint: "Adresse mint invalide", addTokenFail: "Impossible d'ajouter le jeton. Veuillez réessayer.", tokenAlreadyListed: "Ce jeton est déjà dans votre liste.", addAction: "Ajouter",
+    invalidMint: "Adresse mint invalide", addTokenFail: "Impossible d'ajouter le jeton. Veuillez réessayer.", tokenAlreadyListed: "Ce jeton est déjà dans votre liste.", addAction: "Ajouter", tokenDetailTitle: "Détails du jeton", tokenMint: "Mint", tokenBalance: "Solde", tokenRemove: "Retirer de la liste", tokenCopiedMint: "Mint copié", tokenReadOnlyHint: "Lecture seule — non disponible comme source de transfert.",
   },
   de: {
     addToken: "Token hinzufügen", addTokenHint: "Füge die SPL-Token-Mint-Adresse auf Solana ein (z. B. USDC)", mintPlaceholder: "Token-Mint-Adresse", symbolOptional: "Optional",
-    invalidMint: "Ungültige Mint-Adresse", addTokenFail: "Token konnte nicht hinzugefügt werden. Bitte versuche es erneut.", tokenAlreadyListed: "Dieses Token ist bereits in Ihrer Liste.", addAction: "Hinzufügen",
+    invalidMint: "Ungültige Mint-Adresse", addTokenFail: "Token konnte nicht hinzugefügt werden. Bitte versuche es erneut.", tokenAlreadyListed: "Dieses Token ist bereits in Ihrer Liste.", addAction: "Hinzufügen", tokenDetailTitle: "Token-Details", tokenMint: "Mint", tokenBalance: "Guthaben", tokenRemove: "Aus Liste entfernen", tokenCopiedMint: "Mint kopiert", tokenReadOnlyHint: "Nur Ansicht — nicht als Transferquelle verfügbar.",
   },
   nl: {
     addToken: "Token toevoegen", addTokenHint: "Plak het SPL-token-mintadres op Solana (bijv. USDC)", mintPlaceholder: "Token-mintadres", symbolOptional: "Symbool (optioneel)",
-    invalidMint: "Ongeldig mintadres", addTokenFail: "Token toevoegen is mislukt. Probeer het opnieuw.", tokenAlreadyListed: "Dit token staat al in je lijst.", addAction: "Toevoegen",
+    invalidMint: "Ongeldig mintadres", addTokenFail: "Token toevoegen is mislukt. Probeer het opnieuw.", tokenAlreadyListed: "Dit token staat al in je lijst.", addAction: "Toevoegen", tokenDetailTitle: "Tokendetails", tokenMint: "Mint", tokenBalance: "Saldo", tokenRemove: "Uit lijst verwijderen", tokenCopiedMint: "Mint gekopieerd", tokenReadOnlyHint: "Alleen bekijken — niet beschikbaar als overdrachtsbron.",
   },
   it: {
     addToken: "Aggiungi token", addTokenHint: "Incolla l'indirizzo mint del token SPL su Solana (es. USDC)", mintPlaceholder: "Indirizzo mint del token", symbolOptional: "Simbolo (facoltativo)",
-    invalidMint: "Indirizzo mint non valido", addTokenFail: "Impossibile aggiungere il token. Riprova.", tokenAlreadyListed: "Questo token è già nell'elenco.", addAction: "Aggiungi",
+    invalidMint: "Indirizzo mint non valido", addTokenFail: "Impossibile aggiungere il token. Riprova.", tokenAlreadyListed: "Questo token è già nell'elenco.", addAction: "Aggiungi", tokenDetailTitle: "Dettagli token", tokenMint: "Mint", tokenBalance: "Saldo", tokenRemove: "Rimuovi dall'elenco", tokenCopiedMint: "Mint copiato", tokenReadOnlyHint: "Solo visualizzazione — non disponibile come fonte di trasferimento.",
   },
   ru: {
     addToken: "Добавить токен", addTokenHint: "Вставьте mint-адрес SPL-токена в сети Solana (например, USDC)", mintPlaceholder: "Mint-адрес токена", symbolOptional: "Символ (необязательно)",
-    invalidMint: "Недействительный mint-адрес", addTokenFail: "Не удалось добавить токен. Попробуйте снова.", tokenAlreadyListed: "Этот токен уже есть в вашем списке.", addAction: "Добавить",
+    invalidMint: "Недействительный mint-адрес", addTokenFail: "Не удалось добавить токен. Попробуйте снова.", tokenAlreadyListed: "Этот токен уже есть в вашем списке.", addAction: "Добавить", tokenDetailTitle: "Сведения о токене", tokenMint: "Mint", tokenBalance: "Баланс", tokenRemove: "Убрать из списка", tokenCopiedMint: "Mint скопирован", tokenReadOnlyHint: "Только просмотр — недоступно как источник перевода.",
   },
   uk: {
     addToken: "Додати токен", addTokenHint: "Вставте mint-адресу SPL-токена в мережі Solana (наприклад, USDC)", mintPlaceholder: "Mint-адреса токена", symbolOptional: "Символ (необов'язково)",
-    invalidMint: "Недійсна mint-адреса", addTokenFail: "Не вдалося додати токен. Спробуйте ще раз.", tokenAlreadyListed: "Цей токен уже є у вашому списку.", addAction: "Додати",
+    invalidMint: "Недійсна mint-адреса", addTokenFail: "Не вдалося додати токен. Спробуйте ще раз.", tokenAlreadyListed: "Цей токен уже є у вашому списку.", addAction: "Додати", tokenDetailTitle: "Подробиці токена", tokenMint: "Mint", tokenBalance: "Баланс", tokenRemove: "Прибрати зі списку", tokenCopiedMint: "Mint скопійовано", tokenReadOnlyHint: "Лише перегляд — недоступно як джерело переказу.",
   },
   pl: {
     addToken: "Dodaj token", addTokenHint: "Wklej adres mint tokena SPL w sieci Solana (np. USDC)", mintPlaceholder: "Adres mint tokena", symbolOptional: "Symbol (opcjonalnie)",
-    invalidMint: "Nieprawidłowy adres mint", addTokenFail: "Nie udało się dodać tokena. Spróbuj ponownie.", tokenAlreadyListed: "Ten token jest już na liście.", addAction: "Dodaj",
+    invalidMint: "Nieprawidłowy adres mint", addTokenFail: "Nie udało się dodać tokena. Spróbuj ponownie.", tokenAlreadyListed: "Ten token jest już na liście.", addAction: "Dodaj", tokenDetailTitle: "Szczegóły tokena", tokenMint: "Mint", tokenBalance: "Saldo", tokenRemove: "Usuń z listy", tokenCopiedMint: "Mint skopiowany", tokenReadOnlyHint: "Tylko podgląd — niedostępne jako źródło przelewu.",
   },
   tr: {
     addToken: "Token ekle", addTokenHint: "Solana üzerindeki SPL token mint adresini yapıştırın (örn. USDC)", mintPlaceholder: "Token mint adresi", symbolOptional: "Sembol (isteğe bağlı)",
-    invalidMint: "Geçersiz mint adresi", addTokenFail: "Token eklenemedi. Lütfen tekrar deneyin.", tokenAlreadyListed: "Bu token zaten listenizde.", addAction: "Ekle",
+    invalidMint: "Geçersiz mint adresi", addTokenFail: "Token eklenemedi. Lütfen tekrar deneyin.", tokenAlreadyListed: "Bu token zaten listenizde.", addAction: "Ekle", tokenDetailTitle: "Token ayrıntıları", tokenMint: "Mint", tokenBalance: "Bakiye", tokenRemove: "Listeden kaldır", tokenCopiedMint: "Mint kopyalandı", tokenReadOnlyHint: "Yalnızca görüntüleme — transfer kaynağı olarak kullanılamaz.",
   },
   ar: {
     addToken: "إضافة عملة", addTokenHint: "الصق عنوان mint لعملة SPL على شبكة Solana (مثل USDC)", mintPlaceholder: "عنوان mint للعملة", symbolOptional: "الرمز (اختياري)",
-    invalidMint: "عنوان mint غير صالح", addTokenFail: "تعذّرت إضافة العملة. يرجى المحاولة مرة أخرى.", tokenAlreadyListed: "هذا الرمز موجود بالفعل في قائمتك.", addAction: "إضافة",
+    invalidMint: "عنوان mint غير صالح", addTokenFail: "تعذّرت إضافة العملة. يرجى المحاولة مرة أخرى.", tokenAlreadyListed: "هذا الرمز موجود بالفعل في قائمتك.", addAction: "إضافة", tokenDetailTitle: "تفاصيل الرمز", tokenMint: "Mint", tokenBalance: "الرصيد", tokenRemove: "إزالة من القائمة", tokenCopiedMint: "تم نسخ mint", tokenReadOnlyHint: "للعرض فقط — غير متاح كمصدر تحويل.",
   },
 };
 
