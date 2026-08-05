@@ -1864,7 +1864,7 @@ html[data-theme="dark"] .send-bill-link {
 
 .pay-token-list-head {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
   padding: 0 0.1rem 0.55rem;
@@ -1877,6 +1877,35 @@ html[data-theme="dark"] .send-bill-link {
   font-weight: 800;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+}
+
+.pay-token-add {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.65rem;
+  height: 1.65rem;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--acopay-border-strong);
+  border-radius: 0.55rem;
+  background: color-mix(in srgb, var(--acopay-surface) 88%, var(--acopay-brand));
+  color: var(--acopay-fg);
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.pay-token-add:hover {
+  border-color: var(--acopay-brand);
+  color: var(--acopay-brand);
+}
+
+.pay-token-list-note {
+  margin: -0.2rem 0.1rem 0.55rem;
+  color: var(--acopay-muted);
+  font-size: 0.65rem;
 }
 
 .pay-token-list-head span {

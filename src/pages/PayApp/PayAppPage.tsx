@@ -17,6 +17,11 @@ import {
 } from "../../lib/portfolioValue";
 import { fetchOwnedTokens, type OwnedToken } from "../../lib/ownedTokens";
 import {
+  addWebCustomToken,
+  listWebCustomTokens,
+  type WebCustomToken,
+} from "../../lib/webCustomTokens";
+import {
   clearPayUsername,
   fetchPayMe,
   formatCoinAmount,
@@ -64,6 +69,12 @@ export function PayAppPage() {
   const [quotes, setQuotes] = useState<PortfolioQuotes>(() => emptyQuotes());
   const [fxOpen, setFxOpen] = useState(false);
   const [ownedTokens, setOwnedTokens] = useState<OwnedToken[]>([]);
+  const [customTokens, setCustomTokens] = useState<WebCustomToken[]>(() => listWebCustomTokens());
+  const [addTokenOpen, setAddTokenOpen] = useState(false);
+  const [addMint, setAddMint] = useState("");
+  const [addSymbol, setAddSymbol] = useState("");
+  const [addBusy, setAddBusy] = useState(false);
+  const [addErr, setAddErr] = useState<string | null>(null);
   const pollRef = useRef<number | null>(null);
   const authGenRef = useRef(0);
   const loginAuthBusyRef = useRef(false);
@@ -407,8 +418,18 @@ export function PayAppPage() {
     usdt: Number(me?.balance?.usdt) || 0,
     sol: Number(me?.balance?.sol) || 0,
   };
-  const homeTokens = useMemo(
-    () => [
+  const homeTokens = useMemo(() => {
+    const ownedMints = new Set(ownedTokens.map((token) => token.mint));
+    const customOnly = customTokens
+      .filter((token) => !ownedMints.has(token.mint))
+      .map((token) => ({
+        id: token.mint,
+        name: token.name,
+        symbol: token.symbol,
+        balance: 0,
+        logoUri: token.logoUri,
+      }));
+    return [
       ...(portfolioBal.acopay > 0
         ? [
             {
@@ -442,9 +463,32 @@ export function PayAppPage() {
         balance: token.balance,
         logoUri: token.logoUri,
       })),
-    ],
-    [portfolioBal.acopay, portfolioBal.usdt, portfolioBal.sol, ownedTokens],
-  );
+      ...customOnly,
+    ];
+  }, [portfolioBal.acopay, portfolioBal.usdt, portfolioBal.sol, ownedTokens, customTokens]);
+
+  const submitAddToken = useCallback(async () => {
+    setAddErr(null);
+    setAddBusy(true);
+    try {
+      const result = await addWebCustomToken({ mint: addMint, symbol: addSymbol });
+      if (!result.ok) {
+        if (result.code === "INVALID_MINT") setAddErr(t("payApp.invalidMint"));
+        else if (result.code === "ALREADY_LISTED" || result.code === "ALREADY_CUSTOM") {
+          setAddErr(t("payApp.tokenAlreadyListed"));
+        } else setAddErr(t("payApp.addTokenFail"));
+        return;
+      }
+      setCustomTokens(result.list);
+      setAddMint("");
+      setAddSymbol("");
+      setAddTokenOpen(false);
+    } catch {
+      setAddErr(t("payApp.addTokenFail"));
+    } finally {
+      setAddBusy(false);
+    }
+  }, [addMint, addSymbol, t]);
   const fiatAmount = hasWallet
     ? formatPortfolioNumber(portfolioBal, currency, quotes)
     : "—";
@@ -741,9 +785,18 @@ export function PayAppPage() {
                   <div className="pay-token-list">
                     <div className="pay-token-list-head">
                       <h3>{t("payApp.tokensTitle")}</h3>
-                      {ownedTokens.length > 0 ? (
-                        <span>{t("payApp.detectedReadOnly")}</span>
-                      ) : null}
+                      <button
+                        type="button"
+                        className="pay-token-add"
+                        aria-label={t("payApp.addToken")}
+                        title={t("payApp.addToken")}
+                        onClick={() => {
+                          setAddErr(null);
+                          setAddTokenOpen(true);
+                        }}
+                      >
+                        +
+                      </button>
                     </div>
                     <div className="pay-token-rows">
                       {homeTokens.map((token) => (
@@ -771,6 +824,81 @@ export function PayAppPage() {
                           </div>
                         </div>
                       ))}
+                    </div>
+                  </div>
+                ) : null}
+
+                {addTokenOpen ? (
+                  <div className="pay-fx-sheet" role="dialog" aria-modal="true">
+                    <div className="pay-fx-sheet-head">
+                      <h3 className="pay-fx-sheet-title">{t("payApp.addToken")}</h3>
+                      <button
+                        type="button"
+                        className="pay-fx-sheet-close"
+                        disabled={addBusy}
+                        onClick={() => setAddTokenOpen(false)}
+                      >
+                        ×
+                      </button>
+                    </div>
+                    <p className="pay-fx-sheet-sub">{t("payApp.addTokenHint")}</p>
+                    <label className="pay-username-field">
+                      <input
+                        type="text"
+                        className="pay-username-input"
+                        value={addMint}
+                        autoComplete="off"
+                        autoCapitalize="none"
+                        spellCheck={false}
+                        disabled={addBusy}
+                        placeholder={t("payApp.mintPlaceholder")}
+                        onChange={(e) => {
+                          setAddMint(e.target.value.trim());
+                          setAddErr(null);
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                            void submitAddToken();
+                          }
+                        }}
+                      />
+                    </label>
+                    <label className="pay-username-field" style={{ marginTop: "0.55rem" }}>
+                      <input
+                        type="text"
+                        className="pay-username-input"
+                        value={addSymbol}
+                        autoComplete="off"
+                        autoCapitalize="characters"
+                        spellCheck={false}
+                        maxLength={12}
+                        disabled={addBusy}
+                        placeholder={t("payApp.symbolOptional")}
+                        onChange={(e) => {
+                          setAddSymbol(e.target.value.replace(/\s+/g, "").slice(0, 12));
+                          setAddErr(null);
+                        }}
+                      />
+                    </label>
+                    {addErr ? <p className="pay-username-err">{addErr}</p> : null}
+                    <div className="pay-username-actions">
+                      <button
+                        type="button"
+                        className="btn-orca-primary !rounded-lg !px-3 !py-2 text-sm"
+                        disabled={addBusy || addMint.trim().length < 32}
+                        onClick={() => void submitAddToken()}
+                      >
+                        {t("payApp.addAction")}
+                      </button>
+                      <button
+                        type="button"
+                        className="pay-username-secondary"
+                        disabled={addBusy}
+                        onClick={() => setAddTokenOpen(false)}
+                      >
+                        {t("payApp.usernameCancel")}
+                      </button>
                     </div>
                   </div>
                 ) : null}

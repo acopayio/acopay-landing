@@ -930,7 +930,6 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
                     ×
                   </button>
                 </div>
-                <p className="pay-fx-sheet-sub">{t("payApp.transferCurrencyHint")}</p>
                 <div className="pay-fx-sheet-list">
                   {amountUnitCryptos.map((item) => {
                     const code = sourceToCryptoUnit(item);
