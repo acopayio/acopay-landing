@@ -19,6 +19,7 @@ import {
 import { TOKEN } from "../config/token";
 import { getPhantomProvider } from "./phantomPay";
 import { PayApiError } from "./payWebErrors";
+import { getSendCascadeConnection } from "./sendRpcCascade";
 
 /** TREASURY — first ATA open fee (1 ACOPAY) + % fee withdraw destination. */
 export const ACOPAY_TREASURY = "287s1e5LVRwQ1sfXuFGKwLog7n2vLBJDAm5buW5T3WSQ";
@@ -30,15 +31,6 @@ const MAX_FEE_ACOPAY = 1_000_000;
 const MIN_TRANSFER = 1;
 const FIRST_ATA_OPEN_FEE = 1;
 
-const RPC_CANDIDATES = [
-  ...(typeof import.meta !== "undefined" && import.meta.env?.VITE_SOLANA_RPC
-    ? [String(import.meta.env.VITE_SOLANA_RPC)]
-    : []),
-  "https://solana-rpc.publicnode.com",
-  "https://solana.drpc.org",
-  "https://api.mainnet-beta.solana.com",
-];
-
 function friendlyRpcError(err: unknown): string {
   const msg = err instanceof Error ? err.message : String(err);
   if (/403|Access forbidden|Failed to fetch|CORS|429/i.test(msg)) {
@@ -48,21 +40,11 @@ function friendlyRpcError(err: unknown): string {
 }
 
 async function getWorkingConnection(): Promise<Connection> {
-  let lastErr: unknown;
-  for (const rpc of RPC_CANDIDATES) {
-    if (!rpc) continue;
-    try {
-      const connection = new Connection(rpc, {
-        commitment: "confirmed",
-        confirmTransactionInitialTimeout: 60_000,
-      });
-      await connection.getLatestBlockhash("confirmed");
-      return connection;
-    } catch (e) {
-      lastErr = e;
-    }
+  try {
+    return getSendCascadeConnection();
+  } catch (e) {
+    throw new Error(friendlyRpcError(e));
   }
-  throw new Error(friendlyRpcError(lastErr ?? new Error("No RPC available")));
 }
 
 function parseTokenAmount(humanAmount: string | number, decimals: number): bigint {

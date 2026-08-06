@@ -1,6 +1,7 @@
 /**
- * Solana JSON-RPC proxy for App Send (USDT/SOL + ACOPAY sim/broadcast).
- * VPS uses Webshare IP rotate — key never in APK.
+ * Solana JSON-RPC proxy for App/Web Send cascade.
+ * Default: VPS Webshare (+ auto Helius if Webshare fails).
+ * Query `?via=helius` forces Helius. Keys never in client.
  */
 import { corsOptions, proxyPay } from "./_proxy";
 

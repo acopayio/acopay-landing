@@ -20,26 +20,15 @@ import {
   syncBuySessionUrl,
   setAutopayFlag,
 } from "./buySession";
+import { getSendCascadeConnection } from "./sendRpcCascade";
 
 const USDT_DECIMALS = 6;
 const ACOPAY_DECIMALS = TOKEN.decimals;
 
-/**
- * Browser RPC candidates. Official api.mainnet-beta often returns 403 from web apps.
- * Optional build-time override: VITE_SOLANA_RPC (Cloudflare Pages env).
- */
-const RPC_CANDIDATES = [
-  ...(typeof import.meta !== "undefined" && import.meta.env?.VITE_SOLANA_RPC
-    ? [String(import.meta.env.VITE_SOLANA_RPC)]
-    : []),
-  "https://solana-rpc.publicnode.com",
-  "https://solana.drpc.org",
-  "https://api.mainnet-beta.solana.com",
-];
-
-/** Cache one working RPC for this page load — avoids re-probing on every pay/settle poll. */
-let cachedConnection: Connection | null = null;
-let cachedRpc: string | null = null;
+export async function getWorkingConnection(): Promise<Connection> {
+  // Kevin 2026-08-06: Send cascade (public → Webshare → Helius). Ready while webPay surface stays off.
+  return getSendCascadeConnection();
+}
 
 function withTimeout<T>(p: Promise<T>, ms: number, label: string): Promise<T> {
   return new Promise((resolve, reject) => {
@@ -55,40 +44,6 @@ function withTimeout<T>(p: Promise<T>, ms: number, label: string): Promise<T> {
       }
     );
   });
-}
-
-async function tryRpc(rpc: string): Promise<Connection> {
-  const connection = new Connection(rpc, {
-    commitment: "confirmed",
-    confirmTransactionInitialTimeout: 60_000,
-  });
-  await withTimeout(connection.getLatestBlockhash("confirmed"), 4_000, rpc);
-  return connection;
-}
-
-export async function getWorkingConnection(): Promise<Connection> {
-  if (cachedConnection && cachedRpc) {
-    try {
-      await withTimeout(cachedConnection.getLatestBlockhash("confirmed"), 3_000, cachedRpc);
-      return cachedConnection;
-    } catch {
-      cachedConnection = null;
-      cachedRpc = null;
-    }
-  }
-
-  const rpcs = RPC_CANDIDATES.filter(Boolean);
-  // Race all RPCs — sequential probe was 10–30s+ on mobile before sign UI.
-  try {
-    const result = await Promise.any(rpcs.map((rpc) => tryRpc(rpc).then((c) => ({ c, rpc }))));
-    cachedConnection = result.c;
-    cachedRpc = result.rpc;
-    return result.c;
-  } catch (e) {
-    const agg = e as AggregateError;
-    const last = Array.isArray(agg?.errors) ? agg.errors[agg.errors.length - 1] : e;
-    throw new Error(friendlyRpcError(last ?? new Error("No RPC available")));
-  }
 }
 
 type PhantomProvider = {

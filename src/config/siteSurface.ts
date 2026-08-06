@@ -5,11 +5,14 @@
  * Flip back to true only when Kevin asks to reopen Buy / Web Pay / Telegram Pay.
  *
  * Download stays on. Backend `/api/pay/*` is unchanged (app still uses APIs).
+ *
+ * Send RPC cascade (public → Webshare → Helius) is already wired in
+ * `src/lib/sendRpcCascade.ts` + `sendAcopay.ts` — ready when `webPay: true`.
  */
 export const SITE_SURFACE = {
   /** OTC desk `/buy` */
   buy: false,
-  /** Web Pay `/pay`, `/trade`, `/link-wallet`, `/send` */
+  /** Web Pay `/pay`, `/trade`, `/link-wallet`, `/send` — keep false until Kevin reopens */
   webPay: false,
   /** Sidebar / header / footer Telegram Pay buttons */
   telegramPayCta: false,
