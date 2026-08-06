@@ -1,13 +1,11 @@
 /**
- * Send RPC cascade — shared rule for App + Web Pay (Kevin 2026-08-06).
+ * Send RPC cascade — Web Pay (Kevin 2026-08-06/07).
+ * Same rule as App: plain Connection probe, NO custom fetch
+ * (custom fetch → StructError on getLatestBlockhash).
  *
- *   public (browser) → rotate on 429
- *   timeout → retry same URL once
- *   → Webshare  POST /api/pay/rpc
- *   → Helius    POST /api/pay/rpc?via=helius
+ *   public → Webshare /api/pay/rpc → Helius /api/pay/rpc?via=helius
  *
- * Web Pay surface may stay hidden (siteSurface); this module is ready when /pay reopens.
- * Keys never in the browser bundle.
+ * SITE_SURFACE.webPay may stay false; module ready when reopened.
  */
 
 import { Connection } from "@solana/web3.js";
@@ -24,147 +22,101 @@ const PUBLIC_RPCS = [
 const WEBSHARE_RPC = "/api/pay/rpc";
 const HELIUS_RPC = "/api/pay/rpc?via=helius";
 
+const PUBLIC_PROBE_MS = 4_000;
+const PROXY_PROBE_MS = 12_000;
+
 let cachedSend: Connection | null = null;
+let cachedUrl: string | null = null;
 
-function isRateLimited(status: number, text: string): boolean {
-  if (status === 429 || status === 418 || status === 403) return true;
-  return /429|too many requests|rate.?limit|-32429|access forbidden/i.test(text);
+function withTimeout<T>(p: Promise<T>, ms: number, label: string): Promise<T> {
+  return new Promise((resolve, reject) => {
+    const t = setTimeout(() => reject(new Error(`${label} timeout`)), ms);
+    p.then(
+      (v) => {
+        clearTimeout(t);
+        resolve(v);
+      },
+      (e) => {
+        clearTimeout(t);
+        reject(e);
+      }
+    );
+  });
 }
 
-function rpcBodyHasRateLimit(text: string): boolean {
-  try {
-    const j = JSON.parse(text) as { error?: { message?: string; code?: number } };
-    const msg = String(j?.error?.message || "");
-    const code = Number(j?.error?.code || 0);
-    if (code === -32429) return true;
-    return isRateLimited(429, msg);
-  } catch {
-    return false;
-  }
-}
-
-function isTransientNetworkMessage(msg: string): boolean {
-  return /timeout|timed out|network|failed to fetch|econnreset|etimedout|abort|socket/i.test(
+function isRetryable(err: unknown): boolean {
+  const msg = err instanceof Error ? err.message : String(err);
+  return /429|too many requests|rate.?limit|-32429|403|timeout|timed out|network|failed to fetch|structerror|502|503|504/i.test(
     msg
   );
 }
 
-async function postJson(url: string, body: string, signal?: AbortSignal) {
-  const res = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", Accept: "application/json" },
-    body,
-    signal,
+async function probe(url: string, ms: number): Promise<Connection> {
+  const absolute =
+    url.startsWith("http") ? url : `${typeof window !== "undefined" ? window.location.origin : "https://acopay.net"}${url}`;
+  const conn = new Connection(absolute, {
+    commitment: "confirmed",
+    confirmTransactionInitialTimeout: 60_000,
   });
-  const text = await res.text();
-  return { status: res.status, text, ok: res.ok };
+  await withTimeout(conn.getLatestBlockhash("confirmed"), ms, url);
+  return conn;
 }
 
-function asJsonResponse(text: string, status = 200): Response {
-  return new Response(text, {
-    status,
-    headers: { "Content-Type": "application/json" },
-  });
-}
-
-async function cascadeFetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response> {
-  let body = "";
-  if (typeof init?.body === "string") {
-    body = init.body;
-  } else if (init?.body) {
-    body = await new Response(init.body).text();
-  } else {
-    body = await new Request(input, init).text();
+export async function connectSendRpc(): Promise<Connection> {
+  if (cachedSend && cachedUrl) {
+    try {
+      await withTimeout(cachedSend.getLatestBlockhash("confirmed"), PUBLIC_PROBE_MS, cachedUrl);
+      return cachedSend;
+    } catch {
+      cachedSend = null;
+      cachedUrl = null;
+    }
   }
 
-  const signal = init?.signal ?? undefined;
-  let lastErr = "rpc_cascade_exhausted";
-
-  for (const rpc of PUBLIC_RPCS) {
-    const tryOnce = async () => {
-      try {
-        return await postJson(rpc, body, signal);
-      } catch (e) {
-        lastErr = e instanceof Error ? e.message : String(e);
-        return null;
-      }
-    };
-
-    let hit = await tryOnce();
-    if (!hit) {
-      if (isTransientNetworkMessage(lastErr)) hit = await tryOnce();
-      if (!hit) continue;
+  let lastErr: unknown;
+  for (const url of PUBLIC_RPCS) {
+    try {
+      const conn = await probe(url, PUBLIC_PROBE_MS);
+      cachedSend = conn;
+      cachedUrl = url;
+      return conn;
+    } catch (e) {
+      lastErr = e;
+      void isRetryable(e);
     }
-
-    if (isRateLimited(hit.status, hit.text) || rpcBodyHasRateLimit(hit.text)) {
-      lastErr = `rate_limited ${rpc}`;
-      continue;
-    }
-
-    if (!hit.ok) {
-      if (hit.status >= 500) {
-        const retry = await tryOnce();
-        if (
-          retry &&
-          retry.ok &&
-          !isRateLimited(retry.status, retry.text) &&
-          !rpcBodyHasRateLimit(retry.text)
-        ) {
-          return asJsonResponse(retry.text);
-        }
-      }
-      lastErr = `HTTP ${hit.status} ${rpc}`;
-      continue;
-    }
-
-    return asJsonResponse(hit.text);
   }
 
   try {
-    const ws = await postJson(WEBSHARE_RPC, body, signal);
-    if (ws.ok && !isRateLimited(ws.status, ws.text) && !rpcBodyHasRateLimit(ws.text)) {
-      return asJsonResponse(ws.text);
-    }
-    lastErr = `webshare ${ws.status}`;
+    const conn = await probe(WEBSHARE_RPC, PROXY_PROBE_MS);
+    cachedSend = conn;
+    cachedUrl = WEBSHARE_RPC;
+    return conn;
   } catch (e) {
-    lastErr = e instanceof Error ? e.message : String(e);
+    lastErr = e;
   }
 
   try {
-    const hel = await postJson(HELIUS_RPC, body, signal);
-    if (hel.ok && !rpcBodyHasRateLimit(hel.text)) {
-      return asJsonResponse(hel.text, hel.status);
-    }
-    lastErr = `helius ${hel.status}`;
+    const conn = await probe(HELIUS_RPC, PROXY_PROBE_MS);
+    cachedSend = conn;
+    cachedUrl = HELIUS_RPC;
+    return conn;
   } catch (e) {
-    lastErr = e instanceof Error ? e.message : String(e);
+    lastErr = e;
   }
 
-  return asJsonResponse(
-    JSON.stringify({
-      jsonrpc: "2.0",
-      id: null,
-      error: { code: -32000, message: String(lastErr).slice(0, 300) },
-    })
-  );
+  const msg = lastErr instanceof Error ? lastErr.message : String(lastErr);
+  throw new Error(`Send RPC unavailable: ${msg.slice(0, 200)}`);
 }
 
-/**
- * Connection for Web Pay Send (quote / simulate / broadcast).
- * Ready now; safe while /pay is surface-hidden.
- */
 export function getSendCascadeConnection(): Connection {
-  if (!cachedSend) {
-    cachedSend = new Connection(PUBLIC_RPCS[0] || "https://api.mainnet-beta.solana.com", {
-      commitment: "confirmed",
-      confirmTransactionInitialTimeout: 60_000,
-      fetch: cascadeFetch,
-    });
-  }
-  return cachedSend;
+  if (cachedSend) return cachedSend;
+  return new Connection(PUBLIC_RPCS[0] || "https://api.mainnet-beta.solana.com", {
+    commitment: "confirmed",
+    confirmTransactionInitialTimeout: 60_000,
+  });
 }
 
-/** @deprecated Prefer getSendCascadeConnection for Send path. */
+/** @deprecated Prefer await connectSendRpc() before send. */
 export async function getWorkingConnection(): Promise<Connection> {
-  return getSendCascadeConnection();
+  return connectSendRpc();
 }
