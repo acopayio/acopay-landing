@@ -9,10 +9,10 @@
  * (không còn `ACOPAY-Pay-…` — app = wallet).
  */
 export const ANDROID_APP = {
-  version: "1.0.106",
+  version: "1.0.107",
   /** Human-readable, shown next to the button. */
   size: "55 MB",
-  sha256: "ec437c3b340bf8f2ff7268ffa04e598898cc3f8a3e3e98a37cfc3e70f3def6e1",
+  sha256: "24c8a9b1d33656710982238517bd0ae025fb7404517e05292897aa51b2c0189a",
   /** Pages Function that streams the file from the VPS. */
   url: "/download/android",
 } as const;
