@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Metadata for the Android build served at /download/android.
  *
  * Update all four values together whenever a new APK is uploaded to the VPS —
@@ -9,10 +9,10 @@
  * (không còn `ACOPAY-Pay-…` — app = wallet).
  */
 export const ANDROID_APP = {
-  version: "1.0.92",
+  version: "1.0.93",
   /** Human-readable, shown next to the button. */
   size: "55 MB",
-  sha256: "4fd79d56f4f196ae73b95edea82097a0b568bb7c46c0a8c5b10f502a36175e9c",
+  sha256: "967a72c559f7c9df57d75282e4b03abf9e72b7a5b445c986d98d35d6662de738",
   /** Pages Function that streams the file from the VPS. */
   url: "/download/android",
 } as const;
