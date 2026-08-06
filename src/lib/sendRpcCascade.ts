@@ -77,7 +77,7 @@ async function cascadeFetch(input: RequestInfo | URL, init?: RequestInit): Promi
     body = await new Request(input, init).text();
   }
 
-  const signal = init?.signal;
+  const signal = init?.signal ?? undefined;
   let lastErr = "rpc_cascade_exhausted";
 
   for (const rpc of PUBLIC_RPCS) {
