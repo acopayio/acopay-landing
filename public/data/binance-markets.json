@@ -1,15 +1,15 @@
 {
-  "updatedAt": "2026-08-07T00:16:44.876Z",
+  "updatedAt": "2026-08-07T00:16:46.061Z",
   "source": "binance",
-  "pollMs": 30000,
+  "pollMs": 5000,
   "rows": [
     {
       "symbol": "USDCUSDT",
       "base": "USDC",
       "name": "USDC",
-      "price": 1.00075,
-      "change24h": -0.007,
-      "volume24h": 1184252982.40176,
+      "price": 1.00074,
+      "change24h": -0.008,
+      "volume24h": 1184235921.55267,
       "marketCap": 71899645363,
       "imageUrl": "https://coin-images.coingecko.com/coins/images/6319/large/USDC.png?1769615602",
       "href": "https://www.binance.com/en/trade/USDC_USDT"
@@ -106,9 +106,9 @@
       "symbol": "SPCXBUSDT",
       "base": "SPCXB",
       "name": "SPCXB",
-      "price": 114.34,
-      "change24h": 3.936,
-      "volume24h": 74298117.21659,
+      "price": 114.35,
+      "change24h": 3.945,
+      "volume24h": 74298136.65609,
       "marketCap": 0,
       "imageUrl": "",
       "href": "https://www.binance.com/en/trade/SPCXB_USDT"
@@ -185,7 +185,7 @@
       "name": "ZBT",
       "price": 0.1891,
       "change24h": 48.664,
-      "volume24h": 28306952.9961,
+      "volume24h": 28306977.65474,
       "marketCap": 0,
       "imageUrl": "",
       "href": "https://www.binance.com/en/trade/ZBT_USDT"
@@ -238,9 +238,9 @@
       "symbol": "ACEUSDT",
       "base": "ACE",
       "name": "ACE",
-      "price": 0.1136,
-      "change24h": 61.135,
-      "volume24h": 21389671.55588,
+      "price": 0.1131,
+      "change24h": 60.426,
+      "volume24h": 21390771.31972,
       "marketCap": 0,
       "imageUrl": "",
       "href": "https://www.binance.com/en/trade/ACE_USDT"
@@ -284,7 +284,7 @@
       "name": "BANK",
       "price": 0.0436,
       "change24h": 1.869,
-      "volume24h": 16755071.09348,
+      "volume24h": 16752680.07148,
       "marketCap": 0,
       "imageUrl": "",
       "href": "https://www.binance.com/en/trade/BANK_USDT"
@@ -304,9 +304,9 @@
       "symbol": "KORUBUSDT",
       "base": "KORUB",
       "name": "KORUB",
-      "price": 16.91,
-      "change24h": -7.342,
-      "volume24h": 15196281.3659,
+      "price": 16.93,
+      "change24h": -7.08,
+      "volume24h": 15195359.0269,
       "marketCap": 0,
       "imageUrl": "",
       "href": "https://www.binance.com/en/trade/KORUB_USDT"
@@ -458,9 +458,9 @@
       "symbol": "MMTUSDT",
       "base": "MMT",
       "name": "MMT",
-      "price": 0.1756,
-      "change24h": 12.492,
-      "volume24h": 10859020.61697,
+      "price": 0.1757,
+      "change24h": 12.556,
+      "volume24h": 10859149.22937,
       "marketCap": 0,
       "imageUrl": "",
       "href": "https://www.binance.com/en/trade/MMT_USDT"
@@ -510,23 +510,12 @@
       "href": "https://www.binance.com/en/trade/SKHYB_USDT"
     },
     {
-      "symbol": "UTKUSDT",
-      "base": "UTK",
-      "name": "UTK",
-      "price": 0.00795,
-      "change24h": 16.228,
-      "volume24h": 10207948.62723,
-      "marketCap": 0,
-      "imageUrl": "",
-      "href": "https://www.binance.com/en/trade/UTK_USDT"
-    },
-    {
       "symbol": "EURIUSDT",
       "base": "EURI",
       "name": "EURI",
       "price": 1.1528,
       "change24h": -0.337,
-      "volume24h": 10172537.6084,
+      "volume24h": 10172618.59487,
       "marketCap": 0,
       "imageUrl": "",
       "href": "https://www.binance.com/en/trade/EURI_USDT"
@@ -689,9 +678,9 @@
       "symbol": "KITEUSDT",
       "base": "KITE",
       "name": "Kite",
-      "price": 0.1074,
-      "change24h": 7.293,
-      "volume24h": 5672559.70174,
+      "price": 0.1073,
+      "change24h": 7.193,
+      "volume24h": 5672661.53254,
       "marketCap": 256368903,
       "imageUrl": "https://coin-images.coingecko.com/coins/images/70426/large/KITE-ICON.png?1762328605",
       "href": "https://www.binance.com/en/trade/KITE_USDT"
@@ -801,7 +790,7 @@
       "name": "LayerZero",
       "price": 0.815,
       "change24h": 4.756,
-      "volume24h": 4369013.76259,
+      "volume24h": 4368607.30427,
       "marketCap": 288204219,
       "imageUrl": "https://coin-images.coingecko.com/coins/images/28206/large/ftxG9_TJ_400x400.jpeg?1696527208",
       "href": "https://www.binance.com/en/trade/ZRO_USDT"
@@ -810,9 +799,9 @@
       "symbol": "ALLOUSDT",
       "base": "ALLO",
       "name": "ALLO",
-      "price": 0.308,
-      "change24h": 16.27,
-      "volume24h": 4355092.57355,
+      "price": 0.3081,
+      "change24h": 16.352,
+      "volume24h": 4355032.74392,
       "marketCap": 0,
       "imageUrl": "",
       "href": "https://www.binance.com/en/trade/ALLO_USDT"
@@ -843,9 +832,9 @@
       "symbol": "REUSDT",
       "base": "RE",
       "name": "RE",
-      "price": 0.3994,
-      "change24h": 3.902,
-      "volume24h": 4042547.71926,
+      "price": 0.3995,
+      "change24h": 3.928,
+      "volume24h": 4042675.27961,
       "marketCap": 0,
       "imageUrl": "",
       "href": "https://www.binance.com/en/trade/RE_USDT"
@@ -878,7 +867,7 @@
       "name": "币安人生 (BinanceLife)",
       "price": 0.5542,
       "change24h": 5.542,
-      "volume24h": 3973713.53997,
+      "volume24h": 3973496.82807,
       "marketCap": 549535944,
       "imageUrl": "https://coin-images.coingecko.com/coins/images/69848/large/%E5%B8%81%E5%AE%89%E4%BA%BA%E7%94%9F.png?1759839225",
       "href": "https://www.binance.com/en/trade/币安人生_USDT"
@@ -1038,17 +1027,6 @@
       "href": "https://www.binance.com/en/trade/DASH_USDT"
     },
     {
-      "symbol": "LRCUSDT",
-      "base": "LRC",
-      "name": "LRC",
-      "price": 0.01879,
-      "change24h": -6.238,
-      "volume24h": 2891184.21049,
-      "marketCap": 0,
-      "imageUrl": "",
-      "href": "https://www.binance.com/en/trade/LRC_USDT"
-    },
-    {
       "symbol": "WLFIUSDT",
       "base": "WLFI",
       "name": "World Liberty Financial",
@@ -1102,6 +1080,28 @@
       "marketCap": 1393782498,
       "imageUrl": "https://coin-images.coingecko.com/coins/images/12171/large/polkadot.jpg?1766533446",
       "href": "https://www.binance.com/en/trade/DOT_USDT"
+    },
+    {
+      "symbol": "LDOUSDT",
+      "base": "LDO",
+      "name": "Lido DAO",
+      "price": 0.2919,
+      "change24h": -1.418,
+      "volume24h": 2739265.588796,
+      "marketCap": 244170132,
+      "imageUrl": "https://coin-images.coingecko.com/coins/images/13573/large/Lido_DAO.png?1696513326",
+      "href": "https://www.binance.com/en/trade/LDO_USDT"
+    },
+    {
+      "symbol": "ASTERUSDT",
+      "base": "ASTER",
+      "name": "Aster",
+      "price": 0.599,
+      "change24h": -1.318,
+      "volume24h": 2692584.86264,
+      "marketCap": 1609480644,
+      "imageUrl": "https://coin-images.coingecko.com/coins/images/69040/large/_ASTER.png?1757326782",
+      "href": "https://www.binance.com/en/trade/ASTER_USDT"
     }
   ]
 }
