@@ -9,10 +9,10 @@
  * (khong con `ACOPAY-Pay-.` - app = wallet).
  */
 export const ANDROID_APP = {
-  version: "1.0.110",
+  version: "1.0.111",
   /** Human-readable, shown next to the button. */
   size: "55 MB",
-  sha256: "94f94a447f53e21f5a3bb8e2b6327aadb19e08d397daabd8e095421f538e851d",
+  sha256: "486eff455eecd55602f8e47448a183b98c79d3872fe0b12d51d5913057e68c2a",
   /** Pages Function that streams the file from the VPS. */
   url: "/download/android",
 } as const;
