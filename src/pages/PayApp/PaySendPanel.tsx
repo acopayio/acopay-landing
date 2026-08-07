@@ -871,18 +871,11 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
                 type="button"
                 className="pay-source-card mt-2 w-full"
                 onClick={() => setSourceOpen(true)}
-                aria-label={t("payApp.transferChooseToken")}
+                aria-label={`${t("payApp.transferChooseToken")}: ${sourceSymbol}, ${t("payApp.transferAvailable", { v: formatCoinAmount(sourceBalance) })}`}
               >
                 <SourceLogo source={source} className="pay-source-card-logo" />
-                <span className="pay-source-card-mid">
-                  <strong className="pay-source-card-name">{sourceDisplayName(source)}</strong>
-                  <span className="pay-source-card-bal">
-                    {t("payApp.transferAvailable", {
-                      v: `${formatCoinAmount(sourceBalance)} ${sourceSymbol}`,
-                    })}
-                  </span>
-                </span>
                 <span className="pay-source-card-sym">{sourceSymbol}</span>
+                <span className="pay-source-card-bal">{formatCoinAmount(sourceBalance)}</span>
                 <span className="pay-source-card-caret" aria-hidden>
                   ▾
                 </span>
