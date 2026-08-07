@@ -235,11 +235,10 @@ export function PaySendPanel({ balances, quotes, onBack, onError, onSentBot }: P
   }
 
   function selectCurrency(next: AmountUnit) {
+    // LOCKED Kevin 2026-08-08: FIAT unit must NOT change transfer source (App parity).
     let nextSource: TransferSourceId = source;
     if (isCryptoAmountUnit(next)) {
       nextSource = cryptoUnitToSource(next);
-    } else if (next === "VND") {
-      nextSource = balances.acopay > 0 ? "acopay" : "usdt";
     }
     setCurrency(next);
     setSource(nextSource);
