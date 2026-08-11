@@ -12,11 +12,18 @@ type TransferSort = "time" | "slot" | "from" | "to" | "amount" | "signature";
 const PAGE_SIZE = 20;
 
 
+/** Whole amounts → no `.00`; fractional → exactly 2 dp (Kevin 2026-08-11). */
 function fmtAmount(n: number): string {
   if (!Number.isFinite(n)) return "—";
+  const cents = Math.round(n * 100);
+  if (cents % 100 === 0) {
+    return (cents / 100).toLocaleString("en-US", {
+      maximumFractionDigits: 0,
+    });
+  }
   return n.toLocaleString("en-US", {
     minimumFractionDigits: 2,
-    maximumFractionDigits: 9,
+    maximumFractionDigits: 2,
   });
 }
 
