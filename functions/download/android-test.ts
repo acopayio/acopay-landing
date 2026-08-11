@@ -1,4 +1,4 @@
-/**
+﻿/**
  * GET /download/android-test — theme-trial APK (sideload only).
  *
  * Does NOT replace production `/download/android` (Play review / store build).
@@ -11,7 +11,7 @@ type PagesEnv = {
 };
 
 /** Separate filename on VPS `/var/www/apk/` — never overwrite store sideload file. */
-const APK_FILE = "ACOPAY-Wallet-v1.0.154-theme-test.apk";
+const APK_FILE = "ACOPAY-Wallet-v1.0.155-theme-test.apk";
 
 function upstreamBase(env: PagesEnv): string {
   const fromSponsor = String(env.PAY_SPONSOR_URL || "").trim();

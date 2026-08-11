@@ -1,12 +1,12 @@
-/**
+﻿/**
  * Metadata for theme-trial Android APK (NOT the Play/store download).
  * Served at /download/android-test - production stays androidApp.ts / /download/android.
  */
 export const ANDROID_APP_THEME_TEST = {
-  version: "1.0.154",
+  version: "1.0.155",
   label: "theme-test",
   size: "52 MB",
-  sha256: "491a176e3a99702c29c6f030e86653eb0ae29f376e7f6c2e1091f5188ab47d90",
+  sha256: "8cbe9716523cc7aeed1849714f24540fc615845934dc7fda958cb495350c961d",
   url: "/download/android-test",
-  filename: "ACOPAY-Wallet-v1.0.154-theme-test.apk",
+  filename: "ACOPAY-Wallet-v1.0.155-theme-test.apk",
 } as const;
