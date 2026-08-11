@@ -31,13 +31,18 @@ function fmtPct(n: number): string {
 }
 
 function CoinIcon({ row }: { row: BinanceMarketRow }) {
-  if (row.imageUrl) {
+  const src =
+    String(row.imageUrl || "").trim() ||
+    `https://bin.bnbstatic.com/static/assets/logos/${encodeURIComponent(row.base)}.png`;
+  const [dead, setDead] = useState(false);
+  if (!dead && src) {
     return (
       <img
-        src={row.imageUrl}
+        src={src}
         alt=""
         className="h-9 w-9 rounded-full object-cover ring-2 ring-[color:var(--acopay-surface)]"
         loading="lazy"
+        onError={() => setDead(true)}
       />
     );
   }

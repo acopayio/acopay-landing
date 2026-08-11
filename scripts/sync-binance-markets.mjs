@@ -23,6 +23,15 @@ const BINANCE_TICKER = "https://api.binance.com/api/v3/ticker/24hr";
 const CG_MARKETS =
   "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=false";
 
+/** Official Binance spot logos — covers pairs missing from CoinGecko top-250. */
+function binanceLogoUrl(base) {
+  const b = String(base || "")
+    .trim()
+    .toUpperCase();
+  if (!b) return "";
+  return `https://bin.bnbstatic.com/static/assets/logos/${encodeURIComponent(b)}.png`;
+}
+
 function buildRows(tickers, cgBySymbol) {
   return tickers
     .filter((t) => typeof t?.symbol === "string" && t.symbol.endsWith("USDT"))
@@ -39,7 +48,7 @@ function buildRows(tickers, cgBySymbol) {
         change24h: Number(t.priceChangePercent) || 0,
         volume24h: Number(t.quoteVolume) || 0,
         marketCap: cg?.marketCap || 0,
-        imageUrl: cg?.imageUrl || "",
+        imageUrl: cg?.imageUrl || binanceLogoUrl(base),
         href: `https://www.binance.com/en/trade/${base}_USDT`,
       };
     })

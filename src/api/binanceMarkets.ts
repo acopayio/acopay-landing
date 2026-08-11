@@ -45,7 +45,14 @@ async function fetchJson(url: string, signal: AbortSignal): Promise<BinanceMarke
     source: data.source || "github+binance",
     pollMs: data.pollMs || 5_000,
     proxy: data.proxy,
-    rows: Array.isArray(data.rows) ? data.rows : [],
+    rows: (Array.isArray(data.rows) ? data.rows : []).map((r) => ({
+      ...r,
+      imageUrl:
+        String(r.imageUrl || "").trim() ||
+        (r.base
+          ? `https://bin.bnbstatic.com/static/assets/logos/${encodeURIComponent(String(r.base).toUpperCase())}.png`
+          : ""),
+    })),
     error: data.error,
   };
 }
