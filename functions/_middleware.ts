@@ -43,6 +43,7 @@ const PAY_MW_PATHS: Record<string, { vps: string; methods: string[] }> = {
   "/api/pay/history-unhide": { vps: "/pay/history-unhide", methods: ["POST", "OPTIONS"] },
   "/api/pay/push-register": { vps: "/pay/push-register", methods: ["POST", "OPTIONS"] },
   "/api/pay/push-unregister": { vps: "/pay/push-unregister", methods: ["POST", "OPTIONS"] },
+  "/api/pay/push-ack": { vps: "/pay/push-ack", methods: ["POST", "OPTIONS"] },
 };
 
 function withCountryCookie(request: Request, response: Response): Response {
@@ -230,7 +231,8 @@ export async function onRequest(context: PagesContext): Promise<Response> {
     url.pathname === "/api/pay/history-hide-many" ||
     url.pathname === "/api/pay/history-unhide" ||
     url.pathname === "/api/pay/push-register" ||
-    url.pathname === "/api/pay/push-unregister"
+    url.pathname === "/api/pay/push-unregister" ||
+    url.pathname === "/api/pay/push-ack"
   ) {
     const payMwRes = await proxyPayMw(context.request, context.env, url);
     if (payMwRes) return withCountryCookie(context.request, payMwRes);
