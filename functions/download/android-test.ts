@@ -11,7 +11,7 @@ type PagesEnv = {
 };
 
 /** Separate filename on VPS `/var/www/apk/` — never overwrite store sideload file. */
-const APK_FILE = "ACOPAY-Wallet-v1.0.164-theme-test.apk";
+const APK_FILE = "ACOPAY-Wallet-v1.0.165-theme-test.apk";
 
 function upstreamBase(env: PagesEnv): string {
   const fromSponsor = String(env.PAY_SPONSOR_URL || "").trim();
