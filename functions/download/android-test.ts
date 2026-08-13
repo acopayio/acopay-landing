@@ -1,5 +1,5 @@
-ï»¿/**
- * GET /download/android-test â€” theme-trial APK (sideload only).
+/**
+ * GET /download/android-test — theme-trial APK (sideload only).
  *
  * Does NOT replace production `/download/android` (Play review / store build).
  * Kevin 2026-08-10: iterate palette on Android while CH Play reviews prior APK.
@@ -10,8 +10,8 @@ type PagesEnv = {
   PAY_SPONSOR_URL?: string;
 };
 
-/** Separate filename on VPS `/var/www/apk/` â€” never overwrite store sideload file. */
-const APK_FILE = "ACOPAY-Wallet-v1.0.185-theme-test.apk";
+/** Separate filename on VPS `/var/www/apk/` — never overwrite store sideload file. */
+const APK_FILE = "ACOPAY-Wallet-v1.0.186-theme-test.apk";
 
 function upstreamBase(env: PagesEnv): string {
   const fromSponsor = String(env.PAY_SPONSOR_URL || "").trim();
