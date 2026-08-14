@@ -3,8 +3,8 @@
  * 1) www → apex
  * 2) Country cookie (language detect — no VPS)
  * 3) /data/*.json → proxy raw GitHub (fresh from VPS push; no CF rebuild wait)
- * 4) /api/pay/username* + /api/pay/auth-wallet-* + onchain-history → VPS
- *    (inject secret + forward Pay session header/cookie — DOCS/114)
+ * 4) /api/pay/username* + /api/pay/auth-wallet-* + onchain-history + /api/pay/v2/* → VPS
+ *    (inject secret + forward Pay session header/cookie — DOCS/114 · History Index V2.2)
  * 5) SPA fallback
  * 6) Real 404 for missing static assets
  *
@@ -45,6 +45,32 @@ const PAY_MW_PATHS: Record<string, { vps: string; methods: string[] }> = {
   "/api/pay/push-unregister": { vps: "/pay/push-unregister", methods: ["POST", "OPTIONS"] },
   "/api/pay/push-presence": { vps: "/pay/push-presence", methods: ["POST", "OPTIONS"] },
   "/api/pay/push-ack": { vps: "/pay/push-ack", methods: ["POST", "OPTIONS"] },
+  /** Wallet Pipeline V2 — History Index + push register/presence (App 1.0.197+). */
+  "/api/pay/v2/health": { vps: "/pay/v2/health", methods: ["GET", "OPTIONS"] },
+  "/api/pay/v2/history": { vps: "/pay/v2/history", methods: ["GET", "OPTIONS"] },
+  "/api/pay/v2/history/ensure-indexed": {
+    vps: "/pay/v2/history/ensure-indexed",
+    methods: ["POST", "OPTIONS"],
+  },
+  "/api/pay/v2/push/register": { vps: "/pay/v2/push/register", methods: ["POST", "OPTIONS"] },
+  "/api/pay/v2/push/token-refresh": {
+    vps: "/pay/v2/push/token-refresh",
+    methods: ["POST", "OPTIONS"],
+  },
+  "/api/pay/v2/push/unregister": { vps: "/pay/v2/push/unregister", methods: ["POST", "OPTIONS"] },
+  "/api/pay/v2/push/permission": { vps: "/pay/v2/push/permission", methods: ["POST", "OPTIONS"] },
+  "/api/pay/v2/presence/foreground": {
+    vps: "/pay/v2/presence/foreground",
+    methods: ["POST", "OPTIONS"],
+  },
+  "/api/pay/v2/presence/background": {
+    vps: "/pay/v2/presence/background",
+    methods: ["POST", "OPTIONS"],
+  },
+  "/api/pay/v2/chain-observations": {
+    vps: "/pay/v2/chain-observations",
+    methods: ["GET", "POST", "OPTIONS"],
+  },
 };
 
 function withCountryCookie(request: Request, response: Response): Response {
@@ -86,7 +112,14 @@ async function proxyPayMw(
   env: PagesEnv,
   url: URL,
 ): Promise<Response | null> {
-  const route = PAY_MW_PATHS[url.pathname];
+  let route = PAY_MW_PATHS[url.pathname];
+  // Prefix fallback: /api/pay/v2/wallets/:id/home-assets và mọi path V2 mới.
+  if (!route && url.pathname.startsWith("/api/pay/v2/")) {
+    route = {
+      vps: `/pay/v2/${url.pathname.slice("/api/pay/v2/".length)}`,
+      methods: ["GET", "POST", "PUT", "OPTIONS"],
+    };
+  }
   if (!route) return null;
   if (request.method === "OPTIONS") return corsPayMw(route.methods.join(", "));
   if (!route.methods.includes(request.method)) {
@@ -223,10 +256,11 @@ export async function onRequest(context: PagesContext): Promise<Response> {
     // fall through to static asset / 404
   }
 
-  // Username / wallet-auth / onchain-history / history-hide — middleware proxy (secret inject).
+  // Username / wallet-auth / onchain-history / history-hide / v2/* — middleware proxy (secret inject).
   if (
     url.pathname.startsWith("/api/pay/username") ||
     url.pathname.startsWith("/api/pay/auth-wallet") ||
+    url.pathname.startsWith("/api/pay/v2/") ||
     url.pathname === "/api/pay/onchain-history" ||
     url.pathname === "/api/pay/history-hide" ||
     url.pathname === "/api/pay/history-hide-many" ||
