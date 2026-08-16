@@ -71,6 +71,11 @@ const PAY_MW_PATHS: Record<string, { vps: string; methods: string[] }> = {
     vps: "/pay/v2/chain-observations",
     methods: ["GET", "POST", "OPTIONS"],
   },
+  /** V3.2 Alchemy Address Activity canary — HMAC header forwarded below. */
+  "/api/pay/v2/hooks/alchemy": {
+    vps: "/pay/v2/hooks/alchemy",
+    methods: ["POST", "OPTIONS"],
+  },
 };
 
 function withCountryCookie(request: Request, response: Response): Response {
@@ -143,6 +148,9 @@ async function proxyPayMw(
   const headers: Record<string, string> = { Accept: "application/json" };
   const secret = String(env.PAY_SPONSOR_SECRET || "").trim();
   if (secret) headers["X-Acopay-Pay-Secret"] = secret;
+  const alchemySig =
+    request.headers.get("X-Alchemy-Signature") || request.headers.get("x-alchemy-signature");
+  if (alchemySig) headers["X-Alchemy-Signature"] = alchemySig;
 
   // Same session forward as functions/api/pay/_proxy.ts — without this,
   // username-set/clear always 401 while /pay/me (Pages Function) still works.
