@@ -58,10 +58,11 @@ export function fiatFlagSrc(code: DisplayCurrency): string {
   return `/assets/flags/${FIAT_FLAG_CC[code]}.png`;
 }
 
+/** Crypto = mint decimals (USDT 6 · SOL/ACOPAY 9). Fiat 0/2. CẤM cắt USDT 2dp. */
 export function amountUnitDecimals(unit: AmountUnit): number {
-  if (unit === "ACOPAY") return 4;
-  if (unit === "USDT") return 2;
-  if (unit === "SOL") return 4;
+  if (unit === "ACOPAY") return 9;
+  if (unit === "USDT") return 6;
+  if (unit === "SOL") return 9;
   if (unit === "VND" || unit === "JPY" || unit === "KRW" || unit === "IDR") return 0;
   return 2;
 }
