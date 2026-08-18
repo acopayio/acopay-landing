@@ -16,6 +16,7 @@
 3. SHA-256 + 1 dòng “bản chính thức / chỉ acopay.net”  
 4. 3 dòng Product (keys on device · send/receive · @username)  
 5. Google Play: **Under review** (1.0.133 HOLD) · Android Beta **1.0.240** GitHub Release · iOS TestFlight 1.0.240 (public join CTA only when `joinUrl` is set) · App Store preparing — **không** App Store production  
+   Mobile chrome: bottom nav có **Download** (`OrcaLayout` `MOBILE_NAV_ALL`). Card Android **không** câu «Play đang xét duyệt» — câu đó chỉ card Play. Handoff `DOCS/414`.  
 6. Link Privacy · Terms · Delete  
 
 ## File
