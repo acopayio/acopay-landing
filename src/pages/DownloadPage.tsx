@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import { ANDROID_APP } from "../config/androidApp";
+import { IOS_APP } from "../config/iosApp";
 import { isWebPayPublic } from "../config/siteSurface";
 import { useT } from "../i18n/LanguageProvider";
 
@@ -95,7 +96,9 @@ export function DownloadPage() {
           </div>
           <div className="orca-card p-5">
             <h2 className="text-sm font-semibold text-[var(--acopay-fg)]">{t("download.iosTitle")}</h2>
-            <p className="mt-2 text-sm leading-relaxed text-[var(--acopay-muted)]">{t("download.iosBody")}</p>
+            <p className="mt-2 text-sm leading-relaxed text-[var(--acopay-muted)]">
+              {t("download.iosBody", { v: IOS_APP.version })}
+            </p>
             {webPayOn ? (
               <Link to="/pay" className="btn-orca-secondary mt-4 !h-10 !text-xs">
                 {t("download.openWebPay")}

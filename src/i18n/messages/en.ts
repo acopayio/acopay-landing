@@ -742,7 +742,7 @@ export const en = {
     safety2: "",
     safety3: "",
     iosTitle: "iOS",
-    iosBody: "Coming soon.",
+    iosBody: "Available on TestFlight. Version {v}.",
     openWebPay: "Open Web Pay",
   },
   legal: {
