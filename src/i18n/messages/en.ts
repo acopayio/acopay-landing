@@ -734,7 +734,7 @@ export const en = {
     androidTitle: "ACOPAY for Android",
     androidBody: "Testing build distributed directly by ACOPAY.",
     androidDisclosure:
-      "This is a direct beta build and is not the Google Play release. The Google Play production release is currently under review.",
+      "This is a direct beta build and is not the Google Play release.",
     installTitle: "",
     install1: "",
     install2: "",
