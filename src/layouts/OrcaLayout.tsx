@@ -5,7 +5,7 @@ import { LanguageToggle } from "../components/LanguageToggle";
 import { ThemeToggle } from "../components/ThemeToggle";
 import { BrandLogo } from "../components/BrandLogo";
 import { Footer } from "../components/Footer";
-import { isBuyPublic, isTelegramPayCtaPublic, isWebPayPublic } from "../config/siteSurface";
+import { isBuyPublic, isTelegramPayCtaPublic, isWebPayPublic, SITE_SURFACE } from "../config/siteSurface";
 import { useT } from "../i18n/LanguageProvider";
 
 type NavItem = {
@@ -32,6 +32,7 @@ const INFO_NAV_ALL: NavItem[] = [
 
 const MOBILE_NAV_ALL: NavItem[] = [
   { to: "/", labelKey: "nav.home", end: true, icon: HomeIcon },
+  { to: "/download", labelKey: "nav.download", end: false, icon: DownloadIcon },
   { to: "/buy", labelKey: "nav.buy", end: false, icon: BuyIcon },
   { to: "/pay", labelKey: "nav.trade", end: false, icon: SwapIcon },
   { to: "/markets", labelKey: "nav.markets", end: false, icon: PoolsIcon },
@@ -42,6 +43,7 @@ function filterNav(items: NavItem[]): NavItem[] {
   return items.filter((item) => {
     if (item.to === "/buy") return isBuyPublic();
     if (item.to === "/pay") return isWebPayPublic();
+    if (item.to === "/download") return SITE_SURFACE.download;
     return true;
   });
 }
