@@ -98,9 +98,9 @@ export const PAGE_SEO: Record<string, PageSeo> = {
     path: "/faq",
   },
   "/download": {
-    title: "Download ACOPAY Pay for Android | Acopay.net",
+    title: "Get ACOPAY | Android Beta and iOS TestFlight | Acopay.net",
     description:
-      "Get the official ACOPAY Pay Android app. Transfer and receive ACOPAY with your Telegram Pay wallet or your own self-custody wallet — ACOPAY covers the Solana network fee.",
+      "Download ACOPAY Android Beta as a direct APK, or use iOS TestFlight. Google Play and App Store listings are separate and not live yet.",
     path: "/download",
   },
   "/link-wallet": {

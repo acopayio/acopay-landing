@@ -15,7 +15,7 @@
 2. CTA APK · size · version  
 3. SHA-256 + 1 dòng “bản chính thức / chỉ acopay.net”  
 4. 3 dòng Product (keys on device · send/receive · @username)  
-5. Google Play: **Coming soon** · iOS: **TestFlight 1.0.240** (Kevin 2026-08-18) — không App Store  
+5. Google Play: **Under review** (1.0.133 HOLD) · Android Beta **1.0.240** GitHub Release · iOS TestFlight 1.0.240 (public join CTA only when `joinUrl` is set) · App Store preparing — **không** App Store production  
 6. Link Privacy · Terms · Delete  
 
 ## File

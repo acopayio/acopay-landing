@@ -1,19 +1,18 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-import { ANDROID_APP } from "../config/androidApp";
-import { IOS_APP } from "../config/iosApp";
-import { isWebPayPublic } from "../config/siteSurface";
+import { ANDROID_BETA } from "../config/androidBeta";
+import { IOS_APP, publicTestFlightJoinUrl } from "../config/iosApp";
 import { useT } from "../i18n/LanguageProvider";
 
 export function DownloadPage() {
   const t = useT();
   const [copied, setCopied] = useState(false);
-  const webPayOn = isWebPayPublic();
+  const iosJoin = publicTestFlightJoinUrl();
 
   const copyChecksum = async () => {
     try {
-      await navigator.clipboard.writeText(ANDROID_APP.sha256);
+      await navigator.clipboard.writeText(ANDROID_BETA.sha256);
       setCopied(true);
       setTimeout(() => setCopied(false), 1800);
     } catch {
@@ -29,47 +28,13 @@ export function DownloadPage() {
 
       <div className="page-wrap relative min-w-0 space-y-8">
         <header className="mx-auto max-w-2xl text-center">
-          <p className="label-orca">{t("download.kicker")}</p>
-          <h1 className="mt-2 text-3xl font-bold tracking-tight text-[var(--acopay-fg)] sm:text-4xl">
+          <h1 className="text-3xl font-bold tracking-tight text-[var(--acopay-fg)] sm:text-4xl">
             {t("download.title")}
           </h1>
           <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-[var(--acopay-muted)] sm:text-base">
             {t("download.subtitle")}
           </p>
-
-          <div className="mt-7 flex flex-col items-center gap-2">
-            <a href={ANDROID_APP.url} className="btn-orca-primary px-8" download>
-              {t("download.cta")}
-            </a>
-            <p className="text-xs text-[var(--acopay-faint)]">
-              {t("download.ctaHint", { size: ANDROID_APP.size })}
-            </p>
-            <p className="text-xs text-[var(--acopay-faint)]">
-              {t("download.version", { v: ANDROID_APP.version })}
-            </p>
-          </div>
         </header>
-
-        <div className="mx-auto max-w-2xl">
-          <div className="orca-card p-4 sm:p-5">
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <span className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--acopay-faint)]">
-                {t("download.checksumLabel")}
-              </span>
-              <button
-                type="button"
-                onClick={copyChecksum}
-                className="text-xs font-semibold text-[var(--acopay-brand)] hover:underline"
-              >
-                {copied ? t("hero.copied") : t("hero.copy")}
-              </button>
-            </div>
-            <p className="mt-2 break-all font-mono text-[11px] leading-relaxed text-[var(--acopay-muted)] sm:text-xs">
-              {ANDROID_APP.sha256}
-            </p>
-            <p className="mt-2 text-[11px] text-[var(--acopay-faint)]">{t("download.checksumHint")}</p>
-          </div>
-        </div>
 
         <div className="mx-auto max-w-2xl">
           <div className="orca-card p-5 sm:p-6">
@@ -90,21 +55,85 @@ export function DownloadPage() {
         </div>
 
         <div className="mx-auto grid max-w-2xl gap-4 sm:grid-cols-2">
-          <div className="orca-card p-5">
-            <h2 className="text-sm font-semibold text-[var(--acopay-fg)]">{t("download.storeTitle")}</h2>
-            <p className="mt-2 text-sm leading-relaxed text-[var(--acopay-muted)]">{t("download.storeBody")}</p>
-          </div>
-          <div className="orca-card p-5">
-            <h2 className="text-sm font-semibold text-[var(--acopay-fg)]">{t("download.iosTitle")}</h2>
-            <p className="mt-2 text-sm leading-relaxed text-[var(--acopay-muted)]">
-              {t("download.iosBody", { v: IOS_APP.version })}
+          <article className="orca-card flex flex-col p-5 sm:col-span-2">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--acopay-faint)]">
+              {t("download.androidLabel")}
             </p>
-            {webPayOn ? (
-              <Link to="/pay" className="btn-orca-secondary mt-4 !h-10 !text-xs">
-                {t("download.openWebPay")}
-              </Link>
-            ) : null}
-          </div>
+            <h2 className="mt-2 text-sm font-semibold text-[var(--acopay-fg)]">{t("download.androidTitle")}</h2>
+            <p className="mt-2 text-sm leading-relaxed text-[var(--acopay-muted)]">{t("download.androidBody")}</p>
+            <a
+              href={ANDROID_BETA.url}
+              className="btn-orca-primary mt-4 w-full sm:w-auto"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              {t("download.cta")}
+            </a>
+            <p className="mt-2 text-xs text-[var(--acopay-faint)]">
+              {t("download.ctaHint", { v: ANDROID_BETA.version, size: ANDROID_BETA.size })}
+            </p>
+            <p className="mt-3 text-sm leading-relaxed text-[var(--acopay-muted)]">{t("download.androidDisclosure")}</p>
+            <div className="mt-4">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <span className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--acopay-faint)]">
+                  {t("download.checksumLabel")}
+                </span>
+                <button
+                  type="button"
+                  onClick={copyChecksum}
+                  className="text-xs font-semibold text-[var(--acopay-brand)] hover:underline"
+                >
+                  {copied ? t("hero.copied") : t("hero.copy")}
+                </button>
+              </div>
+              <p className="mt-2 break-all font-mono text-[11px] leading-relaxed text-[var(--acopay-muted)] sm:text-xs">
+                {ANDROID_BETA.sha256}
+              </p>
+              <p className="mt-2 text-[11px] leading-relaxed text-[var(--acopay-faint)]">{t("download.checksumHint")}</p>
+            </div>
+          </article>
+
+          <article className="orca-card p-5">
+            <h2 className="text-sm font-semibold text-[var(--acopay-fg)]">{t("download.storeTitle")}</h2>
+            <p className="mt-1 text-xs font-semibold uppercase tracking-[0.12em] text-[var(--acopay-faint)]">
+              {t("download.playStatus")}
+            </p>
+            <p className="mt-2 text-sm leading-relaxed text-[var(--acopay-muted)]">{t("download.storeBody")}</p>
+          </article>
+
+          <article className="orca-card flex flex-col p-5">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--acopay-faint)]">
+              {t("download.iosLabel")}
+            </p>
+            <h2 className="mt-2 text-sm font-semibold text-[var(--acopay-fg)]">{t("download.iosTitle")}</h2>
+            <p className="mt-2 text-sm leading-relaxed text-[var(--acopay-muted)]">{t("download.iosBody")}</p>
+            {iosJoin ? (
+              <>
+                <a
+                  href={iosJoin}
+                  className="btn-orca-secondary mt-4 !h-10 !text-xs"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  {t("download.iosCta")}
+                </a>
+                <p className="mt-2 text-xs text-[var(--acopay-faint)]">
+                  {t("download.iosMeta", { v: IOS_APP.version })}
+                </p>
+                <p className="mt-2 text-sm leading-relaxed text-[var(--acopay-muted)]">{t("download.iosDisclosure")}</p>
+              </>
+            ) : (
+              <p className="mt-3 text-sm leading-relaxed text-[var(--acopay-muted)]">{t("download.iosPending")}</p>
+            )}
+          </article>
+
+          <article className="orca-card p-5 sm:col-span-2">
+            <h2 className="text-sm font-semibold text-[var(--acopay-fg)]">{t("download.appStoreTitle")}</h2>
+            <p className="mt-1 text-xs font-semibold uppercase tracking-[0.12em] text-[var(--acopay-faint)]">
+              {t("download.appStoreStatus")}
+            </p>
+            <p className="mt-2 text-sm leading-relaxed text-[var(--acopay-muted)]">{t("download.appStoreBody")}</p>
+          </article>
         </div>
 
         <p className="mx-auto max-w-2xl text-center text-xs leading-relaxed text-[var(--acopay-faint)]">
