@@ -18,7 +18,16 @@ export const SITE_SURFACE = {
   telegramPayCta: false,
   /** Android APK page `/download` — keep true */
   download: true,
+  /**
+   * Store review mode (Kevin 2026-08-19): hide trade/swap CTAs, store-safe copy sitewide.
+   * Flip false after App Store / Play approval if Kevin wants full marketing site back.
+   */
+  storeReview: true,
 } as const;
+
+export function isStoreReviewMode(): boolean {
+  return SITE_SURFACE.storeReview;
+}
 
 export function isBuyPublic(): boolean {
   return SITE_SURFACE.buy;

@@ -5,7 +5,7 @@ import { BinanceMarketsTable } from "./BinanceMarketsTable";
 import { LiquidityPoolsWidget } from "./LiquidityPoolsWidget";
 import { TransfersExplorer } from "./TransfersExplorer";
 
-/** Markets hub: Transactions | All Pools | Spot (Swap tab removed — Kevin 2026-08-05). */
+/** Markets hub: Transactions | All Pools | Spot (store review = transfers only). */
 type Props = {
   variant?: "home" | "full";
 };
@@ -13,6 +13,7 @@ type Props = {
 export function MarketsHub({ variant = "full" }: Props) {
   const [tab, setTab] = useState<MarketTabId>("transfers");
   const t = useT();
+  const showTabs = MARKET_TABS.length > 1;
 
   return (
     <section className={variant === "home" ? "border-t border-[color:var(--acopay-border)] bg-[var(--acopay-bg-2)]/50 py-5 md:py-6" : ""}>
@@ -23,24 +24,26 @@ export function MarketsHub({ variant = "full" }: Props) {
             <p className="text-sm leading-relaxed text-[var(--acopay-muted)]">{t("markets.subtitle")}</p>
           </div>
 
-          <div className="mt-5 flex flex-wrap gap-1 rounded-2xl border border-[color:var(--acopay-border)] bg-[var(--acopay-bg)]/50 p-1">
-            {MARKET_TABS.map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => setTab(item.id)}
-                className={`rounded-xl px-3 py-2 text-sm font-medium transition ${
-                  tab === item.id
-                    ? "bg-[var(--acopay-brand-soft)] text-[var(--acopay-brand)] ring-1 ring-[color:var(--acopay-brand)]/30"
-                    : "text-[var(--acopay-muted)] hover:bg-[var(--acopay-hover)] hover:text-[var(--acopay-fg)]"
-                }`}
-              >
-                {t(item.labelKey)}
-              </button>
-            ))}
-          </div>
+          {showTabs ? (
+            <div className="mt-5 flex flex-wrap gap-1 rounded-2xl border border-[color:var(--acopay-border)] bg-[var(--acopay-bg)]/50 p-1">
+              {MARKET_TABS.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => setTab(item.id)}
+                  className={`rounded-xl px-3 py-2 text-sm font-medium transition ${
+                    tab === item.id
+                      ? "bg-[var(--acopay-brand-soft)] text-[var(--acopay-brand)] ring-1 ring-[color:var(--acopay-brand)]/30"
+                      : "text-[var(--acopay-muted)] hover:bg-[var(--acopay-hover)] hover:text-[var(--acopay-fg)]"
+                  }`}
+                >
+                  {t(item.labelKey)}
+                </button>
+              ))}
+            </div>
+          ) : null}
 
-          <div className="mt-6">
+          <div className={showTabs ? "mt-6" : "mt-5"}>
             {tab === "pools" && <LiquidityPoolsWidget variant={variant} embedded />}
             {tab === "spot" && <BinanceMarketsTable variant={variant} embedded />}
             {tab === "transfers" && <TransfersExplorer />}

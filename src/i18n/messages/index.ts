@@ -9,6 +9,8 @@ import { SEND_ACOPAY_PARTIALS } from "./sendAcopay";
 import { PAY_APP_PARTIALS } from "./payApp";
 import { DOWNLOAD_PAGE_PARTIALS } from "./downloadPage";
 import { LEGAL_PAGE_PARTIALS } from "./legalPages";
+import { STORE_REVIEW_PARTIALS } from "./storeReviewContent";
+import { SUPPORT_PAGE_PARTIALS } from "./supportPages";
 
 export { en };
 export type { Messages } from "./en";
@@ -2081,6 +2083,18 @@ for (const [code, content] of Object.entries(DOWNLOAD_PAGE_PARTIALS)) {
 
 // Privacy / Terms / Delete-account
 for (const [code, content] of Object.entries(LEGAL_PAGE_PARTIALS)) {
+  if (code === "en") continue;
+  partials[code] = mergePartial(partials[code], content as DeepPartialMessages);
+}
+
+// Store review copy — wins over siteContent trade/swap strings
+for (const [code, content] of Object.entries(STORE_REVIEW_PARTIALS)) {
+  if (code === "en") continue;
+  partials[code] = mergePartial(partials[code], content as DeepPartialMessages);
+}
+
+// /support page
+for (const [code, content] of Object.entries(SUPPORT_PAGE_PARTIALS)) {
   if (code === "en") continue;
   partials[code] = mergePartial(partials[code], content as DeepPartialMessages);
 }

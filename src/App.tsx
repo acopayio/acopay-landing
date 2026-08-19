@@ -15,6 +15,8 @@ import { PayConnectPage } from "./pages/PayApp/PayConnectPage";
 import { PayAppApprovePage } from "./pages/PayApp/PayAppApprovePage";
 import { DownloadPage } from "./pages/DownloadPage";
 import { LegalPage } from "./pages/LegalPage";
+import { SupportPage } from "./pages/SupportPage";
+import { SupportLayout } from "./layouts/SupportLayout";
 import { isBuyPublic, isWebPayPublic } from "./config/siteSurface";
 
 function Hidden() {
@@ -29,6 +31,9 @@ export default function App() {
     <BrowserRouter>
       <SeoManager />
       <Routes>
+        <Route element={<SupportLayout />}>
+          <Route path="support" element={<SupportPage />} />
+        </Route>
         <Route element={<OrcaLayout />}>
           <Route index element={<HomePage />} />
           <Route path="buy" element={buyOn ? <BuyPage /> : <Hidden />} />

@@ -13,17 +13,14 @@ export const SITE = {
   ogImageAlt: "ACOPAY — Pay your way",
   defaultTitle: "ACOPAY — Pay your way",
   defaultDescription:
-    "Solana payment utility (Token-2022).\nTrade ACOPAY/USDT on Raydium and Jupiter.",
+    "Non-custodial Solana wallet. Keys stay on your device. Send and receive ACOPAY, USDT, SOL, and SPL tokens.",
   keywords: [
     "ACOPAY",
     "Pay your way",
     "Solana",
     "Token-2022",
-    "payment token",
-    "ACOPAY USDT",
-    "Raydium",
-    "Jupiter",
-    "crypto payments",
+    "non-custodial wallet",
+    "payment utility",
     "wallet to wallet",
     "SPL token",
     "Acopay.net",
@@ -33,9 +30,8 @@ export const SITE = {
     "#PayYourWay",
     "#Solana",
     "#Token2022",
-    "#CryptoPayments",
-    "#Raydium",
-    "#Jupiter",
+    "#NonCustodial",
+    "#CryptoWallet",
     "#Web3",
   ],
 } as const;
@@ -68,12 +64,12 @@ export const PAGE_SEO: Record<string, PageSeo> = {
     path: "/pay",
   },
   "/markets": {
-    title: "ACOPAY Markets | Transactions, Pools & Swap",
+    title: "ACOPAY Markets | On-chain transfers",
     description: SITE.defaultDescription,
     path: "/markets",
   },
   "/pools": {
-    title: "ACOPAY Markets | Transactions, Pools & Swap",
+    title: "ACOPAY Markets | On-chain transfers",
     description: SITE.defaultDescription,
     path: "/markets",
   },
@@ -93,9 +89,15 @@ export const PAGE_SEO: Record<string, PageSeo> = {
     path: "/roadmap",
   },
   "/faq": {
-    title: "ACOPAY FAQ | Fees, Pool, Buying & Transfers",
+    title: "ACOPAY FAQ | Wallet & transfers",
     description: SITE.defaultDescription,
     path: "/faq",
+  },
+  "/support": {
+    title: "ACOPAY Support | Non-custodial wallet help",
+    description:
+      "Contact ACOPAY support for the non-custodial Solana wallet app. Email help, recovery guidance, privacy and terms links.",
+    path: "/support",
   },
   "/download": {
     title: "Get ACOPAY | Android Beta and iOS TestFlight | Acopay.net",

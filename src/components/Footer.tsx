@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { isTelegramPayCtaPublic, isWebPayPublic } from "../config/siteSurface";
+import { isStoreReviewMode, isTelegramPayCtaPublic, isWebPayPublic } from "../config/siteSurface";
 import { TOKEN, explorerUrl, jupiterSwapUrl, solscanUrl } from "../config/token";
 import { useT } from "../i18n/LanguageProvider";
 import { BrandLogo } from "./BrandLogo";
@@ -7,6 +7,7 @@ import { TELEGRAM_PAY_LABEL } from "./TelegramPayButton";
 
 const PRODUCT_LINKS_ALL = [
   { to: "/download", labelKey: "nav.download" },
+  { to: "/support", labelKey: "nav.support" },
   { to: "/token", labelKey: "nav.token" },
   { to: "/markets", labelKey: "nav.markets" },
   { to: "/pay", labelKey: "nav.trade" },
@@ -85,6 +86,9 @@ export function Footer() {
             <Link to="/download" className="hover:text-[var(--acopay-brand)]">
               {t("nav.download")}
             </Link>
+            <Link to="/support" className="hover:text-[var(--acopay-brand)]">
+              {t("nav.support")}
+            </Link>
             <Link to="/privacy" className="hover:text-[var(--acopay-brand)]">
               {t("legal.privacyTitle")}
             </Link>
@@ -159,7 +163,7 @@ export function Footer() {
                   {t("hero.solscan")}
                 </a>
               </li>
-              {jup ? (
+              {jup && !isStoreReviewMode() ? (
                 <li>
                   <a
                     href={jup}

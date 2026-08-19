@@ -6,6 +6,7 @@ import type { PoolRow } from "../../types/pool";
 import { HOME_POOL_ROWS, fmtPct, fmtUsd } from "../../types/pool";
 import { SortCaret, SortTh, compareSortValues, useColumnSort } from "../ui/SortTh";
 import { useT } from "../../i18n/LanguageProvider";
+import { isStoreReviewMode } from "../../config/siteSurface";
 import { BrandLogo } from "../BrandLogo";
 
 type PoolSortKey = "pair" | "change24h" | "yieldPct" | "volume24h" | "tvl" | "fees24h";
@@ -88,6 +89,7 @@ type Props = {
 
 export function LiquidityPoolsWidget({ variant = "full", embedded = false }: Props) {
   const t = useT();
+  const storeReview = isStoreReviewMode();
   const { pools, summary, loading, refreshing, error, warning, refresh } = useLivePools();
   const [search, setSearch] = useState("");
   const { sortKey, sortDir, onSort } = useColumnSort<PoolSortKey>("volume24h", "desc", ["pair"]);
@@ -241,9 +243,11 @@ export function LiquidityPoolsWidget({ variant = "full", embedded = false }: Pro
                     sortDir={sortDir}
                     onSort={onSort}
                   />
-                  <th className="px-5 py-4 text-right text-[11px] font-semibold uppercase tracking-wider text-[var(--acopay-muted)]">
-                    {t("markets.action")}
-                  </th>
+                  {!storeReview ? (
+                    <th className="px-5 py-4 text-right text-[11px] font-semibold uppercase tracking-wider text-[var(--acopay-muted)]">
+                      {t("markets.action")}
+                    </th>
+                  ) : null}
                 </tr>
               </thead>
               <tbody>
@@ -314,16 +318,18 @@ export function LiquidityPoolsWidget({ variant = "full", embedded = false }: Pro
                       <td className="px-5 py-4 font-medium text-[var(--acopay-fg)]">{fmtUsd(row.volume24h)}</td>
                       <td className="px-5 py-4 font-medium text-[var(--acopay-fg)]">{fmtUsd(row.tvl)}</td>
                       <td className="px-5 py-4 font-medium text-[var(--acopay-fg)]">{fmtUsd(row.fees24h)}</td>
-                      <td className="px-5 py-4 text-right">
-                        <a
-                          href={row.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="btn-orca-primary !inline-flex !px-4 !py-2 !text-xs"
-                        >
-                          {t("markets.trade")}
-                        </a>
-                      </td>
+                      {!storeReview ? (
+                        <td className="px-5 py-4 text-right">
+                          <a
+                            href={row.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn-orca-primary !inline-flex !px-4 !py-2 !text-xs"
+                          >
+                            {t("markets.trade")}
+                          </a>
+                        </td>
+                      ) : null}
                     </tr>
                   ))
                 )}
@@ -391,14 +397,16 @@ export function LiquidityPoolsWidget({ variant = "full", embedded = false }: Pro
                             </div>
                           </div>
                         </div>
-                        <a
-                          href={row.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="btn-orca-primary !px-3 !py-1.5 !text-xs"
-                        >
-                          {t("markets.trade")}
-                        </a>
+                        {!storeReview ? (
+                          <a
+                            href={row.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn-orca-primary !px-3 !py-1.5 !text-xs"
+                          >
+                            {t("markets.trade")}
+                          </a>
+                        ) : null}
                       </div>
                       <div className="mt-3 grid grid-cols-3 gap-2 text-center text-xs">
                           <div>

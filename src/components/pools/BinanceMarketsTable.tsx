@@ -4,6 +4,7 @@ import { useBinanceMarkets } from "../../hooks/useBinanceMarkets";
 import type { BinanceMarketRow } from "../../api/binanceMarkets";
 import { SortCaret, SortTh, compareSortValues, useColumnSort } from "../ui/SortTh";
 import { useT } from "../../i18n/LanguageProvider";
+import { isStoreReviewMode } from "../../config/siteSurface";
 
 type SortKey = "name" | "price" | "change24h" | "volume24h" | "marketCap";
 
@@ -76,6 +77,7 @@ type Props = {
 
 export function BinanceMarketsTable({ variant = "full", limit, embedded = false }: Props) {
   const t = useT();
+  const storeReview = isStoreReviewMode();
   const { rows, updatedAt, fetchedAt, loading, refreshing, error, refresh } = useBinanceMarkets(10_000);
   const [search, setSearch] = useState("");
   const { sortKey, sortDir, onSort } = useColumnSort<SortKey>("volume24h", "desc", ["name"]);
@@ -172,9 +174,11 @@ export function BinanceMarketsTable({ variant = "full", limit, embedded = false 
                 sortDir={sortDir}
                 onSort={onSort}
               />
-              <th className="px-5 py-4 text-right text-[11px] font-semibold uppercase tracking-wider text-[var(--acopay-muted)]">
-                {t("markets.action")}
-              </th>
+              {!storeReview ? (
+                <th className="px-5 py-4 text-right text-[11px] font-semibold uppercase tracking-wider text-[var(--acopay-muted)]">
+                  {t("markets.action")}
+                </th>
+              ) : null}
             </tr>
           </thead>
           <tbody>
@@ -226,16 +230,18 @@ export function BinanceMarketsTable({ variant = "full", limit, embedded = false 
                       </td>
                       <td className="px-5 py-4 font-medium text-[var(--acopay-fg)]">{fmtUsd(row.volume24h)}</td>
                       <td className="px-5 py-4 font-medium text-[var(--acopay-fg)]">{fmtUsd(row.marketCap)}</td>
-                      <td className="px-5 py-4 text-right">
-                        <a
-                          href={row.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="btn-orca-primary !inline-flex !px-4 !py-2 !text-xs"
-                        >
-                          {t("markets.trade")}
-                        </a>
-                      </td>
+                      {!storeReview ? (
+                        <td className="px-5 py-4 text-right">
+                          <a
+                            href={row.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn-orca-primary !inline-flex !px-4 !py-2 !text-xs"
+                          >
+                            {t("markets.trade")}
+                          </a>
+                        </td>
+                      ) : null}
                     </tr>
                   ))}
           </tbody>
@@ -293,14 +299,16 @@ export function BinanceMarketsTable({ variant = "full", limit, embedded = false 
                         <div className="text-xs text-[var(--acopay-muted)]">{row.base}</div>
                       </div>
                     </div>
-                    <a
-                      href={row.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn-orca-primary !px-3 !py-1.5 !text-xs"
-                    >
-                      {t("markets.trade")}
-                    </a>
+                    {!storeReview ? (
+                      <a
+                        href={row.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn-orca-primary !px-3 !py-1.5 !text-xs"
+                      >
+                        {t("markets.trade")}
+                      </a>
+                    ) : null}
                   </div>
                   <div className="mt-3 grid grid-cols-2 gap-2 text-center text-xs sm:grid-cols-4">
                     <div>
