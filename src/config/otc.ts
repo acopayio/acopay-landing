@@ -9,8 +9,8 @@ export const OTC = {
   minUsdt: 1,
   label: "ACOPAY",
   message: "ACOPAY — USDT to ACOPAY",
-  /** Payment QR session lifetime (client-side), minutes. */
-  sessionMinutes: 30,
+  /** Payment QR session lifetime (client-side), minutes — khớp VPS OTC canh. */
+  sessionMinutes: 10,
 } as const;
 
 export const OTC_SESSION_MS = OTC.sessionMinutes * 60 * 1000;
