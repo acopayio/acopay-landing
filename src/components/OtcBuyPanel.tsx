@@ -422,6 +422,13 @@ export function OtcBuyPanel() {
     setCreditedAcopay(null);
     setWalletError(null);
     setPhase("paying");
+    void import("../lib/otcWatchNotify").then((m) =>
+      m.notifyOtcWatchStart({
+        amount: draftAmount,
+        endsAt: ends,
+        startedAt: started,
+      }),
+    );
     try {
       const { snapshotOtcUsdtLatestSig } = await import("../lib/otcDepositWatch");
       const cursor = await snapshotOtcUsdtLatestSig();
@@ -463,6 +470,13 @@ export function OtcBuyPanel() {
     setSettleStatus("idle");
     setCreditedAcopay(null);
     setPhase("paying");
+    void import("../lib/otcWatchNotify").then((m) =>
+      m.notifyOtcWatchStart({
+        amount: sessionAmount,
+        endsAt: ends,
+        startedAt: started,
+      }),
+    );
     try {
       const { snapshotOtcUsdtLatestSig } = await import("../lib/otcDepositWatch");
       const cursor = await snapshotOtcUsdtLatestSig();

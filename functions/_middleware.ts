@@ -45,6 +45,8 @@ const PAY_MW_PATHS: Record<string, { vps: string; methods: string[] }> = {
   "/api/pay/push-unregister": { vps: "/pay/push-unregister", methods: ["POST", "OPTIONS"] },
   "/api/pay/push-presence": { vps: "/pay/push-presence", methods: ["POST", "OPTIONS"] },
   "/api/pay/push-ack": { vps: "/pay/push-ack", methods: ["POST", "OPTIONS"] },
+  /** Buy OTC — đăng ký cửa sổ canh ví settle. */
+  "/api/pay/otc/watch-start": { vps: "/pay/otc/watch-start", methods: ["POST", "OPTIONS"] },
   /** Wallet Pipeline V2 — History Index + push register/presence (App 1.0.197+). */
   "/api/pay/v2/health": { vps: "/pay/v2/health", methods: ["GET", "OPTIONS"] },
   "/api/pay/v2/history": { vps: "/pay/v2/history", methods: ["GET", "OPTIONS"] },

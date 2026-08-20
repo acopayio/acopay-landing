@@ -1,8 +1,7 @@
 /**
  * Sync ACOPAY token transfers (72h) → public/data/transfers-24h.json
  * Filename kept for CF/GitHub path compatibility; window = TRANSFERS_HISTORY_DAYS (default 3).
- * Public Solana RPC + Webshare. KHONG Helius (Helius = OTC bot on VPS only).
- * Collector may run on VPS and push to GitHub; website reads /data/*.json only — never VPS HTTP.
+ * Kevin 2026-08-20: Markets = Webshare API key only (CẤM Chainstack/GetBlock/dRPC/Ankr/Helius).
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -26,13 +25,14 @@ const BACKFILL_BATCH = Math.max(5, Number(process.env.TRANSFERS_BACKFILL_BATCH |
 const BACKFILL_MAX_PAGES = Math.max(1, Number(process.env.TRANSFERS_BACKFILL_MAX_PAGES || 40));
 const TX_GAP_MS = Math.max(50, Number(process.env.TRANSFERS_TX_GAP_MS || 350));
 const MAX_RETRIES = Math.max(2, Number(process.env.MARKETS_MAX_RETRIES || 8));
-const RPCS = String(
-  process.env.SOLANA_PUBLIC_RPCS ||
-    "https://api.mainnet-beta.solana.com,https://solana.drpc.org,https://solana-rpc.publicnode.com",
-)
-  .split(",")
-  .map((s) => s.trim())
-  .filter(Boolean);
+
+function marketsRpcList() {
+  // Chỉ public Solana — mọi request đi qua Webshare proxy (fetchViaProxy)
+  const u = String(process.env.WEBSHARE_RPC_URL || "").trim() || "https://api.mainnet-beta.solana.com";
+  return [u.replace(/\/$/, "")];
+}
+
+const RPCS = marketsRpcList();
 
 let rpcCursor = 0;
 function nextRpc() {
