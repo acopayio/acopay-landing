@@ -11,6 +11,9 @@ import { DOWNLOAD_PAGE_PARTIALS } from "./downloadPage";
 import { LEGAL_PAGE_PARTIALS } from "./legalPages";
 import { STORE_REVIEW_PARTIALS } from "./storeReviewContent";
 import { SUPPORT_PAGE_PARTIALS } from "./supportPages";
+import { HOST_CHROME_PARTIALS } from "./hostChrome";
+import { isWalletProfile } from "../../config/siteIdentity";
+import { SITE_SURFACE } from "../../config/siteSurface";
 
 export { en };
 export type { Messages } from "./en";
@@ -2087,11 +2090,14 @@ for (const [code, content] of Object.entries(LEGAL_PAGE_PARTIALS)) {
   partials[code] = mergePartial(partials[code], content as DeepPartialMessages);
 }
 
-// Store review copy — wins over siteContent trade/swap strings
-for (const [code, content] of Object.entries(STORE_REVIEW_PARTIALS)) {
+// Host chrome (Wallet app CTA, redirecting) — every non-EN locale
+for (const [code, content] of Object.entries(HOST_CHROME_PARTIALS)) {
   if (code === "en") continue;
   partials[code] = mergePartial(partials[code], content as DeepPartialMessages);
 }
+
+// Store-review wallet copy is applied at getMessages() only on wallet host —
+// never bake into coin (.org) partials (would mix wallet About into token site).
 
 // /support page
 for (const [code, content] of Object.entries(SUPPORT_PAGE_PARTIALS)) {
@@ -2100,6 +2106,15 @@ for (const [code, content] of Object.entries(SUPPORT_PAGE_PARTIALS)) {
 }
 
 export function getMessages(locale: string): Messages {
-  if (locale === "en" || !partials[locale]) return en;
-  return deepMerge(en, partials[locale]);
+  const base =
+    locale === "en" || !partials[locale] ? en : deepMerge(en, partials[locale]);
+
+  // Wallet (.net) + storeReview: softer copy. Coin (.org): native token About/Markets.
+  const onWallet =
+    typeof window !== "undefined" && isWalletProfile() && SITE_SURFACE.storeReview;
+  if (!onWallet) return base;
+
+  const sr = STORE_REVIEW_PARTIALS[locale];
+  if (!sr) return base;
+  return deepMerge(base, sr);
 }

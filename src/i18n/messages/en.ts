@@ -150,11 +150,11 @@ export const en = {
     about: {
       label: "About",
       title: "What is ACOPAY?",
-      body: "ACOPAY is a non-custodial Solana wallet and payment utility. Send and receive ACOPAY, USDT, SOL, and SPL tokens between wallets. Your keys stay on your device.",
+      body: "ACOPAY is a Solana payment utility token (Token-2022) for wallet-to-wallet transfers and settlement. On-chain transfer fee: 0.01% ACOPAY.",
       f1Title: "Payments",
       f1Desc: "Transfer and settle value between wallets on Solana with a clear on-chain transfer fee.",
-      f2Title: "Send & receive",
-      f2Desc: "Use a Solana address or ACOPAY @username. QR receive and transfer history in the mobile app.",
+      f2Title: "Markets",
+      f2Desc: "Track on-chain transfers, Raydium pools, and public spot reference data.",
       f3Title: "On-chain clarity",
       f3Desc: "Name, logo, supply, and contract address are published on Solana explorers.",
     },
@@ -164,6 +164,7 @@ export const en = {
     community: "Community",
     contact: "Contact",
     rights: "All rights reserved.",
+    walletApp: "Wallet app ↗",
   },
   common: {
     buy: "Buy",
@@ -175,6 +176,7 @@ export const en = {
     metric: "Metric",
     pending: "Pending",
     live: "Live",
+    redirecting: "Redirecting…",
   },
   roadmap: {
     title: "Roadmap",

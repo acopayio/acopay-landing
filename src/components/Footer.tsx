@@ -177,7 +177,7 @@ export function Footer() {
                     href={`${WALLET_ORIGIN}/download`}
                     className="text-[var(--acopay-muted)] hover:text-[var(--acopay-brand)]"
                   >
-                    Wallet app ↗
+                    {t("footer.walletApp")}
                   </a>
                 </li>
               ) : null}

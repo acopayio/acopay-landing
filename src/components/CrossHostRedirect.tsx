@@ -1,7 +1,8 @@
 import { useEffect } from "react";
+import { useT } from "../i18n/LanguageProvider";
 
 type Props = {
-  /** Absolute origin, e.g. https://acopay.org */
+  /** Absolute origin for the other product host */
   origin: string;
   /** Path including query/hash; default = current location */
   path?: string;
@@ -9,6 +10,8 @@ type Props = {
 
 /** Full-page navigate to the other product host (coin ↔ wallet). */
 export function CrossHostRedirect({ origin, path }: Props) {
+  const t = useT();
+
   useEffect(() => {
     const targetPath =
       path ??
@@ -21,7 +24,7 @@ export function CrossHostRedirect({ origin, path }: Props) {
 
   return (
     <div className="page-wrap py-16 text-center text-sm text-[var(--acopay-muted)]">
-      Redirecting…
+      {t("common.redirecting")}
     </div>
   );
 }
