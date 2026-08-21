@@ -1,9 +1,10 @@
 import { FAQ } from "../components/FAQ";
 import { useT } from "../i18n/LanguageProvider";
-import { TOKEN } from "../config/token";
+import { getContactEmail } from "../config/siteIdentity";
 
 export function FAQPage() {
   const t = useT();
+  const email = getContactEmail();
 
   return (
     <>
@@ -13,8 +14,8 @@ export function FAQPage() {
           <div className="orca-card p-8 text-center sm:p-12">
             <h2 className="text-2xl font-bold text-[var(--acopay-fg)]">{t("faq.touchTitle")}</h2>
             <p className="mt-2 text-[var(--acopay-muted)]">{t("faq.touchHint")}</p>
-            <a href={`mailto:${TOKEN.email}`} className="btn-orca-secondary mt-6">
-              {TOKEN.email}
+            <a href={`mailto:${email}`} className="btn-orca-secondary mt-6">
+              {email}
             </a>
           </div>
         </div>

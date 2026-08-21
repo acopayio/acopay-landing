@@ -1,16 +1,17 @@
 /**
  * Privacy / Terms / Delete-account — public URLs required by Google Play & App Store.
- * Copy via i18n (`legal.*`) for every supported locale. Contact: TOKEN.email only.
+ * Copy via i18n (`legal.*`) for every supported locale. Contact email follows host (net vs org).
  */
 
 import { Link } from "react-router-dom";
-import { TOKEN } from "../config/token";
+import { getContactEmail } from "../config/siteIdentity";
 import { useT } from "../i18n/LanguageProvider";
 
 type Kind = "privacy" | "terms" | "delete-account";
 
 function PrivacyBody() {
   const t = useT();
+  const email = getContactEmail();
   return (
     <>
       <p>{t("legal.privacyIntro")}</p>
@@ -41,7 +42,7 @@ function PrivacyBody() {
         <li>
           <strong className="text-[var(--acopay-fg)]">{t("legal.privacyLi4Label")}</strong>
           {t("legal.privacyLi4Before")}
-          {TOKEN.email}
+          {email}
           {t("legal.privacyLi4After")}
         </li>
       </ul>
@@ -66,8 +67,8 @@ function PrivacyBody() {
       <h2 className="mt-8 text-xl font-bold text-[var(--acopay-fg)]">{t("legal.privacyH8")}</h2>
       <p>
         {t("legal.privacyContact")}{" "}
-        <a className="text-[var(--acopay-brand)] underline" href={`mailto:${TOKEN.email}`}>
-          {TOKEN.email}
+        <a className="text-[var(--acopay-brand)] underline" href={`mailto:${email}`}>
+          {email}
         </a>
       </p>
     </>
@@ -76,6 +77,7 @@ function PrivacyBody() {
 
 function TermsBody() {
   const t = useT();
+  const email = getContactEmail();
   return (
     <>
       <p>{t("legal.termsIntro")}</p>
@@ -100,8 +102,8 @@ function TermsBody() {
       <p>{t("legal.termsP7")}</p>
       <h2 className="mt-8 text-xl font-bold text-[var(--acopay-fg)]">{t("legal.termsH8")}</h2>
       <p>
-        <a className="text-[var(--acopay-brand)] underline" href={`mailto:${TOKEN.email}`}>
-          {TOKEN.email}
+        <a className="text-[var(--acopay-brand)] underline" href={`mailto:${email}`}>
+          {email}
         </a>
       </p>
     </>
@@ -110,6 +112,7 @@ function TermsBody() {
 
 function DeleteBody() {
   const t = useT();
+  const email = getContactEmail();
   return (
     <>
       <p>{t("legal.deleteIntro")}</p>
@@ -128,8 +131,8 @@ function DeleteBody() {
       <h2 className="mt-8 text-xl font-bold text-[var(--acopay-fg)]">{t("legal.deleteHB")}</h2>
       <p>
         {t("legal.deleteEmailBefore")}
-        <a className="text-[var(--acopay-brand)] underline" href={`mailto:${TOKEN.email}`}>
-          {TOKEN.email}
+        <a className="text-[var(--acopay-brand)] underline" href={`mailto:${email}`}>
+          {email}
         </a>
         {t("legal.deleteEmailMid")}
         <strong>{t("legal.deleteSubject")}</strong>

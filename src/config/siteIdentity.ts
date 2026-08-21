@@ -78,6 +78,11 @@ export function isCoinProfile(): boolean {
   return getSiteProfile() === "coin";
 }
 
+/** Public contact mailto — .net → contact@acopay.net · .org → contact@acopay.org */
+export function getContactEmail(): string {
+  return isWalletProfile() ? WALLET_EMAIL : COIN_EMAIL;
+}
+
 /**
  * Runtime site origin for SEO / absolute links.
  * Prefer the host the user is on so org and net both self-canonicalize.

@@ -1,4 +1,5 @@
 import { TOKEN } from "../config/token";
+import { getContactEmail } from "../config/siteIdentity";
 import { useT } from "../i18n/LanguageProvider";
 
 const FAQ_KEYS = [
@@ -26,7 +27,7 @@ export function FAQ() {
         supply: TOKEN.totalSupply,
       };
     if (key === "faq.a9") return { pair: TOKEN.dex.pair };
-    if (key === "faq.a11") return { email: TOKEN.email };
+    if (key === "faq.a11") return { email: getContactEmail() };
     return undefined;
   };
 

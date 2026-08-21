@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { isStoreReviewMode, isTelegramPayCtaPublic, isWebPayPublic } from "../config/siteSurface";
-import { COIN_ORIGIN, WALLET_EMAIL, WALLET_ORIGIN, isWalletProfile } from "../config/siteIdentity";
+import { COIN_ORIGIN, getContactEmail, WALLET_ORIGIN, isWalletProfile } from "../config/siteIdentity";
 import { TOKEN, explorerUrl, jupiterSwapUrl, solscanUrl } from "../config/token";
 import { useT } from "../i18n/LanguageProvider";
 import { BrandLogo } from "./BrandLogo";
@@ -32,6 +32,7 @@ export function Footer() {
   const jup = jupiterSwapUrl();
   const t = useT();
   const wallet = isWalletProfile();
+  const contactEmail = getContactEmail();
   const payOn = isWebPayPublic();
   const tgPayOn = isTelegramPayCtaPublic();
   const productLinks = (wallet ? PRODUCT_LINKS_WALLET : PRODUCT_LINKS_COIN).filter((l) =>
@@ -245,11 +246,11 @@ export function Footer() {
             <ul className="mt-4 space-y-3">
               <li>
                 <a
-                  href={`mailto:${wallet ? WALLET_EMAIL : TOKEN.email}`}
+                  href={`mailto:${contactEmail}`}
                   className="inline-flex max-w-full items-center gap-2.5 text-sm text-[var(--acopay-fg)]/85 transition hover:text-[var(--acopay-fg)]"
                 >
                   <MailGlyph />
-                  <span className="truncate">{wallet ? WALLET_EMAIL : TOKEN.email}</span>
+                  <span className="truncate">{contactEmail}</span>
                 </a>
               </li>
             </ul>

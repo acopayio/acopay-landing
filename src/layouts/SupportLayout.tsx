@@ -2,12 +2,13 @@ import { Link, Outlet } from "react-router-dom";
 import { LanguageToggle } from "../components/LanguageToggle";
 import { ThemeToggle } from "../components/ThemeToggle";
 import { BrandLogo } from "../components/BrandLogo";
-import { TOKEN } from "../config/token";
+import { getContactEmail } from "../config/siteIdentity";
 import { useT } from "../i18n/LanguageProvider";
 
 /** Minimal layout for Store Support URL — no Markets / Roadmap nav. */
 export function SupportLayout() {
   const t = useT();
+  const email = getContactEmail();
 
   return (
     <div className="flex min-h-[100dvh] min-w-0 flex-col overflow-x-clip">
@@ -31,8 +32,8 @@ export function SupportLayout() {
       <footer className="border-t border-[color:var(--acopay-border)] bg-[var(--acopay-bg-2)]/80 py-8">
         <div className="page-wrap text-sm text-[var(--acopay-muted)]">
           <p>
-            <a className="text-[var(--acopay-brand)] underline" href={`mailto:${TOKEN.email}`}>
-              {TOKEN.email}
+            <a className="text-[var(--acopay-brand)] underline" href={`mailto:${email}`}>
+              {email}
             </a>
           </p>
           <p className="mt-3 flex flex-wrap gap-x-4 gap-y-1">

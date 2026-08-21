@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
-import { TOKEN } from "../config/token";
+import { getContactEmail } from "../config/siteIdentity";
 import { useT } from "../i18n/LanguageProvider";
 
 export function SupportPage() {
   const t = useT();
+  const email = getContactEmail();
 
   return (
     <section className="section-pad">
@@ -21,9 +22,9 @@ export function SupportPage() {
             <p className="mt-2 text-sm leading-relaxed text-[var(--acopay-muted)]">{t("support.emailHint")}</p>
             <a
               className="mt-3 inline-flex text-[var(--acopay-brand)] underline"
-              href={`mailto:${TOKEN.email}`}
+              href={`mailto:${email}`}
             >
-              {TOKEN.email}
+              {email}
             </a>
           </div>
 
