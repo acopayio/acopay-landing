@@ -14,6 +14,8 @@ type NavItem = {
   labelKey: string;
   end: boolean;
   icon: () => ReactElement;
+  /** Hash / in-page anchors — plain <a>, not React Router NavLink. */
+  hash?: boolean;
 };
 
 const TRADE_NAV_COIN: NavItem[] = [
@@ -39,17 +41,22 @@ const MOBILE_NAV_COIN: NavItem[] = [
   { to: "/token", labelKey: "nav.token", end: false, icon: TokenIcon },
 ];
 
-/** Wallet chrome (.net): Home · Download · Support only. */
+/** Wallet chrome (.net): Home · Features · Security · How · Download · Support. */
 const TRADE_NAV_WALLET: NavItem[] = [
   { to: "/", labelKey: "nav.home", end: true, icon: HomeIcon },
+  { to: "/#features", labelKey: "walletHome.navFeatures", end: false, icon: FeaturesIcon, hash: true },
+  { to: "/#security", labelKey: "walletHome.navSecurity", end: false, icon: SecurityIcon, hash: true },
+  { to: "/#how", labelKey: "walletHome.navHow", end: false, icon: HowIcon, hash: true },
   { to: "/download", labelKey: "nav.download", end: false, icon: DownloadIcon },
   { to: "/support", labelKey: "nav.support", end: false, icon: SupportIcon },
 ];
 
 const INFO_NAV_WALLET: NavItem[] = [];
 
+/** Mobile: keep dock short — Home · Features · Download · Support. */
 const MOBILE_NAV_WALLET: NavItem[] = [
   { to: "/", labelKey: "nav.home", end: true, icon: HomeIcon },
+  { to: "/#features", labelKey: "walletHome.navFeatures", end: false, icon: FeaturesIcon, hash: true },
   { to: "/download", labelKey: "nav.download", end: false, icon: DownloadIcon },
   { to: "/support", labelKey: "nav.support", end: false, icon: SupportIcon },
 ];
@@ -65,6 +72,24 @@ function filterNav(items: NavItem[]): NavItem[] {
 
 function linkClass(isActive: boolean) {
   return `jup-sidebar-link ${isActive ? "jup-sidebar-link-active" : ""}`;
+}
+
+function HashNavLink({
+  item,
+  className,
+  withSpan,
+}: {
+  item: NavItem;
+  className: string;
+  withSpan?: boolean;
+}) {
+  const t = useT();
+  return (
+    <a href={item.to} className={className}>
+      <item.icon />
+      {withSpan ? <span>{t(item.labelKey)}</span> : t(item.labelKey)}
+    </a>
+  );
 }
 
 export function OrcaLayout() {
@@ -84,17 +109,21 @@ export function OrcaLayout() {
         </Link>
 
         <nav className="flex-1 space-y-0.5 overflow-y-auto px-3 pb-4">
-          {[...tradeNav, ...infoNav].map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              end={item.end}
-              className={({ isActive }) => linkClass(isActive)}
-            >
-              <item.icon />
-              {t(item.labelKey)}
-            </NavLink>
-          ))}
+          {[...tradeNav, ...infoNav].map((item) =>
+            item.hash ? (
+              <HashNavLink key={item.to} item={item} className={linkClass(false)} />
+            ) : (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                end={item.end}
+                className={({ isActive }) => linkClass(isActive)}
+              >
+                <item.icon />
+                {t(item.labelKey)}
+              </NavLink>
+            ),
+          )}
           <div className="mt-3 space-y-2 overflow-visible border-t border-[color:var(--acopay-border)] pt-3">
             <ThemeToggle />
             <LanguageToggle />
@@ -144,19 +173,28 @@ export function OrcaLayout() {
       </div>
 
       <nav className="fixed inset-x-0 bottom-0 z-50 flex border-t border-[color:var(--acopay-border-strong)] bg-[color-mix(in_srgb,var(--acopay-bg-2)_95%,transparent)] backdrop-blur-xl lg:hidden safe-bottom">
-        {mobileNav.map((item) => (
-          <NavLink
-            key={item.to}
-            to={item.to}
-            end={item.end}
-            className={({ isActive }) =>
-              `jup-bottom-nav-item ${isActive ? "jup-bottom-nav-item-active" : ""}`
-            }
-          >
-            <item.icon />
-            <span>{t(item.labelKey)}</span>
-          </NavLink>
-        ))}
+        {mobileNav.map((item) =>
+          item.hash ? (
+            <HashNavLink
+              key={item.to}
+              item={item}
+              className="jup-bottom-nav-item"
+              withSpan
+            />
+          ) : (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.end}
+              className={({ isActive }) =>
+                `jup-bottom-nav-item ${isActive ? "jup-bottom-nav-item-active" : ""}`
+              }
+            >
+              <item.icon />
+              <span>{t(item.labelKey)}</span>
+            </NavLink>
+          ),
+        )}
       </nav>
     </div>
   );
@@ -240,6 +278,34 @@ function SupportIcon() {
       <circle cx="12" cy="12" r="9" />
       <path d="M9.5 9.5a2.5 2.5 0 1 1 4.2 1.8c-.7.7-1.7 1.1-1.7 2.2V14" strokeLinecap="round" />
       <circle cx="12" cy="17" r="0.8" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+function FeaturesIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+      <path d="M12 3l2.2 4.5 5 .7-3.6 3.5.9 5L12 14.8 7.5 16.7l.9-5L4.8 8.2l5-.7L12 3Z" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function SecurityIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+      <path d="M12 3 5 6v5c0 4.5 3 8.2 7 9.5 4-1.3 7-5 7-9.5V6l-7-3Z" strokeLinejoin="round" />
+      <path d="M9.5 12.2 11.2 14l3.5-3.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function HowIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+      <circle cx="6" cy="6" r="2.2" />
+      <circle cx="18" cy="12" r="2.2" />
+      <circle cx="6" cy="18" r="2.2" />
+      <path d="M8.2 6.8 15.5 11.2M8.2 17.2 15.5 12.8" strokeLinecap="round" />
     </svg>
   );
 }

@@ -3,7 +3,7 @@ Allow: /
 
 # Phase A dual-domain: coin = acopay.org · wallet = acopay.net
 Sitemap: https://acopay.org/sitemap.xml
-Sitemap: https://acopay.net/sitemap.xml
+Sitemap: https://acopay.net/sitemap-net.xml
 
 # Public assets & token metadata for crawlers / wallets
 Allow: /assets/
@@ -13,3 +13,9 @@ Allow: /data/
 Allow: /site.webmanifest
 Allow: /robots.txt
 Allow: /sitemap.xml
+Allow: /sitemap-net.xml
+Allow: /privacy
+Allow: /terms
+Allow: /delete-account
+Allow: /support
+Allow: /download

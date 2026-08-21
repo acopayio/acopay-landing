@@ -12,6 +12,8 @@ import { LEGAL_PAGE_PARTIALS } from "./legalPages";
 import { STORE_REVIEW_PARTIALS } from "./storeReviewContent";
 import { SUPPORT_PAGE_PARTIALS } from "./supportPages";
 import { HOST_CHROME_PARTIALS } from "./hostChrome";
+import { WALLET_HOME_PARTIALS } from "./walletHomePartials";
+import { LEGAL_I18N_GAP_PARTIALS } from "./legalI18nGaps";
 import { isWalletProfile } from "../../config/siteIdentity";
 import { SITE_SURFACE } from "../../config/siteSurface";
 
@@ -2090,8 +2092,20 @@ for (const [code, content] of Object.entries(LEGAL_PAGE_PARTIALS)) {
   partials[code] = mergePartial(partials[code], content as DeepPartialMessages);
 }
 
+// Legal / chrome leftover gaps (native fills)
+for (const [code, content] of Object.entries(LEGAL_I18N_GAP_PARTIALS)) {
+  if (code === "en") continue;
+  partials[code] = mergePartial(partials[code], content as DeepPartialMessages);
+}
+
 // Host chrome (Wallet app CTA, redirecting) — every non-EN locale
 for (const [code, content] of Object.entries(HOST_CHROME_PARTIALS)) {
+  if (code === "en") continue;
+  partials[code] = mergePartial(partials[code], content as DeepPartialMessages);
+}
+
+// Wallet home landing (.net) — every non-EN locale
+for (const [code, content] of Object.entries(WALLET_HOME_PARTIALS)) {
   if (code === "en") continue;
   partials[code] = mergePartial(partials[code], content as DeepPartialMessages);
 }
