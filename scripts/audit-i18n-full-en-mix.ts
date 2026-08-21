@@ -1,7 +1,7 @@
 /**
  * Full i18n EN-mix audit: every non-EN leaf must differ from EN unless allowlisted.
- * Hidden Web Pay UI sections (payApp / sendAcopay / linkWallet) are reported but
- * do not fail the gate — SITE_SURFACE.webPay=false; sources kept, not deleted.
+ * Web Pay i18n (payApp / sendAcopay / linkWallet) kept for coin-host routes in shared
+ * tree; excluded from FAIL when surface off. .net never renders those pages (host gate).
  *
  * Run: npx tsx scripts/audit-i18n-full-en-mix.ts
  */
@@ -117,7 +117,7 @@ const ALLOW_EXACT = new Set([
   "Minimum {min} USDT",
 ]);
 
-/** Sections kept in repo but hidden on .net (Web Pay). Reported, not FAIL. */
+/** Dead Web Pay i18n (SPA UI removed Phase 2). Reported, not FAIL. */
 const EXCLUDE_FROM_FAIL = new Set(["payApp", "sendAcopay", "linkWallet"]);
 
 function isAllowlisted(value: string): boolean {

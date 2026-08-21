@@ -5,7 +5,7 @@
  *
  *   public → Webshare /api/pay/rpc → Helius /api/pay/rpc?via=helius
  *
- * SITE_SURFACE.webPay may stay false; module ready when reopened.
+ * Phase 2: Web Pay SPA removed; cascade still used by Buy/OTC phantom paths.
  */
 
 import { Connection } from "@solana/web3.js";

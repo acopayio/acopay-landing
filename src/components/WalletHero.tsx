@@ -2,6 +2,41 @@ import { Link } from "react-router-dom";
 import { BrandLogo } from "./BrandLogo";
 import { useT } from "../i18n/LanguageProvider";
 
+const PROMO = [
+  {
+    src: "/assets/wallet-promo/home.jpg",
+    alt: "ACOPAY Wallet home — balances and tokens",
+  },
+  {
+    src: "/assets/wallet-promo/send.jpg",
+    alt: "ACOPAY Wallet send — transfer screen",
+  },
+  {
+    src: "/assets/wallet-promo/receive.jpg",
+    alt: "ACOPAY Wallet receive — QR and address",
+  },
+] as const;
+
+/** Phone frame around a real Play-store screenshot (Kevin phone-raw lineage). */
+function DeviceShot({ src, alt }: { src: string; alt: string }) {
+  return (
+    <figure className="mx-auto w-[min(100%,220px)] sm:w-[240px]">
+      <div className="relative overflow-hidden rounded-[2rem] border-[10px] border-[#0c1017] bg-[#0c1017] shadow-[0_24px_48px_-12px_rgba(0,0,0,0.45)] ring-1 ring-white/10">
+        <div className="pointer-events-none absolute left-1/2 top-2 z-10 h-1.5 w-16 -translate-x-1/2 rounded-full bg-black/50" />
+        <img
+          src={src}
+          alt={alt}
+          width={900}
+          height={1800}
+          loading="lazy"
+          decoding="async"
+          className="block h-auto w-full bg-[#0a121b]"
+        />
+      </div>
+    </figure>
+  );
+}
+
 /** Full wallet landing for acopay.net — hero + Features / Security / How / Download / FAQ. */
 export function WalletHero() {
   const t = useT();
@@ -36,7 +71,7 @@ export function WalletHero() {
     <>
       <section className="relative overflow-hidden pb-8 pt-6 md:pb-12 md:pt-10">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(0,229,255,0.07),_transparent_55%)]" />
-        <div className="page-wrap relative space-y-6">
+        <div className="page-wrap relative grid items-center gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-12">
           <div>
             <p className="label-orca">{t("walletHome.eyebrow")}</p>
             <div className="mt-2 flex items-center gap-3">
@@ -62,6 +97,23 @@ export function WalletHero() {
                 {t("walletHome.ctaSupport")}
               </Link>
             </div>
+          </div>
+
+          <div className="relative mx-auto w-full max-w-md lg:mx-0 lg:justify-self-end">
+            <div className="flex justify-center gap-3 sm:gap-4">
+              <div className="hidden translate-y-6 sm:block sm:w-[38%]">
+                <DeviceShot src={PROMO[1].src} alt={PROMO[1].alt} />
+              </div>
+              <div className="w-[72%] sm:w-[44%] sm:-translate-y-1">
+                <DeviceShot src={PROMO[0].src} alt={PROMO[0].alt} />
+              </div>
+              <div className="hidden translate-y-10 sm:block sm:w-[38%]">
+                <DeviceShot src={PROMO[2].src} alt={PROMO[2].alt} />
+              </div>
+            </div>
+            <p className="mt-4 text-center text-xs text-[var(--acopay-muted)]">
+              Real app screens · Android Play assets
+            </p>
           </div>
         </div>
       </section>

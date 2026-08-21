@@ -25,6 +25,7 @@ import {
   WALLET_ORIGIN,
   isCoinHost,
   isWalletHost,
+  isWalletProfile,
 } from "./config/siteIdentity";
 
 function Hidden() {
@@ -55,6 +56,19 @@ function WalletDownloadPage() {
   return <DownloadPage />;
 }
 
+/**
+ * Dual-host gate (Kevin 2026-08-22):
+ * - acopay.net (wallet): never render Web Pay browser UI → home
+ * - acopay.org (coin): keep Pay / link-wallet / send routes (surface flag)
+ * Shared tree — do NOT delete Pay pages for .net-only cleanup.
+ */
+function CoinWebPay({ children }: { children: ReactNode }) {
+  if (isWalletProfile()) {
+    return <Navigate to="/" replace />;
+  }
+  return <>{children}</>;
+}
+
 export default function App() {
   const buyOn = isBuyPublic();
   const payOn = isWebPayPublic();
@@ -74,12 +88,44 @@ export default function App() {
               <CoinPage>{buyOn ? <BuyPage /> : <Hidden />}</CoinPage>
             }
           />
-          <Route path="pay" element={payOn ? <PayAppPage /> : <Hidden />} />
-          <Route path="pay/connect" element={payOn ? <PayConnectPage /> : <Hidden />} />
-          <Route path="pay/app-approve" element={payOn ? <PayAppApprovePage /> : <Hidden />} />
-          <Route path="trade" element={<Navigate to={payOn ? "/pay" : "/"} replace />} />
-          <Route path="link-wallet" element={payOn ? <LinkWalletPage /> : <Hidden />} />
-          <Route path="send" element={payOn ? <SendAcopayPage /> : <Hidden />} />
+          <Route
+            path="pay"
+            element={
+              <CoinWebPay>{payOn ? <PayAppPage /> : <Hidden />}</CoinWebPay>
+            }
+          />
+          <Route
+            path="pay/connect"
+            element={
+              <CoinWebPay>{payOn ? <PayConnectPage /> : <Hidden />}</CoinWebPay>
+            }
+          />
+          <Route
+            path="pay/app-approve"
+            element={
+              <CoinWebPay>{payOn ? <PayAppApprovePage /> : <Hidden />}</CoinWebPay>
+            }
+          />
+          <Route
+            path="trade"
+            element={
+              <CoinWebPay>
+                <Navigate to={payOn ? "/pay" : "/"} replace />
+              </CoinWebPay>
+            }
+          />
+          <Route
+            path="link-wallet"
+            element={
+              <CoinWebPay>{payOn ? <LinkWalletPage /> : <Hidden />}</CoinWebPay>
+            }
+          />
+          <Route
+            path="send"
+            element={
+              <CoinWebPay>{payOn ? <SendAcopayPage /> : <Hidden />}</CoinWebPay>
+            }
+          />
           <Route path="token" element={<CoinPage><TokenPage /></CoinPage>} />
           <Route path="markets" element={<CoinPage><PoolsPage /></CoinPage>} />
           <Route
