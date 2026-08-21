@@ -2,44 +2,46 @@ import { Link } from "react-router-dom";
 import { BrandLogo } from "./BrandLogo";
 import { useT } from "../i18n/LanguageProvider";
 
-const PROMO = [
+type PromoShot = { base: string; alt: string };
+
+const PROMO: readonly PromoShot[] = [
   {
-    src: "/assets/wallet-promo/home.jpg",
+    base: "/assets/wallet-promo/home",
     alt: "ACOPAY Wallet home — balances and tokens",
   },
   {
-    src: "/assets/wallet-promo/send.jpg",
+    base: "/assets/wallet-promo/send",
     alt: "ACOPAY Wallet send — transfer screen",
   },
   {
-    src: "/assets/wallet-promo/receive.jpg",
+    base: "/assets/wallet-promo/receive",
     alt: "ACOPAY Wallet receive — QR and address",
   },
 ] as const;
 
 /** Extra Play-store shots — below-fold gallery only (always lazy). */
-const GALLERY = [
+const GALLERY: readonly PromoShot[] = [
   {
-    src: "/assets/wallet-promo/welcome.jpg",
+    base: "/assets/wallet-promo/welcome",
     alt: "ACOPAY Wallet welcome — unlock screen",
   },
   {
-    src: "/assets/wallet-promo/history.jpg",
+    base: "/assets/wallet-promo/history",
     alt: "ACOPAY Wallet history — on-chain transfers",
   },
   {
-    src: "/assets/wallet-promo/add-token.jpg",
+    base: "/assets/wallet-promo/add-token",
     alt: "ACOPAY Wallet add token — custom SPL mint",
   },
 ] as const;
 
 /** Phone frame around a real Play-store screenshot (Kevin phone-raw lineage). */
 function DeviceShot({
-  src,
+  base,
   alt,
   priority = false,
 }: {
-  src: string;
+  base: string;
   alt: string;
   priority?: boolean;
 }) {
@@ -47,16 +49,19 @@ function DeviceShot({
     <figure className="mx-auto w-[min(100%,220px)] sm:w-[240px]">
       <div className="relative overflow-hidden rounded-[2rem] border-[10px] border-[#0c1017] bg-[#0c1017] shadow-[0_24px_48px_-12px_rgba(0,0,0,0.45)] ring-1 ring-[color:var(--acopay-brand)]/20">
         <div className="pointer-events-none absolute left-1/2 top-2 z-10 h-1.5 w-16 -translate-x-1/2 rounded-full bg-black/50" />
-        <img
-          src={src}
-          alt={alt}
-          width={900}
-          height={1800}
-          loading={priority ? "eager" : "lazy"}
-          decoding="async"
-          fetchPriority={priority ? "high" : "auto"}
-          className="block h-auto w-full bg-[#0a121b]"
-        />
+        <picture>
+          <source type="image/webp" srcSet={`${base}.webp`} />
+          <img
+            src={`${base}.jpg`}
+            alt={alt}
+            width={900}
+            height={1800}
+            loading={priority ? "eager" : "lazy"}
+            decoding="async"
+            fetchPriority={priority ? "high" : "auto"}
+            className="block h-auto w-full bg-[#0a121b]"
+          />
+        </picture>
       </div>
     </figure>
   );
@@ -128,17 +133,17 @@ export function WalletHero() {
             <div className="pointer-events-none absolute -inset-6 rounded-[3rem] bg-[radial-gradient(circle_at_center,_rgba(0,229,255,0.12),_transparent_70%)]" />
             <div className="relative flex items-end justify-center gap-2 sm:gap-3 md:gap-4">
               <div className="hidden w-[32%] translate-y-8 opacity-90 sm:block">
-                <DeviceShot src={PROMO[1].src} alt={PROMO[1].alt} />
+                <DeviceShot base={PROMO[1].base} alt={PROMO[1].alt} />
               </div>
               <div className="z-10 w-[78%] sm:w-[42%] sm:-translate-y-2">
-                <DeviceShot src={PROMO[0].src} alt={PROMO[0].alt} priority />
+                <DeviceShot base={PROMO[0].base} alt={PROMO[0].alt} priority />
               </div>
               <div className="hidden w-[32%] translate-y-12 opacity-90 sm:block">
-                <DeviceShot src={PROMO[2].src} alt={PROMO[2].alt} />
+                <DeviceShot base={PROMO[2].base} alt={PROMO[2].alt} />
               </div>
             </div>
             <p className="mt-5 text-center text-xs text-[var(--acopay-muted)]">
-              Real app screens · Android Play assets
+              {t("walletHome.heroShotsCaption")}
             </p>
           </div>
         </div>
@@ -184,7 +189,7 @@ export function WalletHero() {
           </p>
           <div className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-3 sm:gap-6">
             {GALLERY.map((shot) => (
-              <DeviceShot key={shot.src} src={shot.src} alt={shot.alt} />
+              <DeviceShot key={shot.base} base={shot.base} alt={shot.alt} />
             ))}
           </div>
         </div>

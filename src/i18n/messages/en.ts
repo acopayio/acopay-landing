@@ -66,6 +66,7 @@ export const en = {
     galleryTitle: "See the wallet",
     galleryBody:
       "Real screenshots from the Android app — welcome, history, and add token.",
+    heroShotsCaption: "Real app screens · Android Play assets",
     securityTitle: "Security you control",
     securityBody:
       "ACOPAY Wallet is non-custodial. Keys never leave your device, and transfers only move after you approve them.",
