@@ -6,12 +6,21 @@ export const MARKET_TABS_ALL = [
   { id: "spot", labelKey: "markets.spot" },
 ] as const;
 
-/** Store review: on-chain transfers only — no pool/spot trade CTAs. */
-export const MARKET_TABS = isStoreReviewMode()
-  ? MARKET_TABS_ALL.filter((t) => t.id === "transfers")
-  : [...MARKET_TABS_ALL];
-
 export type MarketTabId = (typeof MARKET_TABS_ALL)[number]["id"];
 
+/**
+ * Runtime tabs — wallet/store-review = transfers only;
+ * coin host (acopay.org) = Transfers + All Pools + Spot.
+ */
+export function getMarketTabs(): (typeof MARKET_TABS_ALL)[number][] {
+  if (isStoreReviewMode()) {
+    return MARKET_TABS_ALL.filter((t) => t.id === "transfers");
+  }
+  return [...MARKET_TABS_ALL];
+}
+
+/** @deprecated use getMarketTabs() — kept for rare static imports */
+export const MARKET_TABS = [...MARKET_TABS_ALL];
+
 /** Bump to force Cloudflare Pages rebuild when needed. */
-export const MARKETS_UI_BUILD = 13;
+export const MARKETS_UI_BUILD = 14;

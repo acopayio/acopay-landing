@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { MARKET_TABS, type MarketTabId } from "../../config/markets";
+import { getMarketTabs, type MarketTabId } from "../../config/markets";
 import { useT } from "../../i18n/LanguageProvider";
 import { BinanceMarketsTable } from "./BinanceMarketsTable";
 import { LiquidityPoolsWidget } from "./LiquidityPoolsWidget";
 import { TransfersExplorer } from "./TransfersExplorer";
 
-/** Markets hub: Transactions | All Pools | Spot (store review = transfers only). */
+/** Markets hub: Transactions | All Pools | Spot (wallet store-review = transfers only). */
 type Props = {
   variant?: "home" | "full";
 };
@@ -13,10 +13,18 @@ type Props = {
 export function MarketsHub({ variant = "full" }: Props) {
   const [tab, setTab] = useState<MarketTabId>("transfers");
   const t = useT();
-  const showTabs = MARKET_TABS.length > 1;
+  const tabs = getMarketTabs();
+  const showTabs = tabs.length > 1;
+  const active: MarketTabId = tabs.some((x) => x.id === tab) ? tab : "transfers";
 
   return (
-    <section className={variant === "home" ? "border-t border-[color:var(--acopay-border)] bg-[var(--acopay-bg-2)]/50 py-5 md:py-6" : ""}>
+    <section
+      className={
+        variant === "home"
+          ? "border-t border-[color:var(--acopay-border)] bg-[var(--acopay-bg-2)]/50 py-5 md:py-6"
+          : ""
+      }
+    >
       <div className={`page-wrap ${variant === "full" ? "pb-20 pt-6 md:pb-24 md:pt-8" : ""}`}>
         <div className="orca-card p-4 sm:p-6">
           <div className="space-y-3">
@@ -26,13 +34,13 @@ export function MarketsHub({ variant = "full" }: Props) {
 
           {showTabs ? (
             <div className="mt-5 flex flex-wrap gap-1 rounded-2xl border border-[color:var(--acopay-border)] bg-[var(--acopay-bg)]/50 p-1">
-              {MARKET_TABS.map((item) => (
+              {tabs.map((item) => (
                 <button
                   key={item.id}
                   type="button"
                   onClick={() => setTab(item.id)}
                   className={`rounded-xl px-3 py-2 text-sm font-medium transition ${
-                    tab === item.id
+                    active === item.id
                       ? "bg-[var(--acopay-brand-soft)] text-[var(--acopay-brand)] ring-1 ring-[color:var(--acopay-brand)]/30"
                       : "text-[var(--acopay-muted)] hover:bg-[var(--acopay-hover)] hover:text-[var(--acopay-fg)]"
                   }`}
@@ -44,9 +52,9 @@ export function MarketsHub({ variant = "full" }: Props) {
           ) : null}
 
           <div className={showTabs ? "mt-6" : "mt-5"}>
-            {tab === "pools" && <LiquidityPoolsWidget variant={variant} embedded />}
-            {tab === "spot" && <BinanceMarketsTable variant={variant} embedded />}
-            {tab === "transfers" && <TransfersExplorer />}
+            {active === "pools" && <LiquidityPoolsWidget variant={variant} embedded />}
+            {active === "spot" && <BinanceMarketsTable variant={variant} embedded />}
+            {active === "transfers" && <TransfersExplorer />}
           </div>
         </div>
       </div>

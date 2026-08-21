@@ -1,14 +1,14 @@
 /**
- * Public website surface — Kevin 2026-08-06.
+ * Public website surface — Kevin 2026-08-06 / Phase B 2026-08-22.
  *
  * When false: routes redirect home AND chrome CTAs are removed.
  * Flip back to true only when Kevin asks to reopen Buy / Web Pay / Telegram Pay.
  *
- * Download stays on. Backend `/api/pay/*` is unchanged (app still uses APIs).
- *
- * Send RPC cascade (public → Webshare → Helius) is already wired in
- * `src/lib/sendRpcCascade.ts` + `sendAcopay.ts` — ready when `webPay: true`.
+ * storeReview: applies on **wallet host** (acopay.net). Coin host (acopay.org)
+ * shows full Markets (Transfers + All Pools + Spot) and trade CTAs on those tabs.
  */
+import { isWalletProfile } from "./siteIdentity";
+
 export const SITE_SURFACE = {
   /** OTC desk `/buy` */
   buy: false,
@@ -19,14 +19,16 @@ export const SITE_SURFACE = {
   /** Android APK page `/download` — keep true */
   download: true,
   /**
-   * Store review mode (Kevin 2026-08-19): hide trade/swap CTAs, store-safe copy sitewide.
-   * Flip false after App Store / Play approval if Kevin wants full marketing site back.
+   * Store review flag. Combined with wallet host → hide Spot/Pools trade CTAs on .net.
+   * On acopay.org (coin) this returns false from isStoreReviewMode().
    */
   storeReview: true,
 } as const;
 
+/** True only on wallet profile when storeReview flag is on. */
 export function isStoreReviewMode(): boolean {
-  return SITE_SURFACE.storeReview;
+  if (!SITE_SURFACE.storeReview) return false;
+  return isWalletProfile();
 }
 
 export function isBuyPublic(): boolean {
