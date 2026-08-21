@@ -17,6 +17,22 @@ const PROMO = [
   },
 ] as const;
 
+/** Extra Play-store shots — below-fold gallery only (always lazy). */
+const GALLERY = [
+  {
+    src: "/assets/wallet-promo/welcome.jpg",
+    alt: "ACOPAY Wallet welcome — unlock screen",
+  },
+  {
+    src: "/assets/wallet-promo/history.jpg",
+    alt: "ACOPAY Wallet history — on-chain transfers",
+  },
+  {
+    src: "/assets/wallet-promo/add-token.jpg",
+    alt: "ACOPAY Wallet add token — custom SPL mint",
+  },
+] as const;
+
 /** Phone frame around a real Play-store screenshot (Kevin phone-raw lineage). */
 function DeviceShot({
   src,
@@ -149,6 +165,26 @@ export function WalletHero() {
                 <h3 className="text-lg font-bold text-[var(--acopay-fg)]">{f.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-[var(--acopay-muted)]">{f.body}</p>
               </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="gallery"
+        className="section-pad border-t border-[color:var(--acopay-border)] bg-[var(--acopay-bg-2)]/40"
+      >
+        <div className="page-wrap">
+          <p className="label-orca">{t("walletHome.galleryLabel")}</p>
+          <h2 className="mt-2 text-3xl font-bold text-[var(--acopay-fg)] sm:text-4xl">
+            {t("walletHome.galleryTitle")}
+          </h2>
+          <p className="mt-4 max-w-2xl text-lg leading-relaxed text-[var(--acopay-muted)]">
+            {t("walletHome.galleryBody")}
+          </p>
+          <div className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-3 sm:gap-6">
+            {GALLERY.map((shot) => (
+              <DeviceShot key={shot.src} src={shot.src} alt={shot.alt} />
             ))}
           </div>
         </div>

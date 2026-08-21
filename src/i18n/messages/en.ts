@@ -62,6 +62,10 @@ export const en = {
     featuresTitle: "Built for payments",
     featuresSubtitle:
       "A focused Solana wallet for balances, send, and receive — without trading clutter.",
+    galleryLabel: "App screens",
+    galleryTitle: "See the wallet",
+    galleryBody:
+      "Real screenshots from the Android app — welcome, history, and add token.",
     securityTitle: "Security you control",
     securityBody:
       "ACOPAY Wallet is non-custodial. Keys never leave your device, and transfers only move after you approve them.",
