@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { absoluteUrl, ogImageUrl, PAGE_SEO, SITE, type PageSeo } from "../seo/site";
+import { isWalletProfile } from "../config/siteIdentity";
 
 function upsertMeta(attr: "name" | "property", key: string, content: string) {
   let el = document.head.querySelector<HTMLMetaElement>(`meta[${attr}="${key}"]`);
@@ -28,12 +29,30 @@ function upsertLink(rel: string, href: string, extra?: Record<string, string>) {
   el.setAttribute("href", href);
 }
 
+function resolvePage(key: string): PageSeo {
+  if (key === "/" && isWalletProfile()) {
+    return {
+      title: "ACOPAY Wallet | Non-custodial Solana wallet | Acopay.net",
+      description:
+        "Non-custodial Solana wallet. Keys stay on your device. Send and receive ACOPAY, USDT, SOL, and SPL tokens. Download Android Beta or iOS TestFlight.",
+      path: "/",
+    };
+  }
+  return (
+    PAGE_SEO[key] ?? {
+      title: SITE.defaultTitle,
+      description: SITE.defaultDescription,
+      path: key || "/",
+    }
+  );
+}
+
 function applySeo(page: PageSeo) {
   const url = absoluteUrl(page.path);
-  // Browser tab can be page-specific; Telegram/social OG always matches homepage brand
   const title = page.title;
-  const ogTitle = SITE.defaultTitle;
-  const ogDescription = SITE.defaultDescription;
+  const walletHome = isWalletProfile() && page.path === "/";
+  const ogTitle = walletHome ? page.title : SITE.defaultTitle;
+  const ogDescription = walletHome ? page.description : SITE.defaultDescription;
   const image = ogImageUrl();
   const keywords = SITE.keywords.join(", ");
   const hashtags = SITE.hashtags.join(" ");
@@ -57,7 +76,6 @@ function applySeo(page: PageSeo) {
   upsertMeta("name", "rating", "general");
   upsertMeta("name", "referrer", "strict-origin-when-cross-origin");
 
-  // Social / discovery — same card as https://acopay.net/ on every route
   upsertMeta("name", "twitter:card", "summary_large_image");
   upsertMeta("name", "twitter:title", ogTitle);
   upsertMeta("name", "twitter:description", ogDescription);
@@ -93,11 +111,7 @@ function applySeo(page: PageSeo) {
 export function SeoManager() {
   const { pathname } = useLocation();
   const key = pathname.endsWith("/") && pathname !== "/" ? pathname.slice(0, -1) : pathname;
-  const page = PAGE_SEO[key] ?? {
-    title: SITE.defaultTitle,
-    description: SITE.defaultDescription,
-    path: key || "/",
-  };
+  const page = resolvePage(key || "/");
 
   useEffect(() => {
     applySeo(page);

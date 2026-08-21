@@ -6,6 +6,7 @@ import { ThemeToggle } from "../components/ThemeToggle";
 import { BrandLogo } from "../components/BrandLogo";
 import { Footer } from "../components/Footer";
 import { isBuyPublic, isTelegramPayCtaPublic, isWebPayPublic, SITE_SURFACE } from "../config/siteSurface";
+import { isWalletProfile } from "../config/siteIdentity";
 import { useT } from "../i18n/LanguageProvider";
 
 type NavItem = {
@@ -15,28 +16,42 @@ type NavItem = {
   icon: () => ReactElement;
 };
 
-const TRADE_NAV_ALL: NavItem[] = [
+const TRADE_NAV_COIN: NavItem[] = [
   { to: "/", labelKey: "nav.home", end: true, icon: HomeIcon },
   { to: "/buy", labelKey: "nav.buy", end: false, icon: BuyIcon },
-  /* Giao dịch / Transfers → /pay (P2P). No separate Pay tab. Swap = Markets. */
   { to: "/pay", labelKey: "nav.trade", end: false, icon: SwapIcon },
   { to: "/markets", labelKey: "nav.markets", end: false, icon: PoolsIcon },
 ];
 
-const INFO_NAV_ALL: NavItem[] = [
+const INFO_NAV_COIN: NavItem[] = [
   { to: "/download", labelKey: "nav.download", end: false, icon: DownloadIcon },
   { to: "/token", labelKey: "nav.token", end: false, icon: TokenIcon },
   { to: "/contract", labelKey: "nav.contract", end: false, icon: ContractIcon },
   { to: "/roadmap", labelKey: "nav.roadmap", end: false, icon: RoadmapIcon },
 ];
 
-const MOBILE_NAV_ALL: NavItem[] = [
+const MOBILE_NAV_COIN: NavItem[] = [
   { to: "/", labelKey: "nav.home", end: true, icon: HomeIcon },
   { to: "/download", labelKey: "nav.download", end: false, icon: DownloadIcon },
   { to: "/buy", labelKey: "nav.buy", end: false, icon: BuyIcon },
   { to: "/pay", labelKey: "nav.trade", end: false, icon: SwapIcon },
   { to: "/markets", labelKey: "nav.markets", end: false, icon: PoolsIcon },
   { to: "/token", labelKey: "nav.token", end: false, icon: TokenIcon },
+];
+
+/** Wallet chrome (.net): Home · Download · Support only. */
+const TRADE_NAV_WALLET: NavItem[] = [
+  { to: "/", labelKey: "nav.home", end: true, icon: HomeIcon },
+  { to: "/download", labelKey: "nav.download", end: false, icon: DownloadIcon },
+  { to: "/support", labelKey: "nav.support", end: false, icon: SupportIcon },
+];
+
+const INFO_NAV_WALLET: NavItem[] = [];
+
+const MOBILE_NAV_WALLET: NavItem[] = [
+  { to: "/", labelKey: "nav.home", end: true, icon: HomeIcon },
+  { to: "/download", labelKey: "nav.download", end: false, icon: DownloadIcon },
+  { to: "/support", labelKey: "nav.support", end: false, icon: SupportIcon },
 ];
 
 function filterNav(items: NavItem[]): NavItem[] {
@@ -54,10 +69,11 @@ function linkClass(isActive: boolean) {
 
 export function OrcaLayout() {
   const t = useT();
-  const tradeNav = filterNav(TRADE_NAV_ALL);
-  const infoNav = filterNav(INFO_NAV_ALL);
-  const mobileNav = filterNav(MOBILE_NAV_ALL);
-  const showTg = isTelegramPayCtaPublic();
+  const wallet = isWalletProfile();
+  const tradeNav = filterNav(wallet ? TRADE_NAV_WALLET : TRADE_NAV_COIN);
+  const infoNav = filterNav(wallet ? INFO_NAV_WALLET : INFO_NAV_COIN);
+  const mobileNav = filterNav(wallet ? MOBILE_NAV_WALLET : MOBILE_NAV_COIN);
+  const showTg = !wallet && isTelegramPayCtaPublic();
 
   return (
     <div className="jup-shell flex min-w-0 overflow-x-clip">
@@ -79,10 +95,10 @@ export function OrcaLayout() {
               {t(item.labelKey)}
             </NavLink>
           ))}
-              <div className="mt-3 space-y-2 overflow-visible border-t border-[color:var(--acopay-border)] pt-3">
-                <ThemeToggle />
-                <LanguageToggle />
-              </div>
+          <div className="mt-3 space-y-2 overflow-visible border-t border-[color:var(--acopay-border)] pt-3">
+            <ThemeToggle />
+            <LanguageToggle />
+          </div>
         </nav>
 
         {showTg ? (
@@ -214,6 +230,16 @@ function RoadmapIcon() {
       <circle cx="18" cy="6" r="2" />
       <circle cx="8" cy="12" r="2" />
       <circle cx="16" cy="18" r="2" />
+    </svg>
+  );
+}
+
+function SupportIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M9.5 9.5a2.5 2.5 0 1 1 4.2 1.8c-.7.7-1.7 1.1-1.7 2.2V14" strokeLinecap="round" />
+      <circle cx="12" cy="17" r="0.8" fill="currentColor" stroke="none" />
     </svg>
   );
 }

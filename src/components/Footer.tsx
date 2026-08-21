@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
 import { isStoreReviewMode, isTelegramPayCtaPublic, isWebPayPublic } from "../config/siteSurface";
+import { COIN_ORIGIN, WALLET_EMAIL, WALLET_ORIGIN, isWalletProfile } from "../config/siteIdentity";
 import { TOKEN, explorerUrl, jupiterSwapUrl, solscanUrl } from "../config/token";
 import { useT } from "../i18n/LanguageProvider";
 import { BrandLogo } from "./BrandLogo";
 import { TELEGRAM_PAY_LABEL } from "./TelegramPayButton";
 
-const PRODUCT_LINKS_ALL = [
+const PRODUCT_LINKS_COIN = [
   { to: "/download", labelKey: "nav.download" },
   { to: "/support", labelKey: "nav.support" },
   { to: "/token", labelKey: "nav.token" },
@@ -18,12 +19,24 @@ const PRODUCT_LINKS_ALL = [
   { to: "/terms", labelKey: "legal.termsTitle" },
 ] as const;
 
+const PRODUCT_LINKS_WALLET = [
+  { to: "/download", labelKey: "nav.download" },
+  { to: "/support", labelKey: "nav.support" },
+  { to: "/faq", labelKey: "nav.faq" },
+  { to: "/privacy", labelKey: "legal.privacyTitle" },
+  { to: "/terms", labelKey: "legal.termsTitle" },
+  { to: "/delete-account", labelKey: "legal.deleteTitle" },
+] as const;
+
 export function Footer() {
   const jup = jupiterSwapUrl();
   const t = useT();
+  const wallet = isWalletProfile();
   const payOn = isWebPayPublic();
   const tgPayOn = isTelegramPayCtaPublic();
-  const productLinks = PRODUCT_LINKS_ALL.filter((l) => (l.to === "/pay" ? payOn : true));
+  const productLinks = (wallet ? PRODUCT_LINKS_WALLET : PRODUCT_LINKS_COIN).filter((l) =>
+    l.to === "/pay" ? payOn : true,
+  );
 
   return (
     <footer className="border-t border-[color:var(--acopay-border)] bg-[var(--acopay-bg-2)]/80 py-8 md:py-14">
@@ -52,54 +65,73 @@ export function Footer() {
             </Link>
           </div>
 
-          <div className="mt-5 grid grid-cols-3 gap-x-3 gap-y-2.5 text-sm leading-6 text-[var(--acopay-muted)]">
-            <Link to="/token" className="hover:text-[var(--acopay-brand)]">
-              {t("nav.token")}
-            </Link>
-            <Link to="/roadmap" className="hover:text-[var(--acopay-brand)]">
-              {t("nav.roadmap")}
-            </Link>
-            <a
-              href={explorerUrl()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-[var(--acopay-brand)]"
-            >
-              {t("hero.explorer")}
-            </a>
-
-            <Link to="/markets" className="hover:text-[var(--acopay-brand)]">
-              {t("nav.markets")}
-            </Link>
-            <Link to="/faq" className="hover:text-[var(--acopay-brand)]">
-              {t("nav.faq")}
-            </Link>
-            <a
-              href={solscanUrl()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-[var(--acopay-brand)]"
-            >
-              {t("hero.solscan")}
-            </a>
-
-            <Link to="/download" className="hover:text-[var(--acopay-brand)]">
-              {t("nav.download")}
-            </Link>
-            <Link to="/support" className="hover:text-[var(--acopay-brand)]">
-              {t("nav.support")}
-            </Link>
-            <Link to="/privacy" className="hover:text-[var(--acopay-brand)]">
-              {t("legal.privacyTitle")}
-            </Link>
-            <Link to="/terms" className="hover:text-[var(--acopay-brand)]">
-              {t("legal.termsTitle")}
-            </Link>
-
-            <p className="text-[11px] leading-6 text-[var(--acopay-faint)]">© {TOKEN.founded} ACOPAY</p>
-            <span className="select-none" aria-hidden="true" />
-            <span className="select-none" aria-hidden="true" />
-          </div>
+          {wallet ? (
+            <div className="mt-5 grid grid-cols-3 gap-x-3 gap-y-2.5 text-sm leading-6 text-[var(--acopay-muted)]">
+              <Link to="/download" className="hover:text-[var(--acopay-brand)]">
+                {t("nav.download")}
+              </Link>
+              <Link to="/support" className="hover:text-[var(--acopay-brand)]">
+                {t("nav.support")}
+              </Link>
+              <Link to="/faq" className="hover:text-[var(--acopay-brand)]">
+                {t("nav.faq")}
+              </Link>
+              <Link to="/privacy" className="hover:text-[var(--acopay-brand)]">
+                {t("legal.privacyTitle")}
+              </Link>
+              <Link to="/terms" className="hover:text-[var(--acopay-brand)]">
+                {t("legal.termsTitle")}
+              </Link>
+              <a href={COIN_ORIGIN} className="hover:text-[var(--acopay-brand)]">
+                Token ↗
+              </a>
+              <p className="text-[11px] leading-6 text-[var(--acopay-faint)]">© {TOKEN.founded} ACOPAY</p>
+            </div>
+          ) : (
+            <div className="mt-5 grid grid-cols-3 gap-x-3 gap-y-2.5 text-sm leading-6 text-[var(--acopay-muted)]">
+              <Link to="/token" className="hover:text-[var(--acopay-brand)]">
+                {t("nav.token")}
+              </Link>
+              <Link to="/roadmap" className="hover:text-[var(--acopay-brand)]">
+                {t("nav.roadmap")}
+              </Link>
+              <a
+                href={explorerUrl()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[var(--acopay-brand)]"
+              >
+                {t("hero.explorer")}
+              </a>
+              <Link to="/markets" className="hover:text-[var(--acopay-brand)]">
+                {t("nav.markets")}
+              </Link>
+              <Link to="/faq" className="hover:text-[var(--acopay-brand)]">
+                {t("nav.faq")}
+              </Link>
+              <a
+                href={solscanUrl()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[var(--acopay-brand)]"
+              >
+                {t("hero.solscan")}
+              </a>
+              <a href={`${WALLET_ORIGIN}/download`} className="hover:text-[var(--acopay-brand)]">
+                {t("nav.download")}
+              </a>
+              <Link to="/support" className="hover:text-[var(--acopay-brand)]">
+                {t("nav.support")}
+              </Link>
+              <Link to="/privacy" className="hover:text-[var(--acopay-brand)]">
+                {t("legal.privacyTitle")}
+              </Link>
+              <Link to="/terms" className="hover:text-[var(--acopay-brand)]">
+                {t("legal.termsTitle")}
+              </Link>
+              <p className="text-[11px] leading-6 text-[var(--acopay-faint)]">© {TOKEN.founded} ACOPAY</p>
+            </div>
+          )}
         </div>
 
         <div className="hidden gap-10 md:grid md:grid-cols-[1.4fr_1fr_1fr_1fr] md:items-stretch">
@@ -138,6 +170,25 @@ export function Footer() {
                   </Link>
                 </li>
               ))}
+              {wallet ? (
+                <li>
+                  <a
+                    href={COIN_ORIGIN}
+                    className="text-[var(--acopay-muted)] hover:text-[var(--acopay-brand)]"
+                  >
+                    Token site ↗
+                  </a>
+                </li>
+              ) : (
+                <li>
+                  <a
+                    href={`${WALLET_ORIGIN}/download`}
+                    className="text-[var(--acopay-muted)] hover:text-[var(--acopay-brand)]"
+                  >
+                    Wallet app ↗
+                  </a>
+                </li>
+              )}
             </ul>
           </div>
           <div>
@@ -163,7 +214,7 @@ export function Footer() {
                   {t("hero.solscan")}
                 </a>
               </li>
-              {jup && !isStoreReviewMode() ? (
+              {!wallet && jup && !isStoreReviewMode() ? (
                 <li>
                   <a
                     href={jup}
@@ -175,7 +226,7 @@ export function Footer() {
                   </a>
                 </li>
               ) : null}
-              {tgPayOn ? (
+              {!wallet && tgPayOn ? (
                 <li>
                   <a
                     href={TOKEN.telegramPayUrl}
@@ -194,11 +245,11 @@ export function Footer() {
             <ul className="mt-4 space-y-3">
               <li>
                 <a
-                  href={`mailto:${TOKEN.email}`}
+                  href={`mailto:${wallet ? WALLET_EMAIL : TOKEN.email}`}
                   className="inline-flex max-w-full items-center gap-2.5 text-sm text-[var(--acopay-fg)]/85 transition hover:text-[var(--acopay-fg)]"
                 >
                   <MailGlyph />
-                  <span className="truncate">{TOKEN.email}</span>
+                  <span className="truncate">{wallet ? WALLET_EMAIL : TOKEN.email}</span>
                 </a>
               </li>
             </ul>

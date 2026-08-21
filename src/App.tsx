@@ -1,5 +1,7 @@
+import type { ReactNode } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { SeoManager } from "./components/SeoManager";
+import { CrossHostRedirect } from "./components/CrossHostRedirect";
 import { OrcaLayout } from "./layouts/OrcaLayout";
 import { ContractPage } from "./pages/ContractPage";
 import { FAQPage } from "./pages/FAQPage";
@@ -18,9 +20,31 @@ import { LegalPage } from "./pages/LegalPage";
 import { SupportPage } from "./pages/SupportPage";
 import { SupportLayout } from "./layouts/SupportLayout";
 import { isBuyPublic, isWebPayPublic } from "./config/siteSurface";
+import {
+  COIN_ORIGIN,
+  WALLET_ORIGIN,
+  isCoinHost,
+  isWalletHost,
+} from "./config/siteIdentity";
 
 function Hidden() {
   return <Navigate to="/" replace />;
+}
+
+/** On .net, coin pages go to acopay.org (same path). */
+function CoinPage({ children }: { children: ReactNode }) {
+  if (typeof window !== "undefined" && isWalletHost(window.location.hostname)) {
+    return <CrossHostRedirect origin={COIN_ORIGIN} />;
+  }
+  return <>{children}</>;
+}
+
+/** On .org, download goes to acopay.net (APK + store listing). */
+function WalletDownloadPage() {
+  if (typeof window !== "undefined" && isCoinHost(window.location.hostname)) {
+    return <CrossHostRedirect origin={WALLET_ORIGIN} path="/download" />;
+  }
+  return <DownloadPage />;
 }
 
 export default function App() {
@@ -36,22 +60,32 @@ export default function App() {
         </Route>
         <Route element={<OrcaLayout />}>
           <Route index element={<HomePage />} />
-          <Route path="buy" element={buyOn ? <BuyPage /> : <Hidden />} />
+          <Route
+            path="buy"
+            element={
+              <CoinPage>{buyOn ? <BuyPage /> : <Hidden />}</CoinPage>
+            }
+          />
           <Route path="pay" element={payOn ? <PayAppPage /> : <Hidden />} />
           <Route path="pay/connect" element={payOn ? <PayConnectPage /> : <Hidden />} />
           <Route path="pay/app-approve" element={payOn ? <PayAppApprovePage /> : <Hidden />} />
           <Route path="trade" element={<Navigate to={payOn ? "/pay" : "/"} replace />} />
           <Route path="link-wallet" element={payOn ? <LinkWalletPage /> : <Hidden />} />
           <Route path="send" element={payOn ? <SendAcopayPage /> : <Hidden />} />
-          <Route path="token" element={<TokenPage />} />
-          <Route path="markets" element={<PoolsPage />} />
-          <Route path="pools" element={<Navigate to="/markets" replace />} />
-          <Route path="contract" element={<ContractPage />} />
-          <Route path="roadmap" element={<RoadmapPage />} />
+          <Route path="token" element={<CoinPage><TokenPage /></CoinPage>} />
+          <Route path="markets" element={<CoinPage><PoolsPage /></CoinPage>} />
+          <Route
+            path="pools"
+            element={
+              <CoinPage>
+                <Navigate to="/markets" replace />
+              </CoinPage>
+            }
+          />
+          <Route path="contract" element={<CoinPage><ContractPage /></CoinPage>} />
+          <Route path="roadmap" element={<CoinPage><RoadmapPage /></CoinPage>} />
           <Route path="faq" element={<FAQPage />} />
-          {/* /download/android is a Pages Function serving the APK, not a route. */}
-          <Route path="download" element={<DownloadPage />} />
-          {/* Store / Play required public URLs */}
+          <Route path="download" element={<WalletDownloadPage />} />
           <Route path="privacy" element={<LegalPage kind="privacy" />} />
           <Route path="terms" element={<LegalPage kind="terms" />} />
           <Route path="delete-account" element={<LegalPage kind="delete-account" />} />
