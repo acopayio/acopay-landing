@@ -24,6 +24,7 @@ const keys = [
   "footer.walletApp",
   "common.redirecting",
   "common.learnMore",
+  "nav.support",
 ];
 
 const ALLOW_SAME = new Set(["Token", "Spot", "Product", "On-Chain", "On-chain"]);
