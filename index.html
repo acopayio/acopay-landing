@@ -77,6 +77,12 @@
           );
           return;
         }
+        // Wallet host: no browser Web Pay UI — hard redirect before SPA mounts
+        // (avoids empty shell flash from client <Navigate />).
+        if (h === "acopay.net" && /^\/pay(\/|$)/i.test(location.pathname)) {
+          location.replace("/" + location.search + location.hash);
+          return;
+        }
         // Phase A: when served on coin host, rewrite static SEO that still says .net
         // and restore Acopay.org in keywords (wallet host omits org).
         if (h === "acopay.org") {

@@ -64,6 +64,15 @@ function WalletDownloadPage() {
  */
 function CoinWebPay({ children }: { children: ReactNode }) {
   if (isWalletProfile()) {
+    // Prefer hard navigation so URL + home remount cleanly (SPA Navigate can
+    // briefly paint an empty Orca shell before index remounts).
+    if (typeof window !== "undefined") {
+      const path = window.location.pathname;
+      if (/^\/pay(\/|$)/i.test(path)) {
+        window.location.replace("/" + window.location.search + window.location.hash);
+        return null;
+      }
+    }
     return <Navigate to="/" replace />;
   }
   return <>{children}</>;
