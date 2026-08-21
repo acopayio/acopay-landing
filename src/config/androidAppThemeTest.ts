@@ -4,10 +4,10 @@
  */
 
 export const ANDROID_APP_THEME_TEST = {
-  version: "1.0.272",
+  version: "1.0.273",
   label: "theme-test",
   size: "52.0 MB",
-  sha256: "97A58D210E5A28920E31D8421FB7534DB35BD35451097B43D6790402986716EC",
+  sha256: "DF5543505730D183AB5A70B9D1A8C32C086AA81B5E287D37957906D6AEFD10C0",
   url: "/download/android-test",
-  filename: "ACOPAY-Wallet-v1.0.272-theme-test.apk",
+  filename: "ACOPAY-Wallet-v1.0.273-theme-test.apk",
 } as const;
