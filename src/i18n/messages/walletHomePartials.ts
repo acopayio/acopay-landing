@@ -20,7 +20,7 @@ function W(walletHome: WH): DeepPartialMessages {
 
 export const WALLET_HOME_PARTIALS: Partials = {
   vi: W({
-    eyebrow: "Non-custodial · Solana",
+    eyebrow: "Không giữ hộ · Solana",
     title: "ACOPAY Wallet",
     tagline: "Khóa nằm trên thiết bị của bạn",
     desc: "Tạo hoặc nhập ví Solana, xem số dư, gửi hoặc nhận ACOPAY, USDT, SOL và token SPL. ACOPAY không giữ cụm từ khôi phục hay khóa riêng của bạn.",
@@ -80,7 +80,7 @@ export const WALLET_HOME_PARTIALS: Partials = {
       "Gửi email support@acopay.net từ trang Hỗ trợ. Ghi kèm phiên bản app và mô tả ngắn vấn đề.",
   }),
   zh: W({
-    eyebrow: "Non-custodial · Solana",
+    eyebrow: "非托管 · Solana",
     title: "ACOPAY Wallet",
     tagline: "密钥留在您的设备上",
     desc: "创建或导入 Solana 钱包，查看余额，发送或接收 ACOPAY、USDT、SOL 与 SPL 代币。ACOPAY 不会持有您的助记词或私钥。",
@@ -135,7 +135,7 @@ export const WALLET_HOME_PARTIALS: Partials = {
       "从支持页发送邮件至 support@acopay.net。请注明应用版本与问题简述。",
   }),
   ja: W({
-    eyebrow: "Non-custodial · Solana",
+    eyebrow: "ノンカストディアル · Solana",
     title: "ACOPAY Wallet",
     tagline: "鍵は端末に残ります",
     desc: "Solana ウォレットを作成またはインポートし、残高を確認して ACOPAY、USDT、SOL、SPL トークンを送受信できます。ACOPAY はリカバリーフレーズや秘密鍵を預かりません。",
@@ -185,7 +185,7 @@ export const WALLET_HOME_PARTIALS: Partials = {
     faqA5: "サポートページから support@acopay.net にメールしてください。アプリのバージョンと問題の短い説明を含めてください。",
   }),
   ko: W({
-    eyebrow: "Non-custodial · Solana",
+    eyebrow: "비수탁 · Solana",
     title: "ACOPAY Wallet",
     tagline: "키는 기기에 남습니다",
     desc: "Solana 지갑을 생성하거나 가져오고, 잔액을 확인하며 ACOPAY, USDT, SOL, SPL 토큰을 송수신하세요. ACOPAY는 복구 구문이나 개인 키를 보관하지 않습니다.",
@@ -235,7 +235,7 @@ export const WALLET_HOME_PARTIALS: Partials = {
     faqA5: "지원 페이지에서 support@acopay.net으로 이메일을 보내세요. 앱 버전과 문제 요약을 포함해 주세요.",
   }),
   th: W({
-    eyebrow: "Non-custodial · Solana",
+    eyebrow: "ไม่ฝากทรัพย์ · Solana",
     title: "ACOPAY Wallet",
     tagline: "คีย์อยู่บนอุปกรณ์ของคุณ",
     desc: "สร้างหรือนำเข้ากระเป๋า Solana ดูยอดคงเหลือ และส่งหรือรับ ACOPAY, USDT, SOL และโทเค็น SPL ACOPAY ไม่ถือวลีกู้คืนหรือคีย์ส่วนตัวของคุณ",
@@ -285,7 +285,7 @@ export const WALLET_HOME_PARTIALS: Partials = {
     faqA5: "อีเมล support@acopay.net จากหน้าการสนับสนุน ระบุเวอร์ชันแอปและสรุปปัญหาสั้นๆ",
   }),
   id: W({
-    eyebrow: "Non-custodial · Solana",
+    eyebrow: "Non-kustodial · Solana",
     title: "ACOPAY Wallet",
     tagline: "Kunci tetap di perangkat Anda",
     desc: "Buat atau impor dompet Solana, lihat saldo, lalu kirim atau terima ACOPAY, USDT, SOL, dan token SPL. ACOPAY tidak menyimpan frasa pemulihan atau kunci pribadi Anda.",
@@ -335,7 +335,7 @@ export const WALLET_HOME_PARTIALS: Partials = {
     faqA5: "Kirim email ke support@acopay.net dari halaman Dukungan. Sertakan versi aplikasi dan ringkasan singkat masalahnya.",
   }),
   ms: W({
-    eyebrow: "Non-custodial · Solana",
+    eyebrow: "Bukan jagaan · Solana",
     title: "ACOPAY Wallet",
     tagline: "Kunci kekal pada peranti anda",
     desc: "Cipta atau import dompet Solana, lihat baki, lalu hantar atau terima ACOPAY, USDT, SOL dan token SPL. ACOPAY tidak menyimpan frasa pemulihan atau kunci peribadi anda.",
@@ -385,7 +385,7 @@ export const WALLET_HOME_PARTIALS: Partials = {
     faqA5: "E-mel support@acopay.net dari halaman Sokongan. Sertakan versi aplikasi dan ringkasan singkat isu.",
   }),
   hi: W({
-    eyebrow: "Non-custodial · Solana",
+    eyebrow: "नॉन-कस्टोडियल · Solana",
     title: "ACOPAY Wallet",
     tagline: "कुंजी आपके डिवाइस पर रहती है",
     desc: "Solana वॉलेट बनाएँ या आयात करें, बैलेंस देखें, और ACOPAY, USDT, SOL तथा SPL टोकन भेजें या प्राप्त करें। ACOPAY आपके रिकवरी वाक्यांश या निजी कुंजी नहीं रखता।",
@@ -435,7 +435,7 @@ export const WALLET_HOME_PARTIALS: Partials = {
     faqA5: "सहायता पेज से support@acopay.net पर ईमेल करें। ऐप संस्करण और समस्या का संक्षिप्त विवरण शामिल करें।",
   }),
   es: W({
-    eyebrow: "Non-custodial · Solana",
+    eyebrow: "No custodial · Solana",
     title: "ACOPAY Wallet",
     tagline: "Las claves permanecen en tu dispositivo",
     desc: "Crea o importa una billetera Solana, consulta saldos y envía o recibe ACOPAY, USDT, SOL y tokens SPL. ACOPAY no custodia tu frase de recuperación ni tus claves privadas.",
@@ -485,7 +485,7 @@ export const WALLET_HOME_PARTIALS: Partials = {
     faqA5: "Escribe a support@acopay.net desde la página de Soporte. Incluye la versión de la app y una breve descripción del problema.",
   }),
   pt: W({
-    eyebrow: "Non-custodial · Solana",
+    eyebrow: "Não custodial · Solana",
     title: "ACOPAY Wallet",
     tagline: "As chaves ficam no seu dispositivo",
     desc: "Crie ou importe uma carteira Solana, veja saldos e envie ou receba ACOPAY, USDT, SOL e tokens SPL. A ACOPAY não guarda sua frase de recuperação nem chaves privadas.",
@@ -535,7 +535,7 @@ export const WALLET_HOME_PARTIALS: Partials = {
     faqA5: "Envie e-mail para support@acopay.net pela página de Suporte. Inclua a versão do app e uma breve descrição do problema.",
   }),
   fr: W({
-    eyebrow: "Non-custodial · Solana",
+    eyebrow: "Non custodial · Solana",
     title: "ACOPAY Wallet",
     tagline: "Les clés restent sur votre appareil",
     desc: "Créez ou importez un portefeuille Solana, consultez les soldes, et envoyez ou recevez ACOPAY, USDT, SOL et tokens SPL. ACOPAY ne détient pas votre phrase de récupération ni vos clés privées.",
@@ -585,7 +585,7 @@ export const WALLET_HOME_PARTIALS: Partials = {
     faqA5: "Écrivez à support@acopay.net depuis la page Assistance. Indiquez la version de l'app et une brève description du problème.",
   }),
   de: W({
-    eyebrow: "Non-custodial · Solana",
+    eyebrow: "Selbstverwahrung · Solana",
     title: "ACOPAY Wallet",
     tagline: "Schlüssel bleiben auf Ihrem Gerät",
     desc: "Erstellen oder importieren Sie eine Solana-Wallet, prüfen Sie Salden und senden oder empfangen Sie ACOPAY, USDT, SOL und SPL-Tokens. ACOPAY verwahrt weder Ihre Wiederherstellungsphrase noch private Schlüssel.",
@@ -635,7 +635,7 @@ export const WALLET_HOME_PARTIALS: Partials = {
     faqA5: "Schreiben Sie an support@acopay.net über die Hilfeseite. Nennen Sie die App-Version und eine kurze Problembeschreibung.",
   }),
   nl: W({
-    eyebrow: "Non-custodial · Solana",
+    eyebrow: "Zonder custody · Solana",
     title: "ACOPAY Wallet",
     tagline: "Sleutels blijven op uw apparaat",
     desc: "Maak of importeer een Solana-wallet, bekijk saldi en stuur of ontvang ACOPAY, USDT, SOL en SPL-tokens. ACOPAY bewaart uw herstelzin of privésleutels niet.",
@@ -685,7 +685,7 @@ export const WALLET_HOME_PARTIALS: Partials = {
     faqA5: "Mail support@acopay.net via de Ondersteuningspagina. Vermeld appversie en een korte probleembeschrijving.",
   }),
   it: W({
-    eyebrow: "Non-custodial · Solana",
+    eyebrow: "Non custodial · Solana",
     title: "ACOPAY Wallet",
     tagline: "Le chiavi restano sul tuo dispositivo",
     desc: "Crea o importa un wallet Solana, consulta i saldi e invia o ricevi ACOPAY, USDT, SOL e token SPL. ACOPAY non custodisce la frase di recupero né le chiavi private.",
@@ -735,7 +735,7 @@ export const WALLET_HOME_PARTIALS: Partials = {
     faqA5: "Scrivi a support@acopay.net dalla pagina Assistenza. Includi la versione dell'app e una breve descrizione del problema.",
   }),
   ru: W({
-    eyebrow: "Non-custodial · Solana",
+    eyebrow: "Некастодиальный · Solana",
     title: "ACOPAY Wallet",
     tagline: "Ключи остаются на вашем устройстве",
     desc: "Создайте или импортируйте кошелёк Solana, смотрите балансы и отправляйте или получайте ACOPAY, USDT, SOL и токены SPL. ACOPAY не хранит вашу фразу восстановления и закрытые ключи.",
@@ -785,7 +785,7 @@ export const WALLET_HOME_PARTIALS: Partials = {
     faqA5: "Напишите на support@acopay.net со страницы Поддержки. Укажите версию приложения и краткое описание проблемы.",
   }),
   uk: W({
-    eyebrow: "Non-custodial · Solana",
+    eyebrow: "Некастодіальний · Solana",
     title: "ACOPAY Wallet",
     tagline: "Ключі залишаються на вашому пристрої",
     desc: "Створіть або імпортуйте гаманець Solana, переглядайте баланси та надсилайте чи отримуйте ACOPAY, USDT, SOL і токени SPL. ACOPAY не зберігає вашу фразу відновлення чи закриті ключі.",
@@ -835,7 +835,7 @@ export const WALLET_HOME_PARTIALS: Partials = {
     faqA5: "Напишіть на support@acopay.net зі сторінки Підтримки. Вкажіть версію застосунку та короткий опис проблеми.",
   }),
   pl: W({
-    eyebrow: "Non-custodial · Solana",
+    eyebrow: "Bez powiernictwa · Solana",
     title: "ACOPAY Wallet",
     tagline: "Klucze zostają na Twoim urządzeniu",
     desc: "Utwórz lub zaimportuj portfel Solana, sprawdzaj salda oraz wysyłaj lub odbieraj ACOPAY, USDT, SOL i tokeny SPL. ACOPAY nie przechowuje frazy odzyskiwania ani kluczy prywatnych.",
@@ -885,7 +885,7 @@ export const WALLET_HOME_PARTIALS: Partials = {
     faqA5: "Napisz na support@acopay.net ze strony Wsparcia. Podaj wersję aplikacji i krótki opis problemu.",
   }),
   tr: W({
-    eyebrow: "Non-custodial · Solana",
+    eyebrow: "Saklamayan · Solana",
     title: "ACOPAY Wallet",
     tagline: "Anahtarlar cihazınızda kalır",
     desc: "Solana cüzdanı oluşturun veya içe aktarın, bakiyeleri görün ve ACOPAY, USDT, SOL ile SPL token gönderin veya alın. ACOPAY kurtarma ifadenizi veya özel anahtarlarınızı saklamaz.",
@@ -935,7 +935,7 @@ export const WALLET_HOME_PARTIALS: Partials = {
     faqA5: "Destek sayfasından support@acopay.net adresine e-posta gönderin. Uygulama sürümünü ve sorunun kısa açıklamasını ekleyin.",
   }),
   ar: W({
-    eyebrow: "Non-custodial · Solana",
+    eyebrow: "غير وصائي · Solana",
     title: "ACOPAY Wallet",
     tagline: "المفاتيح تبقى على جهازك",
     desc: "أنشئ أو استورد محفظة Solana، واطلع على الأرصدة، وأرسل أو استلم ACOPAY وUSDT وSOL ورموز SPL. ACOPAY لا تحتفظ بعبارة الاسترداد أو مفاتيحك الخاصة.",
