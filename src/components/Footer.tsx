@@ -22,7 +22,6 @@ const PRODUCT_LINKS_COIN = [
 const PRODUCT_LINKS_WALLET = [
   { to: "/download", labelKey: "nav.download" },
   { to: "/support", labelKey: "nav.support" },
-  { to: "/faq", labelKey: "nav.faq" },
   { to: "/privacy", labelKey: "legal.privacyTitle" },
   { to: "/terms", labelKey: "legal.termsTitle" },
   { to: "/delete-account", labelKey: "legal.deleteTitle" },
@@ -73,9 +72,6 @@ export function Footer() {
               </Link>
               <Link to="/support" className="hover:text-[var(--acopay-brand)]">
                 {t("nav.support")}
-              </Link>
-              <Link to="/faq" className="hover:text-[var(--acopay-brand)]">
-                {t("nav.faq")}
               </Link>
               <Link to="/privacy" className="hover:text-[var(--acopay-brand)]">
                 {t("legal.privacyTitle")}

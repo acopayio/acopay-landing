@@ -54,7 +54,11 @@ function applySeo(page: PageSeo) {
   const ogTitle = walletHome ? page.title : SITE.defaultTitle;
   const ogDescription = walletHome ? page.description : SITE.defaultDescription;
   const image = ogImageUrl();
-  const keywords = SITE.keywords.join(", ");
+  const keywords = (
+    isWalletProfile()
+      ? SITE.keywords
+      : [...SITE.keywords.filter((k) => k !== "Acopay.net"), "Acopay.org", "Acopay.net"]
+  ).join(", ");
   const hashtags = SITE.hashtags.join(" ");
 
   document.title = title;

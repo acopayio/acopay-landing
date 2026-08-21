@@ -30,7 +30,6 @@ export const SITE = {
     "payment utility",
     "wallet to wallet",
     "SPL token",
-    "Acopay.org",
     "Acopay.net",
   ],
   hashtags: [

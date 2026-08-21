@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom";
-import { COIN_ORIGIN } from "../config/siteIdentity";
 import { BrandLogo } from "./BrandLogo";
 import { useT } from "../i18n/LanguageProvider";
 
-/** Home hero for acopay.net (wallet) — no mint card / markets. */
+/** Home hero for acopay.net (wallet) — no mint card / markets / coin cross-link. */
 export function WalletHero() {
   const t = useT();
 
@@ -43,16 +42,6 @@ export function WalletHero() {
           <Feature title={t("walletHome.f2Title")} body={t("walletHome.f2Body")} />
           <Feature title={t("walletHome.f3Title")} body={t("walletHome.f3Body")} />
         </div>
-
-        <p className="text-sm text-[var(--acopay-muted)]">
-          {t("walletHome.coinHint")}{" "}
-          <a
-            href={COIN_ORIGIN}
-            className="font-semibold text-[var(--acopay-brand)] hover:underline"
-          >
-            acopay.org ↗
-          </a>
-        </p>
       </div>
     </section>
   );
@@ -61,8 +50,8 @@ export function WalletHero() {
 function Feature({ title, body }: { title: string; body: string }) {
   return (
     <div>
-      <p className="text-sm font-semibold text-[var(--acopay-fg)]">{title}</p>
-      <p className="mt-1 text-xs leading-relaxed text-[var(--acopay-muted)] sm:text-sm">{body}</p>
+      <h3 className="text-sm font-semibold text-[var(--acopay-fg)]">{title}</h3>
+      <p className="mt-1 text-sm leading-relaxed text-[var(--acopay-muted)]">{body}</p>
     </div>
   );
 }

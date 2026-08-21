@@ -55,7 +55,6 @@ export const en = {
     f2Body: "Pay by @username or wallet address. History from the chain.",
     f3Title: "Store-ready",
     f3Body: "No in-app exchange or swap desk. Download Android Beta or iOS TestFlight.",
-    coinHint: "Looking for the ACOPAY token site?",
   },
   markets: {
     label: "Markets",

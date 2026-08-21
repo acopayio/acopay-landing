@@ -31,10 +31,18 @@ function Hidden() {
   return <Navigate to="/" replace />;
 }
 
-/** On .net, coin pages go to acopay.org (same path). */
+/** On .net, coin pages go to the coin host (same path). */
 function CoinPage({ children }: { children: ReactNode }) {
   if (typeof window !== "undefined" && isWalletHost(window.location.hostname)) {
     return <CrossHostRedirect origin={COIN_ORIGIN} />;
+  }
+  return <>{children}</>;
+}
+
+/** FAQ and similar: not on wallet chrome — stay on home. */
+function WalletHide({ children }: { children: ReactNode }) {
+  if (typeof window !== "undefined" && isWalletHost(window.location.hostname)) {
+    return <Navigate to="/" replace />;
   }
   return <>{children}</>;
 }
@@ -84,7 +92,7 @@ export default function App() {
           />
           <Route path="contract" element={<CoinPage><ContractPage /></CoinPage>} />
           <Route path="roadmap" element={<CoinPage><RoadmapPage /></CoinPage>} />
-          <Route path="faq" element={<FAQPage />} />
+          <Route path="faq" element={<WalletHide><FAQPage /></WalletHide>} />
           <Route path="download" element={<WalletDownloadPage />} />
           <Route path="privacy" element={<LegalPage kind="privacy" />} />
           <Route path="terms" element={<LegalPage kind="terms" />} />

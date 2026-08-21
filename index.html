@@ -11,7 +11,7 @@
     />
     <meta
       name="keywords"
-      content="ACOPAY, Pay your way, Solana, Token-2022, payment utility, wallet to wallet, SPL token, Acopay.org, Acopay.net"
+      content="ACOPAY, Pay your way, Solana, Token-2022, payment utility, wallet to wallet, SPL token, Acopay.net"
     />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <meta name="googlebot" content="index, follow" />
@@ -78,6 +78,7 @@
           return;
         }
         // Phase A: when served on coin host, rewrite static SEO that still says .net
+        // and restore Acopay.org in keywords (wallet host omits org).
         if (h === "acopay.org") {
           try {
             var from = "https://acopay.net";
@@ -90,6 +91,13 @@
               var c = el.getAttribute("content");
               if (c && c.indexOf(from) === 0) el.setAttribute("content", to + c.slice(from.length));
             });
+            var kw = document.querySelector('meta[name="keywords"]');
+            if (kw) {
+              var k = kw.getAttribute("content") || "";
+              if (k.indexOf("Acopay.org") < 0) {
+                kw.setAttribute("content", k.replace("Acopay.net", "Acopay.org, Acopay.net"));
+              }
+            }
           } catch (e) {}
         }
       })();
