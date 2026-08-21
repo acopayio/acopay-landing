@@ -1,6 +1,13 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { absoluteUrl, ogImageUrl, PAGE_SEO, SITE, type PageSeo } from "../seo/site";
+import {
+  absoluteUrl,
+  ogImageAltForProfile,
+  ogImageUrl,
+  PAGE_SEO,
+  SITE,
+  type PageSeo,
+} from "../seo/site";
 import { isWalletProfile } from "../config/siteIdentity";
 
 function upsertMeta(attr: "name" | "property", key: string, content: string) {
@@ -54,12 +61,17 @@ function applySeo(page: PageSeo) {
   const ogTitle = walletHome ? page.title : SITE.defaultTitle;
   const ogDescription = walletHome ? page.description : SITE.defaultDescription;
   const image = ogImageUrl();
+  const imageAlt = ogImageAltForProfile();
   const keywords = (
     isWalletProfile() ? SITE.keywordsWallet : SITE.keywordsCoin
   ).join(", ");
   const hashtags = (
     isWalletProfile() ? SITE.hashtagsWallet : SITE.hashtagsCoin
   ).join(" ");
+  const theme =
+    typeof document !== "undefined"
+      ? document.documentElement.getAttribute("data-theme") || "light"
+      : "light";
 
   document.title = title;
   document.documentElement.lang = SITE.language;
@@ -70,7 +82,7 @@ function applySeo(page: PageSeo) {
   upsertMeta("name", "robots", "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1");
   upsertMeta("name", "googlebot", "index, follow");
   upsertMeta("name", "theme-color", SITE.themeColor);
-  upsertMeta("name", "color-scheme", "dark");
+  upsertMeta("name", "color-scheme", theme === "dark" ? "dark" : "light");
   upsertMeta("name", "application-name", SITE.name);
   upsertMeta("name", "apple-mobile-web-app-title", SITE.name);
   upsertMeta("name", "format-detection", "telephone=no");
@@ -84,7 +96,7 @@ function applySeo(page: PageSeo) {
   upsertMeta("name", "twitter:title", ogTitle);
   upsertMeta("name", "twitter:description", ogDescription);
   upsertMeta("name", "twitter:image", image);
-  upsertMeta("name", "twitter:image:alt", SITE.ogImageAlt);
+  upsertMeta("name", "twitter:image:alt", imageAlt);
   upsertMeta("name", "twitter:url", url);
   if (SITE.twitterHandle) {
     upsertMeta("name", "twitter:site", SITE.twitterHandle);
@@ -102,7 +114,7 @@ function applySeo(page: PageSeo) {
   upsertMeta("property", "og:image:type", "image/png");
   upsertMeta("property", "og:image:width", "1200");
   upsertMeta("property", "og:image:height", "630");
-  upsertMeta("property", "og:image:alt", SITE.ogImageAlt);
+  upsertMeta("property", "og:image:alt", imageAlt);
   upsertMeta("property", "article:tag", hashtags);
 
   upsertLink("canonical", url);

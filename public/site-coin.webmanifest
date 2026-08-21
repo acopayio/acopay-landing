@@ -1,7 +1,7 @@
 {
-  "name": "ACOPAY Wallet",
+  "name": "ACOPAY",
   "short_name": "ACOPAY",
-  "description": "ACOPAY Wallet — non-custodial Solana wallet. Keys stay on your device. Send and receive ACOPAY, USDT, SOL, and SPL tokens.",
+  "description": "ACOPAY — Pay your way. Solana payment utility token (Token-2022).",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
@@ -10,7 +10,7 @@
   "theme_color": "#0c1017",
   "lang": "en-US",
   "dir": "ltr",
-  "categories": ["finance", "utilities"],
+  "categories": ["finance", "business"],
   "icons": [
     {
       "src": "/assets/title-icon-128.png",

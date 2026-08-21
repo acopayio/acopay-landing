@@ -42,12 +42,12 @@
       property="og:description"
       content="Non-custodial Solana wallet. Keys stay on your device. Send and receive ACOPAY, USDT, SOL, and SPL tokens."
     />
-    <meta property="og:image" content="https://acopay.net/assets/og-card.png?v=20260728i" />
-    <meta property="og:image:secure_url" content="https://acopay.net/assets/og-card.png?v=20260728i" />
+    <meta property="og:image" content="https://acopay.net/assets/og-wallet.png?v=20260822a" />
+    <meta property="og:image:secure_url" content="https://acopay.net/assets/og-wallet.png?v=20260822a" />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="ACOPAY — Pay your way" />
+    <meta property="og:image:alt" content="ACOPAY Wallet — non-custodial Solana wallet on acopay.net" />
     <meta property="article:tag" content="#ACOPAY #PayYourWay #Solana #NonCustodial #CryptoWallet #Web3" />
 
     <!-- Twitter / X -->
@@ -57,8 +57,8 @@
       name="twitter:description"
       content="Non-custodial Solana wallet. Keys stay on your device. Send and receive ACOPAY, USDT, SOL, and SPL tokens."
     />
-    <meta name="twitter:image" content="https://acopay.net/assets/og-card.png?v=20260728i" />
-    <meta name="twitter:image:alt" content="ACOPAY — Pay your way" />
+    <meta name="twitter:image" content="https://acopay.net/assets/og-wallet.png?v=20260822a" />
+    <meta name="twitter:image:alt" content="ACOPAY Wallet — non-custodial Solana wallet on acopay.net" />
     <meta name="twitter:url" content="https://acopay.net/" />
 
     <!-- One canonical host per product: www → apex (.net wallet + .org coin) -->
@@ -89,15 +89,26 @@
             });
             document.querySelectorAll('meta[property="og:url"], meta[property="og:image"], meta[property="og:image:secure_url"], meta[name="twitter:image"], meta[name="twitter:url"]').forEach(function (el) {
               var c = el.getAttribute("content");
-              if (c && c.indexOf(from) === 0) el.setAttribute("content", to + c.slice(from.length));
+              if (!c) return;
+              if (c.indexOf(from) === 0) el.setAttribute("content", to + c.slice(from.length));
+              // Coin host keeps token OG card (not wallet screenshot).
+              if (c.indexOf("/assets/og-wallet.png") >= 0) {
+                el.setAttribute("content", to + "/assets/og-card.png?v=20260728i");
+              }
+            });
+            var ogAltEls = document.querySelectorAll('meta[property="og:image:alt"], meta[name="twitter:image:alt"]');
+            ogAltEls.forEach(function (el) {
+              el.setAttribute("content", "ACOPAY — Pay your way");
             });
             var kw = document.querySelector('meta[name="keywords"]');
             if (kw) {
-              var k = kw.getAttribute("content") || "";
-              if (k.indexOf("Acopay.org") < 0) {
-                kw.setAttribute("content", k.replace("Acopay.net", "Acopay.org, Acopay.net"));
-              }
+              kw.setAttribute(
+                "content",
+                "ACOPAY, Pay your way, Solana, Token-2022, non-custodial wallet, payment utility, wallet to wallet, SPL token, Acopay.org"
+              );
             }
+            var mf = document.querySelector('link[rel="manifest"]');
+            if (mf) mf.setAttribute("href", "/site-coin.webmanifest");
           } catch (e) {}
         }
       })();
@@ -169,7 +180,7 @@
               "width": 512,
               "height": 512
             },
-            "image": "https://acopay.net/assets/og-card.png?v=20260728i",
+            "image": "https://acopay.net/assets/og-wallet.png?v=20260822a",
             "email": "contact@Acopay.net",
             "description": "Non-custodial Solana wallet. Keys stay on your device.",
             "slogan": "Pay your way",
@@ -204,7 +215,7 @@
             "inLanguage": "en-US",
             "primaryImageOfPage": {
               "@type": "ImageObject",
-              "url": "https://acopay.net/assets/og-card.png?v=20260728i",
+              "url": "https://acopay.net/assets/og-wallet.png?v=20260822a",
               "width": 1200,
               "height": 630
             }
@@ -217,7 +228,12 @@
             "operatingSystem": "Android, iOS",
             "description": "Non-custodial Solana wallet. Keys stay on your device.",
             "url": "https://acopay.net/download",
-            "image": "https://acopay.net/assets/logo.png",
+            "image": "https://acopay.net/assets/og-wallet.png?v=20260822a",
+            "screenshot": [
+              "https://acopay.net/assets/wallet-promo/home.jpg",
+              "https://acopay.net/assets/wallet-promo/send.jpg",
+              "https://acopay.net/assets/wallet-promo/receive.jpg"
+            ],
             "offers": {
               "@type": "Offer",
               "price": "0",

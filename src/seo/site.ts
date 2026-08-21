@@ -6,6 +6,8 @@ import {
 
   getSiteOrigin,
 
+  isWalletProfile,
+
 } from "../config/siteIdentity";
 
 
@@ -34,9 +36,20 @@ export const SITE = {
 
   twitterHandle: "", // add @handle when official X account exists
 
-  ogImagePath: "/assets/og-card.png?v=20260728i",
+  /** Coin host social card (token). */
+  ogImagePathCoin: "/assets/og-card.png?v=20260728i",
 
-  ogImageAlt: "ACOPAY — Pay your way",
+  /** Wallet host social card — real app screenshot (Phase 2 acceptance). */
+  ogImagePathWallet: "/assets/og-wallet.png?v=20260822a",
+
+  /** @deprecated Prefer ogImagePathWallet / ogImagePathCoin. */
+  ogImagePath: "/assets/og-wallet.png?v=20260822a",
+
+  ogImageAltWallet: "ACOPAY Wallet — non-custodial Solana wallet on acopay.net",
+
+  ogImageAltCoin: "ACOPAY — Pay your way",
+
+  ogImageAlt: "ACOPAY Wallet — non-custodial Solana wallet on acopay.net",
 
   defaultTitle: "ACOPAY — Pay your way",
 
@@ -296,10 +309,16 @@ export function siteUrl(): string {
 
 
 
+export function ogImagePathForProfile(): string {
+  return isWalletProfile() ? SITE.ogImagePathWallet : SITE.ogImagePathCoin;
+}
+
+export function ogImageAltForProfile(): string {
+  return isWalletProfile() ? SITE.ogImageAltWallet : SITE.ogImageAltCoin;
+}
+
 export function ogImageUrl(): string {
-
-  return `${getSiteOrigin()}${SITE.ogImagePath}`;
-
+  return `${getSiteOrigin()}${ogImagePathForProfile()}`;
 }
 
 

@@ -18,18 +18,27 @@ const PROMO = [
 ] as const;
 
 /** Phone frame around a real Play-store screenshot (Kevin phone-raw lineage). */
-function DeviceShot({ src, alt }: { src: string; alt: string }) {
+function DeviceShot({
+  src,
+  alt,
+  priority = false,
+}: {
+  src: string;
+  alt: string;
+  priority?: boolean;
+}) {
   return (
     <figure className="mx-auto w-[min(100%,220px)] sm:w-[240px]">
-      <div className="relative overflow-hidden rounded-[2rem] border-[10px] border-[#0c1017] bg-[#0c1017] shadow-[0_24px_48px_-12px_rgba(0,0,0,0.45)] ring-1 ring-white/10">
+      <div className="relative overflow-hidden rounded-[2rem] border-[10px] border-[#0c1017] bg-[#0c1017] shadow-[0_24px_48px_-12px_rgba(0,0,0,0.45)] ring-1 ring-[color:var(--acopay-brand)]/20">
         <div className="pointer-events-none absolute left-1/2 top-2 z-10 h-1.5 w-16 -translate-x-1/2 rounded-full bg-black/50" />
         <img
           src={src}
           alt={alt}
           width={900}
           height={1800}
-          loading="lazy"
+          loading={priority ? "eager" : "lazy"}
           decoding="async"
+          fetchPriority={priority ? "high" : "auto"}
           className="block h-auto w-full bg-[#0a121b]"
         />
       </div>
@@ -99,19 +108,20 @@ export function WalletHero() {
             </div>
           </div>
 
-          <div className="relative mx-auto w-full max-w-md lg:mx-0 lg:justify-self-end">
-            <div className="flex justify-center gap-3 sm:gap-4">
-              <div className="hidden translate-y-6 sm:block sm:w-[38%]">
+          <div className="relative mx-auto w-full max-w-lg lg:mx-0 lg:justify-self-end">
+            <div className="pointer-events-none absolute -inset-6 rounded-[3rem] bg-[radial-gradient(circle_at_center,_rgba(0,229,255,0.12),_transparent_70%)]" />
+            <div className="relative flex items-end justify-center gap-2 sm:gap-3 md:gap-4">
+              <div className="hidden w-[32%] translate-y-8 opacity-90 sm:block">
                 <DeviceShot src={PROMO[1].src} alt={PROMO[1].alt} />
               </div>
-              <div className="w-[72%] sm:w-[44%] sm:-translate-y-1">
-                <DeviceShot src={PROMO[0].src} alt={PROMO[0].alt} />
+              <div className="z-10 w-[78%] sm:w-[42%] sm:-translate-y-2">
+                <DeviceShot src={PROMO[0].src} alt={PROMO[0].alt} priority />
               </div>
-              <div className="hidden translate-y-10 sm:block sm:w-[38%]">
+              <div className="hidden w-[32%] translate-y-12 opacity-90 sm:block">
                 <DeviceShot src={PROMO[2].src} alt={PROMO[2].alt} />
               </div>
             </div>
-            <p className="mt-4 text-center text-xs text-[var(--acopay-muted)]">
+            <p className="mt-5 text-center text-xs text-[var(--acopay-muted)]">
               Real app screens · Android Play assets
             </p>
           </div>
