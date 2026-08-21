@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { isStoreReviewMode, isTelegramPayCtaPublic, isWebPayPublic } from "../config/siteSurface";
-import { COIN_ORIGIN, getContactEmail, WALLET_ORIGIN, isWalletProfile } from "../config/siteIdentity";
+import { getContactEmail, WALLET_ORIGIN, isWalletProfile } from "../config/siteIdentity";
 import { TOKEN, explorerUrl, jupiterSwapUrl, solscanUrl } from "../config/token";
 import { useT } from "../i18n/LanguageProvider";
 import { BrandLogo } from "./BrandLogo";
@@ -83,9 +83,9 @@ export function Footer() {
               <Link to="/terms" className="hover:text-[var(--acopay-brand)]">
                 {t("legal.termsTitle")}
               </Link>
-              <a href={COIN_ORIGIN} className="hover:text-[var(--acopay-brand)]">
-                Token ↗
-              </a>
+              <Link to="/delete-account" className="hover:text-[var(--acopay-brand)]">
+                {t("legal.deleteTitle")}
+              </Link>
               <p className="text-[11px] leading-6 text-[var(--acopay-faint)]">© {TOKEN.founded} ACOPAY</p>
             </div>
           ) : (
@@ -135,7 +135,11 @@ export function Footer() {
           )}
         </div>
 
-        <div className="hidden gap-10 md:grid md:grid-cols-[1.4fr_1fr_1fr_1fr] md:items-stretch">
+        <div
+          className={`hidden gap-10 md:grid md:items-stretch ${
+            wallet ? "md:grid-cols-[1.4fr_1fr_1fr]" : "md:grid-cols-[1.4fr_1fr_1fr_1fr]"
+          }`}
+        >
           <div className="flex flex-col">
             <Link to="/" className="inline-flex w-fit items-center gap-2.5">
               <BrandLogo className="h-9 w-9 shrink-0 object-contain" />
@@ -171,16 +175,7 @@ export function Footer() {
                   </Link>
                 </li>
               ))}
-              {wallet ? (
-                <li>
-                  <a
-                    href={COIN_ORIGIN}
-                    className="text-[var(--acopay-muted)] hover:text-[var(--acopay-brand)]"
-                  >
-                    Token site ↗
-                  </a>
-                </li>
-              ) : (
+              {!wallet ? (
                 <li>
                   <a
                     href={`${WALLET_ORIGIN}/download`}
@@ -189,58 +184,60 @@ export function Footer() {
                     Wallet app ↗
                   </a>
                 </li>
-              )}
+              ) : null}
             </ul>
           </div>
-          <div>
-            <h4 className="label-orca">{t("footer.onChain")}</h4>
-            <ul className="mt-4 space-y-2 text-sm">
-              <li>
-                <a
-                  href={explorerUrl()}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[var(--acopay-muted)] hover:text-[var(--acopay-brand)]"
-                >
-                  {t("hero.explorer")}
-                </a>
-              </li>
-              <li>
-                <a
-                  href={solscanUrl()}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[var(--acopay-muted)] hover:text-[var(--acopay-brand)]"
-                >
-                  {t("hero.solscan")}
-                </a>
-              </li>
-              {!wallet && jup && !isStoreReviewMode() ? (
+          {!wallet ? (
+            <div>
+              <h4 className="label-orca">{t("footer.onChain")}</h4>
+              <ul className="mt-4 space-y-2 text-sm">
                 <li>
                   <a
-                    href={jup}
+                    href={explorerUrl()}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-[var(--acopay-muted)] hover:text-[var(--acopay-brand)]"
                   >
-                    Jupiter ↗
+                    {t("hero.explorer")}
                   </a>
                 </li>
-              ) : null}
-              {!wallet && tgPayOn ? (
                 <li>
                   <a
-                    href={TOKEN.telegramPayUrl}
+                    href={solscanUrl()}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-[var(--acopay-muted)] hover:text-[var(--acopay-brand)]"
                   >
-                    {TELEGRAM_PAY_LABEL} ↗
+                    {t("hero.solscan")}
                   </a>
                 </li>
-              ) : null}
-            </ul>
-          </div>
+                {jup && !isStoreReviewMode() ? (
+                  <li>
+                    <a
+                      href={jup}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[var(--acopay-muted)] hover:text-[var(--acopay-brand)]"
+                    >
+                      Jupiter ↗
+                    </a>
+                  </li>
+                ) : null}
+                {tgPayOn ? (
+                  <li>
+                    <a
+                      href={TOKEN.telegramPayUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[var(--acopay-muted)] hover:text-[var(--acopay-brand)]"
+                    >
+                      {TELEGRAM_PAY_LABEL} ↗
+                    </a>
+                  </li>
+                ) : null}
+              </ul>
+            </div>
+          ) : null}
           <div>
             <h4 className="label-orca">{t("footer.contact")}</h4>
             <ul className="mt-4 space-y-3">
