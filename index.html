@@ -11,7 +11,7 @@
     />
     <meta
       name="keywords"
-      content="ACOPAY, Pay your way, Solana, Token-2022, non-custodial wallet, crypto payments, wallet to wallet, SPL token, Acopay.net"
+      content="ACOPAY, Pay your way, Solana, Token-2022, payment utility, wallet to wallet, SPL token, Acopay.org, Acopay.net"
     />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <meta name="googlebot" content="index, follow" />
@@ -61,13 +61,38 @@
     <meta name="twitter:image:alt" content="ACOPAY — Pay your way" />
     <meta name="twitter:url" content="https://acopay.net/" />
 
-    <!-- One canonical host: avoid www vs apex split browser cache -->
+    <!-- One canonical host per product: www → apex (.net wallet + .org coin) -->
     <script>
-      if (location.hostname === "www.acopay.net") {
-        location.replace(
-          "https://acopay.net" + location.pathname + location.search + location.hash
-        );
-      }
+      (function () {
+        var h = location.hostname;
+        if (h === "www.acopay.net") {
+          location.replace(
+            "https://acopay.net" + location.pathname + location.search + location.hash
+          );
+          return;
+        }
+        if (h === "www.acopay.org") {
+          location.replace(
+            "https://acopay.org" + location.pathname + location.search + location.hash
+          );
+          return;
+        }
+        // Phase A: when served on coin host, rewrite static SEO that still says .net
+        if (h === "acopay.org") {
+          try {
+            var from = "https://acopay.net";
+            var to = "https://acopay.org";
+            document.querySelectorAll('link[rel="canonical"], link[rel="alternate"]').forEach(function (el) {
+              var href = el.getAttribute("href");
+              if (href && href.indexOf(from) === 0) el.setAttribute("href", to + href.slice(from.length));
+            });
+            document.querySelectorAll('meta[property="og:url"], meta[property="og:image"], meta[property="og:image:secure_url"], meta[name="twitter:image"], meta[name="twitter:url"]').forEach(function (el) {
+              var c = el.getAttribute("content");
+              if (c && c.indexOf(from) === 0) el.setAttribute("content", to + c.slice(from.length));
+            });
+          } catch (e) {}
+        }
+      })();
     </script>
     <!-- Theme before paint — avoid flash; default Light -->
     <script>

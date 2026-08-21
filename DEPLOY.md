@@ -1,6 +1,13 @@
 # ACOPAY Landing — Deploy
 
-Official homepage for **acopay.net**. Stack: React 19, Vite, Tailwind CSS v4.
+Official sites (Phase A 2026-08-21):
+
+| Domain | Role |
+|--------|------|
+| **https://acopay.org** | Coin / token (canonical mint metadata) |
+| **https://acopay.net** | Wallet product (Download, Support, app APIs) — Phase B rewrite |
+
+Stack: React 19, Vite, Tailwind CSS v4. **One** GitHub repo → **one** Cloudflare Pages project (`acopay-landing`) with **both** custom domains.
 
 ## Develop
 
@@ -27,26 +34,29 @@ Output: `dist/`
 | Root directory | repo root |
 | Node version | 20+ |
 
-Custom domain: **acopay.net** (canonical).
+### Custom domains (same Pages project)
 
-1. Add both `acopay.net` and `www.acopay.net` to the same Pages project.
-2. Prefer redirect www → apex (`https://acopay.net`).
-3. Repo also forces www → apex via `functions/_middleware.ts` and a small script in `index.html`.
+1. `acopay.net` + `www.acopay.net` (existing)
+2. **Add** `acopay.org` + `www.acopay.org`
+3. Redirect www → apex for each (middleware + `_redirects` + `index.html`)
 
-`public/CNAME` lists apex only.
+Code: `src/config/siteIdentity.ts` — runtime host picks SEO origin.
+
+`public/CNAME` lists historical apex; CF dashboard custom domains are source of truth.
 
 ## After token updates
 
 1. Keep `src/config/token.ts` in sync with mainnet mint / fee / pool id.
-2. Sync `public/token.json` and `public/token-metadata.json` if metadata changes.
-3. `git push` — Cloudflare Pages rebuilds automatically.
+2. Sync `public/token.json` and `public/token-metadata.json` — **website = acopay.org**.
+3. Logo assets may stay on `acopay.net/assets/…` until org CDN is confirmed.
+4. `git push` — Cloudflare Pages rebuilds automatically.
 
 ## Folder
 
 ```
 acopay-landing/
 ├── public/assets/     # logo, favicon, og-image, roadmap art
-├── src/config/        # token + OTC config
+├── src/config/        # token + siteIdentity + OTC
 ├── src/components/
-└── dist/              # after npm run build
+└── dist/              # after npm build
 ```

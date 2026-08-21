@@ -156,6 +156,8 @@ export async function proxyPay(
 }
 
 export function corsOptions(methods = "GET, POST, OPTIONS"): Response {
+  // Same-origin /api/pay on .org or .net does not need CORS.
+  // Cross-origin (extensions, etc.): allow both product hosts.
   return new Response(null, {
     status: 204,
     headers: {
@@ -166,6 +168,7 @@ export function corsOptions(methods = "GET, POST, OPTIONS"): Response {
       "Access-Control-Allow-Credentials": "true",
       "Access-Control-Max-Age": "86400",
       Vary: "Origin",
+      // Note: browsers accept one ACAO value; .org callers use same-origin.
     },
   });
 }

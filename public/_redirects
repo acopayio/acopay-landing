@@ -1,7 +1,12 @@
 # www → apex (also handled in functions/_middleware.ts)
+# Wallet
 https://www.acopay.net/*   https://acopay.net/:splat   301
 http://www.acopay.net/*    https://acopay.net/:splat   301
 http://acopay.net/*        https://acopay.net/:splat   301
+# Coin (Phase A)
+https://www.acopay.org/*   https://acopay.org/:splat   301
+http://www.acopay.org/*    https://acopay.org/:splat   301
+http://acopay.org/*        https://acopay.org/:splat   301
 
 # SPA routes are handled by functions/_middleware.ts when Functions are enabled.
 # Keep a static fallback for deploys without Functions.

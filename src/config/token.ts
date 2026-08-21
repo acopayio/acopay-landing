@@ -1,3 +1,5 @@
+import { COIN_EMAIL, COIN_HOST, COIN_WEBSITE, WALLET_ORIGIN } from "./siteIdentity";
+
 /** USDT (SPL) on Solana Mainnet — ACOPAY/USDT quote. */
 export const USDT_MINT = "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB";
 
@@ -5,7 +7,8 @@ export const USDT_MINT = "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB";
 export const SOL_MINT = "So11111111111111111111111111111111111111112";
 
 /**
- * Single source of truth for the official site (Acopay.net).
+ * Single source of truth for the official **coin** site (Acopay.org).
+ * Wallet product / download remains on Acopay.net (Phase B).
  */
 export const TOKEN = {
   name: "ACOPAY",
@@ -24,13 +27,15 @@ export const TOKEN = {
   transferFeeNote: "1 bps on-chain",
   freezeAuthority: "Revoked",
   mintAuthority: "Active",
-  website: "https://Acopay.net",
-  email: "contact@Acopay.net",
+  website: COIN_WEBSITE,
+  email: COIN_EMAIL,
   founded: "2026",
   /** Official Telegram Pay bot (shared with volume admin). */
   telegramBot: "AcopayNetwork_bot",
   telegramUrl: "https://t.me/AcopayNetwork_bot",
   telegramPayUrl: "https://t.me/AcopayNetwork_bot?start=pay",
+  /** Wallet app download (stays on .net). */
+  walletWebsite: WALLET_ORIGIN,
   dex: {
     platform: "Raydium",
     pair: "ACOPAY / USDT",
@@ -44,7 +49,7 @@ export const TOKEN = {
     /** Official Buy page on /buy (bot USDT→ACOPAY). Not unsolicited private OTC. */
     officialOtc: true,
     freezeRevoked: true,
-    officialDomainOnly: "Acopay.net",
+    officialDomainOnly: COIN_HOST,
   },
   links: {
     explorer: "https://explorer.solana.com/",
@@ -66,7 +71,7 @@ export function isPoolLive(): boolean {
 }
 
 export function mintDisplay(): string {
-  return isMintLive() ? TOKEN.mintAddress : "Not published yet — check back on Acopay.net";
+  return isMintLive() ? TOKEN.mintAddress : `Not published yet — check back on ${COIN_HOST}`;
 }
 
 export function explorerUrl(): string {

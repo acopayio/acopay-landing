@@ -1,15 +1,22 @@
+import {
+  COIN_ORIGIN,
+  WALLET_EMAIL,
+  getSiteOrigin,
+} from "../config/siteIdentity";
+
 /** Central SEO + social copy — English (US), brand ACOPAY. */
 export const SITE = {
   name: "ACOPAY",
   tagline: "Pay your way",
-  url: "https://Acopay.net",
+  /** Phase A: coin canonical = acopay.org; runtime may be .net via getSiteOrigin(). */
+  url: COIN_ORIGIN,
   locale: "en_US",
   language: "en-US",
   region: "US",
-  email: "contact@Acopay.net",
+  email: WALLET_EMAIL,
   themeColor: "#0c1017",
   twitterHandle: "", // add @handle when official X account exists
-  ogImage: "https://acopay.net/assets/og-card.png?v=20260728i",
+  ogImagePath: "/assets/og-card.png?v=20260728i",
   ogImageAlt: "ACOPAY — Pay your way",
   defaultTitle: "ACOPAY — Pay your way",
   defaultDescription:
@@ -23,6 +30,7 @@ export const SITE = {
     "payment utility",
     "wallet to wallet",
     "SPL token",
+    "Acopay.org",
     "Acopay.net",
   ],
   hashtags: [
@@ -117,7 +125,16 @@ export const PAGE_SEO: Record<string, PageSeo> = {
   },
 };
 
+export function siteUrl(): string {
+  return getSiteOrigin();
+}
+
+export function ogImageUrl(): string {
+  return `${getSiteOrigin()}${SITE.ogImagePath}`;
+}
+
 export function absoluteUrl(path: string): string {
-  if (path === "/") return `${SITE.url}/`;
-  return `${SITE.url}${path.startsWith("/") ? path : `/${path}`}`;
+  const origin = getSiteOrigin();
+  if (path === "/") return `${origin}/`;
+  return `${origin}${path.startsWith("/") ? path : `/${path}`}`;
 }

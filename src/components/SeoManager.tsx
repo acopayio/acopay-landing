@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { absoluteUrl, PAGE_SEO, SITE, type PageSeo } from "../seo/site";
+import { absoluteUrl, ogImageUrl, PAGE_SEO, SITE, type PageSeo } from "../seo/site";
 
 function upsertMeta(attr: "name" | "property", key: string, content: string) {
   let el = document.head.querySelector<HTMLMetaElement>(`meta[${attr}="${key}"]`);
@@ -34,7 +34,7 @@ function applySeo(page: PageSeo) {
   const title = page.title;
   const ogTitle = SITE.defaultTitle;
   const ogDescription = SITE.defaultDescription;
-  const image = SITE.ogImage;
+  const image = ogImageUrl();
   const keywords = SITE.keywords.join(", ");
   const hashtags = SITE.hashtags.join(" ");
 

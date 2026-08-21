@@ -257,6 +257,10 @@ export async function onRequest(context: PagesContext): Promise<Response> {
     url.hostname = "acopay.net";
     return Response.redirect(url.toString(), 301);
   }
+  if (url.hostname === "www.acopay.org") {
+    url.hostname = "acopay.org";
+    return Response.redirect(url.toString(), 301);
+  }
 
   // Always serve markets JSON from GitHub raw (VPS pushes there). Avoids stale CF builds.
   if (url.pathname.startsWith("/data/") && url.pathname.endsWith(".json")) {

@@ -1,7 +1,8 @@
 User-agent: *
 Allow: /
 
-Host: https://acopay.net
+# Phase A dual-domain: coin = acopay.org · wallet = acopay.net
+Sitemap: https://acopay.org/sitemap.xml
 Sitemap: https://acopay.net/sitemap.xml
 
 # Public assets & token metadata for crawlers / wallets
