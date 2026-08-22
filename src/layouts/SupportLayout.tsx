@@ -2,14 +2,9 @@ import { Link, Outlet } from "react-router-dom";
 import { LanguageToggle } from "../components/LanguageToggle";
 import { ThemeToggle } from "../components/ThemeToggle";
 import { BrandLogo } from "../components/BrandLogo";
-import { getContactEmail } from "../config/siteIdentity";
-import { useT } from "../i18n/LanguageProvider";
 
-/** Minimal layout for Store Support URL — no Markets / Roadmap nav. */
+/** Minimal layout for Store Support URL — no Markets / Roadmap nav. No duplicate footer (policies already on page). */
 export function SupportLayout() {
-  const t = useT();
-  const email = getContactEmail();
-
   return (
     <div className="flex min-h-[100dvh] min-w-0 flex-col overflow-x-clip">
       <header className="sticky top-0 z-50 border-b border-[color:var(--acopay-border)] bg-[color-mix(in_srgb,var(--acopay-bg)_95%,transparent)] backdrop-blur-xl">
@@ -28,28 +23,6 @@ export function SupportLayout() {
       <main className="flex-1">
         <Outlet />
       </main>
-
-      <footer className="border-t border-[color:var(--acopay-border)] bg-[var(--acopay-bg-2)]/80 py-8">
-        <div className="page-wrap text-sm text-[var(--acopay-muted)]">
-          <p>
-            <a className="text-[var(--acopay-brand)] underline" href={`mailto:${email}`}>
-              {email}
-            </a>
-          </p>
-          <p className="mt-3 flex flex-wrap gap-x-4 gap-y-1">
-            <Link className="hover:text-[var(--acopay-brand)]" to="/privacy">
-              {t("support.privacyLink")}
-            </Link>
-            <Link className="hover:text-[var(--acopay-brand)]" to="/terms">
-              {t("support.termsLink")}
-            </Link>
-            <Link className="hover:text-[var(--acopay-brand)]" to="/delete-account">
-              {t("support.deleteLink")}
-            </Link>
-          </p>
-          <p className="mt-4 text-xs">© {new Date().getFullYear()} ACOPAY</p>
-        </div>
-      </footer>
     </div>
   );
 }
