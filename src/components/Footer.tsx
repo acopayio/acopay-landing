@@ -66,67 +66,78 @@ export function Footer() {
           </div>
 
           {wallet ? (
-            <div className="mt-5 grid grid-cols-3 gap-x-3 gap-y-2.5 text-sm leading-6 text-[var(--acopay-muted)]">
-              <Link to="/download" className="hover:text-[var(--acopay-brand)]">
-                {t("nav.download")}
-              </Link>
-              <Link to="/support" className="hover:text-[var(--acopay-brand)]">
-                {t("nav.support")}
-              </Link>
-              <Link to="/privacy" className="hover:text-[var(--acopay-brand)]">
-                {t("legal.privacyTitle")}
-              </Link>
-              <Link to="/terms" className="hover:text-[var(--acopay-brand)]">
-                {t("legal.termsTitle")}
-              </Link>
-              <Link to="/delete-account" className="hover:text-[var(--acopay-brand)]">
-                {t("legal.deleteTitle")}
-              </Link>
-              <p className="text-[11px] leading-6 text-[var(--acopay-faint)]">© {TOKEN.founded} ACOPAY</p>
+            <div className="mt-5">
+              <nav className="grid grid-cols-2 gap-x-5 gap-y-2.5 text-sm leading-snug text-[var(--acopay-muted)]">
+                <Link to="/download" className="hover:text-[var(--acopay-brand)]">
+                  {t("nav.download")}
+                </Link>
+                <Link to="/support" className="hover:text-[var(--acopay-brand)]">
+                  {t("nav.support")}
+                </Link>
+                <Link to="/privacy" className="hover:text-[var(--acopay-brand)]">
+                  {t("legal.privacyTitle")}
+                </Link>
+                <Link to="/terms" className="hover:text-[var(--acopay-brand)]">
+                  {t("legal.termsTitle")}
+                </Link>
+                <Link
+                  to="/delete-account"
+                  className="col-span-2 hover:text-[var(--acopay-brand)]"
+                >
+                  {t("legal.deleteTitle")}
+                </Link>
+              </nav>
+              <p className="mt-4 text-[11px] leading-none text-[var(--acopay-faint)]">
+                © {TOKEN.founded} ACOPAY
+              </p>
             </div>
           ) : (
-            <div className="mt-5 grid grid-cols-3 gap-x-3 gap-y-2.5 text-sm leading-6 text-[var(--acopay-muted)]">
-              <Link to="/token" className="hover:text-[var(--acopay-brand)]">
-                {t("nav.token")}
-              </Link>
-              <Link to="/roadmap" className="hover:text-[var(--acopay-brand)]">
-                {t("nav.roadmap")}
-              </Link>
-              <a
-                href={explorerUrl()}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-[var(--acopay-brand)]"
-              >
-                {t("hero.explorer")}
-              </a>
-              <Link to="/markets" className="hover:text-[var(--acopay-brand)]">
-                {t("nav.markets")}
-              </Link>
-              <Link to="/faq" className="hover:text-[var(--acopay-brand)]">
-                {t("nav.faq")}
-              </Link>
-              <a
-                href={solscanUrl()}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-[var(--acopay-brand)]"
-              >
-                {t("hero.solscan")}
-              </a>
-              <Link to="/download" className="hover:text-[var(--acopay-brand)]">
-                {t("nav.download")}
-              </Link>
-              <Link to="/support" className="hover:text-[var(--acopay-brand)]">
-                {t("nav.support")}
-              </Link>
-              <Link to="/privacy" className="hover:text-[var(--acopay-brand)]">
-                {t("legal.privacyTitle")}
-              </Link>
-              <Link to="/terms" className="hover:text-[var(--acopay-brand)]">
-                {t("legal.termsTitle")}
-              </Link>
-              <p className="text-[11px] leading-6 text-[var(--acopay-faint)]">© {TOKEN.founded} ACOPAY</p>
+            <div className="mt-5">
+              <nav className="grid grid-cols-2 gap-x-5 gap-y-2.5 text-sm leading-snug text-[var(--acopay-muted)]">
+                <Link to="/token" className="hover:text-[var(--acopay-brand)]">
+                  {t("nav.token")}
+                </Link>
+                <Link to="/roadmap" className="hover:text-[var(--acopay-brand)]">
+                  {t("nav.roadmap")}
+                </Link>
+                <a
+                  href={explorerUrl()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-[var(--acopay-brand)]"
+                >
+                  {t("hero.explorer")}
+                </a>
+                <Link to="/markets" className="hover:text-[var(--acopay-brand)]">
+                  {t("nav.markets")}
+                </Link>
+                <Link to="/faq" className="hover:text-[var(--acopay-brand)]">
+                  {t("nav.faq")}
+                </Link>
+                <a
+                  href={solscanUrl()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-[var(--acopay-brand)]"
+                >
+                  {t("hero.solscan")}
+                </a>
+                <Link to="/download" className="hover:text-[var(--acopay-brand)]">
+                  {t("nav.download")}
+                </Link>
+                <Link to="/support" className="hover:text-[var(--acopay-brand)]">
+                  {t("nav.support")}
+                </Link>
+                <Link to="/privacy" className="hover:text-[var(--acopay-brand)]">
+                  {t("legal.privacyTitle")}
+                </Link>
+                <Link to="/terms" className="hover:text-[var(--acopay-brand)]">
+                  {t("legal.termsTitle")}
+                </Link>
+              </nav>
+              <p className="mt-4 text-[11px] leading-none text-[var(--acopay-faint)]">
+                © {TOKEN.founded} ACOPAY
+              </p>
             </div>
           )}
         </div>
