@@ -115,6 +115,11 @@ const ALLOW_EXACT = new Set([
   "Solana · USDT SPL",
   "24h %",
   "Minimum {min} USDT",
+  "CDN",
+  "Hosting",
+  "Webhosting",
+  "DNS",
+  "Disclaimer",
 ]);
 
 /** Dead Web Pay i18n (SPA UI removed Phase 2). Reported, not FAIL. */
