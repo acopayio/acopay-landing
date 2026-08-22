@@ -257,17 +257,15 @@ export async function onRequest(context: PagesContext): Promise<Response> {
     url.hostname = "acopay.net";
     return Response.redirect(url.toString(), 301);
   }
-  if (url.hostname === "www.acopay.org") {
-    url.hostname = "acopay.org";
-    return Response.redirect(url.toString(), 301);
-  }
 
-  // Coin site: no user accounts — privacy requests live under /privacy#privacy-requests
-  if (
-    url.hostname === "acopay.org" &&
-    (url.pathname === "/delete-account" || url.pathname === "/delete-account/")
-  ) {
-    return Response.redirect("https://acopay.org/privacy#privacy-requests", 301);
+  /**
+   * Store freeze (Kevin 2026-08-23 Option A):
+   * Temporary — coin site acopay.org OFF → always wallet Home.
+   * Rollback: delete this block (and any CF Redirect Rule) to reopen .org.
+   * Do not redirect acopay.net.
+   */
+  if (url.hostname === "acopay.org" || url.hostname === "www.acopay.org") {
+    return Response.redirect("https://acopay.net/", 301);
   }
 
   // Always serve markets JSON from GitHub raw (VPS pushes there). Avoids stale CF builds.
