@@ -71,6 +71,24 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://acopay.org/faq"/>
   </url>
   <url>
+    <loc>https://acopay.org/privacy</loc>
+    <lastmod>2026-08-22</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://acopay.org/privacy"/>
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://acopay.org/privacy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://acopay.org/privacy"/>
+  </url>
+  <url>
+    <loc>https://acopay.org/terms</loc>
+    <lastmod>2026-08-22</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://acopay.org/terms"/>
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://acopay.org/terms"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://acopay.org/terms"/>
+  </url>
+  <url>
     <loc>https://acopay.org/token-metadata.json</loc>
     <lastmod>2026-08-21</lastmod>
     <changefreq>monthly</changefreq>

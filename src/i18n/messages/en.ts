@@ -1,3 +1,4 @@
+import { LEGAL_COIN_EN } from "./legalCoinEn";
 /** English UI strings — source of truth for i18n keys. */
 export const en = {
   nav: {
@@ -943,6 +944,7 @@ export const en = {
       "We will delete or anonymize associated session records, Pay username mappings, push registrations, and support correspondence within 30 days of a verifiable request, except data we must retain for legal or security reasons. Public blockchain records cannot be deleted.",
     deleteHRelated: "Related",
   },
+  legalCoin: { ...LEGAL_COIN_EN },
 };
 
 export type Messages = {

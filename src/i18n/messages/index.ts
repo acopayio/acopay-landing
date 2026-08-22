@@ -9,6 +9,7 @@ import { SEND_ACOPAY_PARTIALS } from "./sendAcopay";
 import { PAY_APP_PARTIALS } from "./payApp";
 import { DOWNLOAD_PAGE_PARTIALS } from "./downloadPage";
 import { LEGAL_PAGE_PARTIALS } from "./legalPages";
+import { LEGAL_COIN_PAGE_PARTIALS } from "./legalCoinPages";
 import { STORE_REVIEW_PARTIALS } from "./storeReviewContent";
 import { SUPPORT_PAGE_PARTIALS } from "./supportPages";
 import { HOST_CHROME_PARTIALS } from "./hostChrome";
@@ -2088,6 +2089,12 @@ for (const [code, content] of Object.entries(DOWNLOAD_PAGE_PARTIALS)) {
 
 // Privacy / Terms / Delete-account
 for (const [code, content] of Object.entries(LEGAL_PAGE_PARTIALS)) {
+  if (code === "en") continue;
+  partials[code] = mergePartial(partials[code], content as DeepPartialMessages);
+}
+
+// Token-site Privacy / Terms (acopay.org) — legalCoin.*
+for (const [code, content] of Object.entries(LEGAL_COIN_PAGE_PARTIALS)) {
   if (code === "en") continue;
   partials[code] = mergePartial(partials[code], content as DeepPartialMessages);
 }

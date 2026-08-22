@@ -262,6 +262,14 @@ export async function onRequest(context: PagesContext): Promise<Response> {
     return Response.redirect(url.toString(), 301);
   }
 
+  // Coin site: no user accounts — privacy requests live under /privacy#privacy-requests
+  if (
+    url.hostname === "acopay.org" &&
+    (url.pathname === "/delete-account" || url.pathname === "/delete-account/")
+  ) {
+    return Response.redirect("https://acopay.org/privacy#privacy-requests", 301);
+  }
+
   // Always serve markets JSON from GitHub raw (VPS pushes there). Avoids stale CF builds.
   if (url.pathname.startsWith("/data/") && url.pathname.endsWith(".json")) {
     const name = url.pathname.slice("/data/".length);

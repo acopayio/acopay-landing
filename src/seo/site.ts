@@ -297,6 +297,28 @@ export const PAGE_SEO: Record<string, PageSeo> = {
 
   },
 
+  "/privacy": {
+
+    title: "ACOPAY Privacy Policy",
+
+    description:
+      "How ACOPAY handles information on this website. Scope depends on the host you visit (token site or wallet site).",
+
+    path: "/privacy",
+
+  },
+
+  "/terms": {
+
+    title: "ACOPAY Terms of Use",
+
+    description:
+      "Terms for using this ACOPAY website. Scope depends on the host you visit (token site or wallet site).",
+
+    path: "/terms",
+
+  },
+
 };
 
 

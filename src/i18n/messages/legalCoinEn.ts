@@ -1,0 +1,294 @@
+/**
+ * Token-site legal copy (acopay.org only). Canonical EN.
+ * Synced with GPT master prompt 2026-08-22 + repo audit (no user accounts on .org).
+ */
+export const LEGAL_COIN_EN = {
+  privacyTitle: "Privacy Policy",
+  termsTitle: "Terms of Use",
+  lastUpdated: "Effective date: 22 August 2026 · Last updated: 22 August 2026",
+
+  privacyIntro:
+    "This policy explains how ACOPAY handles information when you visit acopay.org and use features provided on this website.",
+  privacyScopeNote:
+    "This policy applies only to acopay.org. Other websites, apps, or services have their own policies.",
+
+  privacyH1: "1. Scope of the website",
+  privacyP1:
+    "acopay.org provides information about the ACOPAY token, verified technical data, project materials, and related links.",
+  privacyP1b:
+    "Unless a specific feature on the website states otherwise, acopay.org does not provide user accounts, does not hold digital assets, and does not execute transactions on your behalf.",
+
+  privacyH2: "2. Information we may process",
+  privacyH2a: "2.1. Information you provide",
+  privacyP2aIntro: "When you contact ACOPAY by email, we may process:",
+  privacyLiEmail: "Email address",
+  privacyLiName: "Name or display name you provide",
+  privacyLiRequest: "Content of your request",
+  privacyLiFiles: "Files or information you voluntarily attach",
+  privacyLiReply: "Information needed to respond",
+  privacyP2aWarn:
+    "Do not send private keys, recovery phrases, passwords, authentication codes, or other secrets by email.",
+
+  privacyH2b: "2.2. Technical data",
+  privacyP2bIntro:
+    "When you visit the website, our systems and infrastructure providers may process technical data needed to deliver, protect, and operate the site, such as:",
+  privacyLiIp: "IP address",
+  privacyLiBrowser: "Browser and device type",
+  privacyLiOs: "Operating system",
+  privacyLiTime: "Access time",
+  privacyLiPath: "Requested pages or resources",
+  privacyLiReferrer: "Referrer URL",
+  privacyLiErrors: "Error logs",
+  privacyLiSecurity: "Security events and abuse signals",
+  privacyP2bOutro:
+    "This data is used to operate the website, detect faults, protect systems, and prevent abuse.",
+
+  privacyH2c: "2.3. Cookies, local storage, and analytics",
+  privacyP2c:
+    "acopay.org uses local storage (and may use essential cookies) only as needed to remember language and theme preferences and to keep basic website functions working. We do not use advertising analytics SDKs on this site as of the date above. Ordinary technical logs may still be processed by hosting and security infrastructure.",
+
+  privacyH2d: "2.4. Public blockchain data",
+  privacyP2d:
+    "acopay.org may retrieve and display public Solana data, such as mint address, supply, transfers, public wallet addresses, or token program information. Blockchain data is public and can be accessed by anyone. Viewing public chain data on this site does not mean ACOPAY controls your wallet or private keys.",
+
+  privacyH3: "3. Purposes of processing",
+  privacyP3Intro: "We process information when needed to:",
+  privacyLiPurpose1: "Provide and operate the website",
+  privacyLiPurpose2: "Maintain performance and compatibility",
+  privacyLiPurpose3: "Protect the website and users",
+  privacyLiPurpose4: "Detect faults, spam, fraud, and abuse",
+  privacyLiPurpose5: "Respond to support or contact requests",
+  privacyLiPurpose6: "Comply with valid legal obligations",
+  privacyP3NoSell: "ACOPAY does not sell personal data.",
+
+  privacyH4: "4. Service providers and third parties",
+  privacyP4Intro: "ACOPAY may use service providers to operate the website, including:",
+  privacyLiProv1: "Hosting",
+  privacyLiProv2: "CDN",
+  privacyLiProv3: "Security and abuse prevention",
+  privacyLiProv4: "DNS resolution",
+  privacyLiProv5: "Email delivery",
+  privacyLiProv6: "Blockchain explorers or public data endpoints, when used",
+  privacyP4Note:
+    "Verified infrastructure for this website includes Cloudflare for hosting, CDN, DNS, and edge security. Providers may process data only as needed to serve ACOPAY, under their terms and applicable law.",
+  privacyP4Disclose: "We may also disclose information when needed to:",
+  privacyLiDisc1: "Comply with valid legal requests",
+  privacyLiDisc2: "Protect the rights, property, or safety of ACOPAY and others",
+  privacyLiDisc3: "Investigate fraud, attacks, or abuse",
+
+  privacyH5: "5. Third-party links and services",
+  privacyP5a:
+    "acopay.org may link to blockchain explorers, wallets, decentralized exchanges, data platforms, social networks, or other websites.",
+  privacyP5b:
+    "Those services operate independently and have their own terms, privacy policies, and risks. A link does not mean ACOPAY controls or endorses the third-party service.",
+  privacyP5c:
+    "Check domain names, token addresses, and third-party terms carefully before use.",
+
+  privacyH6: "6. Retention",
+  privacyP6a:
+    "Information is kept for as long as needed for the purposes in this policy, including operations, security, responding to requests, and legal obligations.",
+  privacyP6b:
+    "When data is no longer needed, we delete, aggregate, or anonymize it under ordinary operating practice.",
+
+  privacyH7: "7. Security",
+  privacyP7a:
+    "ACOPAY applies reasonable technical and organizational measures to protect information against unauthorized access, use, alteration, or disclosure.",
+  privacyP7b:
+    "No method of electronic transmission or storage is completely secure. We cannot guarantee that every security risk will be eliminated.",
+
+  privacyH8: "8. International transfers",
+  privacyP8:
+    "Because ACOPAY and its providers may operate in more than one country, information may be processed outside the country where you live. Where required by law, ACOPAY applies appropriate measures for such transfers.",
+
+  privacyH9: "9. Privacy choices and requests",
+  privacyP9Intro: "Depending on where you live and applicable law, you may have rights to:",
+  privacyLiRight1: "Request access to information related to you",
+  privacyLiRight2: "Request correction of inaccurate information",
+  privacyLiRight3: "Request deletion of eligible information",
+  privacyLiRight4: "Object to or restrict certain processing",
+  privacyLiRight5: "Withdraw consent where processing is based on consent",
+  privacyLiRight6: "Lodge a complaint with a competent data protection authority",
+  privacyP9Contact: "To submit a request, contact:",
+  privacyP9How:
+    "Describe your request and provide enough detail for us to identify related data. Do not send private keys, recovery phrases, passwords, or authentication codes.",
+  privacyP9Verify:
+    "ACOPAY may ask for reasonable verification and may retain some information when law allows or requires, including for security, fraud prevention, or legal compliance.",
+  privacyP9Chain:
+    "Data already recorded on a public blockchain cannot be modified or deleted by ACOPAY.",
+
+  privacyH10: "10. Children",
+  privacyP10a:
+    "acopay.org is not directed at anyone under 18, and we do not knowingly collect personal information from children.",
+  privacyP10b:
+    "If you believe a child has provided information to ACOPAY, contact us so we can review and handle it.",
+
+  privacyH11: "11. Changes",
+  privacyP11a:
+    "ACOPAY may update this policy to reflect changes to the website, technology, data practices, or legal requirements.",
+  privacyP11b:
+    "The latest update date appears at the top of this page. For material changes, ACOPAY may provide additional notice when appropriate.",
+
+  privacyH12: "12. Contact",
+  privacyContact: "Questions about this policy:",
+
+  termsIntro:
+    "By accessing or using acopay.org, you confirm that you have read and agree to these Terms. If you do not agree, do not continue using the website.",
+
+  termsH1: "1. Scope",
+  termsP1a:
+    "These Terms apply to acopay.org and content provided directly on this website.",
+  termsP1b:
+    "acopay.org provides information about the ACOPAY token, technical data, project materials, and related links. Unless clearly described for a specific feature, the website does not provide user accounts, does not hold digital assets, and does not execute blockchain transactions for you.",
+
+  termsH2: "2. Information about the ACOPAY token",
+  termsP2a:
+    "The ACOPAY token is deployed on Solana according to technical information published on this website.",
+  termsP2Facts:
+    "Verified facts published on this site include: mint address 6Pcq8xnkVYxR42FEehXrucvaMB1fZYuqoR8B9FGSAS8F; symbol ACOPAY; 9 decimals; Token-2022 program; total supply 500,000,000; on-chain transfer fee 0.01%; freeze authority revoked; mint authority active.",
+  termsP2b:
+    "Technical information shown on the website must match blockchain data or official configuration sources. Do not rely on unofficial copies.",
+  termsP2cIntro:
+    "Unless a separate legal document states otherwise, holding ACOPAY tokens does not by itself create:",
+  termsLiEquity: "Ownership in a company",
+  termsLiVote: "Corporate voting rights",
+  termsLiDividend: "Dividend rights",
+  termsLiRevenue: "Rights to revenue or profits",
+  termsLiRefund: "A right to a refund",
+  termsLiAssets: "Rights to ACOPAY assets",
+  termsLiBank: "A deposit or bank-account relationship",
+
+  termsH3: "3. Not an offer or advice",
+  termsP3a: "Content on acopay.org is for general information only.",
+  termsP3bIntro: "Unless a separate legal document states otherwise, website content is not:",
+  termsLiAdvice1: "Investment advice",
+  termsLiAdvice2: "Financial advice",
+  termsLiAdvice3: "Legal advice",
+  termsLiAdvice4: "Tax advice",
+  termsLiAdvice5: "A recommendation to buy, sell, or hold digital assets",
+  termsLiAdvice6: "A promise about price, liquidity, or returns",
+  termsLiAdvice7: "An offer of securities or financial products",
+  termsP3c: "Assess risks yourself and obtain independent advice when needed.",
+
+  termsH4: "4. No custody of assets",
+  termsP4a:
+    "acopay.org does not hold digital assets, does not control user wallets, and does not execute blockchain transactions on your behalf.",
+  termsP4b:
+    "Any transaction you choose to make happens through a wallet or third-party platform you select. ACOPAY does not control those keys, accounts, or processes.",
+
+  termsH5: "5. Digital asset risks",
+  termsP5Intro: "Using or holding tokens can involve significant risk, including:",
+  termsH5a: "5.1. Price volatility",
+  termsP5a:
+    "Digital asset prices can move sharply and may fall substantially or lose all value.",
+  termsH5b: "5.2. Liquidity",
+  termsP5b:
+    "There may be no liquid market to buy or sell tokens at the time, price, or size you want.",
+  termsH5c: "5.3. Blockchain risk",
+  termsP5c:
+    "Solana or related components may face outages, congestion, software bugs, protocol changes, or security incidents.",
+  termsH5d: "5.4. Token program risk",
+  termsP5d:
+    "Bugs, misconfiguration, technical limits, or changes related to the token program may affect transfer, receipt, or use of the token.",
+  termsH5e: "5.5. Third-party risk",
+  termsP5e:
+    "Wallets, exchanges, DEXs, explorers, RPC providers, and other services may fail, be attacked, shut down, or change terms. ACOPAY does not control those independent services.",
+  termsH5f: "5.6. Irreversible transactions",
+  termsP5f:
+    "Confirmed blockchain transactions usually cannot be reversed. Sending to the wrong address, wrong network, or interacting with a fake token can cause permanent loss.",
+  termsH5g: "5.7. Fraud and impersonation",
+  termsP5g:
+    "Fake names, logos, websites, social accounts, or tokens may be used to impersonate ACOPAY. Always verify the domain, mint address, official paths, and any signing request before acting.",
+  termsH5h: "5.8. Legal and tax",
+  termsP5h:
+    "Digital asset rules differ by country and can change. Some activity may be restricted where you live. You are responsible for your own legal and tax obligations.",
+
+  termsH6: "6. Network fees and on-chain mechanisms",
+  termsP6a:
+    "Solana network fees are set by the network or related transactions and are not always controlled by ACOPAY.",
+  termsP6b:
+    "The ACOPAY token program applies an on-chain transfer fee of 0.01% for transfers covered by that mechanism. Token transfer fees are separate from Solana network fees.",
+
+  termsH7: "7. Third-party links",
+  termsP7a:
+    "acopay.org may provide links to third-party websites or services for convenience.",
+  termsP7bIntro: "ACOPAY does not own or control those independent services and does not guarantee:",
+  termsLiTp1: "Availability",
+  termsLiTp2: "Accuracy",
+  termsLiTp3: "Security",
+  termsLiTp4: "Liquidity",
+  termsLiTp5: "Ability to complete a transaction",
+  termsLiTp6: "Their policies or conduct",
+  termsP7c:
+    "You decide whether to use third parties and must review their terms, privacy policies, and risks.",
+
+  termsH8: "8. Your responsibilities",
+  termsP8Intro: "When using the website, you are responsible for:",
+  termsLiResp1: "Checking domain names and information sources",
+  termsLiResp2: "Verifying the mint address before interacting with the token",
+  termsLiResp3: "Assessing risks independently",
+  termsLiResp4: "Protecting your own devices and wallets",
+  termsLiResp5: "Reviewing transaction details before signing elsewhere",
+  termsLiResp6: "Complying with applicable law and tax duties",
+  termsLiResp7: "Not relying solely on this website for financial decisions",
+  termsP8Support:
+    "ACOPAY support will not ask you for private keys, recovery phrases, passwords, or authentication codes.",
+
+  termsH9: "9. Prohibited conduct",
+  termsP9Intro: "You must not:",
+  termsLiBan1: "Use the website for unlawful activity",
+  termsLiBan2: "Attack, disrupt, or exploit the website without authorization",
+  termsLiBan3: "Distribute malware",
+  termsLiBan4: "Collect data unlawfully",
+  termsLiBan5: "Bypass security controls",
+  termsLiBan6: "Impersonate ACOPAY",
+  termsLiBan7: "Create confusing fake tokens, websites, or accounts",
+  termsLiBan8: "Use ACOPAY branding for fraud",
+  termsLiBan9: "Spam or automate in ways that harm the site",
+  termsLiBan10:
+    "Reverse engineer or exploit the website to cause harm, except as law allows",
+
+  termsH10: "10. Intellectual property",
+  termsP10a:
+    "Except for third-party content or other licenses, the ACOPAY name, logo, slogan, design, content, images, and source shown on the website are owned or lawfully used by ACOPAY.",
+  termsP10b: "Access to the website does not transfer intellectual property rights to you.",
+  termsP10c:
+    "Do not copy, modify, distribute, or use ACOPAY brand assets in ways that confuse, impersonate, or break the law.",
+
+  termsH11: "11. Accuracy and changes",
+  termsP11Intro: "ACOPAY aims to keep information accurate and current. However:",
+  termsLiAcc1: "Blockchain data can change",
+  termsLiAcc2: "Third-party data sources may be delayed or inaccurate",
+  termsLiAcc3: "Project materials may be updated",
+  termsLiAcc4: "Features or links may change",
+  termsP11b:
+    "Verified on-chain information should be preferred over cached or unofficial copies. ACOPAY may modify, suspend, or discontinue parts of the website when needed.",
+
+  termsH12: "12. Disclaimer",
+  termsP12a:
+    "To the extent permitted by law, the website and its content are provided on an “as is” and “as available” basis.",
+  termsP12bIntro: "ACOPAY does not warrant that:",
+  termsLiWar1: "The website will always be uninterrupted",
+  termsLiWar2: "Content will always be error-free",
+  termsLiWar3: "Third-party services will always be safe or available",
+  termsLiWar4: "The token will always have value, liquidity, or utility",
+  termsLiWar5: "Every technical or security risk can be eliminated",
+
+  termsH13: "13. Limitation of liability",
+  termsP13Intro:
+    "To the extent permitted by law, ACOPAY is not liable for indirect, incidental, special, or consequential damages arising from:",
+  termsLiLim1: "Use of or inability to use the website",
+  termsLiLim2: "Decisions based on website information",
+  termsLiLim3: "Token price moves or loss of value",
+  termsLiLim4: "Blockchain transactions",
+  termsLiLim5: "Third-party services",
+  termsLiLim6: "Security incidents outside ACOPAY’s reasonable control",
+
+  termsH14: "14. Changes to these Terms",
+  termsP14:
+    "ACOPAY may update these Terms. The latest date appears at the top of this page. Continued use after changes means you accept the updated Terms.",
+
+  termsH15: "15. Contact",
+  termsContact: "Questions about these Terms:",
+} as const;
+
+export type LegalCoinMessages = { [K in keyof typeof LEGAL_COIN_EN]: string };
