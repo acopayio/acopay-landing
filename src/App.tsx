@@ -22,8 +22,6 @@ import { SupportLayout } from "./layouts/SupportLayout";
 import { isBuyPublic, isWebPayPublic } from "./config/siteSurface";
 import {
   COIN_ORIGIN,
-  WALLET_ORIGIN,
-  isCoinHost,
   isWalletHost,
   isWalletProfile,
 } from "./config/siteIdentity";
@@ -48,11 +46,8 @@ function WalletHide({ children }: { children: ReactNode }) {
   return <>{children}</>;
 }
 
-/** On .org, download goes to acopay.net (APK + store listing). */
+/** Download stays on the current host (acopay.org or acopay.net). */
 function WalletDownloadPage() {
-  if (typeof window !== "undefined" && isCoinHost(window.location.hostname)) {
-    return <CrossHostRedirect origin={WALLET_ORIGIN} path="/download" />;
-  }
   return <DownloadPage />;
 }
 

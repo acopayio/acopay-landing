@@ -1,12 +1,10 @@
 /**
  * GET /download/android — streams the signed Android APK from the VPS.
  *
- * The origin only answers Cloudflare IPs, so this Function is the only way in.
- * The body is piped straight through rather than buffered: the APK is ~50 MB
- * and reading it into memory would blow the Worker limit.
+ * Kevin 2026-08-22: public channel serves 1.0.288. Upstream blob may still be
+ * named *-theme-test.apk on disk; Content-Disposition uses the clean filename.
  *
- * Upstream host comes from the Pages env (PAY_UPSTREAM_BASE), same as the Pay
- * proxy, so the VPS hostname stays out of git.
+ * Upstream host: PAY_UPSTREAM_BASE / PAY_SPONSOR_URL (Pages secrets).
  */
 
 type PagesEnv = {
@@ -14,7 +12,10 @@ type PagesEnv = {
   PAY_SPONSOR_URL?: string;
 };
 
-const APK_FILE = "ACOPAY-Wallet-v1.0.133.apk";
+/** File on VPS `/apk/`. */
+const APK_UPSTREAM = "ACOPAY-Wallet-v1.0.288-theme-test.apk";
+/** Name the browser saves as (no “theme-test” / beta wording). */
+const APK_DOWNLOAD_NAME = "ACOPAY-Wallet-v1.0.288.apk";
 
 function upstreamBase(env: PagesEnv): string {
   const fromSponsor = String(env.PAY_SPONSOR_URL || "").trim();
@@ -41,9 +42,8 @@ export async function onRequest(context: {
 
   let upstream: Response;
   try {
-    upstream = await fetch(`${base}/apk/${APK_FILE}`, {
+    upstream = await fetch(`${base}/apk/${APK_UPSTREAM}`, {
       method: request.method,
-      // Pass Range through so a dropped mobile download can resume.
       headers: request.headers.has("Range")
         ? { Range: request.headers.get("Range") as string }
         : {},
@@ -58,7 +58,7 @@ export async function onRequest(context: {
 
   const headers = new Headers({
     "Content-Type": "application/vnd.android.package-archive",
-    "Content-Disposition": `attachment; filename="${APK_FILE}"`,
+    "Content-Disposition": `attachment; filename="${APK_DOWNLOAD_NAME}"`,
     "Cache-Control": "public, max-age=300",
     "X-Content-Type-Options": "nosniff",
     "Accept-Ranges": "bytes",

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { isStoreReviewMode, isTelegramPayCtaPublic, isWebPayPublic } from "../config/siteSurface";
-import { getContactEmail, WALLET_ORIGIN, isWalletProfile } from "../config/siteIdentity";
+import { getContactEmail, isWalletProfile } from "../config/siteIdentity";
 import { TOKEN, explorerUrl, jupiterSwapUrl, solscanUrl } from "../config/token";
 import { useT } from "../i18n/LanguageProvider";
 import { BrandLogo } from "./BrandLogo";
@@ -114,9 +114,9 @@ export function Footer() {
               >
                 {t("hero.solscan")}
               </a>
-              <a href={`${WALLET_ORIGIN}/download`} className="hover:text-[var(--acopay-brand)]">
+              <Link to="/download" className="hover:text-[var(--acopay-brand)]">
                 {t("nav.download")}
-              </a>
+              </Link>
               <Link to="/support" className="hover:text-[var(--acopay-brand)]">
                 {t("nav.support")}
               </Link>
@@ -173,12 +173,12 @@ export function Footer() {
               ))}
               {!wallet ? (
                 <li>
-                  <a
-                    href={`${WALLET_ORIGIN}/download`}
+                  <Link
+                    to="/download"
                     className="text-[var(--acopay-muted)] hover:text-[var(--acopay-brand)]"
                   >
                     {t("footer.walletApp")}
-                  </a>
+                  </Link>
                 </li>
               ) : null}
             </ul>

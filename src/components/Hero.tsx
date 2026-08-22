@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { TOKEN, explorerUrl, isMintLive, mintDisplay } from "../config/token";
-import { WALLET_ORIGIN } from "../config/siteIdentity";
 import { BuyButton } from "./BuyButton";
 import { BrandLogo } from "./BrandLogo";
 import { useCopy } from "../hooks/useCopy";
@@ -55,9 +54,9 @@ export function Hero() {
                 >
                   {t("hero.explorer")}
                 </a>
-                <a href={`${WALLET_ORIGIN}/download`} className="btn-orca-secondary">
+                <Link to="/download" className="btn-orca-secondary">
                   {t("nav.download")}
-                </a>
+                </Link>
               </>
             ) : (
               <Link to="/faq" className="btn-orca-secondary">
